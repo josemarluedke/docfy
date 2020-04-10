@@ -1,0 +1,10 @@
+{
+  "name": "@docfy/core",
+  "version": "0.0.1",
+  "description": "Documentation Builder",
+  "main": "dist/index.js",
+  "repository": "https://github.com/josemarluedke/docfy",
+  "author": "Josemar Luedke <josemarluedke@gmail.com>",
+  "license": "MIT",
+  "private": false
+}

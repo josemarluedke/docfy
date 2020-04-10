@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "baseUrl": "./src",
+    "target": "es2016",
+    "lib": ["esnext", "dom"],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "allowJs": true,
+    "noEmitOnError": false,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "strict": true,
+    "strictNullChecks": true,
+    // "noUnusedLocals": true,
+    // "noUnusedParameters": true,
+    "strictPropertyInitialization": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "paths": {
+      "*": ["types/*"]
+    },
+    "typeRoots": ["../../node_modules/@types", "types"]
+  },
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["dist/**/*"]
+}
