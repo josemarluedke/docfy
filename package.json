@@ -1,10 +1,19 @@
 {
-  "name": "@docfy/core",
-  "version": "0.0.1",
-  "description": "Documentation Builder",
-  "main": "dist/index.js",
-  "repository": "https://github.com/josemarluedke/docfy",
-  "author": "Josemar Luedke <josemarluedke@gmail.com>",
-  "license": "MIT",
-  "private": false
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/@docfy/*"
+  ],
+  "scripts": {
+    "lint:js": "eslint . --ext .js,.ts",
+    "start": "echo 'TODO'",
+    "test": "lerna run --parallel test -- --test-port="
+  },
+  "devDependencies": {
+    "@underline/eslint-config-node": "^0.7.0",
+    "@underline/eslint-config-typescript": "^0.7.0",
+    "eslint": "^6.8.0",
+    "lerna": "^3.20.1",
+    "typescript": "^3.7.5"
+  }
 }
