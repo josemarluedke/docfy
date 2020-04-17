@@ -3,9 +3,7 @@
 //   -> docs
 //   -> app/componennts/*.md
 //   -> app/componennts/**/demo/*.md
-//
-//
-// frontile
+// project
 //  docs
 //    - install.md - whatever.md
 //  packages/
@@ -18,8 +16,6 @@
 //        demo/
 //          - demo1.md
 //          - demo2.md
-//
-//
 //// intro
 // install
 // compoennts
@@ -34,7 +30,6 @@
 //   components
 //     bla
 //     blaf
-//
 
 import glob from 'glob';
 import fs from 'fs';
@@ -53,7 +48,7 @@ import StructuredContentFn from './structed-content';
 import routeMap from './route-map';
 const slug = require('github-slugger').slug;
 
-const projectRoot = '../../../';
+const projectRoot = '../../../../../frontile/';
 const root = path.resolve(__dirname, projectRoot);
 
 const stack = unified()
@@ -83,7 +78,7 @@ function generateRoutePath(meta: Content['metadata']): string {
   return parts.join('/');
 }
 
-function visitor(filepath: string, ast: Node): void {
+function visitor(source: string, ast: Node): void {
   let metadata = {};
 
   visit(ast, 'yaml', (node) => {
@@ -91,26 +86,26 @@ function visitor(filepath: string, ast: Node): void {
   });
 
   contents.push({
-    filepath,
+    source,
     ast,
     metadata: { ...metadata, routePath: generateRoutePath(metadata) },
     rendered: stack.stringify(ast)
   });
 }
 
-function findParentFromDemo(filepath: string): number {
-  const folder = path.basename(path.dirname(filepath));
+function findParentFromDemo(source: string): number {
+  const folder = path.basename(path.dirname(source));
 
   let parentName = folder.replace('-demo', '');
   if (parentName === 'demo') {
-    parentName = path.basename(path.dirname(path.dirname(filepath)));
+    parentName = path.basename(path.dirname(path.dirname(source)));
   }
 
   return contents.findIndex((item: Content, _: number): boolean => {
     return (
-      path.basename(item.filepath) === `${parentName}.md` ||
-      (path.basename(item.filepath) === `index.md` &&
-        path.basename(path.dirname(item.filepath)) === parentName)
+      path.basename(item.source) === `${parentName}.md` ||
+      (path.basename(item.source) === `index.md` &&
+        path.basename(path.dirname(item.source)) === parentName)
     );
   });
 }
@@ -134,10 +129,10 @@ files.forEach((file) => {
 });
 
 contents.forEach((item: Content, index: number): void => {
-  const folder = path.basename(path.dirname(item.filepath));
+  const folder = path.basename(path.dirname(item.source));
 
   if (folder.match(/demo$/)) {
-    const parent = contents[findParentFromDemo(item.filepath)];
+    const parent = contents[findParentFromDemo(item.source)];
 
     if (parent) {
       if (!parent.demos) {
@@ -151,6 +146,6 @@ contents.forEach((item: Content, index: number): void => {
   }
 });
 
-const bla = StructuredContentFn(contents);
+StructuredContentFn(contents);
 
 console.log(routeMap(contents));

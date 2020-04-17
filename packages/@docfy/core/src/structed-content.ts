@@ -39,7 +39,7 @@ function createStructedContent(
 
   contents.forEach((item: Content, _: number): void => {
     const meta = item.metadata;
-    if (validateMetadata(meta, item.filepath)) {
+    if (validateMetadata(meta, item.source)) {
       if (meta.package) {
         const pkgName = meta.package;
         structedContent.packages[pkgName] = createStructedContent(

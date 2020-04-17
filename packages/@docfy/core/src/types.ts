@@ -1,7 +1,7 @@
 import { Node } from 'unist';
 
 export interface Content {
-  filepath: string;
+  source: string;
   ast: Node;
   rendered: string;
   metadata: {
