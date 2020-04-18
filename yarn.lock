@@ -3676,6 +3676,13 @@ markdown-table@^2.0.0:
   dependencies:
     repeat-string "^1.0.0"
 
+mdast-normalize-headings@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/mdast-normalize-headings/-/mdast-normalize-headings-2.0.0.tgz#378c8161a9f57fcf52a6fd5628507af370c7f8c5"
+  integrity sha512-PVuunQSsJNYiuZ56QypccTVPy8DowOkj61HtD78PSq1M8I49GwxzhdE2QmOp+j/TwaT1yq/K4b201388/ucV2g==
+  dependencies:
+    unist-util-visit "^2.0.0"
+
 mdast-util-compact@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/mdast-util-compact/-/mdast-util-compact-2.0.1.tgz#cabc69a2f43103628326f35b1acf735d55c99490"
@@ -3705,7 +3712,7 @@ mdast-util-to-hast@^8.0.0:
     unist-util-position "^3.0.0"
     unist-util-visit "^2.0.0"
 
-mdast-util-to-string@^1.0.5:
+mdast-util-to-string@^1.0.5, mdast-util-to-string@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/mdast-util-to-string/-/mdast-util-to-string-1.1.0.tgz#27055500103f51637bd07d01da01eb1967a43527"
   integrity sha512-jVU0Nr2B9X3MU4tSK7JP1CMkSvOj7X5l/GboG1tKRw52lLF1x2Ju92Ms9tNetCcbfX3hzlM73zYo2NKkWSfF/A==
@@ -4769,6 +4776,13 @@ remark-html@^11.0.1:
     mdast-util-to-hast "^8.0.0"
     xtend "^4.0.1"
 
+remark-normalize-headings@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/remark-normalize-headings/-/remark-normalize-headings-2.0.0.tgz#2e7492f4935346dc5eca96ffdb5f588196233169"
+  integrity sha512-nXeBQ7luKRWDcuUTnc0ffUYZ7+cO01FomSjnzpGTGCi7rcD9Wbis+z3adbNyqbYtsC+/+o1S+GLHTwh9crnZxA==
+  dependencies:
+    mdast-normalize-headings "^2.0.0"
+
 remark-parse@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/remark-parse/-/remark-parse-8.0.0.tgz#0aaae4b49e607ee7e972a6cf688026f46bbf6d1a"
@@ -5586,7 +5600,7 @@ trim@0.0.1:
   resolved "https://registry.yarnpkg.com/trim/-/trim-0.0.1.tgz#5858547f6b290757ee95cccc666fb50084c460dd"
   integrity sha1-WFhUf2spB1fulczMZm+1AITEYN0=
 
-trough@^1.0.0:
+trough@^1.0.0, trough@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==

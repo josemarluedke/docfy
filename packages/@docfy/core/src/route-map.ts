@@ -6,8 +6,8 @@ export default function routeMap(content: Content[], prefix = ''): string[] {
   // intro, bla, category: [bla, bla], package: [bla, bla, category]
 
   content.forEach((item) => {
-    if (item.metadata.routePath) {
-      routes.push(prefix + item.metadata.routePath);
+    if (item.metadata.url) {
+      routes.push(prefix + item.metadata.url);
     }
   });
 
