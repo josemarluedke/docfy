@@ -19,7 +19,12 @@ const DEFAULT_IGNORE = [
   'dist/**'
 ];
 
-function createPage(source: string, markdown: string, ast: Node): Page {
+function createPage(
+  source: string,
+  markdown: string,
+  ast: Node,
+  urlPrefix?: string
+): Page {
   const frontmatter = parseFrontmatter(source, ast);
 
   return {
@@ -29,7 +34,7 @@ function createPage(source: string, markdown: string, ast: Node): Page {
     metadata: {
       title: getTitlteFomMarkdown(ast),
       ...frontmatter,
-      url: generateUrl(source, frontmatter)
+      url: generateUrl(source, frontmatter, urlPrefix)
     },
     rendered: ''
   };
@@ -52,7 +57,7 @@ function initialize(options: Options): Context {
       const markdown = fs.readFileSync(file).toString();
       const ast = ctx.remark.runSync(ctx.remark.parse(markdown));
 
-      ctx.pages.push(createPage(relativePath, markdown, ast));
+      ctx.pages.push(createPage(relativePath, markdown, ast, item.urlPrefix));
     });
   });
 

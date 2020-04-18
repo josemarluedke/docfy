@@ -22,8 +22,8 @@ export interface Context {
 }
 
 interface InputOptions {
-  prefix: string;
   pattern: string;
+  urlPrefix?: string;
   ignore?: string[];
 }
 

@@ -8,8 +8,15 @@ import YAML from 'yaml';
 
 const slug = Slugger.slug;
 
-export function generateUrl(source: string, meta: Page['metadata']): string {
+export function generateUrl(
+  source: string,
+  meta: Page['metadata'],
+  prefix?: string
+): string {
   const parts: string[] = [];
+  if (prefix) {
+    parts.push(prefix);
+  }
   if (meta.package) {
     parts.push(slug(meta.package));
   }
