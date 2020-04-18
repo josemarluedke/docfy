@@ -38,5 +38,11 @@
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.2",
     "yaml": "^1.8.3"
+  },
+  "engines": {
+    "node": ">= 10.*"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
