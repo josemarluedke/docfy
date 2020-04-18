@@ -17,11 +17,12 @@ export interface Page {
 }
 
 export interface Context {
+  root: string;
   remark: Processor;
   pages: Page[];
 }
 
-interface InputOptions {
+interface SourceSettings {
   pattern: string;
   urlPrefix?: string;
   ignore?: string[];
@@ -29,6 +30,6 @@ interface InputOptions {
 
 export interface Options {
   root: string;
-  input: InputOptions[];
+  sources: SourceSettings[];
   remarkPlugins?: Plugin[];
 }

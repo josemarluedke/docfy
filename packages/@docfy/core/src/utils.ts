@@ -5,6 +5,7 @@ import { Page } from './types';
 import toString from 'mdast-util-to-string';
 import Slugger from 'github-slugger';
 import YAML from 'yaml';
+import url from 'url';
 
 const slug = Slugger.slug;
 
@@ -13,7 +14,7 @@ export function generateUrl(
   meta: Page['metadata'],
   prefix?: string
 ): string {
-  const parts: string[] = [];
+  const parts: string[] = [''];
   if (prefix) {
     parts.push(prefix);
   }
@@ -31,7 +32,7 @@ export function generateUrl(
   return parts.join('/');
 }
 
-export function getTitlteFomMarkdown(ast: Node): string | undefined {
+export function inferTitle(ast: Node): string | undefined {
   let docTitle: string | undefined;
   visit(ast, 'heading', (node) => {
     const { depth } = node;
@@ -51,4 +52,17 @@ export function parseFrontmatter(source: string, ast: Node): object {
   });
 
   return {};
+}
+
+export function isValidUrl(s: string): boolean {
+  try {
+    new url.URL(s);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+export function isAnchorUrl(s: string): boolean {
+  return s[0] === '#';
 }

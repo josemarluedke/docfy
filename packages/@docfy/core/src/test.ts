@@ -40,7 +40,7 @@ const root = path.resolve(__dirname, projectRoot);
 (async function (): Promise<void> {
   const docs = await Docfy({
     root,
-    input: [
+    sources: [
       {
         urlPrefix: 'docs',
         pattern: '{/**/docs/**/*.md,/**/addon/**/*.md}',

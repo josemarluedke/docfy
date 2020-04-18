@@ -1,12 +1,12 @@
 import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
-import { Node } from 'unist';
 import trough from 'trough';
+import { Node } from 'unist';
 import { Page, Context, Options } from './types';
-import combineDemos from './combine-demos';
-import { getTitlteFomMarkdown, generateUrl, parseFrontmatter } from './utils';
+import { inferTitle, generateUrl, parseFrontmatter } from './utils';
 import { createRemark } from './remark';
+import { fixUrls, combineDemos } from './plugins';
 
 const DEFAULT_IGNORE = [
   '/**/node_modules/**',
@@ -32,7 +32,7 @@ function createPage(
     ast,
     markdown,
     metadata: {
-      title: getTitlteFomMarkdown(ast),
+      title: inferTitle(ast),
       ...frontmatter,
       url: generateUrl(source, frontmatter, urlPrefix)
     },
@@ -42,11 +42,12 @@ function createPage(
 
 function initialize(options: Options): Context {
   const ctx: Context = {
+    root: options.root,
     remark: createRemark(options.remarkPlugins),
     pages: []
   };
 
-  options.input.forEach((item) => {
+  options.sources.forEach((item) => {
     const files = glob.sync(item.pattern, {
       root: options.root,
       ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])]
@@ -70,11 +71,15 @@ function renderMarkdown(context: Context): void {
   });
 }
 
+// TODO:
+// - TOC
+
 export default function (options: Options): Promise<Page[]> {
   return new Promise((resolve, reject) => {
     trough<Context>()
       .use<Options>(initialize)
       .use(combineDemos)
+      .use(fixUrls)
       .use(renderMarkdown)
       .run(options, (err: unknown, ctx: Context): void => {
         if (err) {
