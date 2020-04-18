@@ -32,6 +32,7 @@
 //     blaf
 import Docfy from './index';
 import path from 'path';
+import hbs from 'remark-hbs';
 
 const projectRoot = '../../../../../frontile/';
 const root = path.resolve(__dirname, projectRoot);
@@ -46,7 +47,7 @@ const root = path.resolve(__dirname, projectRoot);
         ignore: ['/packages/docs/**']
       }
     ],
-    remarkPlugins: []
+    remarkPlugins: [hbs]
   });
 
   console.log(docs);

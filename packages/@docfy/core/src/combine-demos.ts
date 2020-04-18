@@ -1,5 +1,5 @@
 import path from 'path';
-import { Content, Context } from './types';
+import { Page, Context } from './types';
 
 /*
  * Finds the index of the owner for a given demo file.
@@ -21,7 +21,7 @@ import { Content, Context } from './types';
  *     - demo1.md
  *     - demo2.md
  */
-function findDemoOwner(contents: Content[], demoSource: string): number {
+function findDemoOwner(contents: Page[], demoSource: string): number {
   const folder = path.basename(path.dirname(demoSource));
 
   let parentName = folder.replace('-demo', '');
@@ -29,7 +29,7 @@ function findDemoOwner(contents: Content[], demoSource: string): number {
     parentName = path.basename(path.dirname(path.dirname(demoSource)));
   }
 
-  return contents.findIndex((item: Content): boolean => {
+  return contents.findIndex((item: Page): boolean => {
     const file = path.parse(path.basename(item.source));
     return (
       file.name === parentName ||
@@ -40,12 +40,12 @@ function findDemoOwner(contents: Content[], demoSource: string): number {
 }
 
 export default function CombineDemos(context: Context): Context {
-  context.contents.forEach((item: Content, index: number): void => {
+  context.pages.forEach((item: Page, index: number): void => {
     const folder = path.basename(path.dirname(item.source));
 
     if (folder.match(/demo$/)) {
       const parent =
-        context.contents[findDemoOwner(context.contents, item.source)];
+        context.pages[findDemoOwner(context.pages, item.source)];
 
       if (parent) {
         if (!parent.demos) {
@@ -54,7 +54,7 @@ export default function CombineDemos(context: Context): Context {
           parent.demos.push(item);
         }
 
-        context.contents.splice(index, 1);
+        context.pages.splice(index, 1);
       }
     }
   });

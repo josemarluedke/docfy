@@ -1,4 +1,4 @@
-import { Content, StructuredContent } from './types';
+import { Page, StructuredContent } from './types';
 import util from 'util';
 
 function inspect(obj: unknown): void {
@@ -28,7 +28,7 @@ function inspect(obj: unknown): void {
 // }
 
 function createStructedContent(
-  contents: Content[],
+  contents: Page[],
   existingStruct?: StructuredContent
 ): StructuredContent {
   const structedContent: StructuredContent = existingStruct || {
@@ -37,7 +37,7 @@ function createStructedContent(
     packages: {}
   };
 
-  contents.forEach((item: Content, _: number): void => {
+  contents.forEach((item: Page, _: number): void => {
     const meta = item.metadata;
     // if (validateMetadata(meta, item.source)) {
     if (meta.package) {
@@ -60,7 +60,7 @@ function createStructedContent(
   return structedContent;
 }
 
-export default function (contents: Content[]): StructuredContent {
+export default function (contents: Page[]): StructuredContent {
   const result = createStructedContent(contents);
   inspect(result);
   return result;

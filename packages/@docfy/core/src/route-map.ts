@@ -1,6 +1,6 @@
-import { Content } from './types';
+import { Page } from './types';
 
-export default function routeMap(content: Content[], prefix = ''): string[] {
+export default function routeMap(content: Page[], prefix = ''): string[] {
   const routes: string[] = [];
 
   // intro, bla, category: [bla, bla], package: [bla, bla, category]
