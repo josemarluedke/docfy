@@ -16,16 +16,6 @@ export interface Page {
   demos?: Page[];
 }
 
-export interface StructuredContent {
-  pages: Page[];
-  categories: {
-    [key: string]: Page[];
-  };
-  packages: {
-    [key: string]: StructuredContent;
-  };
-}
-
 export interface Context {
   remark: Processor;
   pages: Page[];
