@@ -34,6 +34,7 @@ module.exports = {
     {
       files: ['packages/**/tests/**/*.ts'],
       rules: {
+        'node/no-unpublished-import': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off'
       }

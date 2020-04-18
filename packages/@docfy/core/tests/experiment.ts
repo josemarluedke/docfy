@@ -30,11 +30,12 @@
 //   components
 //     bla
 //     blaf
-import Docfy from './index';
+import Docfy from '../src';
 import path from 'path';
 import hbs from 'remark-hbs';
 
-const projectRoot = '../../../../../frontile/';
+const projectRoot = '../tests/fixtures/monorepo/';
+// const projectRoot = '../../../../../frontile/';
 const root = path.resolve(__dirname, projectRoot);
 
 (async function (): Promise<void> {
@@ -43,7 +44,7 @@ const root = path.resolve(__dirname, projectRoot);
     sources: [
       {
         urlPrefix: 'docs',
-        pattern: '{/**/docs/**/*.md,/**/addon/**/*.md}',
+        pattern: '{/**/docs/**/*.md,/**/**/*.md,/**/addon/**/*.md}',
         ignore: ['/packages/docs/**']
       }
     ],
