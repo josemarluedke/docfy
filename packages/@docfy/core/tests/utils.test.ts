@@ -1,4 +1,11 @@
-import { generateUrl, isAnchorUrl, isValidUrl } from '../src/utils';
+import {
+  generateUrl,
+  isAnchorUrl,
+  isValidUrl,
+  inferTitle,
+  parseFrontmatter
+} from '../src/utils';
+import { createRemark } from '../src/remark';
 
 describe('#generateUrl', () => {
   test('base case', () => {
@@ -50,4 +57,35 @@ test('#isValidUrl', () => {
   expect(isValidUrl('#test')).toBe(false);
   expect(isValidUrl('../test')).toBe(false);
   expect(isValidUrl('https://google.com')).toBe(true);
+});
+
+describe('#inferTitle', () => {
+  test('it returns heading depth 1 as title', () => {
+    const markdown =
+      '# this is the title\n Something else \n## Another heading';
+
+    const ast = createRemark().parse(markdown);
+    expect(inferTitle(ast)).toBe('this is the title');
+  });
+
+  test('it returns undefined if no heading depth 1 is found', () => {
+    const markdown = 'Something here';
+
+    const ast = createRemark().parse(markdown);
+    expect(inferTitle(ast)).toBe(undefined);
+  });
+});
+
+describe('#parseFrontmatter', () => {
+  test('it returns an object with parsed frontmatter', () => {
+    const markdown = '---\ntitle: My Title\ncategory: test\n---\n\n# test\n';
+    const remark = createRemark();
+    const ast = remark.runSync(remark.parse(markdown));
+    const result = parseFrontmatter('my-file.md', ast);
+
+    expect(result).toEqual({
+      title: 'My Title',
+      category: 'test'
+    });
+  });
 });

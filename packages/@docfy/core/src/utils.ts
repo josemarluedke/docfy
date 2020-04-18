@@ -43,15 +43,16 @@ export function inferTitle(ast: Node): string | undefined {
 }
 
 export function parseFrontmatter(source: string, ast: Node): object {
+  let result = {};
   visit(ast, 'yaml', (node) => {
     try {
-      return YAML.parse(node.value as string);
+      result = YAML.parse(node.value as string);
     } catch (e) {
       console.error(`Error while parsing frontmatter in ${source}: `, e);
     }
   });
 
-  return {};
+  return result;
 }
 
 export function isValidUrl(s: string): boolean {

@@ -73,6 +73,7 @@ function renderMarkdown(context: Context): void {
 
 // TODO:
 // - TOC
+// - Ordering
 
 export default function (options: Options): Promise<Page[]> {
   return new Promise((resolve, reject) => {
