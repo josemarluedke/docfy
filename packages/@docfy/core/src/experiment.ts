@@ -16,7 +16,7 @@
 //        demo/
 //          - demo1.md
 //          - demo2.md
-//// intro
+// intro
 // install
 // compoennts
 //   button

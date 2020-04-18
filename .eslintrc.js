@@ -9,8 +9,10 @@ module.exports = {
   },
   extends: [
     '@underline/eslint-config-typescript',
-    '@underline/eslint-config-node'
+    '@underline/eslint-config-node',
+    'plugin:jest/recommended'
   ],
+  plugins: ['jest'],
 
   settings: {
     node: {

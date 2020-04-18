@@ -20,7 +20,7 @@ export function fixUrls(ctx: Context): void {
       if (!path.isAbsolute(node.url)) {
         absolutePath = path.resolve(
           path.join(ctx.root, path.dirname(page.source)),
-          node.url as string
+          node.url
         );
       }
       const relativePath = absolutePath.replace(path.join(ctx.root, '/'), '');
