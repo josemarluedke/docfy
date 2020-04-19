@@ -1,6 +1,7 @@
 import unified from 'unified';
 import parse from 'remark-parse';
 import frontmatter from 'remark-frontmatter';
+import slug from 'remark-slug';
 import html from 'remark-html';
 import stringify from 'remark-stringify';
 import normalizeHeadings from 'remark-normalize-headings';
@@ -10,6 +11,7 @@ export function createRemark(plugins?: Plugin[]): Processor {
   const stack = unified()
     .use(parse)
     .use(normalizeHeadings)
+    .use(slug)
     .use(stringify)
     .use(frontmatter, [{ type: 'yaml', marker: '-' }]);
 
