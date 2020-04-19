@@ -33,6 +33,7 @@
 import Docfy from '../src';
 import path from 'path';
 import hbs from 'remark-hbs';
+import autolinkHeadings from 'remark-autolink-headings';
 
 const projectRoot = '../tests/__fixtures__/monorepo/';
 // const projectRoot = '../../../../../frontile/';
@@ -44,11 +45,11 @@ const root = path.resolve(__dirname, projectRoot);
     sources: [
       {
         urlPrefix: 'docs',
-        pattern: '{/**/docs/**/*.md,/**/addon/**/*.md}',
+        pattern: '{/**/docs/**/*.md,/**/*.md}',
         ignore: ['/packages/docs/**']
       }
     ],
-    remarkPlugins: [hbs]
+    remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs]
   });
 
   console.log(docs);

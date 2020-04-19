@@ -5,6 +5,8 @@
 # compiled output
 /packages/*/dist/
 /packages/*/tmp/
+/packages/*/*/dist/
+/packages/*/*/tmp/
 
 # dependencies
 /bower_components/

@@ -34,13 +34,13 @@ Array [
 `;
 
 exports[`When urls are based on package and category frontmatter Basic case, no url prefix, or suffix it should have fixed the links between files 1`] = `
-"<h1>This is the overview page</h1>
+"<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
 <p>This is a <a href=\\"/package1/components/button\\">link to another file in a different package</a>.</p>
 "
 `;
 
 exports[`When urls are based on package and category frontmatter Basic case, no url prefix, or suffix it should have fixed the links between files 2`] = `
-"<h1>How styles work</h1>
+"<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
 <p>Please refer to <a href=\\"/package2/overview\\">overview</a> to get started.</p>
 "
@@ -80,13 +80,13 @@ Array [
 `;
 
 exports[`When urls are based on package and category frontmatter When source defines url prefix and suffix it should have fixed the links between files 1`] = `
-"<h1>This is the overview page</h1>
+"<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
 <p>This is a <a href=\\"/docs/package1/components/button.html\\">link to another file in a different package</a>.</p>
 "
 `;
 
 exports[`When urls are based on package and category frontmatter When source defines url prefix and suffix it should have fixed the links between files 2`] = `
-"<h1>How styles work</h1>
+"<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
 <p>Please refer to <a href=\\"/docs/package2/overview.html\\">overview</a> to get started.</p>
 "

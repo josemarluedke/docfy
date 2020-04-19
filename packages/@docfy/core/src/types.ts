@@ -1,5 +1,5 @@
 import { Node } from 'unist';
-import { Processor, Plugin } from 'unified';
+import { Processor, Plugin, Settings } from 'unified';
 
 export interface Page {
   source: string;
@@ -32,5 +32,5 @@ interface SourceSettings {
 export interface Options {
   root: string;
   sources: SourceSettings[];
-  remarkPlugins?: Plugin[];
+  remarkPlugins?: ([Plugin, Settings] | Plugin)[];
 }
