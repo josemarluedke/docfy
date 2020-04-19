@@ -44,7 +44,7 @@ const root = path.resolve(__dirname, projectRoot);
     sources: [
       {
         urlPrefix: 'docs',
-        pattern: '{/**/docs/**/*.md,/**/**/*.md,/**/addon/**/*.md}',
+        pattern: '{/**/docs/**/*.md,/**/addon/**/*.md}',
         ignore: ['/packages/docs/**']
       }
     ],

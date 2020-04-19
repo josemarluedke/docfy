@@ -25,6 +25,7 @@ export interface Context {
 interface SourceSettings {
   pattern: string;
   urlPrefix?: string;
+  urlSuffix?: string;
   ignore?: string[];
 }
 

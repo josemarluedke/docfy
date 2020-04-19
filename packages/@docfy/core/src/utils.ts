@@ -12,7 +12,8 @@ const slug = Slugger.slug;
 export function generateUrl(
   source: string,
   meta: Page['metadata'],
-  prefix?: string
+  prefix?: string,
+  suffix?: string
 ): string {
   const parts: string[] = [''];
   if (prefix) {
@@ -28,7 +29,7 @@ export function generateUrl(
   if (file.name === 'index') {
     file = path.parse(path.basename(path.dirname(source)));
   }
-  parts.push(file.name);
+  parts.push(`${file.name}${suffix || ''}`);
   return parts.join('/');
 }
 

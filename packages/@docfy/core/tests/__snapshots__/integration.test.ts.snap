@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`It works as expected for a monorepo  it should have extracted or infered the title 1`] = `
+exports[`When urls are based on package and category frontmatter Basic case, no url prefix, or suffix it should have extracted or infered the title 1`] = `
 Array [
   Array [
     "docs/about.md",
@@ -33,48 +33,94 @@ Array [
 ]
 `;
 
-exports[`It works as expected for a monorepo  it should have fixed the links between files 1`] = `
+exports[`When urls are based on package and category frontmatter Basic case, no url prefix, or suffix it should have fixed the links between files 1`] = `
 "<h1>This is the overview page</h1>
-<p>This is a <a href=\\"/docs/package1/components/button\\">link to another file in a different package</a>.</p>
+<p>This is a <a href=\\"/package1/components/button\\">link to another file in a different package</a>.</p>
 "
 `;
 
-exports[`It works as expected for a monorepo  it should have fixed the links between files 2`] = `
+exports[`When urls are based on package and category frontmatter Basic case, no url prefix, or suffix it should have fixed the links between files 2`] = `
 "<h1>How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/package2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/package2/overview\\">overview</a> to get started.</p>
 "
 `;
 
-exports[`It works as expected for a monorepo  it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
+exports[`When urls are based on package and category frontmatter Basic case, no url prefix, or suffix it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
 Array [
   Array [
     "docs/about.md",
-    "/docs/about",
+    "/about",
   ],
   Array [
     "docs/how-it-works.md",
-    "/docs/how-it-works",
+    "/how-it-works",
   ],
   Array [
     "packages/package1/components/button.md",
-    "/docs/package1/components/button",
+    "/package1/components/button",
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/docs/package1/components/form",
+    "/package1/components/form",
   ],
   Array [
     "packages/package1/docs/intro.md",
-    "/docs/package1/intro",
+    "/package1/intro",
   ],
   Array [
     "packages/package2/docs/overview.md",
-    "/docs/package2/overview",
+    "/package2/overview",
   ],
   Array [
     "packages/package2/docs/styles.md",
-    "/docs/package2/styles",
+    "/package2/styles",
+  ],
+]
+`;
+
+exports[`When urls are based on package and category frontmatter When source defines url prefix and suffix it should have fixed the links between files 1`] = `
+"<h1>This is the overview page</h1>
+<p>This is a <a href=\\"/docs/package1/components/button.html\\">link to another file in a different package</a>.</p>
+"
+`;
+
+exports[`When urls are based on package and category frontmatter When source defines url prefix and suffix it should have fixed the links between files 2`] = `
+"<h1>How styles work</h1>
+<p>Short description.</p>
+<p>Please refer to <a href=\\"/docs/package2/overview.html\\">overview</a> to get started.</p>
+"
+`;
+
+exports[`When urls are based on package and category frontmatter When source defines url prefix and suffix it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
+Array [
+  Array [
+    "docs/about.md",
+    "/docs/about.html",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "/docs/how-it-works.html",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "/docs/package1/components/button.html",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/docs/package1/components/form.html",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "/docs/package1/intro.html",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "/docs/package2/overview.html",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "/docs/package2/styles.html",
   ],
 ]
 `;
