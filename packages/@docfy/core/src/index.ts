@@ -23,7 +23,8 @@ function createPage(
   source: string,
   markdown: string,
   ast: Node,
-  urlPrefix?: string
+  urlPrefix?: string,
+  urlSuffix?: string
 ): Page {
   const frontmatter = parseFrontmatter(source, ast);
 
@@ -34,7 +35,7 @@ function createPage(
     metadata: {
       title: inferTitle(ast),
       ...frontmatter,
-      url: generateUrl(source, frontmatter, urlPrefix)
+      url: generateUrl(source, frontmatter, urlPrefix, urlSuffix)
     },
     rendered: ''
   };
@@ -58,7 +59,9 @@ function initialize(options: Options): Context {
       const markdown = fs.readFileSync(file).toString();
       const ast = ctx.remark.runSync(ctx.remark.parse(markdown));
 
-      ctx.pages.push(createPage(relativePath, markdown, ast, item.urlPrefix));
+      ctx.pages.push(
+        createPage(relativePath, markdown, ast, item.urlPrefix, item.urlSuffix)
+      );
     });
   });
 

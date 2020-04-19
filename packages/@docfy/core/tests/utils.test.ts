@@ -45,6 +45,18 @@ describe('#generateUrl', () => {
   test('it uses folder name if fine is called index', () => {
     expect(generateUrl('cool/button/index.md', {})).toBe('/button');
   });
+
+  test('it adds the prefix', () => {
+    expect(generateUrl('cool/button/index.md', {}, 'docs')).toBe(
+      '/docs/button'
+    );
+  });
+
+  test('it adds the sufifx', () => {
+    expect(generateUrl('cool/button/index.md', {}, 'docs', '.html')).toBe(
+      '/docs/button.html'
+    );
+  });
 });
 
 test('#isAnchorUrl', () => {
