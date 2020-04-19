@@ -1,4 +1,4 @@
-# Docfy
+# Docfy ![](https://github.com/josemarluedke/docfy/workflows/CI/badge.svg)
 
 Documentation Builder
 
