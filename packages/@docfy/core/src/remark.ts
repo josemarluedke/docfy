@@ -5,9 +5,10 @@ import slug from 'remark-slug';
 import html from 'remark-html';
 import stringify from 'remark-stringify';
 import normalizeHeadings from 'remark-normalize-headings';
-import { Processor, Plugin } from 'unified';
+import { Processor } from 'unified';
+import { Options } from './types';
 
-export function createRemark(plugins?: Plugin[]): Processor {
+export function createRemark(plugins?: Options['remarkPlugins']): Processor {
   const stack = unified()
     .use(parse)
     .use(normalizeHeadings)
@@ -17,7 +18,11 @@ export function createRemark(plugins?: Plugin[]): Processor {
 
   if (plugins && plugins.length > 0) {
     plugins.forEach((fn) => {
-      stack.use(fn);
+      if (Array.isArray(fn)) {
+        stack.use(...fn);
+      } else {
+        stack.use(fn);
+      }
     });
   }
 
