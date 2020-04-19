@@ -34,7 +34,7 @@ import Docfy from '../src';
 import path from 'path';
 import hbs from 'remark-hbs';
 
-const projectRoot = '../tests/fixtures/monorepo/';
+const projectRoot = '../tests/__fixtures__/monorepo/';
 // const projectRoot = '../../../../../frontile/';
 const root = path.resolve(__dirname, projectRoot);
 

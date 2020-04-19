@@ -9,7 +9,7 @@ function findPage(pages: Page[], source: string) {
 }
 
 describe('It works as expected for a monorepo ', () => {
-  const root = path.resolve(__dirname, './fixtures/monorepo');
+  const root = path.resolve(__dirname, './__fixtures__/monorepo');
   let pages: Page[];
 
   beforeAll(async () => {
