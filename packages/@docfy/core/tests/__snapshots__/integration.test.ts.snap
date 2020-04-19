@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`It works as expected for a monorepo  it should have extracted or infered the title 1`] = `
+Array [
+  Array [
+    "docs/about.md",
+    "About the project",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "How it works?",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "Button Component",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "Form Component",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "Docs Intro",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "Overview",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "How styles work",
+  ],
+]
+`;
+
+exports[`It works as expected for a monorepo  it should have fixed the links between files 1`] = `
+"<h1>This is the overview page</h1>
+<p>This is a <a href=\\"/docs/package1/components/button\\">link to another file in a different package</a>.</p>
+"
+`;
+
+exports[`It works as expected for a monorepo  it should have fixed the links between files 2`] = `
+"<h1>How styles work</h1>
+<p>Short description.</p>
+<p>Please refer to <a href=\\"/docs/package2/overview\\">overview</a> to get started.</p>
+"
+`;
+
+exports[`It works as expected for a monorepo  it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
+Array [
+  Array [
+    "docs/about.md",
+    "/docs/about",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "/docs/how-it-works",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "/docs/package1/components/button",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/docs/package1/components/form",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "/docs/package1/intro",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "/docs/package2/overview",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "/docs/package2/styles",
+  ],
+]
+`;
