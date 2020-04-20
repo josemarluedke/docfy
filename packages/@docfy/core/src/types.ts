@@ -1,6 +1,13 @@
 import { Node } from 'unist';
 import { Processor, Plugin, Settings } from 'unified';
 
+export interface Heading {
+  title: string;
+  id: string;
+  depth: number;
+  headings?: Heading[];
+}
+
 export interface Page {
   source: string;
   ast: Node;
@@ -12,6 +19,7 @@ export interface Page {
     package?: string;
     category?: string;
     url?: string;
+    headings?: Heading[];
   };
   demos?: Page[];
 }
@@ -20,6 +28,9 @@ export interface Context {
   root: string;
   remark: Processor;
   pages: Page[];
+  settings: {
+    tocMaxDepth: number;
+  };
 }
 
 interface SourceSettings {
@@ -33,4 +44,5 @@ export interface Options {
   root: string;
   sources: SourceSettings[];
   remarkPlugins?: ([Plugin, Settings] | Plugin)[];
+  tocMaxDepth?: number;
 }

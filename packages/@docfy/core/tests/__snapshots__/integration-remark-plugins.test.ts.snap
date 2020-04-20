@@ -11,6 +11,14 @@ Array [
 <p>Description.</p>
 <h3 id=\\"but-why\\"><a href=\\"#but-why\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>But why?</h3>
 <p>Description.</p>
+<h2 id=\\"another-topic\\"><a href=\\"#another-topic\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Another topic</h2>
+<h2 id=\\"2-level\\"><a href=\\"#2-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>2 level</h2>
+<h3 id=\\"3-level\\"><a href=\\"#3-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>3 level</h3>
+<h3 id=\\"3-level-2nd\\"><a href=\\"#3-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>3 level 2nd</h3>
+<h4 id=\\"4-level\\"><a href=\\"#4-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>4 level</h4>
+<h5 id=\\"5-level\\"><a href=\\"#5-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>5 level</h5>
+<h6 id=\\"6-level\\"><a href=\\"#6-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>6 level</h6>
+<h4 id=\\"4-level-2nd\\"><a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>4 level 2nd</h4>
 ",
   ],
   Array [
@@ -61,6 +69,14 @@ Array [
 <p>Description.</p>
 <h3 id=\\"but-why\\">But why?<a href=\\"#but-why\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h3>
 <p>Description.</p>
+<h2 id=\\"another-topic\\">Another topic<a href=\\"#another-topic\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h2>
+<h2 id=\\"2-level\\">2 level<a href=\\"#2-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h2>
+<h3 id=\\"3-level\\">3 level<a href=\\"#3-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h3>
+<h3 id=\\"3-level-2nd\\">3 level 2nd<a href=\\"#3-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h3>
+<h4 id=\\"4-level\\">4 level<a href=\\"#4-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h4>
+<h5 id=\\"5-level\\">5 level<a href=\\"#5-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h5>
+<h6 id=\\"6-level\\">6 level<a href=\\"#6-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h6>
+<h4 id=\\"4-level-2nd\\">4 level 2nd<a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h4>
 ",
   ],
   Array [
