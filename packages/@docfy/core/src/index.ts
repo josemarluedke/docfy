@@ -6,7 +6,7 @@ import { Node } from 'unist';
 import { Page, Context, Options } from './types';
 import { inferTitle, generateUrl, parseFrontmatter } from './utils';
 import { createRemark } from './remark';
-import { fixUrls, combineDemos } from './plugins';
+import { fixUrls, combineDemos, toc } from './plugins';
 
 const DEFAULT_IGNORE = [
   '/**/node_modules/**',
@@ -45,7 +45,10 @@ function initialize(options: Options): Context {
   const ctx: Context = {
     root: options.root,
     remark: createRemark(options.remarkPlugins),
-    pages: []
+    pages: [],
+    settings: {
+      tocMaxDepth: options.tocMaxDepth || 6
+    }
   };
 
   options.sources.forEach((item) => {
@@ -74,16 +77,15 @@ function renderMarkdown(context: Context): void {
   });
 }
 
-// TODO:
-// - TOC
-// - Ordering
-
 export default function (options: Options): Promise<Page[]> {
   return new Promise((resolve, reject) => {
     trough<Context>()
       .use<Options>(initialize)
       .use(combineDemos)
       .use(fixUrls)
+
+      // Make sure TOC and renderMarkdown pluings are the last ones
+      .use(toc)
       .use(renderMarkdown)
       .run(options, (err: unknown, ctx: Context): void => {
         if (err) {
