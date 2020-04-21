@@ -9,7 +9,7 @@ import url from 'url';
 
 const slug = Slugger.slug;
 
-export function generateUrl(
+export function generateManualUrl(
   source: string,
   meta: Page['metadata'],
   prefix?: string,
@@ -25,11 +25,32 @@ export function generateUrl(
   if (meta.category) {
     parts.push(slug(meta.category));
   }
-  let file = path.parse(path.basename(source));
-  if (file.name === 'index') {
-    file = path.parse(path.basename(path.dirname(source)));
+  let fileName = path.parse(path.basename(source)).name;
+  if (fileName === 'index') {
+    fileName = path.basename(path.dirname(source));
   }
-  parts.push(`${file.name}${suffix || ''}`);
+  parts.push(`${fileName}${suffix || ''}`);
+  return parts.join('/');
+}
+
+export function generateAutoUrl(
+  source: string,
+  prefix?: string,
+  suffix?: string
+): string {
+  const parts: string[] = [''];
+  if (prefix) {
+    parts.push(prefix);
+  }
+  parts.push(...source.split(path.sep));
+
+  let fileName = path.parse(parts.pop() as string).name;
+  if (fileName === 'index') {
+    fileName = path.basename(path.dirname(source));
+    parts.pop(); // remove duplicated folder name
+  }
+
+  parts.push(`${fileName}${suffix || ''}`);
   return parts.join('/');
 }
 

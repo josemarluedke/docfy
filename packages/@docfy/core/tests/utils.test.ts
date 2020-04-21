@@ -1,5 +1,6 @@
 import {
-  generateUrl,
+  generateManualUrl,
+  generateAutoUrl,
   isAnchorUrl,
   isValidUrl,
   inferTitle,
@@ -7,26 +8,26 @@ import {
 } from '../src/utils';
 import { createRemark } from '../src/remark';
 
-describe('#generateUrl', () => {
+describe('#generateManualUrl', () => {
   test('base case', () => {
-    expect(generateUrl('cool/markdown.md', {})).toBe('/markdown');
+    expect(generateManualUrl('cool/markdown.md', {})).toBe('/markdown');
   });
 
   test('it uses category from metadata', () => {
-    expect(generateUrl('cool/markdown.md', { category: 'components' })).toBe(
-      '/components/markdown'
-    );
+    expect(
+      generateManualUrl('cool/markdown.md', { category: 'components' })
+    ).toBe('/components/markdown');
   });
 
   test('it uses pacakge from metadata', () => {
-    expect(generateUrl('cool/markdown.md', { package: 'awesome-lib' })).toBe(
-      '/awesome-lib/markdown'
-    );
+    expect(
+      generateManualUrl('cool/markdown.md', { package: 'awesome-lib' })
+    ).toBe('/awesome-lib/markdown');
   });
 
   test('it uses pacakge and category from metadata', () => {
     expect(
-      generateUrl('cool/markdown.md', {
+      generateManualUrl('cool/markdown.md', {
         package: 'awesome-lib',
         category: 'helpers'
       })
@@ -35,7 +36,7 @@ describe('#generateUrl', () => {
 
   test('it passes package and category into slug', () => {
     expect(
-      generateUrl('cool/markdown.md', {
+      generateManualUrl('cool/markdown.md', {
         package: '@org/awesome-lib',
         category: 'helpers and modifiers'
       })
@@ -43,18 +44,48 @@ describe('#generateUrl', () => {
   });
 
   test('it uses folder name if fine is called index', () => {
-    expect(generateUrl('cool/button/index.md', {})).toBe('/button');
+    expect(generateManualUrl('cool/button/index.md', {})).toBe('/button');
   });
 
   test('it adds the prefix', () => {
-    expect(generateUrl('cool/button/index.md', {}, 'docs')).toBe(
+    expect(generateManualUrl('cool/button/index.md', {}, 'docs')).toBe(
       '/docs/button'
     );
   });
 
   test('it adds the sufifx', () => {
-    expect(generateUrl('cool/button/index.md', {}, 'docs', '.html')).toBe(
+    expect(generateManualUrl('cool/button/index.md', {}, 'docs', '.html')).toBe(
       '/docs/button.html'
+    );
+  });
+});
+
+describe('#generateAutolUrl', () => {
+  test('base case', () => {
+    expect(generateAutoUrl('my-folder/file.md')).toBe('/my-folder/file');
+    expect(generateAutoUrl('my-folder/subfolder/file.md')).toBe(
+      '/my-folder/subfolder/file'
+    );
+    expect(generateAutoUrl('my-folder/subfolder/another-folder/file.md')).toBe(
+      '/my-folder/subfolder/another-folder/file'
+    );
+  });
+
+  test('it uses folder name if fine is called index', () => {
+    expect(generateAutoUrl('my-folder/components/index.md')).toBe(
+      '/my-folder/components'
+    );
+  });
+
+  test('it adds the prefix', () => {
+    expect(generateAutoUrl('my-folder/file.md', 'docs')).toBe(
+      '/docs/my-folder/file'
+    );
+  });
+
+  test('it adds the sufifx', () => {
+    expect(generateAutoUrl('my-folder/file.md', 'docs', '.html')).toBe(
+      '/docs/my-folder/file.html'
     );
   });
 });
