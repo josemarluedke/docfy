@@ -8,7 +8,7 @@ function findPage(pages: Page[], source: string) {
   });
 }
 
-describe('When urls are based on package and category frontmatter', () => {
+describe('When urlSchema is set to manual', () => {
   const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
   describe('Basic case, no url prefix, or suffix', () => {
@@ -19,6 +19,7 @@ describe('When urls are based on package and category frontmatter', () => {
         root,
         sources: [
           {
+            urlSchema: 'manual',
             pattern: '/**/*.md'
           }
         ]
@@ -74,6 +75,7 @@ describe('When urls are based on package and category frontmatter', () => {
         sources: [
           {
             urlPrefix: 'docs',
+            urlSchema: 'manual',
             urlSuffix: '.html',
             pattern: '/**/*.md'
           }
