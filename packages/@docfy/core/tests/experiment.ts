@@ -40,18 +40,19 @@ const projectRoot = '../tests/__fixtures__/monorepo/';
 const root = path.resolve(__dirname, projectRoot);
 
 (async function (): Promise<void> {
-  const docs = await Docfy({
-    root,
-    sources: [
-      {
-        urlPrefix: 'docs',
-        urlSchema: 'manual',
-        pattern: '{/**/docs/**/*.md,/**/*.md}',
-        ignore: ['/packages/docs/**']
-      }
-    ],
+  const docfy = new Docfy({
     remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs]
   });
+
+  const docs = await docfy.run([
+    {
+      root,
+      urlPrefix: 'docs',
+      urlSchema: 'manual',
+      pattern: '{/**/docs/**/*.md,/**/*.md}',
+      ignore: ['/packages/docs/**']
+    }
+  ]);
 
   console.log(docs);
 })();

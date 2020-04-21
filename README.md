@@ -14,21 +14,24 @@ The example below uses TypeScript.
 import Docfy from '@docfy/core';
 import path from 'path';
 import hbs from 'remark-hbs';
+import autolinkHeadings from 'remark-autolink-headings';
 
-const root = path.resolve(__dirname, '../path-to-my-project');
+const projectRoot = '../tests/__fixtures__/monorepo/';
+const root = path.resolve(__dirname, projectRoot);
 
 (async function (): Promise<void> {
-  const docs = await Docfy({
-    root,
-    sources: [
-      {
-        urlPrefix: 'docs',
-        pattern: '{/**/docs/**/*.md,/**/**/*.md,/**/addon/**/*.md}',
-        ignore: ['/packages/docs/**']
-      }
-    ],
-    remarkPlugins: [hbs]
+  const docfy = new Docfy({
+    remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs]
   });
+
+  const docs = await docfy.run([
+    {
+      root,
+      urlPrefix: 'docs',
+      urlSchema: 'manual',
+      pattern: '/**/*.md'
+    }
+  ]);
 
   console.log(docs);
 })();

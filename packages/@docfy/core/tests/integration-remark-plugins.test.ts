@@ -10,17 +10,17 @@ describe('When proving remark plugins', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlPrefix: 'docs',
-            urlSchema: 'manual',
-            pattern: '/**/*.md'
-          }
-        ],
+      const docfy = new Docfy({
         remarkPlugins: [autolinkHeadings]
       });
+      pages = await docfy.run([
+        {
+          root,
+          urlPrefix: 'docs',
+          urlSchema: 'manual',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have rendered the content with the plugin with no options', async () => {
@@ -37,17 +37,17 @@ describe('When proving remark plugins', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlPrefix: 'docs',
-            urlSchema: 'manual',
-            pattern: '/**/*.md'
-          }
-        ],
+      const docfy = new Docfy({
         remarkPlugins: [[autolinkHeadings, { behavior: 'append' }]]
       });
+      pages = await docfy.run([
+        {
+          root,
+          urlPrefix: 'docs',
+          urlSchema: 'manual',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have rendered the content with the plugin and their options', async () => {

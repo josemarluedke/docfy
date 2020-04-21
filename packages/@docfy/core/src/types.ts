@@ -25,15 +25,20 @@ export interface Page {
 }
 
 export interface Context {
-  root: string;
   remark: Processor;
   pages: Page[];
   settings: {
+    // TODO: rename to options
     tocMaxDepth: number;
   };
 }
 
-interface SourceSettings {
+export interface SourceSettings {
+  /**
+   * The absolute path to where the files are located.
+   */
+  root: string;
+
   /**
    * Match files using the patterns the shell uses, like stars and stuff. It
    * uses Glob package.
@@ -93,8 +98,6 @@ interface SourceSettings {
 }
 
 export interface Options {
-  root: string;
-  sources: SourceSettings[];
   remarkPlugins?: ([Plugin, Settings] | Plugin)[];
   tocMaxDepth?: number;
 }
