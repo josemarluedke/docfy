@@ -15,6 +15,7 @@ describe('Extracts TOC', () => {
         sources: [
           {
             urlPrefix: 'docs',
+            urlSchema: 'manual',
             pattern: '/**/*.md'
           }
         ],
@@ -41,6 +42,7 @@ describe('Extracts TOC', () => {
         sources: [
           {
             urlPrefix: 'docs',
+            urlSchema: 'manual',
             pattern: '/**/*.md'
           }
         ],

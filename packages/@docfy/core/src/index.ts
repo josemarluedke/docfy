@@ -4,7 +4,12 @@ import path from 'path';
 import trough from 'trough';
 import { Node } from 'unist';
 import { Page, Context, Options } from './types';
-import { inferTitle, generateUrl, parseFrontmatter } from './utils';
+import {
+  inferTitle,
+  generateManualUrl,
+  generateAutoUrl,
+  parseFrontmatter
+} from './utils';
 import { createRemark } from './remark';
 import { fixUrls, combineDemos, toc } from './plugins';
 
@@ -23,10 +28,18 @@ function createPage(
   source: string,
   markdown: string,
   ast: Node,
+  urlSchema?: Options['sources'][number]['urlSchema'],
   urlPrefix?: string,
   urlSuffix?: string
 ): Page {
   const frontmatter = parseFrontmatter(source, ast);
+  let url: string;
+
+  if (urlSchema === 'manual') {
+    url = generateManualUrl(source, frontmatter, urlPrefix, urlSuffix);
+  } else {
+    url = generateAutoUrl(source, urlPrefix, urlSuffix);
+  }
 
   return {
     source,
@@ -35,7 +48,7 @@ function createPage(
     metadata: {
       title: inferTitle(ast),
       ...frontmatter,
-      url: generateUrl(source, frontmatter, urlPrefix, urlSuffix)
+      url
     },
     rendered: ''
   };
@@ -63,7 +76,14 @@ function initialize(options: Options): Context {
       const ast = ctx.remark.runSync(ctx.remark.parse(markdown));
 
       ctx.pages.push(
-        createPage(relativePath, markdown, ast, item.urlPrefix, item.urlSuffix)
+        createPage(
+          relativePath,
+          markdown,
+          ast,
+          item.urlSchema,
+          item.urlPrefix,
+          item.urlSuffix
+        )
       );
     });
   });

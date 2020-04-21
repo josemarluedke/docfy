@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it should have fixed the links between files 1`] = `
+"<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
+<p>This is a <a href=\\"/packages/package1/components/button\\">link to another file in a different package</a>.</p>
+"
+`;
+
+exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it should have fixed the links between files 2`] = `
+"<h1 id=\\"how-styles-work\\">How styles work</h1>
+<p>Short description.</p>
+<p>Please refer to <a href=\\"/packages/package2/docs/overview\\">overview</a> to get started.</p>
+"
+`;
+
+exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it should have generated urls based folder structure 1`] = `
+Array [
+  Array [
+    "docs/about.md",
+    "/docs/about",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "/docs/how-it-works",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "/packages/package1/components/button",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/packages/package1/components/form",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "/packages/package1/docs/intro",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "/packages/package2/docs/overview",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "/packages/package2/docs/styles",
+  ],
+]
+`;
+
+exports[`When urlSchema is set to auto When source defines url prefix and suffix it should have fixed the links between files 1`] = `
+"<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
+<p>This is a <a href=\\"/docs/packages/package1/components/button.html\\">link to another file in a different package</a>.</p>
+"
+`;
+
+exports[`When urlSchema is set to auto When source defines url prefix and suffix it should have fixed the links between files 2`] = `
+"<h1 id=\\"how-styles-work\\">How styles work</h1>
+<p>Short description.</p>
+<p>Please refer to <a href=\\"/docs/packages/package2/docs/overview.html\\">overview</a> to get started.</p>
+"
+`;
+
+exports[`When urlSchema is set to auto When source defines url prefix and suffix it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
+Array [
+  Array [
+    "docs/about.md",
+    "/docs/docs/about.html",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "/docs/docs/how-it-works.html",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "/docs/packages/package1/components/button.html",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/docs/packages/package1/components/form.html",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "/docs/packages/package1/docs/intro.html",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "/docs/packages/package2/docs/overview.html",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "/docs/packages/package2/docs/styles.html",
+  ],
+]
+`;
