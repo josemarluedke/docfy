@@ -1,7 +1,6 @@
 import Docfy from '../src';
 import { Page } from '../src/types';
 import path from 'path';
-import autolinkHeadings from 'remark-autolink-headings';
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
@@ -10,17 +9,15 @@ describe('Extracts TOC', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlPrefix: 'docs',
-            urlSchema: 'manual',
-            pattern: '/**/*.md'
-          }
-        ],
-        remarkPlugins: [autolinkHeadings]
-      });
+      const docfy = new Docfy();
+      pages = await docfy.run([
+        {
+          root,
+          urlPrefix: 'docs',
+          urlSchema: 'manual',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have extracted TOC correctly', async () => {
@@ -37,18 +34,15 @@ describe('Extracts TOC', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlPrefix: 'docs',
-            urlSchema: 'manual',
-            pattern: '/**/*.md'
-          }
-        ],
-        remarkPlugins: [[autolinkHeadings, { behavior: 'append' }]],
-        tocMaxDepth: 4
-      });
+      const docfy = new Docfy({ tocMaxDepth: 4 });
+      pages = await docfy.run([
+        {
+          root,
+          urlPrefix: 'docs',
+          urlSchema: 'manual',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have extracted TOC correctly', async () => {

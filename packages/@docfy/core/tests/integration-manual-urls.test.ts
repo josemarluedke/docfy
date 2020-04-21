@@ -15,15 +15,14 @@ describe('When urlSchema is set to manual', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlSchema: 'manual',
-            pattern: '/**/*.md'
-          }
-        ]
-      });
+      const docfy = new Docfy();
+      pages = await docfy.run([
+        {
+          root,
+          urlSchema: 'manual',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have collected all pages and moved demos', async () => {
@@ -70,17 +69,16 @@ describe('When urlSchema is set to manual', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlPrefix: 'docs',
-            urlSchema: 'manual',
-            urlSuffix: '.html',
-            pattern: '/**/*.md'
-          }
-        ]
-      });
+      const docfy = new Docfy();
+      pages = await docfy.run([
+        {
+          root,
+          urlPrefix: 'docs',
+          urlSchema: 'manual',
+          urlSuffix: '.html',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {

@@ -15,15 +15,14 @@ describe('When urlSchema is set to auto', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlSchema: 'auto',
-            pattern: '/**/*.md'
-          }
-        ]
-      });
+      const docfy = new Docfy();
+      pages = await docfy.run([
+        {
+          root,
+          urlSchema: 'auto',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have generated urls based folder structure', async () => {
@@ -49,17 +48,16 @@ describe('When urlSchema is set to auto', () => {
     let pages: Page[];
 
     beforeAll(async () => {
-      pages = await Docfy({
-        root,
-        sources: [
-          {
-            urlSchema: 'auto',
-            urlPrefix: 'docs',
-            urlSuffix: '.html',
-            pattern: '/**/*.md'
-          }
-        ]
-      });
+      const docfy = new Docfy();
+      pages = await docfy.run([
+        {
+          root,
+          urlSchema: 'auto',
+          urlPrefix: 'docs',
+          urlSuffix: '.html',
+          pattern: '/**/*.md'
+        }
+      ]);
     });
 
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {

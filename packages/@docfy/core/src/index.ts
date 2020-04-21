@@ -1,34 +1,24 @@
 import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
-import trough from 'trough';
+import trough, { Through } from 'trough';
 import { Node } from 'unist';
-import { Page, Context, Options } from './types';
+import { Page, Context, Options, SourceSettings } from './types';
 import {
   inferTitle,
   generateManualUrl,
   generateAutoUrl,
-  parseFrontmatter
+  parseFrontmatter,
+  DEFAULT_IGNORE
 } from './utils';
 import { createRemark } from './remark';
-import { fixUrls, combineDemos, toc } from './plugins';
-
-const DEFAULT_IGNORE = [
-  '/**/node_modules/**',
-  '/**/.git/**',
-  '/**/tmp/**',
-  '/**/dist/**',
-  'node_modules/**',
-  '.git/**',
-  'tmp/**',
-  'dist/**'
-];
+import { combineDemos, fixUrls, renderMarkdown, toc } from './plugins';
 
 function createPage(
   source: string,
   markdown: string,
   ast: Node,
-  urlSchema?: Options['sources'][number]['urlSchema'],
+  urlSchema?: SourceSettings['urlSchema'],
   urlPrefix?: string,
   urlSuffix?: string
 ): Page {
@@ -54,65 +44,68 @@ function createPage(
   };
 }
 
-function initialize(options: Options): Context {
-  const ctx: Context = {
-    root: options.root,
-    remark: createRemark(options.remarkPlugins),
-    pages: [],
-    settings: {
-      tocMaxDepth: options.tocMaxDepth || 6
-    }
-  };
+export default class Docfy {
+  private pipeline: Through<Context>;
+  private context: Context;
 
-  options.sources.forEach((item) => {
-    const files = glob.sync(item.pattern, {
-      root: options.root,
-      ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])]
-    });
+  constructor(options: Options = {}) {
+    this.context = {
+      remark: createRemark(options.remarkPlugins),
+      pages: [],
+      settings: {
+        tocMaxDepth: options.tocMaxDepth || 6
+      }
+    };
 
-    files.forEach((file) => {
-      const relativePath = file.replace(path.join(options.root, '/'), '');
-      const markdown = fs.readFileSync(file).toString();
-      const ast = ctx.remark.runSync(ctx.remark.parse(markdown));
-
-      ctx.pages.push(
-        createPage(
-          relativePath,
-          markdown,
-          ast,
-          item.urlSchema,
-          item.urlPrefix,
-          item.urlSuffix
-        )
-      );
-    });
-  });
-
-  return ctx;
-}
-
-function renderMarkdown(context: Context): void {
-  context.pages.forEach((item) => {
-    item.rendered = context.remark.stringify(item.ast);
-  });
-}
-
-export default function (options: Options): Promise<Page[]> {
-  return new Promise((resolve, reject) => {
-    trough<Context>()
-      .use<Options>(initialize)
+    this.pipeline = trough<Context>()
+      .use<SourceSettings[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
       .use(fixUrls)
 
-      // Make sure TOC and renderMarkdown pluings are the last ones
+      // Make sure TOC and renderMarkdown plugins are the last ones
       .use(toc)
-      .use(renderMarkdown)
-      .run(options, (err: unknown, ctx: Context): void => {
+      .use(renderMarkdown);
+  }
+
+  public run(sources: SourceSettings[]): Promise<Page[]> {
+    return new Promise((resolve, reject) => {
+      this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
         if (err) {
           reject(err);
         } else {
           resolve(ctx.pages);
         }
       });
-  });
+    });
+  }
+
+  private initializePipeline(sources: SourceSettings[]): Context {
+    const ctx = this.context;
+
+    sources.forEach((item) => {
+      const files = glob.sync(item.pattern, {
+        root: item.root,
+        ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])]
+      });
+
+      files.forEach((file) => {
+        const relativePath = file.replace(path.join(item.root, '/'), '');
+        const markdown = fs.readFileSync(file).toString();
+        const ast = ctx.remark.runSync(ctx.remark.parse(markdown));
+
+        ctx.pages.push(
+          createPage(
+            relativePath,
+            markdown,
+            ast,
+            item.urlSchema,
+            item.urlPrefix,
+            item.urlSuffix
+          )
+        );
+      });
+    });
+
+    return ctx;
+  }
 }

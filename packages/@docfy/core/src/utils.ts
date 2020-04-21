@@ -89,3 +89,14 @@ export function isValidUrl(s: string): boolean {
 export function isAnchorUrl(s: string): boolean {
   return s[0] === '#';
 }
+
+export const DEFAULT_IGNORE = [
+  '/**/node_modules/**',
+  '/**/.git/**',
+  '/**/tmp/**',
+  '/**/dist/**',
+  'node_modules/**',
+  '.git/**',
+  'tmp/**',
+  'dist/**'
+];
