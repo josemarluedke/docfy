@@ -29,8 +29,8 @@ export function fixUrls(ctx: Context): void {
         return p.source === relativePath;
       });
 
-      if (found && found.metadata.url) {
-        node.url = found.metadata.url;
+      if (found && found.url) {
+        node.url = found.url;
       }
     });
   });

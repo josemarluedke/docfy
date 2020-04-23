@@ -1,7 +1,7 @@
 import path from 'path';
 import visit from 'unist-util-visit';
 import { Node } from 'unist';
-import { Page } from './types';
+import { Page, Metadata } from './types';
 import toString from 'mdast-util-to-string';
 import Slugger from 'github-slugger';
 import YAML from 'yaml';
@@ -19,10 +19,10 @@ export function generateManualUrl(
   if (prefix) {
     parts.push(prefix);
   }
-  if (meta.package) {
+  if (typeof meta.package === 'string') {
     parts.push(slug(meta.package));
   }
-  if (meta.category) {
+  if (typeof meta.category === 'string') {
     parts.push(slug(meta.category));
   }
   let fileName = path.parse(path.basename(source)).name;
@@ -64,7 +64,7 @@ export function inferTitle(ast: Node): string | undefined {
   return docTitle;
 }
 
-export function parseFrontmatter(source: string, ast: Node): object {
+export function parseFrontmatter(source: string, ast: Node): Metadata {
   let result = {};
   visit(ast, 'yaml', (node) => {
     try {
