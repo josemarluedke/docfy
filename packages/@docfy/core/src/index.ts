@@ -24,6 +24,10 @@ function createPage(
 ): Page {
   const frontmatter = parseFrontmatter(source, ast);
   let url: string;
+  let title = inferTitle(ast);
+  if (typeof frontmatter.title === 'string') {
+    title = frontmatter.title;
+  }
 
   if (urlSchema === 'manual') {
     url = generateManualUrl(source, frontmatter, urlPrefix, urlSuffix);
@@ -35,11 +39,10 @@ function createPage(
     source,
     ast,
     markdown,
-    metadata: {
-      title: inferTitle(ast),
-      ...frontmatter,
-      url
-    },
+    title,
+    url,
+    headings: [],
+    metadata: frontmatter,
     rendered: ''
   };
 }
@@ -52,7 +55,7 @@ export default class Docfy {
     this.context = {
       remark: createRemark(options.remarkPlugins),
       pages: [],
-      settings: {
+      options: {
         tocMaxDepth: options.tocMaxDepth || 6
       }
     };

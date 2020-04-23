@@ -44,14 +44,14 @@ export function toc(ctx: Context): Context {
         return;
       }
 
-      if (node.depth > ctx.settings.tocMaxDepth) {
+      if (node.depth > ctx.options.tocMaxDepth) {
         return;
       }
       const parent = findParentOfDepth(headings, node.depth);
       parent.push(getHeading(node));
     });
 
-    page.metadata.headings = headings;
+    page.headings = headings;
   });
 
   return ctx;

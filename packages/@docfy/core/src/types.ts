@@ -8,27 +8,26 @@ export interface Heading {
   headings?: Heading[];
 }
 
+export interface Metadata {
+  [key: string]: unknown;
+}
+
 export interface Page {
   source: string;
   ast: Node;
   markdown: string;
   rendered: string;
-  metadata: {
-    title?: string;
-    order?: number;
-    package?: string;
-    category?: string;
-    url?: string;
-    headings?: Heading[];
-  };
+  url: string;
+  title?: string;
+  headings: Heading[];
+  metadata: Metadata;
   demos?: Page[];
 }
 
 export interface Context {
   remark: Processor;
   pages: Page[];
-  settings: {
-    // TODO: rename to options
+  options: {
     tocMaxDepth: number;
   };
 }
