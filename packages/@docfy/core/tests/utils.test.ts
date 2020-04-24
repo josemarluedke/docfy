@@ -58,6 +58,12 @@ describe('#generateManualUrl', () => {
       '/docs/button.html'
     );
   });
+
+  test('it lower cases the url', () => {
+    expect(generateManualUrl('cool/Button/README.md', {}, 'docs')).toBe(
+      '/docs/readme'
+    );
+  });
 });
 
 describe('#generateAutolUrl', () => {
@@ -86,6 +92,12 @@ describe('#generateAutolUrl', () => {
   test('it adds the sufifx', () => {
     expect(generateAutoUrl('my-folder/file.md', 'docs', '.html')).toBe(
       '/docs/my-folder/file.html'
+    );
+  });
+
+  test('it lower cases the url', () => {
+    expect(generateAutoUrl('docs/Button/README.md')).toBe(
+      '/docs/button/readme'
     );
   });
 });

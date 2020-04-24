@@ -30,7 +30,7 @@ export function generateManualUrl(
     fileName = path.basename(path.dirname(source));
   }
   parts.push(`${fileName}${suffix || ''}`);
-  return parts.join('/');
+  return parts.join('/').toLowerCase();
 }
 
 export function generateAutoUrl(
@@ -51,7 +51,7 @@ export function generateAutoUrl(
   }
 
   parts.push(`${fileName}${suffix || ''}`);
-  return parts.join('/');
+  return parts.join('/').toLowerCase();
 }
 
 export function inferTitle(ast: Node): string | undefined {
