@@ -1,27 +1,11 @@
-'use strict';
-
 module.exports = {
-  root: true,
-  parser: 'babel-eslint',
   parserOptions: {
-    ecmaVersion: 2018,
-    sourceType: 'module',
-    ecmaFeatures: {
-      legacyDecorators: true
-    }
+    project: '../../../tsconfig.eslint.json'
   },
-  plugins: [
-    'ember'
-  ],
-  extends: [
-    'eslint:recommended',
-    'plugin:ember/recommended'
-  ],
-  env: {
-    browser: true
-  },
+  plugins: [],
+  extends: ['@underline/eslint-config-ember-typescript'],
   rules: {
-    'ember/no-jquery': 'error'
+    'prefer-rest-params': 'off'
   },
   overrides: [
     // node files
@@ -30,29 +14,19 @@ module.exports = {
         '.eslintrc.js',
         '.template-lintrc.js',
         'ember-cli-build.js',
-        'index.js',
         'testem.js',
-        'blueprints/*/index.js',
+        'src/**/*.{js,ts}',
         'config/**/*.js',
         'tests/dummy/config/**/*.js'
       ],
-      excludedFiles: [
-        'addon/**',
-        'addon-test-support/**',
-        'app/**',
-        'tests/dummy/app/**'
+      extends: [
+        '@underline/eslint-config-node',
+        '@underline/eslint-config-ember-typescript'
       ],
-      parserOptions: {
-        sourceType: 'script'
-      },
-      env: {
-        browser: false,
-        node: true
-      },
-      plugins: ['node'],
-      rules: Object.assign({}, require('eslint-plugin-node').configs.recommended.rules, {
-        // add your custom rules and overrides for node files here
-      })
+      rules: {
+        'no-unused-vars': 'off',
+        'node/no-unsupported-features/es-syntax': 'off'
+      }
     }
   ]
 };
