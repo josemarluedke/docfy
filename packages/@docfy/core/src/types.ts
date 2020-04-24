@@ -100,3 +100,11 @@ export interface Options {
   remarkPlugins?: ([Plugin, Settings] | Plugin)[];
   tocMaxDepth?: number;
 }
+
+interface DocfyConfigSourceSettings extends Omit<SourceSettings, 'root'> {
+  root?: string;
+}
+
+export interface DocfyConfig extends Options {
+  sources: DocfyConfigSourceSettings[];
+}
