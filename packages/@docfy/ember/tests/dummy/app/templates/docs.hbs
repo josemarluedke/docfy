@@ -1,0 +1,24 @@
+<h1>Docs</h1>
+<ul>
+
+  {{#each this.model as |page|}}
+  <li>
+    <LinkTo @route={{page.route}}>
+      {{page.title}}
+    </LinkTo>
+    {{#if (is-active page.route)}}
+      {{#if page.headings.length}}
+        <ul>
+          {{#each page.headings as |heading|}}
+            <li>
+              <a href="{{page.url}}#{{heading.id}}">{{heading.title}}</a>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    {{/if}}
+  </li>
+  {{/each}}
+</ul>
+
+{{outlet}}
