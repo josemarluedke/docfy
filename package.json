@@ -2,7 +2,8 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/@docfy/*"
+    "packages/@docfy/*",
+    "packages/examples/*"
   ],
   "scripts": {
     "lint:js": "eslint . --ext .js,.ts",
@@ -11,6 +12,7 @@
   },
   "devDependencies": {
     "@types/jest": "^25.2.1",
+    "@underline/eslint-config-ember-typescript": "^0.7.0",
     "@underline/eslint-config-node": "^0.7.0",
     "@underline/eslint-config-typescript": "^0.7.0",
     "eslint": "^6.8.0",
