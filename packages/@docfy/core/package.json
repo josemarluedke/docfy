@@ -8,6 +8,9 @@
   "author": "Josemar Luedke <josemarluedke@gmail.com>",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "compile": "tsc",
     "prepublish": "tsc",
