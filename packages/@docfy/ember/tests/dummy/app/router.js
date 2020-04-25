@@ -1,6 +1,6 @@
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
-import docfy from './docfy';
+import docfy from '@docfy/output';
 
 export default class Router extends EmberRouter {
   location = config.locationType;

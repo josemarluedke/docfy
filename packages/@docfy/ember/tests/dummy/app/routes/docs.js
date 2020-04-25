@@ -1,6 +1,6 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import docfy from 'dummy/docfy';
+import docfy from '@docfy/output';
 
 export default class Docs extends Route {
   @service router;
