@@ -25,7 +25,8 @@ module.exports = {
       ],
       rules: {
         'no-unused-vars': 'off',
-        'node/no-unsupported-features/es-syntax': 'off'
+        'node/no-unsupported-features/es-syntax': 'off',
+        'node/no-missing-import': 'off'
       }
     }
   ]
