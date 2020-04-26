@@ -41,11 +41,12 @@ class DocfyBroccoli extends Plugin {
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
     const docfyOutput = pages.map((item) => {
-      const { url, headings, title, metadata } = item;
+      const { url, headings, title, source, metadata } = item;
       return {
         url,
         headings,
         title,
+        source,
         metadata
       };
     });
