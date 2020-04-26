@@ -15,7 +15,12 @@ module.exports = {
     {
       pattern: '**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs'
+      urlPrefix: 'docs',
+      ignore: ['**/how-it-works.*']
+    },
+    {
+      pattern: '**/how-it-works.*',
+      urlSchema: 'manual'
     }
   ]
 };
