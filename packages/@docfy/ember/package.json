@@ -1,14 +1,14 @@
 {
   "name": "@docfy/ember",
   "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "description": "Ember integration with Docfy",
   "main": "lib/index.js",
   "keywords": [
     "ember-addon"
   ],
-  "repository": "",
+  "repository": "https://github.com/josemarluedke/docfy",
   "license": "MIT",
-  "author": "",
+  "author": "Josemar Luedke <josemarluedke@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"

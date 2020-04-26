@@ -1,7 +1,7 @@
 @docfy/ember
 ==============================================================================
 
-[Short description of the addon.]
+Ember integration with Docfy
 
 
 Compatibility
