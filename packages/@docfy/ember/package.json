@@ -2,7 +2,6 @@
   "name": "@docfy/ember",
   "version": "0.0.0",
   "description": "Ember integration with Docfy",
-  "main": "lib/index.js",
   "keywords": [
     "ember-addon"
   ],
@@ -81,6 +80,7 @@
     "edition": "octane"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config"
+    "configPath": "tests/dummy/config",
+    "main": "ember-cli-addon.js"
   }
 }

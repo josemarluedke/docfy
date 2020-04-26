@@ -78,17 +78,15 @@ module.exports = {
 
   docfyConfig: undefined,
 
-  included(): void {
+  included(...args: unknown[]): void {
     const configPath = path.join(this.project.root, '.docfy-config.js');
     this.docfyConfig = getDocfyConfig(configPath, this.project.root);
+
+    this._super.included.apply(this, args);
   },
 
-  treeForApp(app: InputNode): Node {
-    const trees: InputNode[] = [];
-
-    if (app) {
-      trees.push(app);
-    }
+  treeForApp(tree: InputNode): Node {
+    const trees: InputNode[] = [this._super.treeForApp.call(this, tree)];
 
     const docfyTree = new DocfyBroccoli(
       [new UnwatchedDir(this.project.root)],
@@ -101,13 +99,9 @@ module.exports = {
   },
 
   treeForAddon(tree: InputNode): Node {
+    const trees: InputNode[] = [this._super.treeForAddon.call(this, tree)];
     const EmberApp = require('ember-cli/lib/broccoli/ember-app'); // eslint-disable-line
     const modulePrefix = this.project.config(EmberApp.env()).modulePrefix;
-
-    const trees: InputNode[] = [];
-    if (tree) {
-      trees.push(tree);
-    }
 
     trees.push(
       new WriteFile('docfy-output.js', docfyOutputTemplate(modulePrefix))

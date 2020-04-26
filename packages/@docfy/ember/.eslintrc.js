@@ -11,6 +11,7 @@ module.exports = {
     // node files
     {
       files: [
+        'ember-cli-addon.js',
         '.docfy-config.js',
         '.eslintrc.js',
         '.template-lintrc.js',
