@@ -1,6 +1,6 @@
 import EmberRouter from '@ember/routing/router';
 import config from './config/environment';
-import docfy from '@docfy/output';
+import { addDocfyRoutes } from '@docfy/ember';
 
 export default class Router extends EmberRouter {
   location = config.locationType;
@@ -8,9 +8,5 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  this.route('docs', function () {
-    docfy.forEach((page) => {
-      this.route(page.url.substring(6));
-    });
-  });
+  addDocfyRoutes(this);
 });

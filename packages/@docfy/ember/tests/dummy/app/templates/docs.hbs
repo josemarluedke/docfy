@@ -6,18 +6,16 @@
       <DocfyLink @to={{page.url}}>
         {{page.title}}
       </DocfyLink>
-      {{#if true}}
-        {{#if page.headings.length}}
-          <ul>
-            {{#each page.headings as |heading|}}
-              <li>
-                <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
-                  {{heading.title}}
-                </DocfyLink>
-              </li>
-            {{/each}}
-          </ul>
-        {{/if}}
+      {{#if page.headings.length}}
+        <ul>
+          {{#each page.headings as |heading|}}
+            <li>
+              <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
+                {{heading.title}}
+              </DocfyLink>
+            </li>
+          {{/each}}
+        </ul>
       {{/if}}
     </li>
   {{/each}}
