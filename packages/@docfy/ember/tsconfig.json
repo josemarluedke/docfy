@@ -21,28 +21,14 @@
     "module": "es6",
     "experimentalDecorators": true,
     "paths": {
-      "dummy/tests/*": [
-        "tests/*"
-      ],
-      "dummy/*": [
-        "tests/dummy/app/*",
-        "app/*"
-      ],
-      "@docfy/ember": [
-        "addon"
-      ],
-      "@docfy/ember/*": [
-        "addon/*"
-      ],
-      "@docfy/ember/test-support": [
-        "addon-test-support"
-      ],
-      "@docfy/ember/test-support/*": [
-        "addon-test-support/*"
-      ],
-      "*": [
-        "types/*"
-      ]
+      "dummy/tests/*": ["tests/*"],
+      "dummy/*": ["tests/dummy/app/*", "app/*"],
+      "@docfy/ember": ["addon"],
+      "@docfy/ember/*": ["addon/*"],
+      "@docfy/ember/test-support": ["addon-test-support"],
+      "@docfy/ember/test-support/*": ["addon-test-support/*"],
+      "@docfy/output": ["types/docfy-output.d.ts"],
+      "*": ["types/*"]
     }
   },
   "include": [
