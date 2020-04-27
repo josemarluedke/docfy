@@ -35,14 +35,14 @@ Array [
 
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 1`] = `
 "<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
-<p>This is a <a href=\\"/package1/components/button\\">link to another file in a different package</a>.</p>
+<p>This is a <a href=\\"/category1/components/button\\">link to another file in a different package</a>.</p>
 "
 `;
 
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 2`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/package2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/category2/overview\\">overview</a> to get started.</p>
 "
 `;
 
@@ -58,37 +58,37 @@ Array [
   ],
   Array [
     "packages/package1/components/button.md",
-    "/package1/components/button",
+    "/category1/components/button",
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/package1/components/form",
+    "/category1/components/form",
   ],
   Array [
     "packages/package1/docs/intro.md",
-    "/package1/intro",
+    "/category1/intro",
   ],
   Array [
     "packages/package2/docs/overview.md",
-    "/package2/overview",
+    "/category2/overview",
   ],
   Array [
     "packages/package2/docs/styles.md",
-    "/package2/styles",
+    "/category2/styles",
   ],
 ]
 `;
 
 exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 1`] = `
 "<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
-<p>This is a <a href=\\"/docs/package1/components/button.html\\">link to another file in a different package</a>.</p>
+<p>This is a <a href=\\"/docs/category1/components/button.html\\">link to another file in a different package</a>.</p>
 "
 `;
 
 exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 2`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/package2/overview.html\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/category2/overview.html\\">overview</a> to get started.</p>
 "
 `;
 
@@ -104,23 +104,23 @@ Array [
   ],
   Array [
     "packages/package1/components/button.md",
-    "/docs/package1/components/button.html",
+    "/docs/category1/components/button.html",
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/docs/package1/components/form.html",
+    "/docs/category1/components/form.html",
   ],
   Array [
     "packages/package1/docs/intro.md",
-    "/docs/package1/intro.html",
+    "/docs/category1/intro.html",
   ],
   Array [
     "packages/package2/docs/overview.md",
-    "/docs/package2/overview.html",
+    "/docs/category2/overview.html",
   ],
   Array [
     "packages/package2/docs/styles.md",
-    "/docs/package2/styles.html",
+    "/docs/category2/styles.html",
   ],
 ]
 `;

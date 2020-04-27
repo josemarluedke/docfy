@@ -65,12 +65,12 @@ export interface SourceSettings {
    *      - docs/components/buttons
    *      - docs/components/card
    *
-   * 2. "manual": It uses frontmatter information to inform "category" and
-   *    "package" of the file, ignoring the original file location.
+   * 2. "manual": It uses frontmatter information to inform "subcategory" and
+   *    "category" of the file, ignoring the original file location.
    *    The url schema is as follows:
-   *    {package}/{category}/{file-name}
+   *    {category}/{subcategory}/{file-name}
    *
-   *    If no package or category is specified, all files will be at the root
+   *    If no category or subcategory is specified, all files will be at the root
    *    level.
    *
    *    This options is perfect for documenting monorepo projects while keeping

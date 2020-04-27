@@ -13,32 +13,32 @@ describe('#generateManualUrl', () => {
     expect(generateManualUrl('cool/markdown.md', {})).toBe('/markdown');
   });
 
-  test('it uses category from metadata', () => {
+  test('it uses subcategory from metadata', () => {
     expect(
-      generateManualUrl('cool/markdown.md', { category: 'components' })
+      generateManualUrl('cool/markdown.md', { subcategory: 'components' })
     ).toBe('/components/markdown');
   });
 
-  test('it uses pacakge from metadata', () => {
+  test('it uses category from metadata', () => {
     expect(
-      generateManualUrl('cool/markdown.md', { package: 'awesome-lib' })
+      generateManualUrl('cool/markdown.md', { category: 'awesome-lib' })
     ).toBe('/awesome-lib/markdown');
   });
 
-  test('it uses pacakge and category from metadata', () => {
+  test('it uses category and subcategory from metadata', () => {
     expect(
       generateManualUrl('cool/markdown.md', {
-        package: 'awesome-lib',
-        category: 'helpers'
+        category: 'awesome-lib',
+        subcategory: 'helpers'
       })
     ).toBe('/awesome-lib/helpers/markdown');
   });
 
-  test('it passes package and category into slug', () => {
+  test('it passes category and subcategory into slug', () => {
     expect(
       generateManualUrl('cool/markdown.md', {
-        package: '@org/awesome-lib',
-        category: 'helpers and modifiers'
+        category: '@org/awesome-lib',
+        subcategory: 'helpers and modifiers'
       })
     ).toBe('/orgawesome-lib/helpers-and-modifiers/markdown');
   });
@@ -133,14 +133,14 @@ describe('#inferTitle', () => {
 
 describe('#parseFrontmatter', () => {
   test('it returns an object with parsed frontmatter', () => {
-    const markdown = '---\ntitle: My Title\ncategory: test\n---\n\n# test\n';
+    const markdown = '---\ntitle: My Title\nsubcategory: test\n---\n\n# test\n';
     const remark = createRemark();
     const ast = remark.runSync(remark.parse(markdown));
     const result = parseFrontmatter('my-file.md', ast);
 
     expect(result).toEqual({
       title: 'My Title',
-      category: 'test'
+      subcategory: 'test'
     });
   });
 });

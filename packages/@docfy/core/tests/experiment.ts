@@ -6,7 +6,7 @@
 // project
 //  docs
 //    - install.md - whatever.md
-//  packages/
+//  categorys/
 //    forms/
 //      docs/
 //        - install.md
@@ -24,7 +24,7 @@
 // modifers
 //   on
 //   bla
-// package
+// category
 //   intro
 //   bla
 //   components

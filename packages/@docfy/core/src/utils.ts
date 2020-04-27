@@ -19,11 +19,11 @@ export function generateManualUrl(
   if (prefix) {
     parts.push(prefix);
   }
-  if (typeof meta.package === 'string') {
-    parts.push(slug(meta.package));
-  }
   if (typeof meta.category === 'string') {
     parts.push(slug(meta.category));
+  }
+  if (typeof meta.subcategory === 'string') {
+    parts.push(slug(meta.subcategory));
   }
   let fileName = path.parse(path.basename(source)).name;
   if (fileName === 'index') {
