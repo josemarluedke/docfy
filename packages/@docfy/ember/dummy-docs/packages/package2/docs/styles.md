@@ -1,6 +1,6 @@
 ---
 order: 1
-package: package2
+category: category2
 ---
 
 # How styles work

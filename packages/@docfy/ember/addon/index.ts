@@ -58,8 +58,8 @@ export function getStructedPages(
 
   pages.forEach((item): void => {
     const meta = item.metadata;
-    if (typeof meta.package === 'string') {
-      const pkgName = meta.package;
+    if (typeof meta.category === 'string') {
+      const pkgName = meta.category;
       let child = findChild(node, pkgName);
 
       if (!child) {
@@ -72,15 +72,15 @@ export function getStructedPages(
       }
 
       getStructedPages(
-        [{ ...item, metadata: { ...meta, package: undefined } }],
+        [{ ...item, metadata: { ...meta, category: undefined } }],
         child
       );
-    } else if (typeof meta.category === 'string') {
-      let child = findChild(node, meta.category);
+    } else if (typeof meta.subcategory === 'string') {
+      let child = findChild(node, meta.subcategory);
 
       if (!child) {
         child = {
-          name: meta.category,
+          name: meta.subcategory,
           pages: [],
           children: []
         };

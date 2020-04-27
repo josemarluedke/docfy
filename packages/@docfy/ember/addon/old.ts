@@ -164,11 +164,11 @@ export function getStructedPages(
         [{ ...item, metadata: { ...meta, package: undefined } }],
         structedContent.packages[pkgName]
       );
-    } else if (typeof meta.category === 'string') {
-      if (!structedContent.categories[meta.category]) {
-        structedContent.categories[meta.category] = [];
+    } else if (typeof meta.subcategory === 'string') {
+      if (!structedContent.categories[meta.subcategory]) {
+        structedContent.categories[meta.subcategory] = [];
       }
-      structedContent.categories[meta.category].push(item);
+      structedContent.categories[meta.subcategory].push(item);
     } else {
       structedContent.pages.push(item);
     }

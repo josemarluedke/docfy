@@ -1,7 +1,7 @@
 ---
 order: 0
-package: package1
-category: components
+category: category1
+subcategory: components
 ---
 
 # Button Component
