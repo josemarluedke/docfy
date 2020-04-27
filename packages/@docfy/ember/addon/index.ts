@@ -41,8 +41,17 @@ interface DocfyNode {
 
 function findChild(node: DocfyNode, name: string): DocfyNode | undefined {
   return node.children.find((item) => {
-    console.log(item.name, name, item.name === name);
     return item.name === name;
+  });
+}
+
+function sortByOrder(pages: OutputPage[]): OutputPage[] {
+  return pages.sort((a, b) => {
+    const aOrder =
+      typeof a.metadata.order !== 'undefined' ? Number(a.metadata.order) : 998;
+    const bOrder =
+      typeof b.metadata.order !== 'undefined' ? Number(b.metadata.order) : 999;
+    return aOrder - bOrder;
   });
 }
 
@@ -89,19 +98,12 @@ export function getStructedPages(
 
       child.pages.push(item);
 
-      child.pages.sort((a, b) => {
-        return (
-          Number(a.metadata.order || 998) - Number(b.metadata.order || 999)
-        );
-      });
+      sortByOrder(child.pages);
     } else {
       node.pages.push(item);
     }
   });
 
-  node.pages.sort((a, b) => {
-    return Number(a.metadata.order || 998) - Number(b.metadata.order || 999);
-  });
-
+  sortByOrder(node.pages);
   return node;
 }
