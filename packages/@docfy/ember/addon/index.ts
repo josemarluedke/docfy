@@ -1,18 +1,22 @@
-import docfyOutput from '@docfy/output';
+import docfyOutput, { OutputPage } from '@docfy/output';
 import RouterDSL from '@ember/routing/-private/router-dsl';
 
-export function addDocfyRoutes(context: RouterDSL): void {
-  const urls = docfyOutput.map((page) => {
-    return page.url[0] === '/' ? page.url.substring(1) : page.url;
-  });
-
-  const roots = urls
-    .map((url) => {
-      return url.split('/')[0];
+function getRoots(pages: OutputPage[]): string[] {
+  return pages
+    .map((page) => {
+      return page.url.split('/')[1];
     })
     .filter((value, index, self) => {
       return self.indexOf(value) === index;
     });
+}
+
+export function addDocfyRoutes(context: RouterDSL): void {
+  const urls = docfyOutput.map((page) => {
+    return page.url.substring(1); // remove leading slash
+  });
+
+  const roots = getRoots(docfyOutput);
 
   roots.forEach((root) => {
     context.route(root, function () {
@@ -27,4 +31,77 @@ export function addDocfyRoutes(context: RouterDSL): void {
       });
     });
   });
+}
+
+interface DocfyNode {
+  name: string;
+  pages: OutputPage[];
+  children: DocfyNode[];
+}
+
+function findChild(node: DocfyNode, name: string): DocfyNode | undefined {
+  return node.children.find((item) => {
+    console.log(item.name, name, item.name === name);
+    return item.name === name;
+  });
+}
+
+export function getStructedPages(
+  pages: OutputPage[],
+  existingStruct?: DocfyNode
+): DocfyNode {
+  const node: DocfyNode = existingStruct || {
+    name: '/',
+    pages: [],
+    children: []
+  };
+
+  pages.forEach((item): void => {
+    const meta = item.metadata;
+    if (typeof meta.package === 'string') {
+      const pkgName = meta.package;
+      let child = findChild(node, pkgName);
+
+      if (!child) {
+        child = {
+          name: pkgName,
+          pages: [],
+          children: []
+        };
+        node.children.push(child);
+      }
+
+      getStructedPages(
+        [{ ...item, metadata: { ...meta, package: undefined } }],
+        child
+      );
+    } else if (typeof meta.category === 'string') {
+      let child = findChild(node, meta.category);
+
+      if (!child) {
+        child = {
+          name: meta.category,
+          pages: [],
+          children: []
+        };
+        node.children.push(child);
+      }
+
+      child.pages.push(item);
+
+      child.pages.sort((a, b) => {
+        return (
+          Number(a.metadata.order || 998) - Number(b.metadata.order || 999)
+        );
+      });
+    } else {
+      node.pages.push(item);
+    }
+  });
+
+  node.pages.sort((a, b) => {
+    return Number(a.metadata.order || 998) - Number(b.metadata.order || 999);
+  });
+
+  return node;
 }
