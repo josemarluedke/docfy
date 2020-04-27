@@ -4,8 +4,8 @@ import { getStructedPages } from '@docfy/ember';
 
 export default class Docs extends Route {
   model() {
-    console.log(getStructedPages(docfy));
+    return getStructedPages(docfy);
 
-    return docfy;
+    // return docfy;
   }
 }

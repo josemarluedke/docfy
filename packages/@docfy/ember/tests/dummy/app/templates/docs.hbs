@@ -1,7 +1,7 @@
 <h1>Docs</h1>
 
 <ul>
-  {{#each this.model as |page|}}
+  {{#each this.model.pages as |page|}}
     <li>
       <DocfyLink @to={{page.url}}>
         {{page.title}}
@@ -17,6 +17,63 @@
           {{/each}}
         </ul>
       {{/if}}
+    </li>
+  {{/each}}
+
+
+  {{#each this.model.children as |child|}}
+    <li>
+      {{child.name}}
+
+      <ul>
+        {{#each child.pages as |page|}}
+          <li>
+            <DocfyLink @to={{page.url}}>
+              {{page.title}}
+            </DocfyLink>
+            {{#if page.headings.length}}
+              <ul>
+                {{#each page.headings as |heading|}}
+                  <li>
+                    <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
+                      {{heading.title}}
+                    </DocfyLink>
+                  </li>
+                {{/each}}
+              </ul>
+            {{/if}}
+          </li>
+        {{/each}}
+
+        {{#each child.children as |subChild|}}
+          <li>
+            {{subChild.name}}
+
+            <ul>
+              {{#each subChild.pages as |page|}}
+                <li>
+                  <DocfyLink @to={{page.url}}>
+                    {{page.title}}
+                  </DocfyLink>
+                  {{#if page.headings.length}}
+                    <ul>
+                      {{#each page.headings as |heading|}}
+                        <li>
+                          <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
+                            {{heading.title}}
+                          </DocfyLink>
+                        </li>
+                      {{/each}}
+                    </ul>
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </li>
+        {{/each}}
+
+
+      </ul>
     </li>
   {{/each}}
 </ul>
