@@ -23,7 +23,7 @@
 
   {{#each this.model.children as |child|}}
     <li>
-      {{child.name}}
+      {{child.label}}
 
       <ul>
         {{#each child.pages as |page|}}
@@ -47,7 +47,7 @@
 
         {{#each child.children as |subChild|}}
           <li>
-            {{subChild.name}}
+            {{subChild.label}}
 
             <ul>
               {{#each subChild.pages as |page|}}

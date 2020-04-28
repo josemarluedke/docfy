@@ -37,10 +37,12 @@ export function genereateFlatOutput(pageContents: PageContent[]): Page[] {
 
 export function generateNestedOutput(
   pages: Page[],
+  labels: Record<string, string> = {},
   existingObj?: NestedRuntimeOutput
 ): NestedRuntimeOutput {
   const node: NestedRuntimeOutput = existingObj || {
     name: '/',
+    label: labels['/'] || '/',
     pages: [],
     children: []
   };
@@ -62,6 +64,7 @@ export function generateNestedOutput(
         if (!child) {
           child = {
             name: name,
+            label: labels[name] || name,
             pages: [],
             children: []
           };
@@ -69,7 +72,7 @@ export function generateNestedOutput(
         }
 
         item.metadata.relativeUrl = urlParts.join('/');
-        generateNestedOutput([item], child);
+        generateNestedOutput([item], labels, child);
 
         sortByOrder(child.pages);
       }
@@ -81,10 +84,11 @@ export function generateNestedOutput(
 }
 
 export function generateRuntimeOutput(
-  pageContents: PageContent[]
+  pageContents: PageContent[],
+  labels: Record<string, string> = {}
 ): RuntimeOutput {
   const flat = genereateFlatOutput(pageContents);
-  const nested = generateNestedOutput(flat);
+  const nested = generateNestedOutput(flat, labels);
 
   return { flat, nested };
 }

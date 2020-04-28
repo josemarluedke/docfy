@@ -32,6 +32,7 @@ export interface Context {
 }
 export interface NestedRuntimeOutput {
   name: string;
+  label: string;
   pages: Page[];
   children: NestedRuntimeOutput[];
 }
@@ -116,4 +117,5 @@ interface DocfyConfigSourceSettings extends Omit<SourceSettings, 'root'> {
 
 export interface DocfyConfig extends Options {
   sources: DocfyConfigSourceSettings[];
+  labels?: Record<string, string>;
 }

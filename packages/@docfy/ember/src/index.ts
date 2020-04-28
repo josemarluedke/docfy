@@ -58,7 +58,9 @@ class DocfyBroccoli extends Plugin {
 
     fs.writeFileSync(
       path.join(this.outputPath, 'docfy-output.js'),
-      `export default ${JSON.stringify(generateRuntimeOutput(pages))};`
+      `export default ${JSON.stringify(
+        generateRuntimeOutput(pages, this.config.labels)
+      )};`
     );
   }
 }

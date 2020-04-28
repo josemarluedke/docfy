@@ -13,7 +13,7 @@ module.exports = {
   ],
   sources: [
     {
-      pattern: '**/*.md',
+      pattern: 'dummy-docs/**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs',
       ignore: ['**/how-it-works.*']
@@ -22,5 +22,9 @@ module.exports = {
       pattern: '**/how-it-works.*',
       urlSchema: 'manual'
     }
-  ]
+  ],
+  labels: {
+    components: 'Components',
+    category1: 'Category 1'
+  }
 };
