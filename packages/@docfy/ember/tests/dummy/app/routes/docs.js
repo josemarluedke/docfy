@@ -4,8 +4,13 @@ import { getStructedPages } from '@docfy/ember';
 
 export default class Docs extends Route {
   model() {
-    return getStructedPages(docfy);
+    const result = getStructedPages(docfy);
 
-    // return docfy;
+    console.log(result);
+
+    return result.children.find((item) => {
+      return item.name === 'docs';
+    });
+    // return result;
   }
 }

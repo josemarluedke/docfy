@@ -66,41 +66,33 @@ export function getStructedPages(
   };
 
   pages.forEach((item): void => {
-    const meta = item.metadata;
-    if (typeof meta.category === 'string') {
-      const pkgName = meta.category;
-      let child = findChild(node, pkgName);
+    let url = (item.metadata.relativeUrl as string) || item.url;
+    url = url[0] === '/' ? url.substring(1) : url;
+    const urlParts = url.split('/');
 
-      if (!child) {
-        child = {
-          name: pkgName,
-          pages: [],
-          children: []
-        };
-        node.children.push(child);
-      }
-
-      getStructedPages(
-        [{ ...item, metadata: { ...meta, category: undefined } }],
-        child
-      );
-    } else if (typeof meta.subcategory === 'string') {
-      let child = findChild(node, meta.subcategory);
-
-      if (!child) {
-        child = {
-          name: meta.subcategory,
-          pages: [],
-          children: []
-        };
-        node.children.push(child);
-      }
-
-      child.pages.push(item);
-
-      sortByOrder(child.pages);
-    } else {
+    if (urlParts.length === 1) {
+      item.metadata.relativeUrl = urlParts[0];
       node.pages.push(item);
+    } else {
+      const name = urlParts.shift();
+
+      if (typeof name === 'string') {
+        let child = findChild(node, name);
+
+        if (!child) {
+          child = {
+            name: name,
+            pages: [],
+            children: []
+          };
+          node.children.push(child);
+        }
+
+        item.metadata.relativeUrl = urlParts.join('/');
+        getStructedPages([item], child);
+
+        sortByOrder(child.pages);
+      }
     }
   });
 
