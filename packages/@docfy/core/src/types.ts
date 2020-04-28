@@ -8,15 +8,18 @@ export interface Heading {
   headings?: Heading[];
 }
 
-export interface PageContent {
+export interface Page {
   source: string;
-  ast: Node;
-  markdown: string;
-  rendered: string;
   url: string;
   title: string;
   headings: Heading[];
   metadata: Record<string, unknown>;
+}
+
+export interface PageContent extends Page {
+  ast: Node;
+  markdown: string;
+  rendered: string;
   demos?: PageContent[];
 }
 
@@ -26,6 +29,16 @@ export interface Context {
   options: {
     tocMaxDepth: number;
   };
+}
+export interface NestedRuntimeOutput {
+  name: string;
+  pages: Page[];
+  children: NestedRuntimeOutput[];
+}
+
+export interface RuntimeOutput {
+  flat: Page[];
+  nested: NestedRuntimeOutput;
 }
 
 export interface SourceSettings {

@@ -4,6 +4,7 @@ import MergeTrees from 'broccoli-merge-trees';
 import { Node, InputNode } from 'broccoli-node-api';
 import Plugin from 'broccoli-plugin';
 import Docfy from '@docfy/core';
+import { generateRuntimeOutput } from '@docfy/core/dist/runtime-output';
 import { DocfyConfig, SourceSettings } from '@docfy/core/dist/types';
 import WriteFile from 'broccoli-file-creator';
 import { UnwatchedDir } from 'broccoli-source';
@@ -40,17 +41,6 @@ class DocfyBroccoli extends Plugin {
     const docfy = new Docfy(this.config);
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
-    const docfyOutput = pages.map((item) => {
-      const { url, headings, title, source, metadata } = item;
-      return {
-        url,
-        headings,
-        title,
-        source,
-        metadata
-      };
-    });
-
     console.log();
     console.log('Docfy Outpu Patht: ', this.outputPath);
     console.log();
@@ -68,7 +58,7 @@ class DocfyBroccoli extends Plugin {
 
     fs.writeFileSync(
       path.join(this.outputPath, 'docfy-output.js'),
-      `export default ${JSON.stringify(docfyOutput)};`
+      `export default ${JSON.stringify(generateRuntimeOutput(pages))};`
     );
   }
 }
