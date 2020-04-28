@@ -28,6 +28,10 @@ function createPage(
   if (typeof frontmatter.title === 'string') {
     title = frontmatter.title;
   }
+  // Fallback for title
+  if (typeof title === 'undefined' || title === '') {
+    title = path.parse(source).name;
+  }
 
   if (urlSchema === 'manual') {
     url = generateManualUrl(source, frontmatter, urlPrefix, urlSuffix);

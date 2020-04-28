@@ -14,7 +14,7 @@ export interface Page {
   markdown: string;
   rendered: string;
   url: string;
-  title?: string;
+  title: string;
   headings: Heading[];
   metadata: Record<string, unknown>;
   demos?: Page[];
