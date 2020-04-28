@@ -3,7 +3,7 @@ import fs from 'fs';
 import path from 'path';
 import trough, { Through } from 'trough';
 import { Node } from 'unist';
-import { Page, Context, Options, SourceSettings } from './types';
+import { PageContent, Context, Options, SourceSettings } from './types';
 import {
   inferTitle,
   generateManualUrl,
@@ -21,7 +21,7 @@ function createPage(
   urlSchema?: SourceSettings['urlSchema'],
   urlPrefix?: string,
   urlSuffix?: string
-): Page {
+): PageContent {
   const frontmatter = parseFrontmatter(source, ast);
   let url: string;
   let title = inferTitle(ast);
@@ -74,7 +74,7 @@ export default class Docfy {
       .use(renderMarkdown);
   }
 
-  public run(sources: SourceSettings[]): Promise<Page[]> {
+  public run(sources: SourceSettings[]): Promise<PageContent[]> {
     return new Promise((resolve, reject) => {
       this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
         if (err) {

@@ -2,7 +2,7 @@ import path from 'path';
 import { Node } from 'unist';
 import visit from 'unist-util-visit';
 import { isValidUrl, isAnchorUrl } from '../utils';
-import { Page, Context } from '../types';
+import { PageContent, Context } from '../types';
 
 interface LinkNode extends Node {
   title: string | null;
@@ -10,7 +10,7 @@ interface LinkNode extends Node {
 }
 
 export function fixUrls(ctx: Context): void {
-  ctx.pages.forEach((page: Page) => {
+  ctx.pages.forEach((page: PageContent) => {
     visit(page.ast, 'link', (node: LinkNode) => {
       if (isValidUrl(node.url) || isAnchorUrl(node.url)) {
         return;

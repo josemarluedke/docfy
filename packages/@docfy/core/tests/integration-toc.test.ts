@@ -1,12 +1,12 @@
 import Docfy from '../src';
-import { Page } from '../src/types';
+import { PageContent } from '../src/types';
 import path from 'path';
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
 describe('Extracts TOC', () => {
   describe('When maxDepth is not set', () => {
-    let pages: Page[];
+    let pages: PageContent[];
 
     beforeAll(async () => {
       const docfy = new Docfy();
@@ -31,7 +31,7 @@ describe('Extracts TOC', () => {
   });
 
   describe('When maxDepth is set', () => {
-    let pages: Page[];
+    let pages: PageContent[];
 
     beforeAll(async () => {
       const docfy = new Docfy({ tocMaxDepth: 4 });

@@ -8,7 +8,7 @@ export interface Heading {
   headings?: Heading[];
 }
 
-export interface Page {
+export interface PageContent {
   source: string;
   ast: Node;
   markdown: string;
@@ -17,12 +17,12 @@ export interface Page {
   title: string;
   headings: Heading[];
   metadata: Record<string, unknown>;
-  demos?: Page[];
+  demos?: PageContent[];
 }
 
 export interface Context {
   remark: Processor;
-  pages: Page[];
+  pages: PageContent[];
   options: {
     tocMaxDepth: number;
   };
