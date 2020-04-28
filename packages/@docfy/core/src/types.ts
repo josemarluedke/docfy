@@ -8,10 +8,6 @@ export interface Heading {
   headings?: Heading[];
 }
 
-export interface Metadata {
-  [key: string]: unknown;
-}
-
 export interface Page {
   source: string;
   ast: Node;
@@ -20,7 +16,7 @@ export interface Page {
   url: string;
   title?: string;
   headings: Heading[];
-  metadata: Metadata;
+  metadata: Record<string, unknown>;
   demos?: Page[];
 }
 
