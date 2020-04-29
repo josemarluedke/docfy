@@ -15,17 +15,14 @@ module.exports = {
     {
       pattern: 'dummy-docs/**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs',
-      ignore: ['**/how-it-works.*']
-    },
-    {
-      pattern: '**/how-it-works.*',
-      urlSchema: 'manual'
+      urlPrefix: 'docs'
     }
   ],
   labels: {
     components: 'Components',
-    category1: 'Category 1',
+    helpers: 'Helpers',
+    core: '@docfy/core',
+    ember: '@docfy/ember',
     docs: 'Documentation'
   }
 };
