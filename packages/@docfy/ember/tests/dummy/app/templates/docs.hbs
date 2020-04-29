@@ -1,81 +1,64 @@
-<h1>Docs</h1>
+<DocfyOutput @category="docs" as |node|>
+  <ul>
+    {{#each node.pages as |page|}}
+      <li>
+        <DocfyLink @to={{page.url}}>
+          {{page.title}}
+        </DocfyLink>
+     </li>
+    {{/each}}
 
-<ul>
-  {{#each this.model.pages as |page|}}
-    <li>
-      <DocfyLink @to={{page.url}}>
-        {{page.title}}
-      </DocfyLink>
-      {{#if page.headings.length}}
+    {{#each node.children as |child|}}
+      <li>
+        {{child.label}}
+
         <ul>
-          {{#each page.headings as |heading|}}
+          {{#each child.pages as |page|}}
             <li>
-              <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
-                {{heading.title}}
+              <DocfyLink @to={{page.url}}>
+                {{page.title}}
               </DocfyLink>
             </li>
           {{/each}}
-        </ul>
-      {{/if}}
-    </li>
-  {{/each}}
 
+          {{#each child.children as |subChild|}}
+            <li>
+              {{subChild.label}}
 
-  {{#each this.model.children as |child|}}
-    <li>
-      {{child.label}}
-
-      <ul>
-        {{#each child.pages as |page|}}
-          <li>
-            <DocfyLink @to={{page.url}}>
-              {{page.title}}
-            </DocfyLink>
-            {{#if page.headings.length}}
               <ul>
-                {{#each page.headings as |heading|}}
+                {{#each subChild.pages as |page|}}
                   <li>
-                    <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
-                      {{heading.title}}
+                    <DocfyLink @to={{page.url}}>
+                      {{page.title}}
                     </DocfyLink>
                   </li>
                 {{/each}}
               </ul>
-            {{/if}}
-          </li>
-        {{/each}}
+            </li>
+          {{/each}}
+        </ul>
+      </li>
+    {{/each}}
+  </ul>
+</DocfyOutput>
 
-        {{#each child.children as |subChild|}}
-          <li>
-            {{subChild.label}}
+<hr>
 
-            <ul>
-              {{#each subChild.pages as |page|}}
-                <li>
-                  <DocfyLink @to={{page.url}}>
-                    {{page.title}}
-                  </DocfyLink>
-                  {{#if page.headings.length}}
-                    <ul>
-                      {{#each page.headings as |heading|}}
-                        <li>
-                          <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
-                            {{heading.title}}
-                          </DocfyLink>
-                        </li>
-                      {{/each}}
-                    </ul>
-                  {{/if}}
-                </li>
-              {{/each}}
-            </ul>
-          </li>
-        {{/each}}
+<DocfyOutput @fromActiveRoute={{true}} as |page|>
+  {{#if page.headings.length}}
+    On this page:
+    <ul>
+      {{#each page.headings as |heading|}}
+        <li>
+          <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
+            {{heading.title}}
+          </DocfyLink>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</DocfyOutput>
 
-
-      </ul>
-    </li>
-  {{/each}}
-</ul>
+<hr>
 
 {{outlet}}

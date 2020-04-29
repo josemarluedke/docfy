@@ -13,10 +13,7 @@ import getDocfyConfig from './get-config';
 
 // TODO:
 //
-// - Fix internal urls, generate a component DocfyLink
 // - Write plugin to replace internal links with DocfyLink
-// - Generate menu, with categories.
-// - Order menu
 // - Component to get previous and next page link
 // - Edit this page link ?
 

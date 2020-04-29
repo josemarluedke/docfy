@@ -25,6 +25,7 @@ module.exports = {
   ],
   labels: {
     components: 'Components',
-    category1: 'Category 1'
+    category1: 'Category 1',
+    docs: 'Documentation'
   }
 };
