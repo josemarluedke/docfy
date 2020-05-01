@@ -41,7 +41,10 @@ const root = path.resolve(__dirname, projectRoot);
 
 (async function (): Promise<void> {
   const docfy = new Docfy({
-    remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs]
+    remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs],
+    repository: {
+      url: 'https://github.com/josemarluedke/docfy'
+    }
   });
 
   const docs = await docfy.run([
@@ -51,6 +54,15 @@ const root = path.resolve(__dirname, projectRoot);
       urlSchema: 'manual',
       pattern: '{/**/docs/**/*.md,/**/*.md}',
       ignore: ['/packages/docs/**']
+    },
+    {
+      root,
+      urlPrefix: 'blog',
+      urlSchema: 'manual',
+      pattern: '/**/docs/**/package1/**/*.md',
+      repository: {
+        url: 'https://github.com/user/repo'
+      }
     }
   ]);
 
