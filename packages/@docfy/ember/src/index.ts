@@ -13,9 +13,10 @@ import getDocfyConfig from './get-config';
 
 // TODO:
 //
+// - Write tests
 // - Write plugin to replace internal links with DocfyLink
-// - Edit this page link ?
-// - Images ?
+// - Move images into public
+// - Add basic styles to dummy app
 
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);
