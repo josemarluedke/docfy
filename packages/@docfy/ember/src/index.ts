@@ -14,8 +14,8 @@ import getDocfyConfig from './get-config';
 // TODO:
 //
 // - Write plugin to replace internal links with DocfyLink
-// - Component to get previous and next page link
 // - Edit this page link ?
+// - Images ?
 
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);

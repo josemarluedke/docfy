@@ -11,6 +11,7 @@ export interface Heading {
 export interface Page {
   source: string;
   url: string;
+  editUrl: string;
   title: string;
   headings: Heading[];
   metadata: Record<string, unknown>;
@@ -23,13 +24,17 @@ export interface PageContent extends Page {
   demos?: PageContent[];
 }
 
+interface ContextOptions
+  extends Omit<Options, 'remarkPlugins' | 'tocMaxDepth'> {
+  tocMaxDepth: number;
+}
+
 export interface Context {
   remark: Processor;
   pages: PageContent[];
-  options: {
-    tocMaxDepth: number;
-  };
+  options: ContextOptions;
 }
+
 export interface NestedRuntimeOutput {
   name: string;
   label: string;
@@ -104,11 +109,61 @@ export interface SourceSettings {
    * ".html" will generate urls like "/something.html"
    */
   urlSuffix?: string;
+
+  /**
+   * Overwrite repository config for this source.
+   */
+  repository?: RepositoryConfig;
+}
+
+interface RepositoryConfig {
+  /**
+   *
+   * The url to the Git Repository
+   * Example: https://github.com/josemarluedke/docfy
+   */
+  url: string;
+
+  /**
+   * Branch used to edit your markdown when clicking on "Edit this page" button.
+   * @default "master"
+   */
+  editBranch?: string;
 }
 
 export interface Options {
+  /**
+   * Additional remark plugins
+   *
+   * Example:
+   *
+   * ```js
+   * const hbs = require('remark-hbs');
+   * const autolinkHeadings = require('remark-autolink-headings');
+   *
+   * const remarkPlugins = [
+   *   [
+   *     autolinkHeadings,
+   *     {
+   *       behavior: 'wrap'
+   *     }
+   *   ],
+   *   hbs
+   * ];
+   * ```
+   */
   remarkPlugins?: ([Plugin, Settings] | Plugin)[];
+
+  /**
+   * The max depth of headings
+   * @default 6
+   */
   tocMaxDepth?: number;
+
+  /**
+   * The repository config
+   */
+  repository?: RepositoryConfig;
 }
 
 interface DocfyConfigSourceSettings extends Omit<SourceSettings, 'root'> {

@@ -13,6 +13,7 @@ import {
 } from './utils';
 import { createRemark } from './remark';
 import { combineDemos, fixUrls, renderMarkdown, toc } from './plugins';
+import { getRepoEditUrl } from './repo-info';
 
 function createPage(
   source: string,
@@ -20,7 +21,8 @@ function createPage(
   ast: Node,
   urlSchema?: SourceSettings['urlSchema'],
   urlPrefix?: string,
-  urlSuffix?: string
+  urlSuffix?: string,
+  repoEditUrl?: string | null
 ): PageContent {
   const frontmatter = parseFrontmatter(source, ast);
   let url: string;
@@ -39,12 +41,19 @@ function createPage(
     url = generateAutoUrl(source, urlPrefix, urlSuffix);
   }
 
+  let editUrl = '';
+
+  if (repoEditUrl) {
+    editUrl = repoEditUrl.replace('{filepath}', source);
+  }
+
   return {
     source,
     ast,
     markdown,
     title,
     url,
+    editUrl,
     headings: [],
     metadata: frontmatter,
     rendered: ''
@@ -56,11 +65,13 @@ export default class Docfy {
   private context: Context;
 
   constructor(options: Options = {}) {
+    const { remarkPlugins, ...rest } = options;
     this.context = {
-      remark: createRemark(options.remarkPlugins),
+      remark: createRemark(remarkPlugins),
       pages: [],
       options: {
-        tocMaxDepth: options.tocMaxDepth || 6
+        ...rest,
+        tocMaxDepth: rest.tocMaxDepth || 6
       }
     };
 
@@ -90,6 +101,12 @@ export default class Docfy {
     const ctx = this.context;
 
     sources.forEach((item) => {
+      const repoEditUrl = getRepoEditUrl(
+        item.root,
+        item.repository?.url || ctx.options.repository?.url || '',
+        item.repository?.editBranch || ctx.options.repository?.editBranch
+      );
+
       const files = glob.sync(item.pattern, {
         root: item.root,
         ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])]
@@ -107,7 +124,8 @@ export default class Docfy {
             ast,
             item.urlSchema,
             item.urlPrefix,
-            item.urlSuffix
+            item.urlSuffix,
+            repoEditUrl
           )
         );
       });

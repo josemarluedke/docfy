@@ -21,14 +21,15 @@ function sortByOrder(pages: Page[]): Page[] {
 
 export function genereateFlatOutput(pageContents: PageContent[]): Page[] {
   const pages: Page[] = pageContents.map((page) => {
-    const { url, headings, title, source, metadata } = page;
+    const { url, headings, title, source, metadata, editUrl } = page;
 
     return {
       url,
       headings,
       title,
       source,
-      metadata
+      metadata,
+      editUrl
     };
   });
 
