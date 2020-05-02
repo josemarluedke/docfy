@@ -1,6 +1,7 @@
 import path from 'path';
 import { DocfyConfig } from '@docfy/core/dist/types';
 import remarkHBS from 'remark-hbs';
+import docfyLink from './plugins/docfy-link';
 
 const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
@@ -52,6 +53,12 @@ export default function getDocfyConfig(root: string): DocfyConfig {
       url: repoUrl
     };
   }
+
+  if (!Array.isArray(docfyConfig.plugins)) {
+    docfyConfig.plugins = [];
+  }
+  docfyConfig.plugins.push(docfyLink);
+
   if (!Array.isArray(docfyConfig.remarkPlugins)) {
     docfyConfig.remarkPlugins = [];
   }
