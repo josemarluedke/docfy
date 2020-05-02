@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import docfyOutput from '@docfy/output';
+import output from '@docfy/ember/output';
 import sinon from 'sinon';
 
 module('Integration | Component | DocfyLink', function (hooks) {
@@ -18,7 +18,7 @@ module('Integration | Component | DocfyLink', function (hooks) {
       assert.equal(routeName, 'docs.introduction');
     });
 
-    this.set('page', docfyOutput.flat[0]);
+    this.set('page', output.flat[0]);
 
     await render(
       hbs`<DocfyLink @to={{this.page.url}} data-test-id="link" @activeClass="active">
@@ -44,7 +44,7 @@ module('Integration | Component | DocfyLink', function (hooks) {
       .stub(routerService, 'currentRouteName')
       .get(() => 'docs.introduction');
 
-    this.set('page', docfyOutput.flat[0]);
+    this.set('page', output.flat[0]);
 
     await render(
       hbs`<DocfyLink @to={{this.page.url}} data-test-id="link" @activeClass="active">

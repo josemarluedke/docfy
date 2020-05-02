@@ -32,10 +32,6 @@ class DocfyBroccoli extends Plugin {
     const docfy = new Docfy(this.config);
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
-    console.log();
-    console.log('Docfy Output Path: ', this.outputPath);
-    console.log();
-
     pages.forEach((page) => {
       const fileName = `${path.join(
         this.outputPath,

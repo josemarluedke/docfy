@@ -1,9 +1,9 @@
 import Route from '@ember/routing/route';
-import docfy from '@docfy/output';
+import output from '@docfy/ember/output';
 
 export default class Docs extends Route {
   model() {
-    return docfy.nested.children.find((item) => {
+    return output.nested.children.find((item) => {
       return item.name === 'docs';
     });
   }

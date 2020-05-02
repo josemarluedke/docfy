@@ -27,7 +27,6 @@
       "@docfy/ember/*": ["addon/*"],
       "@docfy/ember/test-support": ["addon-test-support"],
       "@docfy/ember/test-support/*": ["addon-test-support/*"],
-      "@docfy/output": ["types/docfy-output.d.ts"],
       "*": ["types/*"]
     }
   },

@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
-import docfyOutput from '@docfy/output';
+import output from '@docfy/ember/output';
 import { NestedRuntimeOutput, Page } from '@docfy/core/dist/types';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
@@ -47,7 +47,7 @@ export default class DocfyPreviousOrNextLink extends Component<
 
   get scopedOutput(): NestedRuntimeOutput {
     if (typeof this.args.scope === 'string') {
-      const foundScope = docfyOutput.nested.children.find((child) => {
+      const foundScope = output.nested.children.find((child) => {
         return child.name === this.args.scope;
       });
 
@@ -55,7 +55,7 @@ export default class DocfyPreviousOrNextLink extends Component<
         return foundScope;
       }
     }
-    return docfyOutput.nested;
+    return output.nested;
   }
 
   get page(): Page | undefined {
