@@ -20,13 +20,13 @@ describe('When urlSchema is set to manual', () => {
         {
           root,
           urlSchema: 'manual',
-          pattern: '/**/*.md'
+          pattern: '**/*.md'
         }
       ]);
     });
 
     test('it should have collected all pages and moved demos', async () => {
-      expect(pages.length).toBe(7);
+      expect(pages.length).toBe(8);
       expect(
         findPage(pages, 'packages/package1/components/form/index.md').demos
           ?.length
@@ -76,7 +76,7 @@ describe('When urlSchema is set to manual', () => {
           urlPrefix: 'docs',
           urlSchema: 'manual',
           urlSuffix: '.html',
-          pattern: '/**/*.md'
+          pattern: '**/*.md'
         }
       ]);
     });

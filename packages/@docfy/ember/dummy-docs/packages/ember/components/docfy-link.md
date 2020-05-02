@@ -17,5 +17,3 @@ Cornibus e, putat procul nostro erat cunctantem munus inventus quod.
   {{title}}
 </DocfyLink>
 ```
-
-For documentation of `DocfyLink` [click here](./docfy-link.md)

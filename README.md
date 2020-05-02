@@ -29,7 +29,7 @@ const root = path.resolve(__dirname, projectRoot);
       root,
       urlPrefix: 'docs',
       urlSchema: 'manual',
-      pattern: '/**/*.md'
+      pattern: '**/*.md'
     }
   ]);
 

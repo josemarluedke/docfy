@@ -20,7 +20,7 @@ describe('Generates runtime output', () => {
         root,
         urlPrefix: 'docs',
         urlSchema: 'manual',
-        pattern: '/**/*.md'
+        pattern: '**/*.md'
       }
     ]);
   });

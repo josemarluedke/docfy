@@ -20,7 +20,7 @@ describe('When urlSchema is set to auto', () => {
         {
           root,
           urlSchema: 'auto',
-          pattern: '/**/*.md'
+          pattern: '**/*.md'
         }
       ]);
     });
@@ -55,7 +55,7 @@ describe('When urlSchema is set to auto', () => {
           urlSchema: 'auto',
           urlPrefix: 'docs',
           urlSuffix: '.html',
-          pattern: '/**/*.md'
+          pattern: '**/*.md'
         }
       ]);
     });
