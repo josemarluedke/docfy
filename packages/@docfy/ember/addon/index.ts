@@ -1,36 +1,28 @@
-import { Page } from '@docfy/core/dist/types';
 import docfyOutput from '@docfy/output';
 import RouterDSL from '@ember/routing/-private/router-dsl';
+import { NestedRuntimeOutput } from '@docfy/core/dist/types';
 
-function getRoots(pages: Page[]): string[] {
-  return pages
-    .map((page) => {
-      return page.url.split('/')[1];
-    })
-    .filter((value, index, self) => {
-      return self.indexOf(value) === index;
+function addFromNested(context: RouterDSL, nested: NestedRuntimeOutput): void {
+  function add(this: RouterDSL): void {
+    nested.pages.forEach((page) => {
+      const url = page.metadata.relativeUrl;
+      if (typeof url === 'string') {
+        this.route(url);
+      }
     });
+
+    nested.children.forEach((node) => {
+      addFromNested(this, node);
+    });
+  }
+
+  if (nested.name === '/') {
+    add.call(context);
+  } else {
+    context.route(nested.name, add);
+  }
 }
 
-// TODO move to use nested output instead
 export function addDocfyRoutes(context: RouterDSL): void {
-  const urls = docfyOutput.flat.map((page) => {
-    return page.url.substring(1); // remove leading slash
-  });
-
-  const roots = getRoots(docfyOutput.flat);
-
-  roots.forEach((root) => {
-    context.route(root, function () {
-      const reg = new RegExp(`^${root}/`);
-
-      urls.forEach((url) => {
-        const child = url.replace(reg, '');
-
-        if (url.match(reg)) {
-          this.route(child);
-        }
-      });
-    });
-  });
+  addFromNested(context, docfyOutput.nested);
 }
