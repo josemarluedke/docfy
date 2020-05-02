@@ -14,6 +14,8 @@ export default function getDocfyConfig(root: string): DocfyConfig {
   const configPath = path.join(root, '.docfy-config.js');
   let docfyConfig: DocfyConfig = DEFAULT_CONFIG;
 
+  const pkg = require(path.join(root, 'package.json')); // eslint-disable-line
+
   try {
     docfyConfig = require(configPath); // eslint-disable-line @typescript-eslint/no-require-imports
   } catch (e) {
@@ -39,6 +41,17 @@ export default function getDocfyConfig(root: string): DocfyConfig {
     docfyConfig = DEFAULT_CONFIG;
   }
 
+  const repoUrl = pkg.repository.url || pkg.repository;
+
+  if (
+    !docfyConfig.repository &&
+    typeof repoUrl === 'string' &&
+    repoUrl !== ''
+  ) {
+    docfyConfig.repository = {
+      url: repoUrl
+    };
+  }
   if (!Array.isArray(docfyConfig.remarkPlugins)) {
     docfyConfig.remarkPlugins = [];
   }
