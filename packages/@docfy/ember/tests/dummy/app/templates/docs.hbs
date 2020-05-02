@@ -1,0 +1,74 @@
+<DocfyOutput @scope="docs" as |node|>
+  <ul>
+    {{#each node.pages as |page|}}
+      <li>
+        <DocfyLink @to={{page.url}}>
+          {{page.title}}
+        </DocfyLink>
+     </li>
+    {{/each}}
+
+    {{#each node.children as |child|}}
+      <li>
+        {{child.label}}
+
+        <ul>
+          {{#each child.pages as |page|}}
+            <li>
+              <DocfyLink @to={{page.url}}>
+                {{page.title}}
+              </DocfyLink>
+            </li>
+          {{/each}}
+
+          {{#each child.children as |subChild|}}
+            <li>
+              {{subChild.label}}
+
+              <ul>
+                {{#each subChild.pages as |page|}}
+                  <li>
+                    <DocfyLink @to={{page.url}}>
+                      {{page.title}}
+                    </DocfyLink>
+                  </li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
+        </ul>
+      </li>
+    {{/each}}
+  </ul>
+</DocfyOutput>
+
+<hr>
+
+<DocfyOutput @fromActiveRoute={{true}} as |page|>
+  {{#if page.editUrl}}
+    <a href={{page.editUrl}}>Edit this page</a>
+  {{/if}}
+
+  <br>
+
+  {{#if page.headings.length}}
+    On this page:
+    <ul>
+      {{#each page.headings as |heading|}}
+        <li>
+          <DocfyLink @to={{page.url}} @anchor={{heading.id}}>
+            {{heading.title}}
+          </DocfyLink>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+</DocfyOutput>
+
+<hr>
+<DocfyPreviousOrNextPage @isPrevious={{true}} />
+<DocfyPreviousOrNextPage />
+<hr>
+
+{{outlet}}
+

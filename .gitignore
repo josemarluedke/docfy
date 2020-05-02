@@ -1,3 +1,14 @@
+#
+# Mist
+/.env*
+/.pnp*
+/.sass-cache
+/connect.lock
+/libpeerconnection.log
+
+# Compiled TS
+/packages/**/core/lib
+
 # Logs
 logs
 *.log
@@ -68,10 +79,6 @@ typings/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
-.env.test
-
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
@@ -102,3 +109,22 @@ dist
 
 # TernJS port file
 .tern-port
+
+# Ember
+/packages/**/**/dist/
+/packages/**/**/tmp/
+
+# dependencies
+/packages/**/**/bower_components/
+/packages/**/**/node_modules/
+
+# misc
+/packages/**/**/testem.log
+
+# ember-try
+/packages/**/**/.node_modules.ember-try/
+/packages/**/**/bower.json.ember-try
+/packages/**/**/package.json.ember-try
+
+
+/packages/*/ember/lib/**

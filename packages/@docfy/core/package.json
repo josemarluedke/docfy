@@ -6,39 +6,45 @@
   "repository": "https://github.com/josemarluedke/docfy",
   "license": "MIT",
   "author": "Josemar Luedke <josemarluedke@gmail.com>",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
   "scripts": {
     "compile": "tsc",
-    "prepublish": "tsc",
+    "prepare": "tsc",
     "test": "jest"
   },
   "dependencies": {
+    "git-repo-info": "^2.1.1",
     "github-slugger": "^1.3.0",
     "glob": "^7.1.6",
+    "hosted-git-info": "^3.0.4",
     "mdast-util-to-string": "^1.1.0",
     "mdast-util-toc": "^5.0.2",
-    "remark-frontmatter": "^1.3.3",
+    "remark-frontmatter": "^2.0.0",
     "remark-html": "^11.0.1",
     "remark-normalize-headings": "^2.0.0",
-    "remark-parse": "^8.0.0",
+    "remark-parse": "^8.0.2",
     "remark-slug": "^6.0.0",
     "remark-stringify": "^8.0.0",
     "trough": "^1.0.5",
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.2",
-    "yaml": "^1.8.3"
+    "yaml": "^1.9.2"
   },
   "devDependencies": {
     "@types/glob": "^7.1.1",
-    "@types/node": "^13.11.0",
+    "@types/hosted-git-info": "^3.0.0",
+    "@types/node": "^13.13.4",
     "@types/unist": "^2.0.0",
-    "@types/yaml": "^1.2.0",
-    "jest": "^25.3.0",
+    "@types/yaml": "^1.9.7",
+    "jest": "^25.5.3",
     "remark-autolink-headings": "^6.0.0",
     "remark-hbs": "^0.2.0",
     "ts-jest": "^25.4.0",
-    "ts-node": "^8.8.2",
+    "ts-node": "^8.9.1",
     "typescript": "^3.8.3"
   },
   "engines": {

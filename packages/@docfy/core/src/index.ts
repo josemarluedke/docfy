@@ -3,16 +3,18 @@ import fs from 'fs';
 import path from 'path';
 import trough, { Through } from 'trough';
 import { Node } from 'unist';
-import { Page, Context, Options, SourceSettings } from './types';
+import { PageContent, Context, Options, SourceSettings } from './types';
 import {
   inferTitle,
   generateManualUrl,
   generateAutoUrl,
   parseFrontmatter,
   DEFAULT_IGNORE
-} from './utils';
-import { createRemark } from './remark';
+} from './-private/utils';
+import { createRemark } from './-private/remark';
 import { combineDemos, fixUrls, renderMarkdown, toc } from './plugins';
+import { getRepoEditUrl } from './-private/repo-info';
+export { transformOutput } from './-private/output';
 
 function createPage(
   source: string,
@@ -20,13 +22,18 @@ function createPage(
   ast: Node,
   urlSchema?: SourceSettings['urlSchema'],
   urlPrefix?: string,
-  urlSuffix?: string
-): Page {
+  urlSuffix?: string,
+  repoEditUrl?: string | null
+): PageContent {
   const frontmatter = parseFrontmatter(source, ast);
   let url: string;
   let title = inferTitle(ast);
   if (typeof frontmatter.title === 'string') {
     title = frontmatter.title;
+  }
+  // Fallback for title
+  if (typeof title === 'undefined' || title === '') {
+    title = path.parse(source).name;
   }
 
   if (urlSchema === 'manual') {
@@ -35,12 +42,19 @@ function createPage(
     url = generateAutoUrl(source, urlPrefix, urlSuffix);
   }
 
+  let editUrl = '';
+
+  if (repoEditUrl) {
+    editUrl = repoEditUrl.replace('{filepath}', source);
+  }
+
   return {
     source,
     ast,
     markdown,
     title,
     url,
+    editUrl,
     headings: [],
     metadata: frontmatter,
     rendered: ''
@@ -52,25 +66,32 @@ export default class Docfy {
   private context: Context;
 
   constructor(options: Options = {}) {
+    const { remarkPlugins, ...rest } = options;
     this.context = {
-      remark: createRemark(options.remarkPlugins),
+      remark: createRemark(remarkPlugins),
       pages: [],
       options: {
-        tocMaxDepth: options.tocMaxDepth || 6
+        ...rest,
+        tocMaxDepth: rest.tocMaxDepth || 6
       }
     };
 
     this.pipeline = trough<Context>()
       .use<SourceSettings[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
-      .use(fixUrls)
+      .use(fixUrls);
 
-      // Make sure TOC and renderMarkdown plugins are the last ones
-      .use(toc)
-      .use(renderMarkdown);
+    if (Array.isArray(options.plugins)) {
+      options.plugins.forEach((item) => {
+        this.pipeline.use(item);
+      });
+    }
+
+    // Make sure TOC and renderMarkdown plugins are the last ones
+    this.pipeline.use(toc).use(renderMarkdown);
   }
 
-  public run(sources: SourceSettings[]): Promise<Page[]> {
+  public run(sources: SourceSettings[]): Promise<PageContent[]> {
     return new Promise((resolve, reject) => {
       this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
         if (err) {
@@ -86,6 +107,12 @@ export default class Docfy {
     const ctx = this.context;
 
     sources.forEach((item) => {
+      const repoEditUrl = getRepoEditUrl(
+        item.root,
+        item.repository?.url || ctx.options.repository?.url || '',
+        item.repository?.editBranch || ctx.options.repository?.editBranch
+      );
+
       const files = glob.sync(item.pattern, {
         root: item.root,
         ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])]
@@ -103,7 +130,8 @@ export default class Docfy {
             ast,
             item.urlSchema,
             item.urlPrefix,
-            item.urlSuffix
+            item.urlSuffix,
+            repoEditUrl
           )
         );
       });

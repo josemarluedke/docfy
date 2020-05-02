@@ -1,5 +1,5 @@
 ---
-package: package1
+category: category1
 ---
 
 # Docs Intro

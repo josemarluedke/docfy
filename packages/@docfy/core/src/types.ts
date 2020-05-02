@@ -1,5 +1,9 @@
 import { Node } from 'unist';
-import { Processor, Plugin, Settings } from 'unified';
+import {
+  Processor,
+  Plugin as RemarkPlugin,
+  Settings as RemarkSettings
+} from 'unified';
 
 export interface Heading {
   title: string;
@@ -8,28 +12,43 @@ export interface Heading {
   headings?: Heading[];
 }
 
-export interface Metadata {
-  [key: string]: unknown;
-}
-
 export interface Page {
   source: string;
+  url: string;
+  editUrl: string;
+  title: string;
+  headings: Heading[];
+  metadata: Record<string, unknown>;
+}
+
+export interface PageContent extends Page {
   ast: Node;
   markdown: string;
   rendered: string;
-  url: string;
-  title?: string;
-  headings: Heading[];
-  metadata: Metadata;
-  demos?: Page[];
+  demos?: PageContent[];
+}
+
+interface ContextOptions
+  extends Omit<Options, 'plugins' | 'remarkPlugins' | 'tocMaxDepth'> {
+  tocMaxDepth: number;
 }
 
 export interface Context {
   remark: Processor;
+  pages: PageContent[];
+  options: ContextOptions;
+}
+
+export interface NestedOutput {
+  name: string;
+  label: string;
   pages: Page[];
-  options: {
-    tocMaxDepth: number;
-  };
+  children: NestedOutput[];
+}
+
+export interface Output {
+  flat: Page[];
+  nested: NestedOutput;
 }
 
 export interface SourceSettings {
@@ -65,12 +84,12 @@ export interface SourceSettings {
    *      - docs/components/buttons
    *      - docs/components/card
    *
-   * 2. "manual": It uses frontmatter information to inform "category" and
-   *    "package" of the file, ignoring the original file location.
+   * 2. "manual": It uses frontmatter information to inform "subcategory" and
+   *    "category" of the file, ignoring the original file location.
    *    The url schema is as follows:
-   *    {package}/{category}/{file-name}
+   *    {category}/{subcategory}/{file-name}
    *
-   *    If no package or category is specified, all files will be at the root
+   *    If no category or subcategory is specified, all files will be at the root
    *    level.
    *
    *    This options is perfect for documenting monorepo projects while keeping
@@ -94,9 +113,72 @@ export interface SourceSettings {
    * ".html" will generate urls like "/something.html"
    */
   urlSuffix?: string;
+
+  /**
+   * Overwrite repository config for this source.
+   */
+  repository?: RepositoryConfig;
 }
 
+interface RepositoryConfig {
+  /**
+   *
+   * The url to the Git Repository
+   * Example: https://github.com/josemarluedke/docfy
+   */
+  url: string;
+
+  /**
+   * Branch used to edit your markdown when clicking on "Edit this page" button.
+   * @default "master"
+   */
+  editBranch?: string;
+}
+
+export type Plugin = (ctx: Context) => void | Context; // eslint-disable-line
+
 export interface Options {
-  remarkPlugins?: ([Plugin, Settings] | Plugin)[];
+  plugins?: Plugin[];
+
+  /**
+   * Additional remark plugins
+   *
+   * Example:
+   *
+   * ```js
+   * const hbs = require('remark-hbs');
+   * const autolinkHeadings = require('remark-autolink-headings');
+   *
+   * const remarkPlugins = [
+   *   [
+   *     autolinkHeadings,
+   *     {
+   *       behavior: 'wrap'
+   *     }
+   *   ],
+   *   hbs
+   * ];
+   * ```
+   */
+  remarkPlugins?: ([RemarkPlugin, RemarkSettings] | RemarkPlugin)[];
+
+  /**
+   * The max depth of headings
+   * @default 6
+   */
   tocMaxDepth?: number;
+
+  /**
+   * The repository config
+   */
+  repository?: RepositoryConfig;
+}
+
+interface DocfyConfigSourceSettings extends Omit<SourceSettings, 'root'> {
+  root?: string;
+}
+
+export interface DocfyConfig extends Options {
+  sources: DocfyConfigSourceSettings[];
+  labels?: Record<string, string>;
 }

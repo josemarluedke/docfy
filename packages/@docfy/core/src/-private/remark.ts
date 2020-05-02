@@ -6,7 +6,7 @@ import html from 'remark-html';
 import stringify from 'remark-stringify';
 import normalizeHeadings from 'remark-normalize-headings';
 import { Processor } from 'unified';
-import { Options } from './types';
+import { Options } from '../types';
 
 export function createRemark(plugins?: Options['remarkPlugins']): Processor {
   const stack = unified()

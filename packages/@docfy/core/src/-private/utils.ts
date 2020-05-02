@@ -1,7 +1,6 @@
 import path from 'path';
 import visit from 'unist-util-visit';
 import { Node } from 'unist';
-import { Page, Metadata } from './types';
 import toString from 'mdast-util-to-string';
 import Slugger from 'github-slugger';
 import YAML from 'yaml';
@@ -11,7 +10,7 @@ const slug = Slugger.slug;
 
 export function generateManualUrl(
   source: string,
-  meta: Page['metadata'],
+  meta: Record<string, unknown>,
   prefix?: string,
   suffix?: string
 ): string {
@@ -19,18 +18,18 @@ export function generateManualUrl(
   if (prefix) {
     parts.push(prefix);
   }
-  if (typeof meta.package === 'string') {
-    parts.push(slug(meta.package));
-  }
   if (typeof meta.category === 'string') {
     parts.push(slug(meta.category));
+  }
+  if (typeof meta.subcategory === 'string') {
+    parts.push(slug(meta.subcategory));
   }
   let fileName = path.parse(path.basename(source)).name;
   if (fileName === 'index') {
     fileName = path.basename(path.dirname(source));
   }
   parts.push(`${fileName}${suffix || ''}`);
-  return parts.join('/');
+  return parts.join('/').toLowerCase();
 }
 
 export function generateAutoUrl(
@@ -51,7 +50,7 @@ export function generateAutoUrl(
   }
 
   parts.push(`${fileName}${suffix || ''}`);
-  return parts.join('/');
+  return parts.join('/').toLowerCase();
 }
 
 export function inferTitle(ast: Node): string | undefined {
@@ -64,7 +63,10 @@ export function inferTitle(ast: Node): string | undefined {
   return docTitle;
 }
 
-export function parseFrontmatter(source: string, ast: Node): Metadata {
+export function parseFrontmatter(
+  source: string,
+  ast: Node
+): Record<string, undefined> {
   let result = {};
   visit(ast, 'yaml', (node) => {
     try {

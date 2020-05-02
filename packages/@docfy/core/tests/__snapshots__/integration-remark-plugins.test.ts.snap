@@ -45,14 +45,14 @@ Array [
   Array [
     "packages/package2/docs/overview.md",
     "<h1 id=\\"this-is-the-overview-page\\"><a href=\\"#this-is-the-overview-page\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>This is the overview page</h1>
-<p>This is a <a href=\\"/docs/package1/components/button\\">link to another file in a different package</a>.</p>
+<p>This is a <a href=\\"/docs/category1/components/button\\">link to another file in a different package</a>.</p>
 ",
   ],
   Array [
     "packages/package2/docs/styles.md",
     "<h1 id=\\"how-styles-work\\"><a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/package2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/category2/overview\\">overview</a> to get started.</p>
 ",
   ],
 ]
@@ -103,14 +103,14 @@ Array [
   Array [
     "packages/package2/docs/overview.md",
     "<h1 id=\\"this-is-the-overview-page\\">This is the overview page<a href=\\"#this-is-the-overview-page\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-<p>This is a <a href=\\"/docs/package1/components/button\\">link to another file in a different package</a>.</p>
+<p>This is a <a href=\\"/docs/category1/components/button\\">link to another file in a different package</a>.</p>
 ",
   ],
   Array [
     "packages/package2/docs/styles.md",
     "<h1 id=\\"how-styles-work\\">How styles work<a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/package2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/category2/overview\\">overview</a> to get started.</p>
 ",
   ],
 ]

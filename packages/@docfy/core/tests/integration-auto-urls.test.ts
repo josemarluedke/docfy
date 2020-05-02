@@ -1,8 +1,8 @@
 import Docfy from '../src';
-import { Page } from '../src/types';
+import { PageContent } from '../src/types';
 import path from 'path';
 
-function findPage(pages: Page[], source: string) {
+function findPage(pages: PageContent[], source: string) {
   return pages.find((p) => {
     return p.source === source;
   });
@@ -12,7 +12,7 @@ describe('When urlSchema is set to auto', () => {
   const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
   describe('Basic case, no url prefix, or suffix', () => {
-    let pages: Page[];
+    let pages: PageContent[];
 
     beforeAll(async () => {
       const docfy = new Docfy();
@@ -45,7 +45,7 @@ describe('When urlSchema is set to auto', () => {
   });
 
   describe('When source defines url prefix and suffix', () => {
-    let pages: Page[];
+    let pages: PageContent[];
 
     beforeAll(async () => {
       const docfy = new Docfy();

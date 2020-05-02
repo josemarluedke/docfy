@@ -1,6 +1,6 @@
 ---
 order: 0
-package: package2
+category: category2
 title: Overview
 ---
 

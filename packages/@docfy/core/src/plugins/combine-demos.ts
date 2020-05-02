@@ -1,5 +1,5 @@
 import path from 'path';
-import { Page, Context } from '../types';
+import { PageContent, Context } from '../types';
 
 /*
  * Finds the index of the owner for a given demo file.
@@ -21,7 +21,7 @@ import { Page, Context } from '../types';
  *     - demo1.md
  *     - demo2.md
  */
-function findDemoOwner(contents: Page[], demoSource: string): number {
+function findDemoOwner(contents: PageContent[], demoSource: string): number {
   const folder = path.basename(path.dirname(demoSource));
 
   let parentName = folder.replace('-demo', '');
@@ -29,7 +29,7 @@ function findDemoOwner(contents: Page[], demoSource: string): number {
     parentName = path.basename(path.dirname(path.dirname(demoSource)));
   }
 
-  return contents.findIndex((item: Page): boolean => {
+  return contents.findIndex((item): boolean => {
     const file = path.parse(path.basename(item.source));
     return (
       file.name === parentName ||
@@ -40,7 +40,7 @@ function findDemoOwner(contents: Page[], demoSource: string): number {
 }
 
 export function combineDemos(context: Context): Context {
-  context.pages.forEach((item: Page, index: number): void => {
+  context.pages.forEach((item, index: number): void => {
     const folder = path.basename(path.dirname(item.source));
 
     if (folder.match(/demo$/)) {
