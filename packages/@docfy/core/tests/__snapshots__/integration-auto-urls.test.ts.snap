@@ -29,7 +29,7 @@ Array [
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/packages/package1/components/form",
+    "/packages/package1/components/form/",
   ],
   Array [
     "packages/package1/docs/intro.md",
@@ -75,7 +75,7 @@ Array [
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/docs/packages/package1/components/form.html",
+    "/docs/packages/package1/components/form/",
   ],
   Array [
     "packages/package1/docs/intro.md",
