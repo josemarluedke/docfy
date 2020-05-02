@@ -14,8 +14,8 @@
   },
   "scripts": {
     "compile": "tsc --project src/tsconfig.json",
-    "prestart": "yarn compile",
-    "prepublish": "yarn compile",
+    "prestart": "npm-run-all compile",
+    "prepare": "npm-run-all compile",
     "build": "ember build --environment=production",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:hbs": "ember-template-lint .",
