@@ -2,25 +2,73 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import sinon from 'sinon';
 
-module('Integration | Component | docfy-output', function (hooks) {
+module('Integration | Component | DocfyOutput', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function (assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  const template = hbs`
+      <DocfyOutput
+        @type={{this.type}}
+        @fromActiveRoute={{this.fromActiveRoute}}
+        @url={{this.url}}
+        @category={{this.category}}
+        as |result|
+      >
+       <div data-test-id="flat-url-title">
+          {{result.title}}
+        </div>
+        <div data-test-id="nested-name">
+          {{result.name}}
+        </div>
+        <div data-test-id="flat-urls">
+          {{#each result as |item|}}
+            {{item.url}}
+          {{/each}}
+        </div>
 
-    await render(hbs`{{docfy-output}}`);
+      </DocfyOutput>`;
 
-    assert.equal(this.element.textContent.trim(), '');
+  test('it returns the root nested object by default', async function (assert) {
+    await render(template);
 
-    // Template block usage:
-    await render(hbs`
-      {{#docfy-output}}
-        template block text
-      {{/docfy-output}}
-    `);
+    assert.dom('[data-test-id="nested-name"]').hasText('/');
+  });
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+  test('it returns the specified category', async function (assert) {
+    this.set('category', 'docs');
+    await render(template);
+
+    assert.dom('[data-test-id="nested-name"]').hasText('docs');
+  });
+
+  test('it returns flat obj', async function (assert) {
+    this.set('type', 'flat');
+    await render(template);
+
+    assert
+      .dom('[data-test-id="flat-urls"]')
+      .hasText(
+        '/docs/introduction /docs/installation /docs/overview /docs/ember/installation /docs/ember/components/docfy-output /docs/ember/components/docfy-link /docs/core/overview /docs/core/helpers/genereate-nested-output /docs/core/helpers/genereate-flat-output'
+      );
+  });
+
+  test('it returns the page by url', async function (assert) {
+    this.set('url', '/docs/overview');
+    await render(template);
+
+    assert.dom('[data-test-id="flat-url-title"]').hasText('Overview');
+  });
+
+  test('it returns the page fromActiveRoute', async function (assert) {
+    const router = this.owner.lookup('router:main');
+    router.setupRouter();
+
+    const routerService = this.owner.lookup('service:router');
+    sinon.stub(routerService, 'currentURL').get(() => '/docs/installation');
+    this.set('fromActiveRoute', true);
+    await render(template);
+
+    assert.dom('[data-test-id="flat-url-title"]').hasText('Installation');
   });
 });

@@ -1,26 +1,61 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render } from '@ember/test-helpers';
+import { render, click } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import docfyOutput from '@docfy/output';
+import sinon from 'sinon';
 
-module('Integration | Component | docfy-link', function (hooks) {
+module('Integration | Component | DocfyLink', function (hooks) {
   setupRenderingTest(hooks);
 
-  test('it renders', async function (assert) {
-    // Set any properties with this.set('myProperty', 'value');
-    // Handle any actions with this.set('myAction', function(val) { ... });
+  test('it works', async function (assert) {
+    assert.expect(4);
 
-    await render(hbs`{{docfy-link}}`);
+    const router = this.owner.lookup('router:main');
+    router.setupRouter();
+    const routerService = this.owner.lookup('service:router');
+    sinon.stub(routerService, 'transitionTo').callsFake((routeName: string) => {
+      assert.equal(routeName, 'docs.introduction');
+    });
 
-    assert.equal(this.element.textContent.trim(), '');
+    this.set('page', docfyOutput.flat[0]);
 
-    // Template block usage:
-    await render(hbs`
-      {{#docfy-link}}
-        template block text
-      {{/docfy-link}}
-    `);
+    await render(
+      hbs`<DocfyLink @to={{this.page.url}} data-test-id="link" @activeClass="active">
+            {{this.page.title}}
+          </DocfyLink>`
+    );
+    assert
+      .dom('[data-test-id="link"]')
+      .hasAttribute('href', '/docs/introduction');
 
-    assert.equal(this.element.textContent.trim(), 'template block text');
+    assert.dom('[data-test-id="link"]').hasText('Introduction');
+    assert.dom('[data-test-id="link"]').doesNotHaveClass('active');
+
+    await click('[data-test-id="link"]');
+    sinon.restore();
+  });
+
+  test('it adds active class when active', async function (assert) {
+    const router = this.owner.lookup('router:main');
+    router.setupRouter();
+    const routerService = this.owner.lookup('service:router');
+    sinon
+      .stub(routerService, 'currentRouteName')
+      .get(() => 'docs.introduction');
+
+    this.set('page', docfyOutput.flat[0]);
+
+    await render(
+      hbs`<DocfyLink @to={{this.page.url}} data-test-id="link" @activeClass="active">
+            {{this.page.title}}
+          </DocfyLink>`
+    );
+    assert
+      .dom('[data-test-id="link"]')
+      .hasAttribute('href', '/docs/introduction');
+
+    assert.dom('[data-test-id="link"]').hasClass('active');
+    sinon.restore();
   });
 });
