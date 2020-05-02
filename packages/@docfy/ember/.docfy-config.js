@@ -1,4 +1,3 @@
-const hbs = require('remark-hbs');
 const autolinkHeadings = require('remark-autolink-headings');
 
 module.exports = {
@@ -8,8 +7,7 @@ module.exports = {
       {
         behavior: 'wrap'
       }
-    ],
-    hbs
+    ]
   ],
   sources: [
     {

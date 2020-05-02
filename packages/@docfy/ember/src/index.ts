@@ -11,13 +11,6 @@ import { UnwatchedDir } from 'broccoli-source';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
 
-// TODO:
-//
-// - Write tests
-// - Write plugin to replace internal links with DocfyLink
-// - Move images into public
-// - Add basic styles to dummy app
-
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);
   if (fs.existsSync(dirname)) {
@@ -40,7 +33,7 @@ class DocfyBroccoli extends Plugin {
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
     console.log();
-    console.log('Docfy Outpu Patht: ', this.outputPath);
+    console.log('Docfy Output Path: ', this.outputPath);
     console.log();
 
     pages.forEach((page) => {
@@ -69,8 +62,7 @@ module.exports = {
   docfyConfig: undefined,
 
   included(...args: unknown[]): void {
-    const configPath = path.join(this.project.root, '.docfy-config.js');
-    this.docfyConfig = getDocfyConfig(configPath, this.project.root);
+    this.docfyConfig = getDocfyConfig(this.project.root);
 
     this._super.included.apply(this, args);
   },

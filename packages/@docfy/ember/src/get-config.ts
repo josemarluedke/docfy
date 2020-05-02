@@ -1,4 +1,6 @@
+import path from 'path';
 import { DocfyConfig } from '@docfy/core/dist/types';
+import remarkHBS from 'remark-hbs';
 
 const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
@@ -8,10 +10,8 @@ const DEFAULT_CONFIG: DocfyConfig = {
   ]
 };
 
-export default function getDocfyConfig(
-  configPath: string,
-  defaultRoot: string
-): DocfyConfig {
+export default function getDocfyConfig(root: string): DocfyConfig {
+  const configPath = path.join(root, '.docfy-config.js');
   let docfyConfig: DocfyConfig = DEFAULT_CONFIG;
 
   try {
@@ -39,9 +39,15 @@ export default function getDocfyConfig(
     docfyConfig = DEFAULT_CONFIG;
   }
 
+  if (!Array.isArray(docfyConfig.remarkPlugins)) {
+    docfyConfig.remarkPlugins = [];
+  }
+
+  docfyConfig.remarkPlugins.push(remarkHBS);
+
   docfyConfig.sources.forEach((source) => {
     if (typeof source.root === 'undefined') {
-      source.root = defaultRoot;
+      source.root = root;
     }
   });
 
