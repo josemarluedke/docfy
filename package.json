@@ -8,7 +8,7 @@
   "scripts": {
     "lint:js": "eslint . --ext .js,.ts",
     "start": "echo 'TODO'",
-    "compile": "lerna run --parallel compile",
+    "compile": "lerna run compile",
     "test": "lerna run --parallel test"
   },
   "devDependencies": {
