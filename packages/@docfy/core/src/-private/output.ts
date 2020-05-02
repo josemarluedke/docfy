@@ -1,14 +1,6 @@
-import {
-  Page,
-  PageContent,
-  Output,
-  NestedOutput
-} from '../types';
+import { Page, PageContent, Output, NestedOutput } from '../types';
 
-function findChild(
-  node: NestedOutput,
-  name: string
-): NestedOutput | undefined {
+function findChild(node: NestedOutput, name: string): NestedOutput | undefined {
   return node.children.find((item) => {
     return item.name === name;
   });
