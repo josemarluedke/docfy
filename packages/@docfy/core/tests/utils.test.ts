@@ -43,6 +43,10 @@ describe('#generateManualUrl', () => {
     ).toBe('/orgawesome-lib/helpers-and-modifiers/markdown');
   });
 
+  test('it returns a slash if file in index on root', () => {
+    expect(generateManualUrl('index.md', {})).toBe('/');
+  });
+
   test('it adds a trailing slash if file name is index', () => {
     expect(generateManualUrl('cool/button/index.md', {})).toBe('/button/');
   });
@@ -115,6 +119,10 @@ describe('#generateAutolUrl', () => {
     expect(
       generateAutoUrl('my-folder/components/README.md', 'docs', '.html')
     ).toBe('/docs/my-folder/components/');
+  });
+
+  test('it returns a slash if file in index on root', () => {
+    expect(generateAutoUrl('index.md')).toBe('/');
   });
 
   test('it adds the prefix', () => {

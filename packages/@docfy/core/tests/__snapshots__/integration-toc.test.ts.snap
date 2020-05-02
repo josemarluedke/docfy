@@ -3,6 +3,10 @@
 exports[`Extracts TOC When maxDepth is not set it should have extracted TOC correctly 1`] = `
 Array [
   Array [
+    "README.md",
+    Array [],
+  ],
+  Array [
     "docs/about.md",
     Array [
       Object {
@@ -81,10 +85,6 @@ Array [
     Array [],
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    Array [],
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     Array [],
   ],
@@ -96,11 +96,19 @@ Array [
     "packages/package2/docs/styles.md",
     Array [],
   ],
+  Array [
+    "packages/package1/components/form/index.md",
+    Array [],
+  ],
 ]
 `;
 
 exports[`Extracts TOC When maxDepth is set it should have extracted TOC correctly 1`] = `
 Array [
+  Array [
+    "README.md",
+    Array [],
+  ],
   Array [
     "docs/about.md",
     Array [
@@ -166,10 +174,6 @@ Array [
     Array [],
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    Array [],
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     Array [],
   ],
@@ -179,6 +183,10 @@ Array [
   ],
   Array [
     "packages/package2/docs/styles.md",
+    Array [],
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
     Array [],
   ],
 ]

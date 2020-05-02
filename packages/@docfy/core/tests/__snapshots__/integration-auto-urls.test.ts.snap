@@ -16,6 +16,10 @@ exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it s
 exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it should have generated urls based folder structure 1`] = `
 Array [
   Array [
+    "README.md",
+    "/",
+  ],
+  Array [
     "docs/about.md",
     "/docs/about",
   ],
@@ -28,10 +32,6 @@ Array [
     "/packages/package1/components/button",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "/packages/package1/components/form/",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "/packages/package1/docs/intro",
   ],
@@ -42,6 +42,10 @@ Array [
   Array [
     "packages/package2/docs/styles.md",
     "/packages/package2/docs/styles",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/packages/package1/components/form/",
   ],
 ]
 `;
@@ -62,6 +66,10 @@ exports[`When urlSchema is set to auto When source defines url prefix and suffix
 exports[`When urlSchema is set to auto When source defines url prefix and suffix it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
 Array [
   Array [
+    "README.md",
+    "/docs/",
+  ],
+  Array [
     "docs/about.md",
     "/docs/docs/about.html",
   ],
@@ -74,10 +82,6 @@ Array [
     "/docs/packages/package1/components/button.html",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "/docs/packages/package1/components/form/",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "/docs/packages/package1/docs/intro.html",
   ],
@@ -88,6 +92,10 @@ Array [
   Array [
     "packages/package2/docs/styles.md",
     "/docs/packages/package2/docs/styles.html",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/docs/packages/package1/components/form/",
   ],
 ]
 `;

@@ -28,7 +28,11 @@ export function generateManualUrl(
   let fileName = path.parse(path.basename(source)).name.toLowerCase();
   if (fileName === 'index' || fileName === 'readme') {
     fileName = path.basename(path.dirname(source));
-    parts.push(fileName, '');
+    if (fileName === '.') {
+      parts.push('');
+    } else {
+      parts.push(fileName, '');
+    }
   } else {
     parts.push(`${fileName}${suffix || ''}`);
   }

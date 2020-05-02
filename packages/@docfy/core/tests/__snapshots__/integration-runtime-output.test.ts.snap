@@ -47,6 +47,16 @@ Object {
       "url": "/docs/about",
     },
     Object {
+      "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+      "headings": Array [],
+      "metadata": Object {
+        "relativeUrl": "",
+      },
+      "source": "README.md",
+      "title": "The index",
+      "url": "/docs/",
+    },
+    Object {
       "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
       "headings": Array [],
       "metadata": Object {
@@ -251,6 +261,16 @@ Object {
             "source": "docs/about.md",
             "title": "About the project",
             "url": "/docs/about",
+          },
+          Object {
+            "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+            "headings": Array [],
+            "metadata": Object {
+              "relativeUrl": "",
+            },
+            "source": "README.md",
+            "title": "The index",
+            "url": "/docs/",
           },
         ],
       },

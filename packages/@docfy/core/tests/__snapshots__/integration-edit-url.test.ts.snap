@@ -3,6 +3,10 @@
 exports[`Generates Edit Url it should generated edit urls correctly 1`] = `
 Array [
   Array [
+    "README.md",
+    "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+  ],
+  Array [
     "docs/about.md",
     "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/docs/about.md",
   ],
@@ -15,12 +19,12 @@ Array [
     "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/button.md",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
   ],
   Array [
     "packages/package2/docs/overview.md",
