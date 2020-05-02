@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import output from '@docfy/ember/output';
-import { NestedRuntimeOutput, Page } from '@docfy/core/lib/types';
+import { NestedOutput, Page } from '@docfy/core/lib/types';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 
@@ -15,7 +15,7 @@ interface DocfyOutputArgs {
 export default class DocfyOutput extends Component<DocfyOutputArgs> {
   @service router!: RouterService;
 
-  get nestedOutput(): NestedRuntimeOutput | undefined {
+  get nestedOutput(): NestedOutput | undefined {
     if (this.args.scope) {
       return output.nested.children.find((item) => {
         return item.name === this.args.scope;
@@ -41,7 +41,7 @@ export default class DocfyOutput extends Component<DocfyOutputArgs> {
     return output.flat;
   }
 
-  get output(): NestedRuntimeOutput | Page[] | Page | undefined {
+  get output(): NestedOutput | Page[] | Page | undefined {
     let isFlat = this.args.type === 'flat';
 
     if (this.args.url || this.args.fromActiveRoute) {

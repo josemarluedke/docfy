@@ -1,7 +1,7 @@
 import path from 'path';
 import { Node } from 'unist';
 import visit from 'unist-util-visit';
-import { isValidUrl, isAnchorUrl } from '../utils';
+import { isValidUrl, isAnchorUrl } from '../-private/utils';
 import { PageContent, Context } from '../types';
 
 interface LinkNode extends Node {

@@ -10,10 +10,11 @@ import {
   generateAutoUrl,
   parseFrontmatter,
   DEFAULT_IGNORE
-} from './utils';
-import { createRemark } from './remark';
+} from './-private/utils';
+import { createRemark } from './-private/remark';
 import { combineDemos, fixUrls, renderMarkdown, toc } from './plugins';
-import { getRepoEditUrl } from './repo-info';
+import { getRepoEditUrl } from './-private/repo-info';
+export { transformOutput } from './-private/output';
 
 function createPage(
   source: string,

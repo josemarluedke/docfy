@@ -1,6 +1,6 @@
 import Docfy from '../src';
 import { PageContent } from '../src/types';
-import { generateRuntimeOutput } from '../src/runtime-output';
+import { transformOutput } from '../src';
 import path from 'path';
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
@@ -26,6 +26,6 @@ describe('Generates runtime output', () => {
   });
 
   test('it should have generated the runtime output', async () => {
-    expect(generateRuntimeOutput(pages)).toMatchSnapshot();
+    expect(transformOutput(pages)).toMatchSnapshot();
   });
 });

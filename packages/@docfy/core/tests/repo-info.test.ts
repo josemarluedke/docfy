@@ -1,4 +1,4 @@
-import { getRepoEditUrl } from '../src/repo-info';
+import { getRepoEditUrl } from '../src/-private/repo-info';
 
 test('gets edit url from github with default branch', () => {
   expect(getRepoEditUrl(__dirname, 'https://github.com/user/repo')).toBe(

@@ -39,16 +39,16 @@ export interface Context {
   options: ContextOptions;
 }
 
-export interface NestedRuntimeOutput {
+export interface NestedOutput {
   name: string;
   label: string;
   pages: Page[];
-  children: NestedRuntimeOutput[];
+  children: NestedOutput[];
 }
 
-export interface RuntimeOutput {
+export interface Output {
   flat: Page[];
-  nested: NestedRuntimeOutput;
+  nested: NestedOutput;
 }
 
 export interface SourceSettings {

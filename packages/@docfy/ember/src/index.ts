@@ -3,8 +3,7 @@ import path from 'path';
 import MergeTrees from 'broccoli-merge-trees';
 import { Node, InputNode } from 'broccoli-node-api';
 import Plugin from 'broccoli-plugin';
-import Docfy from '@docfy/core';
-import { generateRuntimeOutput } from '@docfy/core/lib/runtime-output';
+import Docfy, { transformOutput } from '@docfy/core';
 import { DocfyConfig, SourceSettings } from '@docfy/core/lib/types';
 import WriteFile from 'broccoli-file-creator';
 import { UnwatchedDir } from 'broccoli-source';
@@ -46,7 +45,7 @@ class DocfyBroccoli extends Plugin {
     fs.writeFileSync(
       path.join(this.outputPath, 'docfy-output.js'),
       `export default ${JSON.stringify(
-        generateRuntimeOutput(pages, this.config.labels)
+        transformOutput(pages, this.config.labels)
       )};`
     );
   }

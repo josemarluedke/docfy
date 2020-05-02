@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import output from '@docfy/ember/output';
-import { NestedRuntimeOutput, Page } from '@docfy/core/lib/types';
+import { NestedOutput, Page } from '@docfy/core/lib/types';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 
@@ -10,7 +10,7 @@ interface DocfyPreviousLinkArgs {
 }
 
 // We flat the nested output to keep the nested order
-function flatNested(output: NestedRuntimeOutput, pages: Page[] = []): Page[] {
+function flatNested(output: NestedOutput, pages: Page[] = []): Page[] {
   pages.push(...output.pages);
 
   output.children.forEach((child) => {
@@ -23,7 +23,7 @@ function flatNested(output: NestedRuntimeOutput, pages: Page[] = []): Page[] {
 function findPreviousOrNextPage(
   url: string,
   isPrevious: boolean,
-  nested: NestedRuntimeOutput
+  nested: NestedOutput
 ): Page | undefined {
   const flat = flatNested(nested);
   const index = flat.findIndex((page) => {
@@ -45,7 +45,7 @@ export default class DocfyPreviousOrNextLink extends Component<
 > {
   @service router!: RouterService;
 
-  get scopedOutput(): NestedRuntimeOutput {
+  get scopedOutput(): NestedOutput {
     if (typeof this.args.scope === 'string') {
       const foundScope = output.nested.children.find((child) => {
         return child.name === this.args.scope;

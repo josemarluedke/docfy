@@ -5,8 +5,8 @@ import {
   isValidUrl,
   inferTitle,
   parseFrontmatter
-} from '../src/utils';
-import { createRemark } from '../src/remark';
+} from '../src/-private/utils';
+import { createRemark } from '../src/-private/remark';
 
 describe('#generateManualUrl', () => {
   test('base case', () => {

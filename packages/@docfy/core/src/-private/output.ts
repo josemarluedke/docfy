@@ -1,9 +1,14 @@
-import { Page, PageContent, RuntimeOutput, NestedRuntimeOutput } from './types';
+import {
+  Page,
+  PageContent,
+  Output,
+  NestedOutput
+} from '../types';
 
 function findChild(
-  node: NestedRuntimeOutput,
+  node: NestedOutput,
   name: string
-): NestedRuntimeOutput | undefined {
+): NestedOutput | undefined {
   return node.children.find((item) => {
     return item.name === name;
   });
@@ -19,7 +24,7 @@ function sortByOrder(pages: Page[]): Page[] {
   });
 }
 
-export function genereateFlatOutput(pageContents: PageContent[]): Page[] {
+function transformToPage(pageContents: PageContent[]): Page[] {
   const pages: Page[] = pageContents.map((page) => {
     const { url, headings, title, source, metadata, editUrl } = page;
 
@@ -36,12 +41,12 @@ export function genereateFlatOutput(pageContents: PageContent[]): Page[] {
   return sortByOrder(pages);
 }
 
-export function generateNestedOutput(
+function transformNestedOutput(
   pages: Page[],
   labels: Record<string, string> = {},
-  existingObj?: NestedRuntimeOutput
-): NestedRuntimeOutput {
-  const node: NestedRuntimeOutput = existingObj || {
+  existingObj?: NestedOutput
+): NestedOutput {
+  const node: NestedOutput = existingObj || {
     name: '/',
     label: labels['/'] || '/',
     pages: [],
@@ -73,7 +78,7 @@ export function generateNestedOutput(
         }
 
         item.metadata.relativeUrl = urlParts.join('/');
-        generateNestedOutput([item], labels, child);
+        transformNestedOutput([item], labels, child);
 
         sortByOrder(child.pages);
       }
@@ -84,12 +89,12 @@ export function generateNestedOutput(
   return node;
 }
 
-export function generateRuntimeOutput(
+export function transformOutput(
   pageContents: PageContent[],
   labels: Record<string, string> = {}
-): RuntimeOutput {
-  const flat = genereateFlatOutput(pageContents);
-  const nested = generateNestedOutput(flat, labels);
+): Output {
+  const flat = transformToPage(pageContents);
+  const nested = transformNestedOutput(flat, labels);
 
   return { flat, nested };
 }
