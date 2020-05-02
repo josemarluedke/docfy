@@ -1,5 +1,9 @@
 import { Node } from 'unist';
-import { Processor, Plugin, Settings } from 'unified';
+import {
+  Processor,
+  Plugin as RemarkPlugin,
+  Settings as RemarkSettings
+} from 'unified';
 
 export interface Heading {
   title: string;
@@ -25,7 +29,7 @@ export interface PageContent extends Page {
 }
 
 interface ContextOptions
-  extends Omit<Options, 'remarkPlugins' | 'tocMaxDepth'> {
+  extends Omit<Options, 'plugins' | 'remarkPlugins' | 'tocMaxDepth'> {
   tocMaxDepth: number;
 }
 
@@ -131,7 +135,11 @@ interface RepositoryConfig {
   editBranch?: string;
 }
 
+export type Plugin = (ctx: Context) => void | Context; // eslint-disable-line
+
 export interface Options {
+  plugins?: Plugin[];
+
   /**
    * Additional remark plugins
    *
@@ -152,7 +160,7 @@ export interface Options {
    * ];
    * ```
    */
-  remarkPlugins?: ([Plugin, Settings] | Plugin)[];
+  remarkPlugins?: ([RemarkPlugin, RemarkSettings] | RemarkPlugin)[];
 
   /**
    * The max depth of headings

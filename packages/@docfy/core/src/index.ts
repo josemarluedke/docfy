@@ -78,11 +78,16 @@ export default class Docfy {
     this.pipeline = trough<Context>()
       .use<SourceSettings[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
-      .use(fixUrls)
+      .use(fixUrls);
 
-      // Make sure TOC and renderMarkdown plugins are the last ones
-      .use(toc)
-      .use(renderMarkdown);
+    if (Array.isArray(options.plugins)) {
+      options.plugins.forEach((item) => {
+        this.pipeline.use(item);
+      });
+    }
+
+    // Make sure TOC and renderMarkdown plugins are the last ones
+    this.pipeline.use(toc).use(renderMarkdown);
   }
 
   public run(sources: SourceSettings[]): Promise<PageContent[]> {
