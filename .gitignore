@@ -1,9 +1,13 @@
+#
 # Mist
 /.env*
 /.pnp*
 /.sass-cache
 /connect.lock
 /libpeerconnection.log
+
+# Compiled TS
+/packages/**/core/lib
 
 # Logs
 logs

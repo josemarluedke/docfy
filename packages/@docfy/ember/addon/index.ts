@@ -1,6 +1,6 @@
 import output from '@docfy/ember/output';
 import RouterDSL from '@ember/routing/-private/router-dsl';
-import { NestedRuntimeOutput } from '@docfy/core/dist/types';
+import { NestedRuntimeOutput } from '@docfy/core/lib/types';
 
 function addFromNested(context: RouterDSL, nested: NestedRuntimeOutput): void {
   function add(this: RouterDSL): void {

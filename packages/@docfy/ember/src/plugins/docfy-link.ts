@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import { Context } from '@docfy/core/dist/types';
+import { Context } from '@docfy/core/lib/types';
 import { Node } from 'unist';
 import toHtml from 'hast-util-to-html';
 

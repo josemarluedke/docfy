@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import output from '@docfy/ember/output';
-import { NestedRuntimeOutput, Page } from '@docfy/core/dist/types';
+import { NestedRuntimeOutput, Page } from '@docfy/core/lib/types';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 

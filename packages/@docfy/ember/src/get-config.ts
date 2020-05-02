@@ -1,5 +1,5 @@
 import path from 'path';
-import { DocfyConfig } from '@docfy/core/dist/types';
+import { DocfyConfig } from '@docfy/core/lib/types';
 import remarkHBS from 'remark-hbs';
 import docfyLink from './plugins/docfy-link';
 
