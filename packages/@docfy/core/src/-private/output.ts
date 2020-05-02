@@ -67,6 +67,19 @@ function transformNestedOutput(
             children: []
           };
           node.children.push(child);
+
+          node.children.sort((a, b) => {
+            const labelA = a.label.toUpperCase();
+            const labelB = b.label.toUpperCase();
+            if (labelA < labelB) {
+              return -1;
+            }
+            if (labelA > labelB) {
+              return 1;
+            }
+
+            return 0;
+          });
         }
 
         item.metadata.relativeUrl = urlParts.join('/');
