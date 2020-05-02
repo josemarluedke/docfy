@@ -9,16 +9,16 @@ interface DocfyOutputArgs {
 
   fromActiveRoute?: boolean;
   url?: string;
-  category?: string;
+  scope?: string;
 }
 
 export default class DocfyOutput extends Component<DocfyOutputArgs> {
   @service router!: RouterService;
 
   get nestedOutput(): NestedRuntimeOutput | undefined {
-    if (this.args.category) {
+    if (this.args.scope) {
       return docfyOutput.nested.children.find((item) => {
-        return item.name === this.args.category;
+        return item.name === this.args.scope;
       });
     }
 
@@ -48,7 +48,7 @@ export default class DocfyOutput extends Component<DocfyOutputArgs> {
       isFlat = true;
     }
 
-    if (this.args.category) {
+    if (this.args.scope) {
       isFlat = false;
     }
 

@@ -12,10 +12,10 @@ module('Integration | Component | DocfyOutput', function (hooks) {
         @type={{this.type}}
         @fromActiveRoute={{this.fromActiveRoute}}
         @url={{this.url}}
-        @category={{this.category}}
+        @scope={{this.scope}}
         as |result|
       >
-       <div data-test-id="flat-url-title">
+        <div data-test-id="flat-url-title">
           {{result.title}}
         </div>
         <div data-test-id="nested-name">
@@ -35,8 +35,8 @@ module('Integration | Component | DocfyOutput', function (hooks) {
     assert.dom('[data-test-id="nested-name"]').hasText('/');
   });
 
-  test('it returns the specified category', async function (assert) {
-    this.set('category', 'docs');
+  test('it returns the specified scope', async function (assert) {
+    this.set('scope', 'docs');
     await render(template);
 
     assert.dom('[data-test-id="nested-name"]').hasText('docs');
