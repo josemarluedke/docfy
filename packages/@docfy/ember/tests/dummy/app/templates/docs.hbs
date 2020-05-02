@@ -45,6 +45,12 @@
 <hr>
 
 <DocfyOutput @fromActiveRoute={{true}} as |page|>
+  {{#if page.editUrl}}
+    <a href={{page.editUrl}}>Edit this page</a>
+  {{/if}}
+
+  <br>
+
   {{#if page.headings.length}}
     On this page:
     <ul>
