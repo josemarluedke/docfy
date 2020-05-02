@@ -30,7 +30,7 @@ module('Integration | Component | DocfyPreviousOrNextPage', function (hooks) {
     const routerService = this.owner.lookup('service:router');
     sinon
       .stub(routerService, 'currentURL')
-      .get(() => '/docs/ember/components/docfy-link');
+      .get(() => '/docs/ember/components/docfy-output');
 
     await render(template);
 
@@ -67,7 +67,7 @@ module('Integration | Component | DocfyPreviousOrNextPage', function (hooks) {
     const routerService = this.owner.lookup('service:router');
     sinon
       .stub(routerService, 'currentURL')
-      .get(() => '/docs/core/helpers/genereate-flat-output');
+      .get(() => '/docs/core/helpers/genereate-nested-output');
 
     await render(template);
 
@@ -85,6 +85,6 @@ module('Integration | Component | DocfyPreviousOrNextPage', function (hooks) {
     this.set('isPrevious', true);
     await render(template);
 
-    assert.dom('[data-test-id="title"]').hasText('genereateFlatOutput');
+    assert.dom('[data-test-id="title"]').hasText('genereateNestedOutput');
   });
 });

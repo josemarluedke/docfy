@@ -30,7 +30,7 @@ function transformToPage(pageContents: PageContent[]): Page[] {
     };
   });
 
-  return sortByOrder(pages);
+  return pages;
 }
 
 function transformNestedOutput(
@@ -94,12 +94,23 @@ function transformNestedOutput(
   return node;
 }
 
+// We flat the nested output to keep the nested order
+function flatNested(output: NestedOutput, pages: Page[] = []): Page[] {
+  pages.push(...output.pages);
+
+  output.children.forEach((child) => {
+    flatNested(child, pages);
+  });
+
+  return pages;
+}
+
 export function transformOutput(
   pageContents: PageContent[],
   labels: Record<string, string> = {}
 ): Output {
-  const flat = transformToPage(pageContents);
-  const nested = transformNestedOutput(flat, labels);
+  const nested = transformNestedOutput(transformToPage(pageContents), labels);
+  const flat = flatNested(nested);
 
   return { flat, nested };
 }
