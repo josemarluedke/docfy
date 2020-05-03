@@ -49,7 +49,7 @@ module('Integration | Component | DocfyOutput', function (hooks) {
     assert
       .dom('[data-test-id="flat-urls"]')
       .hasText(
-        '/docs/introduction /docs/installation /docs/overview /docs/ /docs/core/overview /docs/core/helpers/genereate-flat-output /docs/core/helpers/genereate-nested-output /docs/ember/ /docs/ember/installation /docs/ember/components/docfy-link /docs/ember/components/docfy-output'
+        '/docs/ /docs/introduction /docs/installation /docs/overview /docs/core/overview /docs/core/helpers/genereate-flat-output /docs/core/helpers/genereate-nested-output /docs/ember/ /docs/ember/installation /docs/ember/components/docfy-link /docs/ember/components/docfy-output'
       );
   });
 

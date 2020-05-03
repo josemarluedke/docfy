@@ -53,7 +53,7 @@ module('Integration | Component | DocfyPreviousOrNextPage', function (hooks) {
     const router = this.owner.lookup('router:main');
     router.setupRouter();
     const routerService = this.owner.lookup('service:router');
-    sinon.stub(routerService, 'currentURL').get(() => '/docs/introduction');
+    sinon.stub(routerService, 'currentURL').get(() => '/docs');
 
     this.set('isPrevious', true);
     await render(template);

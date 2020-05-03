@@ -42,6 +42,15 @@ function createPage(
     url = generateAutoUrl(source, urlPrefix, urlSuffix);
   }
 
+  // Add fallback order for index pages
+  if (
+    url.length > 0 &&
+    url[url.length - 1] === '/' &&
+    typeof frontmatter.order === 'undefined'
+  ) {
+    (frontmatter.order as undefined | number) = -1;
+  }
+
   let editUrl = '';
 
   if (repoEditUrl) {
