@@ -9,7 +9,16 @@ interface LinkNode extends Node {
   url: string;
 }
 
-export function fixUrls(ctx: Context): void {
+/**
+ * This plugin finds all internal links from the markdown and replace them with
+ * the generated url for the file.
+ *
+ * For example, a markdown file could contain something like this:
+ * ```md
+ * [Link to another page](../some-other-markdown.md)
+ * ```
+ */
+export function replaceInternalLinks(ctx: Context): void {
   ctx.pages.forEach((page: PageContent) => {
     visit(page.ast, 'link', (node: LinkNode) => {
       if (isValidUrl(node.url) || isAnchorUrl(node.url)) {
