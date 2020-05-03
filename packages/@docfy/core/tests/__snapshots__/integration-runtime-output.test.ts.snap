@@ -4,6 +4,17 @@ exports[`Generates runtime output it should have generated the runtime output 1`
 Object {
   "flat": Array [
     Object {
+      "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+      "headings": Array [],
+      "metadata": Object {
+        "order": -1,
+        "relativeUrl": "",
+      },
+      "source": "README.md",
+      "title": "The index",
+      "url": "/docs/",
+    },
+    Object {
       "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
       "headings": Array [],
       "metadata": Object {
@@ -45,16 +56,6 @@ Object {
       "source": "docs/about.md",
       "title": "About the project",
       "url": "/docs/about",
-    },
-    Object {
-      "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
-      "headings": Array [],
-      "metadata": Object {
-        "relativeUrl": "",
-      },
-      "source": "README.md",
-      "title": "The index",
-      "url": "/docs/",
     },
     Object {
       "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
@@ -220,6 +221,17 @@ Object {
         "name": "docs",
         "pages": Array [
           Object {
+            "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+            "headings": Array [],
+            "metadata": Object {
+              "order": -1,
+              "relativeUrl": "",
+            },
+            "source": "README.md",
+            "title": "The index",
+            "url": "/docs/",
+          },
+          Object {
             "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
             "headings": Array [],
             "metadata": Object {
@@ -261,16 +273,6 @@ Object {
             "source": "docs/about.md",
             "title": "About the project",
             "url": "/docs/about",
-          },
-          Object {
-            "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
-            "headings": Array [],
-            "metadata": Object {
-              "relativeUrl": "",
-            },
-            "source": "README.md",
-            "title": "The index",
-            "url": "/docs/",
           },
         ],
       },
