@@ -3,6 +3,10 @@
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have extracted or infered the title 1`] = `
 Array [
   Array [
+    "README.md",
+    "The index",
+  ],
+  Array [
     "docs/about.md",
     "About the project",
   ],
@@ -15,10 +19,6 @@ Array [
     "Button Component",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "Form Component",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "Docs Intro",
   ],
@@ -29,6 +29,10 @@ Array [
   Array [
     "packages/package2/docs/styles.md",
     "How styles work",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "Form Component",
   ],
 ]
 `;
@@ -49,6 +53,10 @@ exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
 Array [
   Array [
+    "README.md",
+    "/",
+  ],
+  Array [
     "docs/about.md",
     "/about",
   ],
@@ -61,10 +69,6 @@ Array [
     "/category1/components/button",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "/category1/components/form",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "/category1/intro",
   ],
@@ -75,6 +79,10 @@ Array [
   Array [
     "packages/package2/docs/styles.md",
     "/category2/styles",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/category1/components/form/",
   ],
 ]
 `;
@@ -95,6 +103,10 @@ exports[`When urlSchema is set to manual When source defines url prefix and suff
 exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have generated urls based on frontmatter and should have used urlPrefix 1`] = `
 Array [
   Array [
+    "README.md",
+    "/docs/",
+  ],
+  Array [
     "docs/about.md",
     "/docs/about.html",
   ],
@@ -107,10 +119,6 @@ Array [
     "/docs/category1/components/button.html",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "/docs/category1/components/form.html",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "/docs/category1/intro.html",
   ],
@@ -121,6 +129,10 @@ Array [
   Array [
     "packages/package2/docs/styles.md",
     "/docs/category2/styles.html",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/docs/category1/components/form/",
   ],
 ]
 `;

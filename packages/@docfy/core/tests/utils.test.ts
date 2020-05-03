@@ -43,25 +43,45 @@ describe('#generateManualUrl', () => {
     ).toBe('/orgawesome-lib/helpers-and-modifiers/markdown');
   });
 
-  test('it uses folder name if fine is called index', () => {
-    expect(generateManualUrl('cool/button/index.md', {})).toBe('/button');
+  test('it returns a slash if file in index on root', () => {
+    expect(generateManualUrl('index.md', {})).toBe('/');
+  });
+
+  test('it adds a trailing slash if file name is index', () => {
+    expect(generateManualUrl('cool/button/index.md', {})).toBe('/button/');
+  });
+
+  test('it adds a trailing slash if file name is readme', () => {
+    expect(generateManualUrl('cool/button/README.md', {})).toBe('/button/');
+  });
+
+  test('it does not add suffix if file name is index', () => {
+    expect(generateManualUrl('cool/button/index.md', {}, 'docs', '.html')).toBe(
+      '/docs/button/'
+    );
+  });
+
+  test('it does not add suffix if file name is readme', () => {
+    expect(
+      generateManualUrl('cool/button/readme.md', {}, 'docs', '.html')
+    ).toBe('/docs/button/');
   });
 
   test('it adds the prefix', () => {
-    expect(generateManualUrl('cool/button/index.md', {}, 'docs')).toBe(
+    expect(generateManualUrl('cool/button.md', {}, 'docs')).toBe(
       '/docs/button'
     );
   });
 
   test('it adds the sufifx', () => {
-    expect(generateManualUrl('cool/button/index.md', {}, 'docs', '.html')).toBe(
+    expect(generateManualUrl('cool/button.md', {}, 'docs', '.html')).toBe(
       '/docs/button.html'
     );
   });
 
   test('it lower cases the url', () => {
-    expect(generateManualUrl('cool/Button/README.md', {}, 'docs')).toBe(
-      '/docs/readme'
+    expect(generateManualUrl('cool/Button/COOL.md', {}, 'Docs')).toBe(
+      '/docs/cool'
     );
   });
 });
@@ -77,10 +97,32 @@ describe('#generateAutolUrl', () => {
     );
   });
 
-  test('it uses folder name if fine is called index', () => {
+  test('it adds a trailing slash if file name is index', () => {
     expect(generateAutoUrl('my-folder/components/index.md')).toBe(
-      '/my-folder/components'
+      '/my-folder/components/'
     );
+  });
+
+  test('it adds a trailing slash if file name is readme', () => {
+    expect(generateAutoUrl('my-folder/components/README.md')).toBe(
+      '/my-folder/components/'
+    );
+  });
+
+  test('it does not add suffx if file name is index', () => {
+    expect(
+      generateAutoUrl('my-folder/components/index.md', 'docs', '.html')
+    ).toBe('/docs/my-folder/components/');
+  });
+
+  test('it does not add suffx if file name is readme', () => {
+    expect(
+      generateAutoUrl('my-folder/components/README.md', 'docs', '.html')
+    ).toBe('/docs/my-folder/components/');
+  });
+
+  test('it returns a slash if file in index on root', () => {
+    expect(generateAutoUrl('index.md')).toBe('/');
   });
 
   test('it adds the prefix', () => {
@@ -96,9 +138,7 @@ describe('#generateAutolUrl', () => {
   });
 
   test('it lower cases the url', () => {
-    expect(generateAutoUrl('docs/Button/README.md')).toBe(
-      '/docs/button/readme'
-    );
+    expect(generateAutoUrl('docs/Button/COOL.md')).toBe('/docs/button/cool');
   });
 });
 

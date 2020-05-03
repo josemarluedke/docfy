@@ -52,14 +52,14 @@ const root = path.resolve(__dirname, projectRoot);
       root,
       urlPrefix: 'docs',
       urlSchema: 'manual',
-      pattern: '{/**/docs/**/*.md,/**/*.md}',
-      ignore: ['/packages/docs/**']
+      pattern: '**/*.md',
+      ignore: ['**/package1/**/*.md']
     },
     {
       root,
       urlPrefix: 'blog',
       urlSchema: 'manual',
-      pattern: '/**/docs/**/package1/**/*.md',
+      pattern: '**/**/package1/**/*.md',
       repository: {
         url: 'https://github.com/user/repo'
       }

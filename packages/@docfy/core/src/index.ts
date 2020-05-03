@@ -1,4 +1,4 @@
-import glob from 'glob';
+import glob from 'fast-glob';
 import fs from 'fs';
 import path from 'path';
 import trough, { Through } from 'trough';
@@ -112,10 +112,11 @@ export default class Docfy {
         item.repository?.url || ctx.options.repository?.url || '',
         item.repository?.editBranch || ctx.options.repository?.editBranch
       );
-
       const files = glob.sync(item.pattern, {
-        root: item.root,
-        ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])]
+        cwd: item.root,
+
+        ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])],
+        absolute: true
       });
 
       files.forEach((file) => {

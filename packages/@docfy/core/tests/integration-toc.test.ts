@@ -15,7 +15,7 @@ describe('Extracts TOC', () => {
           root,
           urlPrefix: 'docs',
           urlSchema: 'manual',
-          pattern: '/**/*.md'
+          pattern: '**/*.md'
         }
       ]);
     });
@@ -40,7 +40,7 @@ describe('Extracts TOC', () => {
           root,
           urlPrefix: 'docs',
           urlSchema: 'manual',
-          pattern: '/**/*.md'
+          pattern: '**/*.md'
         }
       ]);
     });

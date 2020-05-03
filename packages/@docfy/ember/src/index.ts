@@ -29,14 +29,17 @@ class DocfyBroccoli extends Plugin {
 
   async build(): Promise<void> {
     const docfy = new Docfy(this.config);
+    // console.log(this.config.sources);
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
     pages.forEach((page) => {
-      const fileName = `${path.join(
-        this.outputPath,
-        'templates',
-        page.url
-      )}.hbs`;
+      const parts = [this.outputPath, 'templates', page.url];
+
+      if (page.url[page.url.length - 1] === '/') {
+        parts.push('index');
+      }
+
+      const fileName = `${path.join(...parts)}.hbs`;
 
       ensureDirectoryExistence(fileName);
       fs.writeFileSync(fileName, page.rendered);

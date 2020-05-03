@@ -3,6 +3,11 @@
 exports[`When proving remark plugins When plugin has no options it should have rendered the content with the plugin with no options 1`] = `
 Array [
   Array [
+    "README.md",
+    "<h1 id=\\"the-index\\"><a href=\\"#the-index\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>The index</h1>
+",
+  ],
+  Array [
     "docs/about.md",
     "<h1 id=\\"about-the-project\\"><a href=\\"#about-the-project\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>About the project</h1>
 <h2 id=\\"history\\"><a href=\\"#history\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>History</h2>
@@ -33,11 +38,6 @@ Array [
 ",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "<h1 id=\\"form-component\\"><a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Form Component</h1>
-",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "<h1 id=\\"docs-intro\\"><a href=\\"#docs-intro\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Docs Intro</h1>
 ",
@@ -55,11 +55,21 @@ Array [
 <p>Please refer to <a href=\\"/docs/category2/overview\\">overview</a> to get started.</p>
 ",
   ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "<h1 id=\\"form-component\\"><a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Form Component</h1>
+",
+  ],
 ]
 `;
 
 exports[`When proving remark plugins When plugin has options it should have rendered the content with the plugin and their options 1`] = `
 Array [
+  Array [
+    "README.md",
+    "<h1 id=\\"the-index\\">The index<a href=\\"#the-index\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+",
+  ],
   Array [
     "docs/about.md",
     "<h1 id=\\"about-the-project\\">About the project<a href=\\"#about-the-project\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
@@ -91,11 +101,6 @@ Array [
 ",
   ],
   Array [
-    "packages/package1/components/form/index.md",
-    "<h1 id=\\"form-component\\">Form Component<a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-",
-  ],
-  Array [
     "packages/package1/docs/intro.md",
     "<h1 id=\\"docs-intro\\">Docs Intro<a href=\\"#docs-intro\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 ",
@@ -111,6 +116,11 @@ Array [
     "<h1 id=\\"how-styles-work\\">How styles work<a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>Short description.</p>
 <p>Please refer to <a href=\\"/docs/category2/overview\\">overview</a> to get started.</p>
+",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "<h1 id=\\"form-component\\">Form Component<a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 ",
   ],
 ]

@@ -1,4 +1,5 @@
 const autolinkHeadings = require('remark-autolink-headings');
+const path = require('path');
 
 module.exports = {
   remarkPlugins: [
@@ -11,7 +12,8 @@ module.exports = {
   ],
   sources: [
     {
-      pattern: 'dummy-docs/**/*.md',
+      root: path.resolve(__dirname, './dummy-docs') + '/',
+      pattern: '**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs'
     }

@@ -47,6 +47,16 @@ Object {
       "url": "/docs/about",
     },
     Object {
+      "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+      "headings": Array [],
+      "metadata": Object {
+        "relativeUrl": "",
+      },
+      "source": "README.md",
+      "title": "The index",
+      "url": "/docs/",
+    },
+    Object {
       "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
       "headings": Array [],
       "metadata": Object {
@@ -76,12 +86,12 @@ Object {
       "metadata": Object {
         "category": "category1",
         "order": 1,
-        "relativeUrl": "form",
+        "relativeUrl": "",
         "subcategory": "components",
       },
       "source": "packages/package1/components/form/index.md",
       "title": "Form Component",
-      "url": "/docs/category1/components/form",
+      "url": "/docs/category1/components/form/",
     },
     Object {
       "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package2/docs/overview.md",
@@ -116,7 +126,28 @@ Object {
           Object {
             "children": Array [
               Object {
-                "children": Array [],
+                "children": Array [
+                  Object {
+                    "children": Array [],
+                    "label": "form",
+                    "name": "form",
+                    "pages": Array [
+                      Object {
+                        "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
+                        "headings": Array [],
+                        "metadata": Object {
+                          "category": "category1",
+                          "order": 1,
+                          "relativeUrl": "",
+                          "subcategory": "components",
+                        },
+                        "source": "packages/package1/components/form/index.md",
+                        "title": "Form Component",
+                        "url": "/docs/category1/components/form/",
+                      },
+                    ],
+                  },
+                ],
                 "label": "components",
                 "name": "components",
                 "pages": Array [
@@ -132,19 +163,6 @@ Object {
                     "source": "packages/package1/components/button.md",
                     "title": "Button Component",
                     "url": "/docs/category1/components/button",
-                  },
-                  Object {
-                    "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
-                    "headings": Array [],
-                    "metadata": Object {
-                      "category": "category1",
-                      "order": 1,
-                      "relativeUrl": "form",
-                      "subcategory": "components",
-                    },
-                    "source": "packages/package1/components/form/index.md",
-                    "title": "Form Component",
-                    "url": "/docs/category1/components/form",
                   },
                 ],
               },
@@ -243,6 +261,16 @@ Object {
             "source": "docs/about.md",
             "title": "About the project",
             "url": "/docs/about",
+          },
+          Object {
+            "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+            "headings": Array [],
+            "metadata": Object {
+              "relativeUrl": "",
+            },
+            "source": "README.md",
+            "title": "The index",
+            "url": "/docs/",
           },
         ],
       },

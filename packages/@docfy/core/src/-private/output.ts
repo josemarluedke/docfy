@@ -46,7 +46,11 @@ function transformNestedOutput(
   };
 
   pages.forEach((item): void => {
-    let url = (item.metadata.relativeUrl as string) || item.url;
+    let url =
+      typeof item.metadata.relativeUrl === 'string'
+        ? item.metadata.relativeUrl
+        : item.url;
+
     url = url[0] === '/' ? url.substring(1) : url;
     const urlParts = url.split('/');
 

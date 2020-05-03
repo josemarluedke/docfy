@@ -49,7 +49,7 @@ module('Integration | Component | DocfyOutput', function (hooks) {
     assert
       .dom('[data-test-id="flat-urls"]')
       .hasText(
-        '/docs/introduction /docs/installation /docs/overview /docs/core/overview /docs/core/helpers/genereate-flat-output /docs/core/helpers/genereate-nested-output /docs/ember/installation /docs/ember/components/docfy-link /docs/ember/components/docfy-output'
+        '/docs/introduction /docs/installation /docs/overview /docs/ /docs/core/overview /docs/core/helpers/genereate-flat-output /docs/core/helpers/genereate-nested-output /docs/ember/ /docs/ember/installation /docs/ember/components/docfy-link /docs/ember/components/docfy-output'
       );
   });
 
@@ -58,6 +58,13 @@ module('Integration | Component | DocfyOutput', function (hooks) {
     await render(template);
 
     assert.dom('[data-test-id="flat-url-title"]').hasText('Overview');
+  });
+
+  test('it returns the page by url when url is index', async function (assert) {
+    this.set('url', '/docs/ember');
+    await render(template);
+
+    assert.dom('[data-test-id="flat-url-title"]').hasText('Working with Ember');
   });
 
   test('it returns the page fromActiveRoute', async function (assert) {

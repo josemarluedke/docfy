@@ -19,14 +19,14 @@ describe('Generates Edit Url', () => {
         root,
         urlPrefix: 'docs',
         urlSchema: 'manual',
-        pattern: '/**/*.md',
-        ignore: ['/**/package2/**/*.md']
+        pattern: '**/*.md',
+        ignore: ['**/package2/**/*.md']
       },
       {
         root,
         urlPrefix: 'docs',
         urlSchema: 'manual',
-        pattern: '/**/package2/**/*.md',
+        pattern: '**/package2/**/*.md',
         repository: {
           url: 'https://bitbucket.org/user/repo'
         }

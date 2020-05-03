@@ -24,11 +24,19 @@ export function generateManualUrl(
   if (typeof meta.subcategory === 'string') {
     parts.push(slug(meta.subcategory));
   }
-  let fileName = path.parse(path.basename(source)).name;
-  if (fileName === 'index') {
+
+  let fileName = path.parse(path.basename(source)).name.toLowerCase();
+  if (fileName === 'index' || fileName === 'readme') {
     fileName = path.basename(path.dirname(source));
+    if (fileName === '.') {
+      parts.push('');
+    } else {
+      parts.push(fileName, '');
+    }
+  } else {
+    parts.push(`${fileName}${suffix || ''}`);
   }
-  parts.push(`${fileName}${suffix || ''}`);
+
   return parts.join('/').toLowerCase();
 }
 
@@ -43,13 +51,14 @@ export function generateAutoUrl(
   }
   parts.push(...source.split(path.sep));
 
-  let fileName = path.parse(parts.pop() as string).name;
-  if (fileName === 'index') {
+  let fileName = path.parse(parts.pop() as string).name.toLowerCase();
+  if (fileName === 'index' || fileName === 'readme') {
     fileName = path.basename(path.dirname(source));
-    parts.pop(); // remove duplicated folder name
+    parts.push('');
+  } else {
+    parts.push(`${fileName}${suffix || ''}`);
   }
 
-  parts.push(`${fileName}${suffix || ''}`);
   return parts.join('/').toLowerCase();
 }
 

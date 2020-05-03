@@ -34,7 +34,7 @@ export default class DocfyOutput extends Component<DocfyOutputArgs> {
 
     if (url) {
       return output.flat.find((item) => {
-        return item.url === url;
+        return item.url === url || item.url === `${url}/`;
       });
     }
 

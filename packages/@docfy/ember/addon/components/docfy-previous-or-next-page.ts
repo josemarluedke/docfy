@@ -27,7 +27,7 @@ function findPreviousOrNextPage(
 ): Page | undefined {
   const flat = flatNested(nested);
   const index = flat.findIndex((page) => {
-    return page.url === url;
+    return page.url === url || page.url === `${url}/`;
   });
 
   if (index > -1) {

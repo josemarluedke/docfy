@@ -7,7 +7,9 @@ function addFromNested(context: RouterDSL, nested: NestedOutput): void {
     nested.pages.forEach((page) => {
       const url = page.metadata.relativeUrl;
       if (typeof url === 'string') {
-        this.route(url);
+        if (url !== '') {
+          this.route(url);
+        }
       }
     });
 
