@@ -71,16 +71,14 @@ module('Integration | Component | DocfyPreviousOrNextPage', function (hooks) {
 
     await render(template);
 
-    assert.dom('[data-test-id="title"]').hasText('Installation');
+    assert.dom('[data-test-id="title"]').hasText('Working with Ember');
   });
 
   test('it returns previus page when previus page is under another scope', async function (assert) {
     const router = this.owner.lookup('router:main');
     router.setupRouter();
     const routerService = this.owner.lookup('service:router');
-    sinon
-      .stub(routerService, 'currentURL')
-      .get(() => '/docs/ember/installation');
+    sinon.stub(routerService, 'currentURL').get(() => '/docs/ember/');
 
     this.set('isPrevious', true);
     await render(template);
