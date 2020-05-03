@@ -5,18 +5,19 @@ import trough, { Through } from 'trough';
 import { Node } from 'unist';
 import { PageContent, Context, Options, SourceSettings } from './types';
 import {
-  inferTitle,
-  generateManualUrl,
+  DEFAULT_IGNORE,
   generateAutoUrl,
-  parseFrontmatter,
-  DEFAULT_IGNORE
+  generateManualUrl,
+  inferTitle,
+  parseFrontmatter
 } from './-private/utils';
 import { createRemark } from './-private/remark';
 import {
   combineDemos,
   renderMarkdown,
   replaceInternalLinks,
-  toc
+  toc,
+  uniquefyUrls
 } from './plugins';
 import { getRepoEditUrl } from './-private/repo-info';
 export { transformOutput } from './-private/output';
@@ -93,6 +94,7 @@ export default class Docfy {
     this.pipeline = trough<Context>()
       .use<SourceSettings[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
+      .use(uniquefyUrls)
       .use(replaceInternalLinks);
 
     if (Array.isArray(options.plugins)) {
