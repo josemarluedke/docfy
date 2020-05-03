@@ -60,6 +60,13 @@ module('Integration | Component | DocfyOutput', function (hooks) {
     assert.dom('[data-test-id="flat-url-title"]').hasText('Overview');
   });
 
+  test('it returns the page by url when url is index', async function (assert) {
+    this.set('url', '/docs/ember');
+    await render(template);
+
+    assert.dom('[data-test-id="flat-url-title"]').hasText('Working with Ember');
+  });
+
   test('it returns the page fromActiveRoute', async function (assert) {
     const router = this.owner.lookup('router:main');
     router.setupRouter();
