@@ -12,7 +12,12 @@ import {
   DEFAULT_IGNORE
 } from './-private/utils';
 import { createRemark } from './-private/remark';
-import { combineDemos, fixUrls, renderMarkdown, toc } from './plugins';
+import {
+  combineDemos,
+  renderMarkdown,
+  replaceInternalLinks,
+  toc
+} from './plugins';
 import { getRepoEditUrl } from './-private/repo-info';
 export { transformOutput } from './-private/output';
 
@@ -88,7 +93,7 @@ export default class Docfy {
     this.pipeline = trough<Context>()
       .use<SourceSettings[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
-      .use(fixUrls);
+      .use(replaceInternalLinks);
 
     if (Array.isArray(options.plugins)) {
       options.plugins.forEach((item) => {
