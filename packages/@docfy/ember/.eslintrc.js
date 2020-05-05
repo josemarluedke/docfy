@@ -19,7 +19,8 @@ module.exports = {
         'testem.js',
         'src/**/*.{js,ts}',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js'
+        'tests/dummy/config/**/*.js',
+        'tests/dummy/app/styles/*.js'
       ],
       extends: [
         '@underline/eslint-config-node',
