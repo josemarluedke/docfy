@@ -1,5 +1,6 @@
-const autolinkHeadings = require('remark-autolink-headings');
 const path = require('path');
+const autolinkHeadings = require('remark-autolink-headings');
+const highlight = require('remark-highlight.js');
 
 module.exports = {
   remarkPlugins: [
@@ -8,7 +9,8 @@ module.exports = {
       {
         behavior: 'wrap'
       }
-    ]
+    ],
+    highlight
   ],
   sources: [
     {
