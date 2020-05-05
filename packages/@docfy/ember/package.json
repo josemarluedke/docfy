@@ -78,6 +78,7 @@
     "postcss-nested": "^4.2.1",
     "qunit-dom": "^1.1.0",
     "remark-autolink-headings": "^6.0.0",
+    "remark-highlight.js": "^6.0.0",
     "tailwindcss": "^1.4.4",
     "typescript": "3.7.5"
   },
