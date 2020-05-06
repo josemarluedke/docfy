@@ -83,9 +83,7 @@ module.exports = {
     const EmberApp = require('ember-cli/lib/broccoli/ember-app'); // eslint-disable-line
     const modulePrefix = this.project.config(EmberApp.env()).modulePrefix;
 
-    trees.push(
-      new WriteFile('docfy-output.js', docfyOutputTemplate(modulePrefix))
-    );
+    trees.push(new WriteFile('output.js', docfyOutputTemplate(modulePrefix)));
 
     return new MergeTrees(trees);
   }
