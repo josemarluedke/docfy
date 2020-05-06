@@ -10,6 +10,7 @@ module.exports = function (defaults) {
         enabled: true,
         cacheInclude: [/.*\.hbs$/, /.*\.css$/, /.tailwind\.config\.js$/],
         plugins: [
+          require('postcss-import'),
           require('tailwindcss')(
             path.join('tests', 'dummy', 'app', 'styles', 'tailwind.config.js')
           ),
