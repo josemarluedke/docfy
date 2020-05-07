@@ -68,11 +68,15 @@ module.exports = {
   treeForApp(tree: InputNode): Node {
     const trees: InputNode[] = [this._super.treeForApp.call(this, tree)];
 
-    const docfyTree = new DocfyBroccoli(
-      [new UnwatchedDir(this.project.root)],
-      this.docfyConfig
-    );
+    const inputs: InputNode[] = [new UnwatchedDir(this.project.root)];
 
+    (this.docfyConfig as DocfyConfig).sources.forEach((item) => {
+      if (item.root && item.root !== this.project.root) {
+        inputs.push(item.root);
+      }
+    });
+
+    const docfyTree = new DocfyBroccoli(inputs, this.docfyConfig);
     trees.push(docfyTree);
 
     return new MergeTrees(trees, { overwrite: true });
