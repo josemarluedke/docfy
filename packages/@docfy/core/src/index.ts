@@ -71,7 +71,7 @@ function createPage(
     url,
     editUrl,
     headings: [],
-    metadata: frontmatter,
+    frontmatter: frontmatter,
     rendered: ''
   };
 }

@@ -9,23 +9,27 @@ function findChild(node: NestedOutput, name: string): NestedOutput | undefined {
 function sortByOrder(pages: Page[]): Page[] {
   return pages.sort((a, b) => {
     const aOrder =
-      typeof a.metadata.order !== 'undefined' ? Number(a.metadata.order) : 998;
+      typeof a.frontmatter.order !== 'undefined'
+        ? Number(a.frontmatter.order)
+        : 998;
     const bOrder =
-      typeof b.metadata.order !== 'undefined' ? Number(b.metadata.order) : 999;
+      typeof b.frontmatter.order !== 'undefined'
+        ? Number(b.frontmatter.order)
+        : 999;
     return aOrder - bOrder;
   });
 }
 
 function transformToPage(pageContents: PageContent[]): Page[] {
   const pages: Page[] = pageContents.map((page) => {
-    const { url, headings, title, source, metadata, editUrl } = page;
+    const { url, headings, title, source, frontmatter, editUrl } = page;
 
     return {
       url,
       headings,
       title,
       source,
-      metadata,
+      frontmatter,
       editUrl
     };
   });
@@ -47,15 +51,15 @@ function transformNestedOutput(
 
   pages.forEach((item): void => {
     let url =
-      typeof item.metadata.relativeUrl === 'string'
-        ? item.metadata.relativeUrl
+      typeof item.frontmatter.relativeUrl === 'string'
+        ? item.frontmatter.relativeUrl
         : item.url;
 
     url = url[0] === '/' ? url.substring(1) : url;
     const urlParts = url.split('/');
 
     if (urlParts.length === 1) {
-      item.metadata.relativeUrl = urlParts[0];
+      item.frontmatter.relativeUrl = urlParts[0];
       node.pages.push(item);
     } else {
       const name = urlParts.shift();
@@ -86,7 +90,7 @@ function transformNestedOutput(
           });
         }
 
-        item.metadata.relativeUrl = urlParts.join('/');
+        item.frontmatter.relativeUrl = urlParts.join('/');
         transformNestedOutput([item], labels, child);
 
         sortByOrder(child.pages);

@@ -18,7 +18,7 @@ export interface Page {
   editUrl: string;
   title: string;
   headings: Heading[];
-  metadata: Record<string, unknown>;
+  frontmatter: Record<string, unknown>;
 }
 
 export interface PageContent extends Page {
