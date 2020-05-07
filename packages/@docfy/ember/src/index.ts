@@ -1,12 +1,14 @@
 import fs from 'fs';
 import path from 'path';
+import BroccoliBridge from 'broccoli-bridge';
+import Funnel from 'broccoli-funnel';
 import MergeTrees from 'broccoli-merge-trees';
-import { Node, InputNode } from 'broccoli-node-api';
 import Plugin from 'broccoli-plugin';
+import WriteFile from 'broccoli-file-creator';
+import { Node, InputNode } from 'broccoli-node-api';
+import { UnwatchedDir } from 'broccoli-source';
 import Docfy, { transformOutput } from '@docfy/core';
 import { DocfyConfig, SourceSettings } from '@docfy/core/lib/types';
-import WriteFile from 'broccoli-file-creator';
-import { UnwatchedDir } from 'broccoli-source';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
 
@@ -29,7 +31,6 @@ class DocfyBroccoli extends Plugin {
 
   async build(): Promise<void> {
     const docfy = new Docfy(this.config);
-    // console.log(this.config.sources);
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
     pages.forEach((page) => {
@@ -51,6 +52,17 @@ class DocfyBroccoli extends Plugin {
         transformOutput(pages, this.config.labels)
       )};`
     );
+
+    const urlsJsonFile = path.join(
+      this.outputPath,
+      'public',
+      'docfy-urls.json'
+    );
+    ensureDirectoryExistence(urlsJsonFile);
+    fs.writeFileSync(
+      urlsJsonFile,
+      JSON.stringify(pages.map((page) => page.url))
+    );
   }
 }
 
@@ -62,6 +74,7 @@ module.exports = {
   included(...args: unknown[]): void {
     this.docfyConfig = getDocfyConfig(this.project.root);
 
+    this.bridge = new BroccoliBridge();
     this._super.included.apply(this, args);
   },
 
@@ -79,6 +92,8 @@ module.exports = {
     const docfyTree = new DocfyBroccoli(inputs, this.docfyConfig);
     trees.push(docfyTree);
 
+    (this.bridge as BroccoliBridge).fulfill('docfy-tree', docfyTree);
+
     return new MergeTrees(trees, { overwrite: true });
   },
 
@@ -90,5 +105,24 @@ module.exports = {
     trees.push(new WriteFile('output.js', docfyOutputTemplate(modulePrefix)));
 
     return new MergeTrees(trees);
+  },
+
+  treeForPublic(): Node {
+    return new Funnel(
+      (this.bridge as BroccoliBridge).placeholderFor('docfy-tree'),
+      {
+        srcDir: 'public',
+        destDir: './'
+      }
+    );
+  },
+
+  urlsForPrember(distDir: string): string[] {
+    try {
+      return require(path.join(distDir, 'docfy-urls.json')); // eslint-disable-line
+    } catch {
+      // empty
+    }
+    return [];
   }
 };
