@@ -1,4 +1,4 @@
-import { Node } from 'unist';
+import { Node as MarkdownAST } from 'unist';
 import {
   Processor,
   Plugin as RemarkPlugin,
@@ -12,20 +12,25 @@ export interface Heading {
   headings?: Heading[];
 }
 
-export interface Page {
-  source: string;
+export interface PageMetadata {
   url: string;
+  relativeUrl: undefined | string;
   editUrl: string;
   title: string;
   headings: Heading[];
-  metadata: Record<string, unknown>;
+  frontmatter: Record<string, unknown>;
+  pluginData: Record<string, unknown>;
 }
 
-export interface PageContent extends Page {
-  ast: Node;
+export interface PageContent {
+  meta: PageMetadata;
+  sourceConfig: SourceConfig;
+  source: string;
+  ast: MarkdownAST;
   markdown: string;
   rendered: string;
   demos?: PageContent[];
+  pluginData: Record<string, unknown>;
 }
 
 interface ContextOptions
@@ -39,19 +44,19 @@ export interface Context {
   options: ContextOptions;
 }
 
-export interface NestedOutput {
+export interface NestedPageMetadata {
   name: string;
   label: string;
-  pages: Page[];
-  children: NestedOutput[];
+  pages: PageMetadata[];
+  children: NestedPageMetadata[];
 }
 
-export interface Output {
-  flat: Page[];
-  nested: NestedOutput;
+export interface DocfyResult {
+  content: PageContent[];
+  nestedPageMetadata: NestedPageMetadata;
 }
 
-export interface SourceSettings {
+export interface SourceConfig {
   /**
    * The absolute path to where the files are located.
    */
@@ -172,13 +177,17 @@ export interface Options {
    * The repository config
    */
   repository?: RepositoryConfig;
+
+  /**
+   * Labels to be used while generating nestedPageMetadata
+   */
+  labels?: Record<string, string>;
 }
 
-interface DocfyConfigSourceSettings extends Omit<SourceSettings, 'root'> {
+interface DocfyConfigSourceConfig extends Omit<SourceConfig, 'root'> {
   root?: string;
 }
 
 export interface DocfyConfig extends Options {
-  sources: DocfyConfigSourceSettings[];
-  labels?: Record<string, string>;
+  sources: DocfyConfigSourceConfig[];
 }

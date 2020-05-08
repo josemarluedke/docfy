@@ -38,12 +38,19 @@ Array [
 `;
 
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 1`] = `
+"<h1 id=\\"how-it-works\\">How it works?</h1>
+<p>This is a description.</p>
+<p><a href=\\"/about\\">Link using reference</a></p>
+"
+`;
+
+exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 2`] = `
 "<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
 <p>This is a <a href=\\"/category1/components/button\\">link to another file in a different package</a>.</p>
 "
 `;
 
-exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 2`] = `
+exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 3`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
 <p>Please refer to <a href=\\"/category2/overview\\">overview</a> to get started.</p>
@@ -88,12 +95,19 @@ Array [
 `;
 
 exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 1`] = `
+"<h1 id=\\"how-it-works\\">How it works?</h1>
+<p>This is a description.</p>
+<p><a href=\\"/docs/about.html\\">Link using reference</a></p>
+"
+`;
+
+exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 2`] = `
 "<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
 <p>This is a <a href=\\"/docs/category1/components/button.html\\">link to another file in a different package</a>.</p>
 "
 `;
 
-exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 2`] = `
+exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 3`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
 <p>Please refer to <a href=\\"/docs/category2/overview.html\\">overview</a> to get started.</p>

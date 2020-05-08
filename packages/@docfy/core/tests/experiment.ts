@@ -47,7 +47,7 @@ const root = path.resolve(__dirname, projectRoot);
     }
   });
 
-  const docs = await docfy.run([
+  const { content } = await docfy.run([
     {
       root,
       urlPrefix: 'docs',
@@ -66,5 +66,5 @@ const root = path.resolve(__dirname, projectRoot);
     }
   ]);
 
-  console.log(docs);
+  console.log(content);
 })();

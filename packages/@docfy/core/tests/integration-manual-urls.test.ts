@@ -1,22 +1,22 @@
 import Docfy from '../src';
-import { PageContent } from '../src/types';
+import { PageContent, DocfyResult } from '../src/types';
 import path from 'path';
 
-function findPage(pages: PageContent[], source: string) {
-  return pages.find((p) => {
+const root = path.resolve(__dirname, './__fixtures__/monorepo');
+
+function findPage(content: PageContent[], source: string) {
+  return content.find((p) => {
     return p.source === source;
   });
 }
 
 describe('When urlSchema is set to manual', () => {
-  const root = path.resolve(__dirname, './__fixtures__/monorepo');
-
   describe('Basic case, no url prefix, or suffix', () => {
-    let pages: PageContent[];
+    let result: DocfyResult;
 
     beforeAll(async () => {
       const docfy = new Docfy();
-      pages = await docfy.run([
+      result = await docfy.run([
         {
           root,
           urlSchema: 'manual',
@@ -25,22 +25,23 @@ describe('When urlSchema is set to manual', () => {
       ]);
     });
 
-    test('it should have collected all pages and moved demos', async () => {
-      expect(pages.length).toBe(8);
+    test('it should have collected all result.content and moved demos', async () => {
+      expect(result.content.length).toBe(8);
       expect(
-        findPage(pages, 'packages/package1/components/form/index.md').demos
-          ?.length
+        findPage(result.content, 'packages/package1/components/form/index.md')
+          .demos?.length
       ).toBe(1);
 
       expect(
-        findPage(pages, 'packages/package1/components/button.md').demos?.length
+        findPage(result.content, 'packages/package1/components/button.md').demos
+          ?.length
       ).toBe(1);
     });
 
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {
       const urls = [];
-      pages.forEach((page) => {
-        urls.push([page.source, page.url]);
+      result.content.forEach((page) => {
+        urls.push([page.source, page.meta.url]);
       });
 
       expect(urls).toMatchSnapshot();
@@ -48,8 +49,8 @@ describe('When urlSchema is set to manual', () => {
 
     test('it should have extracted or infered the title', async () => {
       const titles = [];
-      pages.forEach((page) => {
-        titles.push([page.source, page.title]);
+      result.content.forEach((page) => {
+        titles.push([page.source, page.meta.title]);
       });
 
       expect(titles).toMatchSnapshot();
@@ -57,20 +58,23 @@ describe('When urlSchema is set to manual', () => {
 
     test('it should have fixed the links between files', async () => {
       expect(
-        findPage(pages, 'packages/package2/docs/overview.md').rendered
+        findPage(result.content, 'docs/how-it-works.md').rendered
       ).toMatchSnapshot();
       expect(
-        findPage(pages, 'packages/package2/docs/styles.md').rendered
+        findPage(result.content, 'packages/package2/docs/overview.md').rendered
+      ).toMatchSnapshot();
+      expect(
+        findPage(result.content, 'packages/package2/docs/styles.md').rendered
       ).toMatchSnapshot();
     });
   });
 
   describe('When source defines url prefix and suffix', () => {
-    let pages: PageContent[];
+    let result: DocfyResult;
 
     beforeAll(async () => {
       const docfy = new Docfy();
-      pages = await docfy.run([
+      result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
@@ -83,8 +87,8 @@ describe('When urlSchema is set to manual', () => {
 
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {
       const urls = [];
-      pages.forEach((page) => {
-        urls.push([page.source, page.url]);
+      result.content.forEach((page) => {
+        urls.push([page.source, page.meta.url]);
       });
 
       expect(urls).toMatchSnapshot();
@@ -92,10 +96,13 @@ describe('When urlSchema is set to manual', () => {
 
     test('it should have fixed the links between files', async () => {
       expect(
-        findPage(pages, 'packages/package2/docs/overview.md').rendered
+        findPage(result.content, 'docs/how-it-works.md').rendered
       ).toMatchSnapshot();
       expect(
-        findPage(pages, 'packages/package2/docs/styles.md').rendered
+        findPage(result.content, 'packages/package2/docs/overview.md').rendered
+      ).toMatchSnapshot();
+      expect(
+        findPage(result.content, 'packages/package2/docs/styles.md').rendered
       ).toMatchSnapshot();
     });
   });

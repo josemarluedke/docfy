@@ -29,9 +29,9 @@ function generateUniqueUrl(
 export function uniquefyUrls(ctx: Context): void {
   const seenUrls: string[] = [];
   ctx.pages.forEach((page) => {
-    if (seenUrls.indexOf(page.url) > -1) {
-      page.url = generateUniqueUrl(seenUrls, page.url);
+    if (seenUrls.indexOf(page.meta.url) > -1) {
+      page.meta.url = generateUniqueUrl(seenUrls, page.meta.url);
     }
-    seenUrls.push(page.url);
+    seenUrls.push(page.meta.url);
   });
 }

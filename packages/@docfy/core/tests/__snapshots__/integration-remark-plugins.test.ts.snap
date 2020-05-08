@@ -30,6 +30,7 @@ Array [
     "docs/how-it-works.md",
     "<h1 id=\\"how-it-works\\"><a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How it works?</h1>
 <p>This is a description.</p>
+<p><a href=\\"/docs/about\\">Link using reference</a></p>
 ",
   ],
   Array [
@@ -93,6 +94,7 @@ Array [
     "docs/how-it-works.md",
     "<h1 id=\\"how-it-works\\">How it works?<a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>This is a description.</p>
+<p><a href=\\"/docs/about\\">Link using reference</a></p>
 ",
   ],
   Array [

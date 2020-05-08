@@ -1,12 +1,11 @@
 import Docfy from '../src';
-import { PageContent } from '../src/types';
-import { transformOutput } from '../src';
+import { DocfyResult } from '../src/types';
 import path from 'path';
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
 describe('Generates runtime output', () => {
-  let pages: PageContent[];
+  let result: DocfyResult;
 
   beforeAll(async () => {
     const docfy = new Docfy({
@@ -15,7 +14,7 @@ describe('Generates runtime output', () => {
         url: 'https://github.com/user/repo'
       }
     });
-    pages = await docfy.run([
+    result = await docfy.run([
       {
         root,
         urlPrefix: 'docs',
@@ -25,7 +24,7 @@ describe('Generates runtime output', () => {
     ]);
   });
 
-  test('it should have generated the runtime output', async () => {
-    expect(transformOutput(pages)).toMatchSnapshot();
+  test('it should have generated the nestedPageMetadata,', async () => {
+    expect(result.nestedPageMetadata).toMatchSnapshot();
   });
 });

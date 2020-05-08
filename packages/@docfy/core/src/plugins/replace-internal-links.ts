@@ -4,9 +4,51 @@ import visit from 'unist-util-visit';
 import { isValidUrl, isAnchorUrl } from '../-private/utils';
 import { PageContent, Context } from '../types';
 
-interface LinkNode extends Node {
-  title: string | null;
+interface Resource {
   url: string;
+  title?: string;
+}
+interface Association {
+  identifier: string;
+  label?: string;
+}
+
+interface LinkNode extends Node, Resource {}
+interface LinkReferenceNode extends Node, Association {}
+
+interface DefinitionNode extends Node, Resource, Association {
+  type: 'definition';
+}
+
+function replaceURL(
+  ctx: Context,
+  page: PageContent,
+  node: LinkNode | DefinitionNode
+): void {
+  if (isValidUrl(node.url) || isAnchorUrl(node.url)) {
+    return;
+  }
+
+  let absolutePath = node.url;
+  if (!path.isAbsolute(node.url)) {
+    absolutePath = path.resolve(
+      path.join(page.sourceConfig.root, path.dirname(page.source)),
+      node.url
+    );
+  }
+  const found = ctx.pages.find((p) => {
+    return path.join(p.sourceConfig.root, p.source) === absolutePath;
+  });
+
+  if (found && found.meta.url) {
+    node.url = found.meta.url;
+  }
+}
+
+function isReferenceLink(
+  node: LinkNode | LinkReferenceNode
+): node is LinkReferenceNode {
+  return node.type === 'linkReference';
 }
 
 /**
@@ -20,27 +62,24 @@ interface LinkNode extends Node {
  */
 export function replaceInternalLinks(ctx: Context): void {
   ctx.pages.forEach((page: PageContent) => {
-    visit(page.ast, 'link', (node: LinkNode) => {
-      if (isValidUrl(node.url) || isAnchorUrl(node.url)) {
-        return;
-      }
+    const definitions: Record<string, DefinitionNode> = {};
 
-      let absolutePath = node.url;
-      if (!path.isAbsolute(node.url)) {
-        absolutePath = path.resolve(
-          path.join(path.sep, path.dirname(page.source)),
-          node.url
-        );
-      }
-      const relativePath = absolutePath.substr(1);
-
-      const found = ctx.pages.find((p) => {
-        return p.source === relativePath;
-      });
-
-      if (found && found.url) {
-        node.url = found.url;
-      }
+    visit(page.ast, 'definition', (node: DefinitionNode) => {
+      definitions[node.identifier] = node;
     });
+
+    visit(
+      page.ast,
+      ['link', 'linkReference'],
+      (node: LinkNode | LinkReferenceNode) => {
+        if (isReferenceLink(node)) {
+          if (definitions[node.identifier]) {
+            replaceURL(ctx, page, definitions[node.identifier]);
+          }
+        } else {
+          replaceURL(ctx, page, node);
+        }
+      }
+    );
   });
 }

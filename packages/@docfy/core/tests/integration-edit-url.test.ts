@@ -1,11 +1,11 @@
 import Docfy from '../src';
-import { PageContent } from '../src/types';
+import { DocfyResult } from '../src/types';
 import path from 'path';
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
 describe('Generates Edit Url', () => {
-  let pages: PageContent[];
+  let result: DocfyResult;
 
   beforeAll(async () => {
     const docfy = new Docfy({
@@ -14,7 +14,7 @@ describe('Generates Edit Url', () => {
         editBranch: 'dev'
       }
     });
-    pages = await docfy.run([
+    result = await docfy.run([
       {
         root,
         urlPrefix: 'docs',
@@ -36,8 +36,8 @@ describe('Generates Edit Url', () => {
 
   test('it should generated edit urls correctly', async () => {
     const urls = [];
-    pages.forEach((page) => {
-      urls.push([page.source, page.editUrl]);
+    result.content.forEach((page) => {
+      urls.push([page.source, page.meta.editUrl]);
     });
 
     expect(urls).toMatchSnapshot();
