@@ -57,6 +57,9 @@ describe('When urlSchema is set to manual', () => {
 
     test('it should have fixed the links between files', async () => {
       expect(
+        findPage(pages, 'docs/how-it-works.md').rendered
+      ).toMatchSnapshot();
+      expect(
         findPage(pages, 'packages/package2/docs/overview.md').rendered
       ).toMatchSnapshot();
       expect(
@@ -91,6 +94,9 @@ describe('When urlSchema is set to manual', () => {
     });
 
     test('it should have fixed the links between files', async () => {
+      expect(
+        findPage(pages, 'docs/how-it-works.md').rendered
+      ).toMatchSnapshot();
       expect(
         findPage(pages, 'packages/package2/docs/overview.md').rendered
       ).toMatchSnapshot();
