@@ -7,7 +7,8 @@ import {
   Context,
   Options,
   SourceConfig,
-  PageMetadata
+  PageMetadata,
+  DocfyResult
 } from './types';
 import {
   DEFAULT_IGNORE,
@@ -25,7 +26,7 @@ import {
   uniquefyUrls
 } from './plugins';
 import { getRepoEditUrl } from './-private/repo-info';
-export { transformOutput } from './-private/output';
+import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
 
 export default class Docfy {
   private pipeline: Through<Context>;
@@ -58,13 +59,19 @@ export default class Docfy {
     this.pipeline.use(toc).use(renderMarkdown);
   }
 
-  public run(sources: SourceConfig[]): Promise<PageContent[]> {
+  public run(sources: SourceConfig[]): Promise<DocfyResult> {
     return new Promise((resolve, reject) => {
       this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
         if (err) {
           reject(err);
         } else {
-          resolve(ctx.pages);
+          resolve({
+            content: ctx.pages,
+            nestedPageMetadata: transformToNestedPageMetadata(
+              ctx.pages.map((p) => p.meta),
+              ctx.options.labels
+            )
+          });
         }
       });
     });

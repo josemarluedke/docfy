@@ -1,6 +1,9 @@
-import { PageMetadata, PageContent, Output, NestedOutput } from '../types';
+import { PageMetadata, NestedPageMetadata } from '../types';
 
-function findChild(node: NestedOutput, name: string): NestedOutput | undefined {
+function findChild(
+  node: NestedPageMetadata,
+  name: string
+): NestedPageMetadata | undefined {
   return node.children.find((item) => {
     return item.name === name;
   });
@@ -20,18 +23,12 @@ function sortByOrder(pages: PageMetadata[]): PageMetadata[] {
   });
 }
 
-function transformToPage(pageContents: PageContent[]): PageMetadata[] {
-  return pageContents.map((item) => {
-    return item.meta;
-  });
-}
-
-function transformNestedOutput(
+export function transformToNestedPageMetadata(
   pages: PageMetadata[],
   labels: Record<string, string> = {},
-  existingObj?: NestedOutput
-): NestedOutput {
-  const node: NestedOutput = existingObj || {
+  existingObj?: NestedPageMetadata
+): NestedPageMetadata {
+  const node: NestedPageMetadata = existingObj || {
     name: '/',
     label: labels['/'] || '/',
     pages: [],
@@ -78,7 +75,7 @@ function transformNestedOutput(
         }
 
         item.relativeUrl = urlParts.join('/');
-        transformNestedOutput([item], labels, child);
+        transformToNestedPageMetadata([item], labels, child);
 
         sortByOrder(child.pages);
       }
@@ -87,28 +84,4 @@ function transformNestedOutput(
 
   sortByOrder(node.pages);
   return node;
-}
-
-// We flat the nested output to keep the nested PageMetadatar
-function flatNested(
-  output: NestedOutput,
-  pages: PageMetadata[] = []
-): PageMetadata[] {
-  pages.push(...output.pages);
-
-  output.children.forEach((child) => {
-    flatNested(child, pages);
-  });
-
-  return pages;
-}
-
-export function transformOutput(
-  pageContents: PageContent[],
-  labels: Record<string, string> = {}
-): Output {
-  const nested = transformNestedOutput(transformToPage(pageContents), labels);
-  const flat = flatNested(nested);
-
-  return { flat, nested };
 }

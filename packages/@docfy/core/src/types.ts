@@ -44,16 +44,16 @@ export interface Context {
   options: ContextOptions;
 }
 
-export interface NestedOutput {
+export interface NestedPageMetadata {
   name: string;
   label: string;
   pages: PageMetadata[];
-  children: NestedOutput[];
+  children: NestedPageMetadata[];
 }
 
-export interface Output {
-  flat: PageMetadata[];
-  nested: NestedOutput;
+export interface DocfyResult {
+  content: PageContent[];
+  nestedPageMetadata: NestedPageMetadata;
 }
 
 export interface SourceConfig {
@@ -177,6 +177,11 @@ export interface Options {
    * The repository config
    */
   repository?: RepositoryConfig;
+
+  /**
+   * Labels to be used while generating nestedPageMetadata
+   */
+  labels?: Record<string, string>;
 }
 
 interface DocfyConfigSourceConfig extends Omit<SourceConfig, 'root'> {
@@ -185,5 +190,4 @@ interface DocfyConfigSourceConfig extends Omit<SourceConfig, 'root'> {
 
 export interface DocfyConfig extends Options {
   sources: DocfyConfigSourceConfig[];
-  labels?: Record<string, string>;
 }

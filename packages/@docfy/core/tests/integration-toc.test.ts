@@ -1,16 +1,16 @@
 import Docfy from '../src';
-import { PageContent } from '../src/types';
+import { DocfyResult } from '../src/types';
 import path from 'path';
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
 
 describe('Extracts TOC', () => {
   describe('When maxDepth is not set', () => {
-    let pages: PageContent[];
+    let result: DocfyResult;
 
     beforeAll(async () => {
       const docfy = new Docfy();
-      pages = await docfy.run([
+      result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
@@ -22,7 +22,7 @@ describe('Extracts TOC', () => {
 
     test('it should have extracted TOC correctly', async () => {
       const TOCs = [];
-      pages.forEach((page) => {
+      result.content.forEach((page) => {
         TOCs.push([page.source, page.meta.headings]);
       });
 
@@ -31,11 +31,11 @@ describe('Extracts TOC', () => {
   });
 
   describe('When maxDepth is set', () => {
-    let pages: PageContent[];
+    let result: DocfyResult;
 
     beforeAll(async () => {
       const docfy = new Docfy({ tocMaxDepth: 4 });
-      pages = await docfy.run([
+      result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
@@ -47,7 +47,7 @@ describe('Extracts TOC', () => {
 
     test('it should have extracted TOC correctly', async () => {
       const TOCs = [];
-      pages.forEach((page) => {
+      result.content.forEach((page) => {
         TOCs.push([page.source, page.meta.headings]);
       });
 
