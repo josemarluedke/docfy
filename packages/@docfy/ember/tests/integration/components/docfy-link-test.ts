@@ -18,7 +18,7 @@ module('Integration | Component | DocfyLink', function (hooks) {
       assert.equal(routeName, 'docs.introduction');
     });
 
-    this.set('page', output.flat[1]);
+    this.set('page', output.nested.children[0].pages[1]);
 
     await render(
       hbs`<DocfyLink @to={{this.page.url}} data-test-id="link" @activeClass="active">
@@ -44,7 +44,7 @@ module('Integration | Component | DocfyLink', function (hooks) {
       .stub(routerService, 'currentRouteName')
       .get(() => 'docs.introduction');
 
-    this.set('page', output.flat[1]);
+    this.set('page', output.nested.children[0].pages[1]);
 
     await render(
       hbs`<DocfyLink @to={{this.page.url}} data-test-id="link" @activeClass="active">

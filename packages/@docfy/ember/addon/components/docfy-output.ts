@@ -1,6 +1,6 @@
 import Component from '@glimmer/component';
 import output from '@docfy/ember/output';
-import { NestedOutput, PageMetadata } from '@docfy/core/lib/types';
+import { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
 
@@ -12,10 +12,23 @@ interface DocfyOutputArgs {
   scope?: string;
 }
 
+function flatNested(
+  output: NestedPageMetadata,
+  pages: PageMetadata[] = []
+): PageMetadata[] {
+  pages.push(...output.pages);
+
+  output.children.forEach((child) => {
+    flatNested(child, pages);
+  });
+
+  return pages;
+}
+
 export default class DocfyOutput extends Component<DocfyOutputArgs> {
   @service router!: RouterService;
 
-  get nestedOutput(): NestedOutput | undefined {
+  get nestedOutput(): NestedPageMetadata | undefined {
     if (this.args.scope) {
       return output.nested.children.find((item) => {
         return item.name === this.args.scope;
@@ -33,15 +46,15 @@ export default class DocfyOutput extends Component<DocfyOutputArgs> {
     }
 
     if (url) {
-      return output.flat.find((item) => {
+      return flatNested(output.nested).find((item) => {
         return item.url === url || item.url === `${url}/`;
       });
     }
 
-    return output.flat;
+    return flatNested(output.nested);
   }
 
-  get output(): NestedOutput | PageMetadata[] | PageMetadata | undefined {
+  get output(): NestedPageMetadata | PageMetadata[] | PageMetadata | undefined {
     let isFlat = this.args.type === 'flat';
 
     if (this.args.url || this.args.fromActiveRoute) {

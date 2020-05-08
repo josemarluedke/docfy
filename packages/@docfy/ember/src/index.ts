@@ -7,7 +7,7 @@ import Plugin from 'broccoli-plugin';
 import WriteFile from 'broccoli-file-creator';
 import { Node, InputNode } from 'broccoli-node-api';
 import { UnwatchedDir } from 'broccoli-source';
-import Docfy, { transformOutput } from '@docfy/core';
+import Docfy from '@docfy/core';
 import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
@@ -31,9 +31,9 @@ class DocfyBroccoli extends Plugin {
 
   async build(): Promise<void> {
     const docfy = new Docfy(this.config);
-    const pages = await docfy.run(this.config.sources as SourceConfig[]);
+    const result = await docfy.run(this.config.sources as SourceConfig[]);
 
-    pages.forEach((page) => {
+    result.content.forEach((page) => {
       const parts = [this.outputPath, 'templates', page.meta.url];
 
       if (page.meta.url[page.meta.url.length - 1] === '/') {
@@ -48,9 +48,7 @@ class DocfyBroccoli extends Plugin {
 
     fs.writeFileSync(
       path.join(this.outputPath, 'docfy-output.js'),
-      `export default ${JSON.stringify(
-        transformOutput(pages, this.config.labels)
-      )};`
+      `export default ${JSON.stringify({ nested: result.nestedPageMetadata })};`
     );
 
     const urlsJsonFile = path.join(
@@ -61,7 +59,7 @@ class DocfyBroccoli extends Plugin {
     ensureDirectoryExistence(urlsJsonFile);
     fs.writeFileSync(
       urlsJsonFile,
-      JSON.stringify(pages.map((page) => page.meta.url))
+      JSON.stringify(result.content.map((page) => page.meta.url))
     );
   }
 }
