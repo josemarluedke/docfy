@@ -1,4 +1,4 @@
-import { Node } from 'unist';
+import { Node as MarkdownAST } from 'unist';
 import {
   Processor,
   Plugin as RemarkPlugin,
@@ -22,10 +22,10 @@ export interface PageMetadata {
 }
 
 export interface PageContent {
-  metadata: PageMetadata;
-  sourceConfig: SourceSettings;
+  meta: PageMetadata;
+  sourceConfig: SourceConfig;
   source: string;
-  ast: Node;
+  ast: MarkdownAST;
   markdown: string;
   rendered: string;
   demos?: PageContent[];
@@ -54,7 +54,7 @@ export interface Output {
   nested: NestedOutput;
 }
 
-export interface SourceSettings {
+export interface SourceConfig {
   /**
    * The absolute path to where the files are located.
    */
@@ -177,11 +177,11 @@ export interface Options {
   repository?: RepositoryConfig;
 }
 
-interface DocfyConfigSourceSettings extends Omit<SourceSettings, 'root'> {
+interface DocfyConfigSourceConfig extends Omit<SourceConfig, 'root'> {
   root?: string;
 }
 
 export interface DocfyConfig extends Options {
-  sources: DocfyConfigSourceSettings[];
+  sources: DocfyConfigSourceConfig[];
   labels?: Record<string, string>;
 }

@@ -6,7 +6,7 @@ import {
   PageContent,
   Context,
   Options,
-  SourceSettings,
+  SourceConfig,
   PageMetadata
 } from './types';
 import {
@@ -43,7 +43,7 @@ export default class Docfy {
     };
 
     this.pipeline = trough<Context>()
-      .use<SourceSettings[]>(this.initializePipeline.bind(this))
+      .use<SourceConfig[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
       .use(uniquefyUrls)
       .use(replaceInternalLinks);
@@ -58,7 +58,7 @@ export default class Docfy {
     this.pipeline.use(toc).use(renderMarkdown);
   }
 
-  public run(sources: SourceSettings[]): Promise<PageContent[]> {
+  public run(sources: SourceConfig[]): Promise<PageContent[]> {
     return new Promise((resolve, reject) => {
       this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
         if (err) {
@@ -70,7 +70,7 @@ export default class Docfy {
     });
   }
 
-  private initializePipeline(sources: SourceSettings[]): Context {
+  private initializePipeline(sources: SourceConfig[]): Context {
     const ctx = this.context;
 
     sources.forEach((item) => {
@@ -95,7 +95,7 @@ export default class Docfy {
   }
 
   private createPage(
-    sourceConfig: SourceSettings,
+    sourceConfig: SourceConfig,
     fullPath: string,
     repoEditUrl?: string | null
   ): PageContent {
@@ -160,7 +160,7 @@ export default class Docfy {
     };
 
     return {
-      metadata,
+      meta: metadata,
       source: relativePath,
       sourceConfig,
       ast,

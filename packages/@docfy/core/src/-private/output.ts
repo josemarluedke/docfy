@@ -22,7 +22,7 @@ function sortByOrder(pages: PageMetadata[]): PageMetadata[] {
 
 function transformToPage(pageContents: PageContent[]): PageMetadata[] {
   return pageContents.map((item) => {
-    return item.metadata;
+    return item.meta;
   });
 }
 

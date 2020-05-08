@@ -23,7 +23,7 @@ describe('Extracts TOC', () => {
     test('it should have extracted TOC correctly', async () => {
       const TOCs = [];
       pages.forEach((page) => {
-        TOCs.push([page.source, page.metadata.headings]);
+        TOCs.push([page.source, page.meta.headings]);
       });
 
       expect(TOCs).toMatchSnapshot();
@@ -48,7 +48,7 @@ describe('Extracts TOC', () => {
     test('it should have extracted TOC correctly', async () => {
       const TOCs = [];
       pages.forEach((page) => {
-        TOCs.push([page.source, page.metadata.headings]);
+        TOCs.push([page.source, page.meta.headings]);
       });
 
       expect(TOCs).toMatchSnapshot();

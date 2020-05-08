@@ -51,7 +51,7 @@ export function toc(ctx: Context): Context {
       parent.push(getHeading(node));
     });
 
-    page.metadata.headings = headings;
+    page.meta.headings = headings;
   });
 
   return ctx;

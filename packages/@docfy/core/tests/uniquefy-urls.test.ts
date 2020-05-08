@@ -6,12 +6,12 @@ describe('it changes the url if duplicatd', () => {
     const content = {
       pages: [
         {
-          metadata: {
+          meta: {
             url: '/something/cool'
           }
         },
         {
-          metadata: {
+          meta: {
             url: '/something/cool'
           }
         }
@@ -20,7 +20,7 @@ describe('it changes the url if duplicatd', () => {
 
     uniquefyUrls(content as Context);
 
-    expect(content.pages.map((page) => page.metadata.url)).toEqual([
+    expect(content.pages.map((page) => page.meta.url)).toEqual([
       '/something/cool',
       '/something/cool-1'
     ]);
@@ -30,17 +30,17 @@ describe('it changes the url if duplicatd', () => {
     const content = {
       pages: [
         {
-          metadata: {
+          meta: {
             url: '/something/cool'
           }
         },
         {
-          metadata: {
+          meta: {
             url: '/something/cool'
           }
         },
         {
-          metadata: {
+          meta: {
             url: '/something/cool'
           }
         }
@@ -49,7 +49,7 @@ describe('it changes the url if duplicatd', () => {
 
     uniquefyUrls(content as Context);
 
-    expect(content.pages.map((page) => page.metadata.url)).toEqual([
+    expect(content.pages.map((page) => page.meta.url)).toEqual([
       '/something/cool',
       '/something/cool-1',
       '/something/cool-2'
@@ -60,12 +60,12 @@ describe('it changes the url if duplicatd', () => {
     const content = {
       pages: [
         {
-          metadata: {
+          meta: {
             url: '/something/blog/'
           }
         },
         {
-          metadata: {
+          meta: {
             url: '/something/blog/'
           }
         }
@@ -74,7 +74,7 @@ describe('it changes the url if duplicatd', () => {
 
     uniquefyUrls(content as Context);
 
-    expect(content.pages.map((page) => page.metadata.url)).toEqual([
+    expect(content.pages.map((page) => page.meta.url)).toEqual([
       '/something/blog/',
       '/something/blog/index-1'
     ]);

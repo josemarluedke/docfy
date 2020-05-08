@@ -38,8 +38,8 @@ export function replaceInternalLinks(ctx: Context): void {
         return p.source === relativePath;
       });
 
-      if (found && found.metadata.url) {
-        node.url = found.metadata.url;
+      if (found && found.meta.url) {
+        node.url = found.meta.url;
       }
     });
   });
