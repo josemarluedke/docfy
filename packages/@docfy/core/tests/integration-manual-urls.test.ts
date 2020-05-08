@@ -2,6 +2,8 @@ import Docfy from '../src';
 import { PageContent } from '../src/types';
 import path from 'path';
 
+const root = path.resolve(__dirname, './__fixtures__/monorepo');
+
 function findPage(pages: PageContent[], source: string) {
   return pages.find((p) => {
     return p.source === source;
@@ -9,8 +11,6 @@ function findPage(pages: PageContent[], source: string) {
 }
 
 describe('When urlSchema is set to manual', () => {
-  const root = path.resolve(__dirname, './__fixtures__/monorepo');
-
   describe('Basic case, no url prefix, or suffix', () => {
     let pages: PageContent[];
 
