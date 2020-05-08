@@ -156,7 +156,8 @@ export default class Docfy {
       editUrl,
       relativeUrl: undefined,
       headings: [],
-      frontmatter: frontmatter
+      frontmatter: frontmatter,
+      pluginData: {}
     };
 
     return {
@@ -165,7 +166,8 @@ export default class Docfy {
       sourceConfig,
       ast,
       markdown,
-      rendered: ''
+      rendered: '',
+      pluginData: {}
     };
   }
 }

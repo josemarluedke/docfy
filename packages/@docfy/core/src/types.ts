@@ -19,6 +19,7 @@ export interface PageMetadata {
   title: string;
   headings: Heading[];
   frontmatter: Record<string, unknown>;
+  pluginData: Record<string, unknown>;
 }
 
 export interface PageContent {
@@ -29,6 +30,7 @@ export interface PageContent {
   markdown: string;
   rendered: string;
   demos?: PageContent[];
+  pluginData: Record<string, unknown>;
 }
 
 interface ContextOptions
