@@ -28,14 +28,12 @@ export function replaceInternalLinks(ctx: Context): void {
       let absolutePath = node.url;
       if (!path.isAbsolute(node.url)) {
         absolutePath = path.resolve(
-          path.join(path.sep, path.dirname(page.source)),
+          path.join(page.sourceConfig.root, path.dirname(page.source)),
           node.url
         );
       }
-      const relativePath = absolutePath.substr(1);
-
       const found = ctx.pages.find((p) => {
-        return p.source === relativePath;
+        return path.join(p.sourceConfig.root, p.source) === absolutePath;
       });
 
       if (found && found.meta.url) {
