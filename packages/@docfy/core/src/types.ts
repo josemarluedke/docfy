@@ -12,16 +12,19 @@ export interface Heading {
   headings?: Heading[];
 }
 
-export interface Page {
-  source: string;
+export interface PageMetadata {
   url: string;
+  relativeUrl: undefined | string;
   editUrl: string;
   title: string;
   headings: Heading[];
   frontmatter: Record<string, unknown>;
 }
 
-export interface PageContent extends Page {
+export interface PageContent {
+  metadata: PageMetadata;
+  sourceConfig: SourceSettings;
+  source: string;
   ast: Node;
   markdown: string;
   rendered: string;
@@ -42,12 +45,12 @@ export interface Context {
 export interface NestedOutput {
   name: string;
   label: string;
-  pages: Page[];
+  pages: PageMetadata[];
   children: NestedOutput[];
 }
 
 export interface Output {
-  flat: Page[];
+  flat: PageMetadata[];
   nested: NestedOutput;
 }
 

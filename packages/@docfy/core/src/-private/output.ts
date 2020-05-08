@@ -1,4 +1,4 @@
-import { Page, PageContent, Output, NestedOutput } from '../types';
+import { PageMetadata, PageContent, Output, NestedOutput } from '../types';
 
 function findChild(node: NestedOutput, name: string): NestedOutput | undefined {
   return node.children.find((item) => {
@@ -6,7 +6,7 @@ function findChild(node: NestedOutput, name: string): NestedOutput | undefined {
   });
 }
 
-function sortByOrder(pages: Page[]): Page[] {
+function sortByOrder(pages: PageMetadata[]): PageMetadata[] {
   return pages.sort((a, b) => {
     const aOrder =
       typeof a.frontmatter.order !== 'undefined'
@@ -20,25 +20,14 @@ function sortByOrder(pages: Page[]): Page[] {
   });
 }
 
-function transformToPage(pageContents: PageContent[]): Page[] {
-  const pages: Page[] = pageContents.map((page) => {
-    const { url, headings, title, source, frontmatter, editUrl } = page;
-
-    return {
-      url,
-      headings,
-      title,
-      source,
-      frontmatter,
-      editUrl
-    };
+function transformToPage(pageContents: PageContent[]): PageMetadata[] {
+  return pageContents.map((item) => {
+    return item.metadata;
   });
-
-  return pages;
 }
 
 function transformNestedOutput(
-  pages: Page[],
+  pages: PageMetadata[],
   labels: Record<string, string> = {},
   existingObj?: NestedOutput
 ): NestedOutput {
@@ -51,15 +40,13 @@ function transformNestedOutput(
 
   pages.forEach((item): void => {
     let url =
-      typeof item.frontmatter.relativeUrl === 'string'
-        ? item.frontmatter.relativeUrl
-        : item.url;
+      typeof item.relativeUrl === 'string' ? item.relativeUrl : item.url;
 
     url = url[0] === '/' ? url.substring(1) : url;
     const urlParts = url.split('/');
 
     if (urlParts.length === 1) {
-      item.frontmatter.relativeUrl = urlParts[0];
+      item.relativeUrl = urlParts[0];
       node.pages.push(item);
     } else {
       const name = urlParts.shift();
@@ -90,7 +77,7 @@ function transformNestedOutput(
           });
         }
 
-        item.frontmatter.relativeUrl = urlParts.join('/');
+        item.relativeUrl = urlParts.join('/');
         transformNestedOutput([item], labels, child);
 
         sortByOrder(child.pages);
@@ -102,8 +89,11 @@ function transformNestedOutput(
   return node;
 }
 
-// We flat the nested output to keep the nested order
-function flatNested(output: NestedOutput, pages: Page[] = []): Page[] {
+// We flat the nested output to keep the nested PageMetadatar
+function flatNested(
+  output: NestedOutput,
+  pages: PageMetadata[] = []
+): PageMetadata[] {
   pages.push(...output.pages);
 
   output.children.forEach((child) => {

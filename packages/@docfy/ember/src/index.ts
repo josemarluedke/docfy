@@ -34,9 +34,9 @@ class DocfyBroccoli extends Plugin {
     const pages = await docfy.run(this.config.sources as SourceSettings[]);
 
     pages.forEach((page) => {
-      const parts = [this.outputPath, 'templates', page.url];
+      const parts = [this.outputPath, 'templates', page.metadata.url];
 
-      if (page.url[page.url.length - 1] === '/') {
+      if (page.metadata.url[page.metadata.url.length - 1] === '/') {
         parts.push('index');
       }
 
@@ -61,7 +61,7 @@ class DocfyBroccoli extends Plugin {
     ensureDirectoryExistence(urlsJsonFile);
     fs.writeFileSync(
       urlsJsonFile,
-      JSON.stringify(pages.map((page) => page.url))
+      JSON.stringify(pages.map((page) => page.metadata.url))
     );
   }
 }

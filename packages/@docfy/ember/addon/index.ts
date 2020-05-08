@@ -5,7 +5,7 @@ import { NestedOutput } from '@docfy/core/lib/types';
 function addFromNested(context: RouterDSL, nested: NestedOutput): void {
   function add(this: RouterDSL): void {
     nested.pages.forEach((page) => {
-      const url = page.frontmatter.relativeUrl;
+      const url = page.relativeUrl;
       if (typeof url === 'string') {
         if (url !== '') {
           this.route(url);

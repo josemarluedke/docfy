@@ -27,7 +27,7 @@ describe('When urlSchema is set to auto', () => {
     test('it should have generated urls based folder structure', async () => {
       const urls = [];
       pages.forEach((page) => {
-        urls.push([page.source, page.url]);
+        urls.push([page.source, page.metadata.url]);
       });
 
       expect(urls).toMatchSnapshot();
@@ -62,7 +62,7 @@ describe('When urlSchema is set to auto', () => {
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {
       const urls = [];
       pages.forEach((page) => {
-        urls.push([page.source, page.url]);
+        urls.push([page.source, page.metadata.url]);
       });
 
       expect(urls).toMatchSnapshot();

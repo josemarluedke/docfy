@@ -37,7 +37,7 @@ describe('Generates Edit Url', () => {
   test('it should generated edit urls correctly', async () => {
     const urls = [];
     pages.forEach((page) => {
-      urls.push([page.source, page.editUrl]);
+      urls.push([page.source, page.metadata.editUrl]);
     });
 
     expect(urls).toMatchSnapshot();

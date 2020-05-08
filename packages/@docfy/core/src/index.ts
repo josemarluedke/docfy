@@ -2,7 +2,13 @@ import glob from 'fast-glob';
 import fs from 'fs';
 import path from 'path';
 import trough, { Through } from 'trough';
-import { PageContent, Context, Options, SourceSettings } from './types';
+import {
+  PageContent,
+  Context,
+  Options,
+  SourceSettings,
+  PageMetadata
+} from './types';
 import {
   DEFAULT_IGNORE,
   generateAutoUrl,
@@ -144,15 +150,21 @@ export default class Docfy {
       editUrl = repoEditUrl.replace('{filepath}', relativePath);
     }
 
+    const metadata: PageMetadata = {
+      url,
+      title,
+      editUrl,
+      relativeUrl: undefined,
+      headings: [],
+      frontmatter: frontmatter
+    };
+
     return {
+      metadata,
       source: relativePath,
+      sourceConfig,
       ast,
       markdown,
-      title,
-      url,
-      editUrl,
-      headings: [],
-      frontmatter: frontmatter,
       rendered: ''
     };
   }

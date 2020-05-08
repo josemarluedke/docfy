@@ -40,7 +40,7 @@ describe('When urlSchema is set to manual', () => {
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {
       const urls = [];
       pages.forEach((page) => {
-        urls.push([page.source, page.url]);
+        urls.push([page.source, page.metadata.url]);
       });
 
       expect(urls).toMatchSnapshot();
@@ -49,7 +49,7 @@ describe('When urlSchema is set to manual', () => {
     test('it should have extracted or infered the title', async () => {
       const titles = [];
       pages.forEach((page) => {
-        titles.push([page.source, page.title]);
+        titles.push([page.source, page.metadata.title]);
       });
 
       expect(titles).toMatchSnapshot();
@@ -84,7 +84,7 @@ describe('When urlSchema is set to manual', () => {
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {
       const urls = [];
       pages.forEach((page) => {
-        urls.push([page.source, page.url]);
+        urls.push([page.source, page.metadata.url]);
       });
 
       expect(urls).toMatchSnapshot();
