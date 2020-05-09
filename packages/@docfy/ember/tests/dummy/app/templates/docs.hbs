@@ -84,7 +84,7 @@
       </DocfyOutput>
 
       <div class="mt-16">
-        <DocfyOutput @fromActiveRoute={{true}} as |page|>
+        <DocfyOutput @fromCurrentURL={{true}} as |page|>
           {{#if page.headings.length}}
             <div class="mb-4 font-medium text-gray-900">
               On this page:
@@ -115,7 +115,7 @@
       {{outlet}}
     </div>
 
-    <DocfyOutput @fromActiveRoute={{true}} as |page|>
+    <DocfyOutput @fromCurrentURL={{true}} as |page|>
       {{#if page.editUrl}}
         <div class="mt-10 text-right">
           <a href={{page.editUrl}} class="text-sm">
@@ -126,28 +126,26 @@
     </DocfyOutput>
 
     <div class="flex justify-between my-10">
-      <div>
-        <DocfyPreviousOrNextPage @isPrevious={{true}} as |page|>
-          {{#if page}}
+      <DocfyPreviousAndNextPage as |previous next|>
+        <div>
+          {{#if previous}}
             <div class="text-sm">Previous</div>
 
-            <DocfyLink @to={{page.url}} class="text-xl text-blue-500">
-              {{page.title}}
+            <DocfyLink @to={{previous.url}} class="text-xl text-blue-500">
+              {{previous.title}}
             </DocfyLink>
           {{/if}}
-        </DocfyPreviousOrNextPage>
-      </div>
-      <div>
-        <DocfyPreviousOrNextPage as |page|>
-          {{#if page}}
+        </div>
+        <div>
+          {{#if next}}
             <div class="text-sm text-right">Next</div>
 
-            <DocfyLink @to={{page.url}} class="text-xl text-blue-500">
-              {{page.title}}
+            <DocfyLink @to={{next.url}} class="text-xl text-blue-500">
+              {{next.title}}
             </DocfyLink>
           {{/if}}
-        </DocfyPreviousOrNextPage>
-      </div>
+        </div>
+      </DocfyPreviousAndNextPage>
     </div>
   </div>
 </div>

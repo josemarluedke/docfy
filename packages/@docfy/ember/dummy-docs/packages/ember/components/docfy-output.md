@@ -14,7 +14,7 @@ Cornibus e, putat procul nostro erat cunctantem munus inventus quod.
 
 ```hbs
 
-<DocfyOutput @fromActiveRoute={{true}} as |page|>
+<DocfyOutput @fromCurrentURL={{true}} as |page|>
   {{#if page.headings.length}}
     On this page:
     <ul>
