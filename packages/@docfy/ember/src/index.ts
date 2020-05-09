@@ -61,6 +61,11 @@ class DocfyBroccoli extends Plugin {
       urlsJsonFile,
       JSON.stringify(result.content.map((page) => page.meta.url))
     );
+    result.staticAssets.forEach((asset) => {
+      const dest = path.join(this.outputPath, 'public', asset.toPath);
+      ensureDirectoryExistence(dest);
+      fs.copyFileSync(asset.fromPath, dest);
+    });
   }
 }
 

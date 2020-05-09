@@ -1,5 +1,9 @@
 # Welcome to Docfy
 
+This project is on GitHub.
+
+![GitHub](./github-icon.png)
+
 ## h2 Heading
 ### h3 Heading
 #### h4 Heading

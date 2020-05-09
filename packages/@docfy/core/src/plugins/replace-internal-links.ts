@@ -13,8 +13,13 @@ interface Association {
   label?: string;
 }
 
-interface LinkNode extends Node, Resource {}
-interface LinkReferenceNode extends Node, Association {}
+interface LinkNode extends Node, Resource {
+  type: 'link';
+}
+
+interface LinkReferenceNode extends Node, Association {
+  type: 'linkReference';
+}
 
 interface DefinitionNode extends Node, Resource, Association {
   type: 'definition';

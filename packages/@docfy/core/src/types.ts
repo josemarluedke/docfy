@@ -38,9 +38,15 @@ interface ContextOptions
   tocMaxDepth: number;
 }
 
+export interface StaticAssetDefinition {
+  fromPath: string;
+  toPath: string;
+}
+
 export interface Context {
   remark: Processor;
   pages: PageContent[];
+  staticAssets: StaticAssetDefinition[];
   options: ContextOptions;
 }
 
@@ -53,6 +59,7 @@ export interface NestedPageMetadata {
 
 export interface DocfyResult {
   content: PageContent[];
+  staticAssets: StaticAssetDefinition[];
   nestedPageMetadata: NestedPageMetadata;
 }
 
@@ -182,6 +189,16 @@ export interface Options {
    * Labels to be used while generating nestedPageMetadata
    */
   labels?: Record<string, string>;
+
+  /**
+   * The static asset path to be used in the their url.
+   * Eg. staticAssetsPath: "/assets/docfy" and a static asset name as
+   * "github-icon.png", the URL to be used for the image would be
+   * "/assets/docfy/github-icon.png".
+   *
+   * @default "/assets/docfy"
+   */
+  staticAssetsPath?: string;
 }
 
 interface DocfyConfigSourceConfig extends Omit<SourceConfig, 'root'> {

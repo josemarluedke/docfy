@@ -85,6 +85,10 @@ Array [
     Array [],
   ],
   Array [
+    "docs/static-asset.md",
+    Array [],
+  ],
+  Array [
     "packages/package1/components/button.md",
     Array [],
   ],
@@ -175,6 +179,10 @@ Array [
   ],
   Array [
     "docs/how-it-works.md",
+    Array [],
+  ],
+  Array [
+    "docs/static-asset.md",
     Array [],
   ],
   Array [

@@ -22,6 +22,7 @@ import {
   combineDemos,
   renderMarkdown,
   replaceInternalLinks,
+  staticAssets,
   toc,
   uniquefyUrls
 } from './plugins';
@@ -37,6 +38,7 @@ export default class Docfy {
     this.context = {
       remark: createRemark(remarkPlugins),
       pages: [],
+      staticAssets: [],
       options: {
         ...rest,
         tocMaxDepth: rest.tocMaxDepth || 6
@@ -47,7 +49,8 @@ export default class Docfy {
       .use<SourceConfig[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
       .use(uniquefyUrls)
-      .use(replaceInternalLinks);
+      .use(replaceInternalLinks)
+      .use(staticAssets);
 
     if (Array.isArray(options.plugins)) {
       options.plugins.forEach((item) => {
@@ -67,6 +70,7 @@ export default class Docfy {
         } else {
           resolve({
             content: ctx.pages,
+            staticAssets: ctx.staticAssets,
             nestedPageMetadata: transformToNestedPageMetadata(
               ctx.pages.map((p) => p.meta),
               ctx.options.labels
