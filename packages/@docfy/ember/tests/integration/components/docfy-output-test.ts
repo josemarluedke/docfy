@@ -10,7 +10,7 @@ module('Integration | Component | DocfyOutput', function (hooks) {
   const template = hbs`
       <DocfyOutput
         @type={{this.type}}
-        @fromActiveRoute={{this.fromActiveRoute}}
+        @fromCurrentURL={{this.fromCurrentURL}}
         @url={{this.url}}
         @scope={{this.scope}}
         as |result|
@@ -67,13 +67,13 @@ module('Integration | Component | DocfyOutput', function (hooks) {
     assert.dom('[data-test-id="flat-url-title"]').hasText('Working with Ember');
   });
 
-  test('it returns the page fromActiveRoute', async function (assert) {
+  test('it returns the page fromCurrentURL', async function (assert) {
     const router = this.owner.lookup('router:main');
     router.setupRouter();
 
     const routerService = this.owner.lookup('service:router');
     sinon.stub(routerService, 'currentURL').get(() => '/docs/installation');
-    this.set('fromActiveRoute', true);
+    this.set('fromCurrentURL', true);
     await render(template);
 
     assert.dom('[data-test-id="flat-url-title"]').hasText('Installation');

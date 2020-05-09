@@ -1,6 +1,7 @@
 import output from '@docfy/ember/output';
 import RouterDSL from '@ember/routing/-private/router-dsl';
 import { NestedPageMetadata } from '@docfy/core/lib/types';
+export { default as DocfyService } from './services/docfy';
 
 function addFromNested(context: RouterDSL, nested: NestedPageMetadata): void {
   function add(this: RouterDSL): void {
