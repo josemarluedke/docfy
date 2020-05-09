@@ -3,7 +3,7 @@
     <div class="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
     <nav class="sticky w-64 h-screen pt-8 pt-10 mr-8 overflow-y-scroll leading-snug top-16">
       <DocfyOutput @scope="docs" as |node|>
-        <ul class="-mt-4">
+        <ul class="-mt-4" data-test-id="docs-nav">
           {{#each node.pages as |page|}}
             <li class="mt-4">
               <div class="flex items-center">
@@ -118,14 +118,14 @@
     <DocfyOutput @fromCurrentURL={{true}} as |page|>
       {{#if page.editUrl}}
         <div class="mt-10 text-right">
-          <a href={{page.editUrl}} class="text-sm">
+          <a href={{page.editUrl}} class="text-sm" data-test-id="docs-edit-url">
             Edit this page
           </a>
         </div>
       {{/if}}
     </DocfyOutput>
 
-    <div class="flex justify-between my-10">
+    <div class="flex justify-between my-10" data-test-id="docs-previous-next">
       <DocfyPreviousAndNextPage as |previous next|>
         <div>
           {{#if previous}}
