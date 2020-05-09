@@ -97,6 +97,24 @@ Object {
             },
           ],
         },
+        Object {
+          "children": Array [],
+          "label": "test-custom",
+          "name": "test-custom",
+          "pages": Array [
+            Object {
+              "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/custom-url.md",
+              "frontmatter": Object {
+                "url": "/test-custom/url",
+              },
+              "headings": Array [],
+              "pluginData": Object {},
+              "relativeUrl": "url",
+              "title": "This a test for the ability to change the url using frontmatter",
+              "url": "/docs/test-custom/url",
+            },
+          ],
+        },
       ],
       "label": "docs",
       "name": "docs",

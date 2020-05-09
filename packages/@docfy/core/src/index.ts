@@ -127,7 +127,13 @@ export default class Docfy {
       title = path.parse(fullPath).name;
     }
 
-    if (sourceConfig.urlSchema === 'manual') {
+    if (typeof frontmatter.url === 'string') {
+      url = generateAutoUrl(
+        frontmatter.url,
+        sourceConfig.urlPrefix,
+        sourceConfig.urlSuffix
+      );
+    } else if (sourceConfig.urlSchema === 'manual') {
       url = generateManualUrl(
         relativePath,
         frontmatter,

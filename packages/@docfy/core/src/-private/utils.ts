@@ -45,6 +45,7 @@ export function generateAutoUrl(
   prefix?: string,
   suffix?: string
 ): string {
+  source = source.replace(/^\//, '');
   const parts: string[] = [''];
   if (prefix) {
     parts.push(prefix);
@@ -75,7 +76,7 @@ export function inferTitle(ast: Node): string | undefined {
 export function parseFrontmatter(
   source: string,
   ast: Node
-): Record<string, undefined> {
+): Record<string, unknown> {
   let result = {};
   visit(ast, 'yaml', (node) => {
     try {

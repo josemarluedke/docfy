@@ -77,6 +77,10 @@ Array [
     ],
   ],
   Array [
+    "docs/custom-url.md",
+    Array [],
+  ],
+  Array [
     "docs/how-it-works.md",
     Array [],
   ],
@@ -164,6 +168,10 @@ Array [
         "title": "2 level",
       },
     ],
+  ],
+  Array [
+    "docs/custom-url.md",
+    Array [],
   ],
   Array [
     "docs/how-it-works.md",
