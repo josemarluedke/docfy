@@ -36,14 +36,14 @@
   },
   "devDependencies": {
     "@types/hosted-git-info": "^3.0.0",
-    "@types/node": "^13.13.4",
+    "@types/node": "^13.13.5",
     "@types/unist": "^2.0.0",
     "@types/yaml": "^1.9.7",
     "jest": "^25.5.3",
     "remark-autolink-headings": "^6.0.0",
     "remark-hbs": "^0.2.0",
-    "ts-jest": "^25.4.0",
-    "ts-node": "^8.9.1",
+    "ts-jest": "^25.5.1",
+    "ts-node": "^8.10.1",
     "typescript": "^3.8.3"
   },
   "engines": {
