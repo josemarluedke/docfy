@@ -39,6 +39,12 @@ module.exports = async function () {
         }
       },
       {
+        name: 'embroider',
+        env: {
+          EMBROIDER: true
+        }
+      },
+      {
         name: 'ember-classic',
         env: {
           EMBER_OPTIONAL_FEATURES: JSON.stringify({
