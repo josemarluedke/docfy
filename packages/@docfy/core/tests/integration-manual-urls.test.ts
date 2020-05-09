@@ -26,7 +26,7 @@ describe('When urlSchema is set to manual', () => {
     });
 
     test('it should have collected all result.content and moved demos', async () => {
-      expect(result.content.length).toBe(9);
+      expect(result.content.length).toBe(10);
       expect(
         findPage(result.content, 'packages/package1/components/form/index.md')
           .demos?.length

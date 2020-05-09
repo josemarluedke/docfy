@@ -39,6 +39,10 @@ Array [
     "/docs/how-it-works",
   ],
   Array [
+    "docs/static-asset.md",
+    "/docs/static-asset",
+  ],
+  Array [
     "packages/package1/components/button.md",
     "/packages/package1/components/button",
   ],
@@ -98,6 +102,10 @@ Array [
   Array [
     "docs/how-it-works.md",
     "/docs/docs/how-it-works.html",
+  ],
+  Array [
+    "docs/static-asset.md",
+    "/docs/docs/static-asset.html",
   ],
   Array [
     "packages/package1/components/button.md",

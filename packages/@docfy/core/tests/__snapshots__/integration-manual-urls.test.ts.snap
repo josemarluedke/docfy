@@ -19,6 +19,10 @@ Array [
     "How it works?",
   ],
   Array [
+    "docs/static-asset.md",
+    "This is a markdown that has a image",
+  ],
+  Array [
     "packages/package1/components/button.md",
     "Button Component",
   ],
@@ -80,6 +84,10 @@ Array [
     "/how-it-works",
   ],
   Array [
+    "docs/static-asset.md",
+    "/static-asset",
+  ],
+  Array [
     "packages/package1/components/button.md",
     "/category1/components/button",
   ],
@@ -139,6 +147,10 @@ Array [
   Array [
     "docs/how-it-works.md",
     "/docs/how-it-works.html",
+  ],
+  Array [
+    "docs/static-asset.md",
+    "/docs/static-asset.html",
   ],
   Array [
     "packages/package1/components/button.md",

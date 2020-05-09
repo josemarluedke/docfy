@@ -41,6 +41,14 @@ config.</p>
 ",
   ],
   Array [
+    "docs/static-asset.md",
+    "<h1 id=\\"this-is-a-markdown-that-has-a-image\\"><a href=\\"#this-is-a-markdown-that-has-a-image\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>This is a markdown that has a image</h1>
+<p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"GitHub\\"></p>
+<p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"Alt text\\" title=\\"The GitHub Icon\\"></p>
+<p>With a reference later in the document defining the Image location:</p>
+",
+  ],
+  Array [
     "packages/package1/components/button.md",
     "<h1 id=\\"button-component\\"><a href=\\"#button-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Button Component</h1>
 ",
@@ -109,6 +117,14 @@ config.</p>
     "<h1 id=\\"how-it-works\\">How it works?<a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>This is a description.</p>
 <p><a href=\\"/docs/about\\">Link using reference</a></p>
+",
+  ],
+  Array [
+    "docs/static-asset.md",
+    "<h1 id=\\"this-is-a-markdown-that-has-a-image\\">This is a markdown that has a image<a href=\\"#this-is-a-markdown-that-has-a-image\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"GitHub\\"></p>
+<p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"Alt text\\" title=\\"The GitHub Icon\\"></p>
+<p>With a reference later in the document defining the Image location:</p>
 ",
   ],
   Array [
