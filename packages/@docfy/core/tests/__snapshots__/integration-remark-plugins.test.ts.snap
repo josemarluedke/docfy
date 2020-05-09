@@ -27,6 +27,13 @@ Array [
 ",
   ],
   Array [
+    "docs/custom-url.md",
+    "<h1 id=\\"this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\"><a href=\\"#this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>This a test for the ability to change the url using frontmatter</h1>
+<p>The url will still contain any prefix and suffix if specified in the source
+config.</p>
+",
+  ],
+  Array [
     "docs/how-it-works.md",
     "<h1 id=\\"how-it-works\\"><a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How it works?</h1>
 <p>This is a description.</p>
@@ -88,6 +95,13 @@ Array [
 <h5 id=\\"5-level\\">5 level<a href=\\"#5-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h5>
 <h6 id=\\"6-level\\">6 level<a href=\\"#6-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h6>
 <h4 id=\\"4-level-2nd\\">4 level 2nd<a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h4>
+",
+  ],
+  Array [
+    "docs/custom-url.md",
+    "<h1 id=\\"this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\">This a test for the ability to change the url using frontmatter<a href=\\"#this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<p>The url will still contain any prefix and suffix if specified in the source
+config.</p>
 ",
   ],
   Array [

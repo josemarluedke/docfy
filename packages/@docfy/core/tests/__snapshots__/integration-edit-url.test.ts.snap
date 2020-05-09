@@ -11,6 +11,10 @@ Array [
     "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/docs/about.md",
   ],
   Array [
+    "docs/custom-url.md",
+    "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/docs/custom-url.md",
+  ],
+  Array [
     "docs/how-it-works.md",
     "https://github.com/user/repo/edit/dev/packages/@docfy/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
   ],

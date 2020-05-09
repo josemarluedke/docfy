@@ -31,6 +31,10 @@ Array [
     "/docs/about",
   ],
   Array [
+    "docs/custom-url.md",
+    "/test-custom/url",
+  ],
+  Array [
     "docs/how-it-works.md",
     "/docs/how-it-works",
   ],
@@ -86,6 +90,10 @@ Array [
   Array [
     "docs/about.md",
     "/docs/docs/about.html",
+  ],
+  Array [
+    "docs/custom-url.md",
+    "/docs/test-custom/url.html",
   ],
   Array [
     "docs/how-it-works.md",

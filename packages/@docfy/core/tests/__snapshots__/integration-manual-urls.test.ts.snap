@@ -11,6 +11,10 @@ Array [
     "About the project",
   ],
   Array [
+    "docs/custom-url.md",
+    "This a test for the ability to change the url using frontmatter",
+  ],
+  Array [
     "docs/how-it-works.md",
     "How it works?",
   ],
@@ -68,6 +72,10 @@ Array [
     "/about",
   ],
   Array [
+    "docs/custom-url.md",
+    "/test-custom/url",
+  ],
+  Array [
     "docs/how-it-works.md",
     "/how-it-works",
   ],
@@ -123,6 +131,10 @@ Array [
   Array [
     "docs/about.md",
     "/docs/about.html",
+  ],
+  Array [
+    "docs/custom-url.md",
+    "/docs/test-custom/url.html",
   ],
   Array [
     "docs/how-it-works.md",
