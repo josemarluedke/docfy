@@ -2,6 +2,7 @@ import path from 'path';
 import { DocfyConfig } from '@docfy/core/lib/types';
 import remarkHBS from 'remark-hbs';
 import docfyLink from './plugins/docfy-link';
+import extractDemosToComponents from './plugins/extract-demos-to-components';
 
 const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
@@ -57,7 +58,7 @@ export default function getDocfyConfig(root: string): DocfyConfig {
   if (!Array.isArray(docfyConfig.plugins)) {
     docfyConfig.plugins = [];
   }
-  docfyConfig.plugins.push(docfyLink);
+  docfyConfig.plugins.push(docfyLink, extractDemosToComponents);
 
   if (!Array.isArray(docfyConfig.remarkPlugins)) {
     docfyConfig.remarkPlugins = [];
