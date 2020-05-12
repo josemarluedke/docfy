@@ -1,0 +1,26 @@
+<div class="docfy-demo__description" ...attributes>
+  <div class="docfy-demo__description__header">
+    {{#if @title}}
+      <a
+        href="#{{@id}}"
+        class="docfy-demo__description__header__title"
+      >
+        {{@title}}
+      </a>
+    {{/if}}
+    {{#if @editUrl}}
+      <a
+        href="{{@editUrl}}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="docfy-demo__description__header__edit-url"
+      >
+        Edit this demo
+      </a>
+    {{/if}}
+  </div>
+
+  <div class="docfy-demo__description__content">
+    {{yield}}
+  </div>
+</div>

@@ -30,7 +30,7 @@ describe('When urlSchema is set to manual', () => {
       expect(
         findPage(result.content, 'packages/package1/components/form/index.md')
           .demos?.length
-      ).toBe(1);
+      ).toBe(2);
 
       expect(
         findPage(result.content, 'packages/package1/components/button.md').demos

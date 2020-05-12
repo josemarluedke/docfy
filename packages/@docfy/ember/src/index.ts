@@ -11,6 +11,7 @@ import Docfy from '@docfy/core';
 import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
+import { isDemoComponents } from './plugins/extract-demos-to-components';
 
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);
@@ -44,6 +45,21 @@ class DocfyBroccoli extends Plugin {
 
       ensureDirectoryExistence(fileName);
       fs.writeFileSync(fileName, page.rendered);
+
+      const demoComponents = page.pluginData.demoComponents;
+      if (isDemoComponents(demoComponents)) {
+        demoComponents.forEach((component) => {
+          component.chunks.forEach((chunk) => {
+            const chunkPath = path.join(
+              this.outputPath,
+              'components',
+              `${component.name.dashCase}.${chunk.ext}`
+            );
+            ensureDirectoryExistence(chunkPath);
+            fs.writeFileSync(chunkPath, chunk.code);
+          });
+        });
+      }
     });
 
     fs.writeFileSync(
