@@ -40,7 +40,9 @@ function findDemoOwner(contents: PageContent[], demoSource: string): number {
 }
 
 export function combineDemos(context: Context): Context {
-  context.pages.forEach((item, index: number): void => {
+  const allDemos: PageContent[] = [];
+
+  context.pages.forEach((item): void => {
     const folder = path.basename(path.dirname(item.source));
 
     if (folder.match(/demo$/)) {
@@ -53,8 +55,15 @@ export function combineDemos(context: Context): Context {
           parent.demos.push(item);
         }
 
-        context.pages.splice(index, 1);
+        allDemos.push(item);
       }
+    }
+  });
+
+  allDemos.forEach((demo) => {
+    const index = context.pages.findIndex((i) => i === demo);
+    if (index !== -1) {
+      context.pages.splice(index, 1);
     }
   });
 
