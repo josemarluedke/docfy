@@ -2,163 +2,16 @@ import visit from 'unist-util-visit';
 import { Context, PageContent } from '@docfy/core/lib/types';
 import { Node } from 'unist';
 import findNode from 'unist-util-find';
-import u from 'unist-builder';
 import toString from 'mdast-util-to-string';
-
-interface Literal {
-  value: string;
-}
-
-interface CodeNode extends Node, Literal {
-  type: 'code';
-  lang?: string;
-  meta?: string;
-}
-
-interface DemoComponent {
-  name: ComponentName;
-  chunks: ComponentChunk[];
-  description?: {
-    title?: string;
-    ast: Node;
-    editUrl?: string;
-  };
-}
-
-interface ComponentName {
-  dashCase: string;
-  pascalCase: string;
-}
-
-interface ComponentChunk {
-  type: string;
-  code: string;
-  ext: string;
-  snippet: Node;
-}
-
-const MAP_LANG_TO_EXT = {
-  javascript: 'js',
-  typescript: 'ts',
-  handlebars: 'hbs',
-  'html.hbs': 'hbs',
-  'html.handlebars': 'hbs'
-};
-
-/*
- * It returns the file extension from a lang string.
- */
-function getExt(lang: string): string {
-  lang = lang.toLowerCase();
-  return MAP_LANG_TO_EXT[lang] || lang;
-}
-
-/*
- * Delete a node from a list of nodes
- */
-function deleteNode(nodes: unknown, nodeToDelete: Node | undefined): void {
-  if (!nodeToDelete) {
-    return;
-  }
-
-  if (Array.isArray(nodes)) {
-    const index = nodes.findIndex((item) => item === nodeToDelete);
-
-    if (index !== -1) {
-      nodes.splice(index, 1);
-    }
-  }
-}
-
-/*
- * Generate the component name from the source path of the demo
- *
- * It returns both dash case and pastal case.
- * The dash-case can be used for the file name and the PascalCase for the
- * rendering of the component.
- */
-function generateComponentName(source: string): ComponentName {
-  const dashCase = source
-    .split('.')[0]
-    .toLowerCase()
-    .replace(/\/|\\/g, '-')
-    .replace(/[^a-zA-Z0-9|-]/g, '');
-
-  const pascalCase = dashCase
-    .replace(/(\w)(\w*)/g, function (_, g1, g2) {
-      return `${g1.toUpperCase()}${g2.toLowerCase()}`;
-    })
-    .replace(/-/g, '');
-  return {
-    dashCase,
-    pascalCase
-  };
-}
-
-/**
- * Creates all the Nodes necessary to render a Demo Component.
- *
- * It will render something like the follwing:
- * ```hbs
- * <DocfyDemo as |demo|>
- *   <demo.Example>
- *     <ComponentName />
- *   </demo.Example>
- *   <demo.Description @title="Heading depth 1" @editUrl="url">
- *     Demo markdown content
- *   </demo.Description>
- *   <demo.Snippets as |Snippet|>
- *     <Snippet @name="component">
- *       Code Snippet (with any highlight applied from remark)
- *     </Snippet>
- *   </demo.Snippets>
- * </DocfyDemo>
- * ```
- */
-function createDemoNodes(component: DemoComponent): Node[] {
-  const nodes: Node[] = [
-    u('html', `<DocfyDemo @id="${component.name.dashCase}" as |demo|>`)
-  ];
-
-  nodes.push(
-    u('html', '<demo.Example>'),
-    u('html', `<${component.name.pascalCase} />`),
-    u('html', '</demo.Example>')
-  );
-
-  if (component.description) {
-    nodes.push(
-      u(
-        'html',
-        `<demo.Description
-          ${
-            component.description.title
-              ? `@title="${component.description.title}" `
-              : ''
-          }${
-          component.description.editUrl
-            ? `@editUrl="${component.description.editUrl}"`
-            : ''
-        }>`
-      ),
-      component.description.ast,
-      u('html', '</demo.Description>')
-    );
-  }
-
-  nodes.push(u('html', '<demo.Snippets as |Snippet|>'));
-  component.chunks.forEach((chunk) => {
-    nodes.push(
-      u('html', `<Snippet @name="${chunk.type}">`),
-      chunk.snippet,
-      u('html', '</Snippet>')
-    );
-  });
-  nodes.push(u('html', '</demo.Snippets>'));
-
-  nodes.push(u('html', '</DocfyDemo>'));
-  return nodes;
-}
+import { DemoComponent, DemoComponentChunk, CodeNode } from './types';
+import {
+  generateDemoComponentName,
+  getExt,
+  createDemoNodes,
+  deleteNode,
+  isDemoComponents
+} from './utils';
+import path from 'path';
 
 /*
  * Create the heading fro the examples section of the page.
@@ -194,30 +47,15 @@ function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
   }
 }
 
-/**
- * Checks if a property is of type DemoComponent[]
- */
-export function isDemoComponents(
-  components: unknown
-): components is DemoComponent[] {
-  if (
-    Array.isArray(components) &&
-    typeof components[0] == 'object' &&
-    {}.hasOwnProperty.call(components[0], 'name') &&
-    {}.hasOwnProperty.call(components[0], 'chunks')
-  ) {
-    return true;
-  }
-  return false;
-}
-
 export default function extractDemosToComponents(ctx: Context): void {
+  const seenNames: Set<string> = new Set();
+
   ctx.pages.forEach((page) => {
     if (page.demos) {
       const demoComponents: DemoComponent[] = [];
 
       page.demos.forEach((demo) => {
-        const chunks: ComponentChunk[] = [];
+        const chunks: DemoComponentChunk[] = [];
 
         visit(demo.ast, 'code', (node: CodeNode) => {
           if (['component', 'template', 'styles'].includes(node.meta || '')) {
@@ -238,7 +76,12 @@ export default function extractDemosToComponents(ctx: Context): void {
         );
 
         demoComponents.push({
-          name: generateComponentName(demo.source),
+          name: generateDemoComponentName(
+            `docfy-demo-${path.basename(page.source).split('.')[0]}-${
+              path.basename(demo.source).split('.')[0]
+            }`,
+            seenNames
+          ),
           chunks,
           description: {
             title: demoTitle ? toString(demoTitle) : undefined,
@@ -258,9 +101,13 @@ export default function extractDemosToComponents(ctx: Context): void {
       demoComponents.forEach((component) => {
         toInsert.push(...createDemoNodes(component));
       });
-
       insertDemoNodesIntoPage(page, toInsert);
-      page.pluginData.demoComponents = demoComponents;
+
+      if (isDemoComponents(page.pluginData.demoComponents)) {
+        page.pluginData.demoComponents.push(...demoComponents);
+      } else {
+        page.pluginData.demoComponents = demoComponents;
+      }
     }
   });
 }

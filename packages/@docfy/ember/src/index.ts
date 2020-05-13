@@ -11,7 +11,7 @@ import Docfy from '@docfy/core';
 import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
-import { isDemoComponents } from './plugins/extract-demos-to-components';
+import { isDemoComponents } from './plugins/utils';
 
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);
