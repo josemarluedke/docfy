@@ -14,7 +14,7 @@ module.exports = {
   ],
   sources: [
     {
-      root: path.resolve(__dirname, './dummy-docs') + '/',
+      root: path.resolve(__dirname, '../../../docs') + '/',
       pattern: '**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs'
