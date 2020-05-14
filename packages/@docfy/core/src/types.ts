@@ -150,6 +150,9 @@ interface RepositoryConfig {
 export type Plugin = (ctx: Context) => void | Context; // eslint-disable-line
 
 export interface Options {
+  /**
+   * A list of Docfy plugins.
+   */
   plugins?: Plugin[];
 
   /**
