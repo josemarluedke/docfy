@@ -105,10 +105,8 @@ export function isAnchorUrl(s: string): boolean {
 export const DEFAULT_IGNORE = [
   '/**/node_modules/**',
   '/**/.git/**',
-  '/**/tmp/**',
   '/**/dist/**',
   'node_modules/**',
   '.git/**',
-  'tmp/**',
   'dist/**'
 ];

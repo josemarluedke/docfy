@@ -85,11 +85,15 @@ export default class Docfy {
     const ctx = this.context;
 
     sources.forEach((item) => {
-      const repoEditUrl = getRepoEditUrl(
-        item.root,
-        item.repository?.url || ctx.options.repository?.url || '',
-        item.repository?.editBranch || ctx.options.repository?.editBranch
-      );
+      let repoEditUrl: string | null;
+
+      if (item.repository || ctx.options.repository) {
+        repoEditUrl = getRepoEditUrl(
+          item.root,
+          item.repository?.url || ctx.options.repository?.url || '',
+          item.repository?.editBranch || ctx.options.repository?.editBranch
+        );
+      }
       const files = glob.sync(item.pattern, {
         cwd: item.root,
 
