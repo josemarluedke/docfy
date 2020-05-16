@@ -68,7 +68,7 @@ config.</p>
     "packages/package2/docs/styles.md",
     "<h1 id=\\"how-styles-work\\"><a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/category2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/category2/overview#get-started\\">overview</a> to get started.</p>
 ",
   ],
   Array [
@@ -147,7 +147,7 @@ config.</p>
     "packages/package2/docs/styles.md",
     "<h1 id=\\"how-styles-work\\">How styles work<a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/category2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/category2/overview#get-started\\">overview</a> to get started.</p>
 ",
   ],
   Array [

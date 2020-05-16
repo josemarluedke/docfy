@@ -23,6 +23,7 @@ export default function docfyLink(ctx: Context): void {
           unknown
         >;
 
+        const urlParts = node.url.split('#');
         const attributes = Object.keys(props)
           .map((key) => {
             return `${key}=${String(props[key])}`;
@@ -30,9 +31,9 @@ export default function docfyLink(ctx: Context): void {
           .join(' ');
 
         node.type = 'html';
-        node.value = `<DocfyLink @to="${node.url}" ${attributes}>${toHtml(
-          node.children
-        )}</DocfyLink>`;
+        node.value = `<DocfyLink @to="${urlParts[0]}" ${
+          urlParts[1] ? `@anchor="${urlParts[1]}"` : ''
+        } ${attributes}>${toHtml(node.children)}</DocfyLink>`;
         node.children = [];
         node.data = undefined;
       }

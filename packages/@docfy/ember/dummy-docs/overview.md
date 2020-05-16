@@ -14,3 +14,6 @@ parilique quosque victor contingere urbem monendo. Meae est precor moenibus.
 
 Sed ver Eumenidum in duorum quis anhelatos, currum voce? **Thracum** servabat
 matris cornua positis certo.
+
+Please check the [introduction on how it
+works](./introduction.md#how-it-works).

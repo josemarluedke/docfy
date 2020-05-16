@@ -16,7 +16,7 @@ exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it s
 exports[`When urlSchema is set to auto Basic case, no url prefix, or suffix it should have fixed the links between files 3`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/packages/package2/docs/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/packages/package2/docs/overview#get-started\\">overview</a> to get started.</p>
 "
 `;
 
@@ -81,7 +81,7 @@ exports[`When urlSchema is set to auto When source defines url prefix and suffix
 exports[`When urlSchema is set to auto When source defines url prefix and suffix it should have fixed the links between files 3`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/packages/package2/docs/overview.html\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/packages/package2/docs/overview.html#get-started\\">overview</a> to get started.</p>
 "
 `;
 
