@@ -18,6 +18,12 @@ module.exports = {
       pattern: '**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs'
+    },
+    {
+      root: path.resolve(__dirname, 'docs') + '/',
+      pattern: '**/*.md',
+      urlSchema: 'manual',
+      urlPrefix: 'docs/ember'
     }
   ],
   labels: {

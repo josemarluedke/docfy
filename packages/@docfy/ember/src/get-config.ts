@@ -8,7 +8,8 @@ import previewTemplate from './plugins/preview-template';
 const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
     {
-      pattern: '/docs/**/*.md'
+      pattern: '**/*.md',
+      urlPrefix: 'docs'
     }
   ]
 };
@@ -73,7 +74,7 @@ export default function getDocfyConfig(root: string): DocfyConfig {
 
   docfyConfig.sources.forEach((source) => {
     if (typeof source.root === 'undefined') {
-      source.root = root;
+      source.root = path.join(root, 'docs');
     }
   });
 
