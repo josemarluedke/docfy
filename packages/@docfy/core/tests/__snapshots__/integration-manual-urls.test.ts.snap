@@ -61,7 +61,7 @@ exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have fixed the links between files 3`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/category2/overview\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/category2/overview#get-started\\">overview</a> to get started.</p>
 "
 `;
 
@@ -126,7 +126,7 @@ exports[`When urlSchema is set to manual When source defines url prefix and suff
 exports[`When urlSchema is set to manual When source defines url prefix and suffix it should have fixed the links between files 3`] = `
 "<h1 id=\\"how-styles-work\\">How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/category2/overview.html\\">overview</a> to get started.</p>
+<p>Please refer to <a href=\\"/docs/category2/overview.html#get-started\\">overview</a> to get started.</p>
 "
 `;
 

@@ -34,11 +34,12 @@ function replaceURL(
     return;
   }
 
+  const urlParts = node.url.split('#');
   let absolutePath = node.url;
   if (!path.isAbsolute(node.url)) {
     absolutePath = path.resolve(
       path.join(page.sourceConfig.root, path.dirname(page.source)),
-      node.url
+      urlParts[0]
     );
   }
   const found = ctx.pages.find((p) => {
@@ -47,6 +48,9 @@ function replaceURL(
 
   if (found && found.meta.url) {
     node.url = found.meta.url;
+    if (urlParts[1]) {
+      node.url = `${node.url}#${urlParts[1]}`;
+    }
   }
 }
 

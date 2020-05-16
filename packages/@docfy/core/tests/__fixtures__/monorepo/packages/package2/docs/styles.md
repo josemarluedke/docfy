@@ -7,4 +7,4 @@ category: category2
 
 Short description.
 
-Please refer to [overview](./overview.md) to get started.
+Please refer to [overview](./overview.md#get-started) to get started.
