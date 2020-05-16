@@ -12,6 +12,8 @@ import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
 import { isDemoComponents } from './plugins/utils';
+import debugFactory from 'debug';
+const debug = debugFactory('@docfy/ember');
 
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);
@@ -31,6 +33,8 @@ class DocfyBroccoli extends Plugin {
   }
 
   async build(): Promise<void> {
+    debug('Output Path: ', this.outputPath);
+    debug('Config: ', this.config);
     const docfy = new Docfy(this.config);
     const result = await docfy.run(this.config.sources as SourceConfig[]);
 
