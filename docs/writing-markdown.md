@@ -93,3 +93,62 @@ Example:
 ```md
 ![GitHub](./github-icon.png)
 ```
+
+## Demos
+
+Docfy has a default plugin that combines "demo" markdown files into the data
+structure that represents a page. This feature is useful for consumers to extract
+components to create executable code out of markdown files. By default, Docfy will
+only combine these demo pages, and it's up to the consumers to decide what to do
+with them. An excellent example of what is possible can be found in the Ember
+implementation of demo components. Below you can find the rules that Docfy uses
+to decide who the owner of the given demo is.
+
+Let's say we have the following file structure in our documentation folder:
+
+```
+├── components
+│   ├── button-demo
+│   │   └── demo1.md
+│   ├── button.md
+│   └── form
+│       ├── demo
+│       │   ├── demo1.md
+│       │   └── demo2.md
+│       └── index.md
+ ```
+
+You can see we have two components that we are documenting, first button and then form.
+
+1. We can see the first rule in the button component. Docfy looks at folders named
+  `*-demo`; then, it will use the first part to find a document that matches that name.
+  In this case, `button.md`, which is then considered the owner of the demos.
+2. We can see the second rule in the form component. Docfy looks at folders named
+  `demo`. In this case, we have a folder named `form` and inside of it, a folder
+  called `demo`, and a file called `index.md`. Docfy understands that the owner of
+  the demos is `forms/index.md`.
+
+> Any markdown file under `*-demo` or `demo` folders are considered a demo and will not be rendered as a standalone page.
+
+An example of a demo file can be seen below. This demo is actually how the
+Ember demo integration looks like.
+
+~~~md
+# Demo of DocfyLink component
+
+This is a cool feature
+
+```hbs template
+This is my Demo:
+
+<DocfyLink @to={{this.url}}>My Link</DocfyLink>
+```
+
+```js component
+import Component from '@glimmer/component';
+
+export default class MyDemo extends Component {
+  url = '/docs/ember/'
+}
+```
+~~~
