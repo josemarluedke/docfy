@@ -56,6 +56,7 @@
     "@embroider/webpack": "^0.15.0",
     "@glimmer/component": "^1.0.0",
     "@glimmer/tracking": "^1.0.0",
+    "@types/debug": "^4.1.5",
     "@types/ember": "^3.1.2",
     "@types/ember-qunit": "^3.4.8",
     "@types/ember__test-helpers": "^0.7.10",
