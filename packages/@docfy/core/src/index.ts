@@ -1,7 +1,7 @@
 import glob from 'fast-glob';
-import fs from 'fs';
 import path from 'path';
 import trough, { Through } from 'trough';
+import toVfile from 'to-vfile';
 import {
   PageContent,
   Context,
@@ -123,9 +123,11 @@ export default class Docfy {
       ''
     );
 
-    const markdown = fs.readFileSync(fullPath).toString();
+    const vFile = toVfile.readSync(fullPath);
+    const markdown = vFile.contents.toString();
     const ast = this.context.remark.runSync(
-      this.context.remark.parse(markdown)
+      this.context.remark.parse(vFile),
+      vFile
     );
     const frontmatter = parseFrontmatter(fullPath, ast);
 

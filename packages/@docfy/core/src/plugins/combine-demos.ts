@@ -24,7 +24,7 @@ import { PageContent, Context } from '../types';
 function findDemoOwner(contents: PageContent[], demoSource: string): number {
   const folder = path.basename(path.dirname(demoSource));
 
-  let parentName = folder.replace('-demo', '');
+  let parentName = folder.replace(/-demo$/, '');
   if (parentName === 'demo') {
     parentName = path.basename(path.dirname(path.dirname(demoSource)));
   }
