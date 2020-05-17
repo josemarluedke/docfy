@@ -1,7 +1,6 @@
 import visit from 'unist-util-visit';
 import { Context } from '@docfy/core/lib/types';
 import { Node } from 'unist';
-import toHtml from 'hast-util-to-html';
 
 interface LinkNode extends Node {
   title: string | null;
@@ -30,10 +29,12 @@ export default function docfyLink(ctx: Context): void {
           })
           .join(' ');
 
+        const toRender = { type: 'root', children: node.children } as Node;
+
         node.type = 'html';
         node.value = `<DocfyLink @to="${urlParts[0]}" ${
           urlParts[1] ? `@anchor="${urlParts[1]}"` : ''
-        } ${attributes}>${toHtml(node.children)}</DocfyLink>`;
+        } ${attributes}>${ctx.remark.stringify(toRender)}</DocfyLink>`;
         node.children = [];
         node.data = undefined;
       }
