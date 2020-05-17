@@ -19,3 +19,33 @@ Below you can see how a demo markdown file looks like.
 
 The demo will be injected into the owner file as a new section called "Examples";
 you can see it below.
+
+Please note that you must pass a metadata to the code block, it can be seen
+after the file type in the example above. The meta is used to identify the purpose
+of the code block. The possible values are `component`, `template`, and `styles`.
+
+> You can write TypeScript for the component JS as well, if your host app is
+> configured to support it.
+
+## Preview Template
+
+When writing documentation in Ember apps, we might want to write some template
+code to demonstrate how to use a component, while having the code been executed
+as well. Creating a demo markdown might be too much of an effort; for this purpose,
+Docfy has another feature called `preview-template`. It will extract the template
+from the markdown code block then it will create a template only component. It will
+also add the code snippet so users can see the code.
+
+Below is an example of how it works:
+
+~~~md
+```hbs preview-template
+Click in the link to navigate to the home page: <DocfyLink @to="/>Home</DocfyLink>
+```
+~~~
+
+And here you can see how it looks like when rendered:
+
+```hbs preview-template
+Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
+```
