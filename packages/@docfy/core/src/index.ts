@@ -28,6 +28,8 @@ import {
 } from './plugins';
 import { getRepoEditUrl } from './-private/repo-info';
 import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
+import debugFactory from 'debug';
+const debug = debugFactory('@docfy/core');
 
 export default class Docfy {
   private pipeline: Through<Context>;
@@ -100,6 +102,8 @@ export default class Docfy {
         ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])],
         absolute: true
       });
+
+      debug('Source Files', files);
 
       files.forEach((file) => {
         ctx.pages.push(this.createPage(item, file, repoEditUrl));
