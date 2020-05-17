@@ -13593,6 +13593,14 @@ remark-autolink-headings@^6.0.0:
     extend "^3.0.0"
     unist-util-visit "^2.0.0"
 
+remark-code-import@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/remark-code-import/-/remark-code-import-0.2.0.tgz#938cb78f10387d41427f39c8c30145215f5eec70"
+  integrity sha512-tWlRYTbHwctFbL9WbmftmoxC7dnDTLRVt+EXB3NE3zrMnShpKW8yP8ZupVbC+GtzSZntIreWdS9C3VQllC2HLw==
+  dependencies:
+    to-gatsby-remark-plugin "^0.1.0"
+    unist-util-visit "^2.0.1"
+
 remark-frontmatter@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/remark-frontmatter/-/remark-frontmatter-2.0.0.tgz#c9b8539c27cd23b1672c7e0fcbd5795eeedb4dc1"
@@ -15299,6 +15307,13 @@ to-fast-properties@^2.0.0:
   resolved "https://registry.yarnpkg.com/to-fast-properties/-/to-fast-properties-2.0.0.tgz#dc5e698cbd079265bc73e0377681a4e4e83f616e"
   integrity sha1-3F5pjL0HkmW8c+A3doGk5Og/YW4=
 
+to-gatsby-remark-plugin@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/to-gatsby-remark-plugin/-/to-gatsby-remark-plugin-0.1.0.tgz#34167b2c3cf3209745cf97e5a488042586f9990d"
+  integrity sha512-blmhJ/gIrytWnWLgPSRCkhCPeki6UBK2daa3k9mGahN7GjwHu8KrS7F70MvwlsG7IE794JLgwAdCbi4hU4faFQ==
+  dependencies:
+    to-vfile "^6.1.0"
+
 to-object-path@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/to-object-path/-/to-object-path-0.3.0.tgz#297588b7b0e7e0ac08e04e672f85c1f4999e17af"
@@ -15780,7 +15795,7 @@ unist-util-visit@^1.1.0:
   dependencies:
     unist-util-visit-parents "^2.0.0"
 
-unist-util-visit@^2.0.0, unist-util-visit@^2.0.2:
+unist-util-visit@^2.0.0, unist-util-visit@^2.0.1, unist-util-visit@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/unist-util-visit/-/unist-util-visit-2.0.2.tgz#3843782a517de3d2357b4c193b24af2d9366afb7"
   integrity sha512-HoHNhGnKj6y+Sq+7ASo2zpVdfdRifhTgX2KTU3B/sO/TTlZchp7E3S4vjRzDJ7L60KmrCPsQkVK3lEF3cz36XQ==

@@ -93,6 +93,7 @@
     "prember": "^1.0.4",
     "qunit-dom": "^1.1.0",
     "remark-autolink-headings": "^6.0.0",
+    "remark-code-import": "^0.2.0",
     "remark-highlight.js": "^6.0.0",
     "tailwindcss": "^1.4.6",
     "typescript": "3.7.5"
