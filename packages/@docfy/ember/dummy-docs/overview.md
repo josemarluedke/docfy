@@ -16,4 +16,4 @@ Sed ver Eumenidum in duorum quis anhelatos, currum voce? **Thracum** servabat
 matris cornua positis certo.
 
 Please check the [introduction on how it
-works](./introduction.md#how-it-works).
+works `inline code`](./introduction.md#how-it-works).
