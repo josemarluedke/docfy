@@ -1,10 +1,23 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+---
+order: 4
+category: components
+title: <DocfyDemo>
+---
 
-@import './markdown.css';
-@import './highlight.css';
+# {{"<DocfyDemo>"}}
 
+
+This component is used internally to render demos. It's not meant to be used directly,
+although that's possible. The scope of what you want to understand is the CSS
+classes such that you can style the parts of the demo component yourself.
+
+Make sure to look at [writing demos](../writing-demos.md), so you can understand how demos look.
+
+Below is an example of how styling could look like. It uses
+[TailwindCSS](https://tailwindcss.com/) and [PostCSS Nested](https://github.com/postcss/postcss-nested).
+
+
+```css
 .docfy-demo__example {
   @apply p-4 border rounded-t;
 }
@@ -50,10 +63,7 @@
     @apply text-sm leading-normal;
     @apply font-mono;
     @apply rounded-b;
-    font-weight: 400;
     scrollbar-width: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 }
+```
