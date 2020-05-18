@@ -2,9 +2,15 @@
 /packages/**/blueprints/*/files/
 /packages/**/vendor/
 
+/site/blueprints/*/files/
+/site/vendor/
+
 # compiled output
 /packages/**/dist/
 /packages/**/tmp/
+
+/site/dist/
+/site/tmp/
 
 # dependencies
 /bower_components/
@@ -12,8 +18,14 @@
 /packages/**/bower_components/
 /packages/**/node_modules/
 
+/site/bower_components/
+/site/node_modules/
+
+
+
 # misc
 /packages/**/coverage/
+/site/coverage/
 !.*
 
 # ember-try
