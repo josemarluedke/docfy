@@ -17,10 +17,8 @@ module.exports = {
         '.template-lintrc.js',
         'ember-cli-build.js',
         'testem.js',
-        'src/**/*.{js,ts}',
         'config/**/*.js',
-        'tests/dummy/config/**/*.js',
-        'tests/dummy/app/styles/*.js'
+        'app/styles/*.js'
       ],
       extends: [
         '@underline/eslint-config-node',
