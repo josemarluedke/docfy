@@ -1,7 +1,6 @@
 const path = require('path');
 const autolinkHeadings = require('remark-autolink-headings');
 const highlight = require('remark-highlight.js');
-const codeImport = require('remark-code-import');
 
 module.exports = {
   remarkPlugins: [
@@ -11,21 +10,14 @@ module.exports = {
         behavior: 'wrap'
       }
     ],
-    codeImport,
     highlight
   ],
   sources: [
     {
-      root: path.resolve(__dirname, '../../../docs'),
+      root: path.join(__dirname, 'dummy-docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs'
-    },
-    {
-      root: path.join(__dirname, 'docs'),
-      pattern: '**/*.md',
-      urlSchema: 'manual',
-      urlPrefix: 'docs/ember'
     }
   ],
   labels: {
