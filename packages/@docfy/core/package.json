@@ -12,6 +12,7 @@
     "lib"
   ],
   "scripts": {
+    "api-docs": "api-extractor run --typescript-compiler-folder ../../../node_modules/typescript -l && api-documenter markdown -i ./temp -o ./docs/api",
     "compile": "tsc",
     "prepare": "tsc",
     "test": "jest"
@@ -37,6 +38,8 @@
     "yaml": "^1.9.2"
   },
   "devDependencies": {
+    "@microsoft/api-documenter": "^7.7.18",
+    "@microsoft/api-extractor": "^7.7.13",
     "@types/debug": "^4.1.5",
     "@types/hosted-git-info": "^3.0.0",
     "@types/node": "^13.13.5",
