@@ -13,7 +13,7 @@
   </div>
   <div>
     {{#if next}}
-      <div class="text-sm text-right">Next</div>
+      <div class="text-sm">Next</div>
 
       <DocfyLink @to={{next.url}} class="text-xl text-blue-500">
         {{next.title}}

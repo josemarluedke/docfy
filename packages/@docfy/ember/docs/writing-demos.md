@@ -1,3 +1,6 @@
+---
+order: 3
+---
 # Writing Demos
 
 Docfy has a concept of "demo" markdown files. It allows you to write code in

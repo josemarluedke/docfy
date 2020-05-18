@@ -1,3 +1,6 @@
+---
+order: 1
+---
 # Getting Started
 
 Let's get started by creating a new Ember app and adding Docfy to it. For adding
