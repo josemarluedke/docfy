@@ -1,0 +1,23 @@
+<div class="overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12">
+  <DocfyOutput @fromCurrentURL={{true}} as |page|>
+    {{#if page.headings.length}}
+      <ul class="space-y-2">
+        {{#each page.headings as |heading|}}
+          <li>
+            <a href="#{{heading.id}}">{{heading.title}}</a>
+
+            {{#if heading.headings.length}}
+              <ul class="pt-2 pl-4 space-y-2">
+                {{#each heading.headings as |subHeading|}}
+                  <li>
+                    <a href="#{{subHeading.id}}">{{subHeading.title}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            {{/if}}
+          </li>
+        {{/each}}
+      </ul>
+    {{/if}}
+  </DocfyOutput>
+</div>
