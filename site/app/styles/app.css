@@ -4,3 +4,5 @@
 /* purgecss end ignore */
 
 @import 'tailwindcss/utilities';
+
+@import './markdown.css';
