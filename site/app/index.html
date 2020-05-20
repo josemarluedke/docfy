@@ -14,7 +14,33 @@
 
     {{content-for "head-footer"}}
   </head>
-  <body>
+  <body class="text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+    <script>
+      (function setTheme() {
+        const colorModeKey = 'theme';
+
+        const mql = window.matchMedia('(prefers-color-scheme: dark)');
+        const prefersDarkFromMQ = mql.matches;
+        const persistedPreference = localStorage.getItem('prefersMode');
+
+        let colorMode = 'light';
+
+        const hasUsedToggle = typeof persistedPreference === 'string';
+
+        if (hasUsedToggle) {
+          colorMode = persistedPreference;
+        } else {
+          colorMode = prefersDarkFromMQ ? 'dark' : 'light';
+        }
+
+        const root = document.documentElement;
+
+        if (colorMode === 'dark') {
+          root.classList.add('mode-dark')
+        }
+      })()
+    </script>
+
     {{content-for "body"}}
 
     <script src="{{rootURL}}assets/vendor.js"></script>
