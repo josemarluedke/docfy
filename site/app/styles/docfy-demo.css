@@ -1,0 +1,56 @@
+.docfy-demo__example {
+  @apply p-4 border rounded-t;
+}
+
+.docfy-demo__description {
+  @apply p-4 border-l border-r;
+
+  &__header {
+    @apply flex justify-between;
+
+    &__title {
+      @apply mb-4 font-medium leading-tight;
+    }
+
+    &__edit-url {
+      @apply text-sm;
+    }
+  }
+
+  &__content {
+    /* @apply markdown; */
+  }
+}
+.docfy-demo__snippets {
+  &__tabs {
+    @apply px-2 border-l border-r;
+
+    &__button {
+      @apply p-2 mr-2 border-b-4 border-transparent;
+
+      &--active,
+      &:hover {
+        @apply border-green-700;
+      }
+    }
+  }
+}
+
+.docfy-demo__snippet {
+  pre {
+    @apply p-4;
+    @apply flex text-gray-200 bg-gray-800;
+    @apply text-sm leading-normal;
+    @apply font-mono;
+    @apply rounded-b;
+    scrollbar-width: none;
+  }
+}
+
+.mode-dark {
+  .docfy-demo__example,
+  .docfy-demo__description,
+  .docfy-demo__snippets__tabs {
+    @apply border-gray-800;
+  }
+}
