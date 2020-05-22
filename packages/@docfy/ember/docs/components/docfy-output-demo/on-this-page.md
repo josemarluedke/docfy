@@ -14,7 +14,7 @@ option `tocMaxDepth`.
 
 ```hbs template
 <DocfyOutput @fromCurrentURL={{true}} as |page|>
-  <div class="mb-4 font-medium text-gray-900">
+  <div class="mb-4 font-medium">
     On this page:
   </div>
   <ul class="list-disc list-inside space-y-2">
