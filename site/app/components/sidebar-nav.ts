@@ -1,5 +1,5 @@
 import Component from '@glimmer/component';
 
-interface SidebarNavArgs {}
+interface SidebarNavArgs {} //eslint-disable-line
 
 export default class SidebarNav extends Component<SidebarNavArgs> {}
