@@ -1,11 +1,11 @@
-<div class="relative flex">
-  <div class="w-64 pt-12 pr-4">
+<div class="relative lg:flex">
+  <div class="flex-none w-64 pt-12 pr-4">
     <DocfyOutput @scope="docs" as |node|>
       <SidebarNav @node={{node}} />
     </DocfyOutput>
   </div>
 
-  <div class="flex-1 w-full px-4 pt-12">
+  <div class="flex-grow w-full px-0 pt-12 lg:px-4">
     <div class="markdown">
       {{outlet}}
     </div>
@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <div class="w-64 pl-4">
+  <div class="flex-none hidden w-64 pl-4 lg:block">
     <PageHeadings />
   </div>
 </div>

@@ -32,7 +32,13 @@
   > ul li > code,
   > ol li *:not(pre) code,
   > ol li > code,
-  > table td code {
+  > table td code,
+  > h1 > code,
+  > h2 > code,
+  > h3 > code,
+  > h4 > code,
+  > h5 > code,
+  > h6 > code {
     @apply bg-gray-100;
     @apply text-green-800;
   }
@@ -56,21 +62,6 @@
   > h5,
   > h6 {
     @apply text-green-800;
-  }
-
-  > h1 > code,
-  > h2 > code,
-  > h3 > code,
-  > h4 > code {
-    @apply text-green-800;
-  }
-
-  > h3 > code {
-    @apply bg-gray-100;
-  }
-
-  > h4 > code {
-    @apply bg-gray-100;
   }
 
   > ul:not(.list-none) {

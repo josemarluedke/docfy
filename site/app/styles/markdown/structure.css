@@ -70,23 +70,32 @@
   > pre,
   > ul li pre,
   > ol li pre {
-    @apply flex p-0;
+    @apply flex;
+    @apply p-0;
     @apply text-sm leading-normal;
     @apply font-mono;
-    @apply rounded-lg;
     @apply font-normal;
     @apply scrolling-touch;
+    @apply subpixel-antialiased;
+    @apply -mx-4;
+
+    @screen lg {
+      @apply mx-0;
+      @apply rounded-md;
+    }
   }
 
   > pre code,
   > ul li pre code,
   > ol li pre code {
+    @apply overflow-x-scroll;
     @apply p-4;
   }
 
   > blockquote,
   > blockquote blockquote {
-    @apply p-4 mx-2 my-4;
+    @apply p-4 my-4;
+    @apply rounded-sm;
     @apply text-sm italic;
     @apply border-l-4;
   }
@@ -150,6 +159,8 @@
 
   > p {
     @apply text-base;
+    @apply leading-normal;
+    @apply font-light;
   }
 
   > p,
