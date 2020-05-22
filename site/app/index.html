@@ -15,10 +15,10 @@
     {{content-for "head-footer"}}
   </head>
   <body class="text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+    {{content-for "body"}}
+
     <script>
       (function setTheme() {
-        const colorModeKey = 'theme';
-
         const mql = window.matchMedia('(prefers-color-scheme: dark)');
         const prefersDarkFromMQ = mql.matches;
         const persistedPreference = localStorage.getItem('prefersMode');
@@ -40,8 +40,6 @@
         }
       })()
     </script>
-
-    {{content-for "body"}}
 
     <script src="{{rootURL}}assets/vendor.js"></script>
     <script src="{{rootURL}}assets/site.js"></script>
