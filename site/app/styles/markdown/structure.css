@@ -1,7 +1,6 @@
 /* Source: https://github.com/tailwindcss/docs/blob/master/source/_assets/less/markdown.less */
 
 .markdown {
-  @apply text-gray-700;
   @apply leading-relaxed;
 
   > *:first-child {
@@ -19,7 +18,6 @@
 
   > hr {
     @apply my-16 border-t-0 border-b-2 border-l-0 border-r-0;
-    @apply border-gray-200;
   }
 
   > h2::before,
@@ -35,22 +33,15 @@
   > p a,
   > ul li a,
   > ol li a {
-    @apply font-medium text-blue-500 underline;
-    &:hover {
-      @apply text-blue-700;
-    }
-    strong {
-      @apply text-blue-500;
-    }
+    @apply font-medium underline;
     code {
-      @apply text-blue-500 underline;
+      @apply underline;
     }
   }
 
   > p strong,
   > ul strong {
     @apply font-semibold;
-    @apply text-gray-800;
   }
 
   > p code,
@@ -59,8 +50,6 @@
   > ol li *:not(pre) code,
   > ol li > code,
   > table td code {
-    @apply bg-gray-100;
-    @apply text-blue-600;
     @apply inline-block;
     @apply rounded-sm;
     @apply text-sm;
@@ -81,7 +70,7 @@
   > pre,
   > ul li pre,
   > ol li pre {
-    @apply flex p-0 text-gray-400 bg-gray-800;
+    @apply flex p-0;
     @apply text-sm leading-normal;
     @apply font-mono;
     @apply rounded-lg;
@@ -99,21 +88,11 @@
   > blockquote blockquote {
     @apply p-4 mx-2 my-4;
     @apply text-sm italic;
-    @apply bg-gray-100;
-    @apply border-l-4 border-gray-400;
+    @apply border-l-4;
   }
 
   > blockquote blockquote {
     @apply mt-4;
-  }
-
-  > h1,
-  > h2,
-  > h3,
-  > h4,
-  > h5,
-  > h6 {
-    @apply text-gray-900;
   }
 
   > h1 {
@@ -158,16 +137,15 @@
   > h2 > code,
   > h3 > code,
   > h4 > code {
-    @apply text-blue-600;
     @apply font-mono;
   }
 
   > h3 > code {
-    @apply px-1 text-lg bg-gray-100;
+    @apply px-1 text-lg;
   }
 
   > h4 > code {
-    @apply px-1 text-base bg-gray-100;
+    @apply px-1 text-base;
   }
 
   > p {
@@ -187,7 +165,6 @@
       @apply relative pl-5;
       &::before {
         @apply absolute left-0 inline-block mr-3;
-        @apply text-gray-400;
         content: '\2022';
       }
     }
@@ -202,9 +179,8 @@
     > li::before {
       @apply absolute top-0 left-0 mt-px;
       @apply flex items-center justify-center;
-      @apply w-6 h-6 bg-gray-300 rounded-full;
+      @apply w-6 h-6 rounded-full;
       @apply text-xs font-bold;
-      @apply text-gray-700;
       content: counter(item);
       counter-increment: item;
     }
@@ -213,73 +189,10 @@
   > table {
     @apply w-full text-left;
     th {
-      @apply p-2 text-sm font-semibold text-gray-700 bg-gray-100;
+      @apply p-2 text-sm font-semibold;
     }
     td {
-      @apply p-2 text-sm border-t border-gray-200;
-    }
-  }
-}
-
-.mode-dark {
-  .markdown {
-    @apply text-gray-400;
-
-    > hr {
-      @apply border-gray-800;
-    }
-
-    > p strong,
-    > ul strong {
-      @apply text-gray-200;
-    }
-
-    > h1,
-    > h2,
-    > h3,
-    > h4,
-    > h5,
-    > h6 {
-      @apply text-gray-200;
-    }
-
-    > p code,
-    > ul li *:not(pre) code,
-    > ul li > code,
-    > ol li *:not(pre) code,
-    > ol li > code,
-    > table td code {
-      @apply bg-gray-800;
-      @apply text-blue-400;
-    }
-
-    > blockquote,
-    > blockquote blockquote {
-      @apply bg-gray-800;
-      @apply border-gray-600;
-    }
-    > ul:not(.list-none) {
-      li {
-        &::before {
-          @apply text-gray-600;
-        }
-      }
-    }
-
-    > ol {
-      > li::before {
-        @apply bg-gray-700;
-        @apply text-gray-200;
-      }
-    }
-
-    > table {
-      th {
-        @apply text-gray-400 bg-gray-800;
-      }
-      td {
-        @apply border-gray-800;
-      }
+      @apply p-2 text-sm border-t;
     }
   }
 }
