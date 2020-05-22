@@ -5,4 +5,10 @@
 
 @import 'tailwindcss/utilities';
 
-@import './markdown.css';
+/* purgecss start ignore */
+@import './markdown/structure.css';
+@import './markdown/light.css';
+@import './markdown/dark.css';
+@import './highlight.css';
+@import './docfy-demo.css';
+/* purgecss end ignore */

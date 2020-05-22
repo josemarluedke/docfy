@@ -16,7 +16,7 @@
           {{#if previous}}
             <div class="text-sm">Previous</div>
 
-            <DocfyLink @to={{previous.url}} class="text-xl text-blue-500">
+            <DocfyLink @to={{previous.url}} class="text-xl text-green-700 dark:text-green-500">
               {{previous.title}}
             </DocfyLink>
           {{/if}}
@@ -25,7 +25,7 @@
           {{#if next}}
             <div class="text-sm text-right">Next</div>
 
-            <DocfyLink @to={{next.url}} class="text-xl text-blue-500">
+            <DocfyLink @to={{next.url}} class="text-xl text-green-700 dark:text-green-500">
               {{next.title}}
             </DocfyLink>
           {{/if}}
