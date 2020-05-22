@@ -23,7 +23,7 @@ const purgecssOptions = {
 
     return broadMatches.concat(innerMatches);
   },
-  whitelistPatterns: [/js-/, 'mode-dark']
+  whitelistPatterns: [/js-/, /mode-dark/]
 };
 
 const postcssPlugins = [
