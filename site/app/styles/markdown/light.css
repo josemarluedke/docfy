@@ -1,4 +1,5 @@
-.markdown {
+.markdown,
+.docfy-demo__description__content {
   @apply text-gray-700;
 
   > hr {
@@ -39,14 +40,13 @@
   > h4 > code,
   > h5 > code,
   > h6 > code {
-    @apply bg-gray-100;
-    @apply text-green-800;
+    @apply bg-yellow-200 bg-opacity-50;
   }
 
   > pre,
   > ul li pre,
   > ol li pre {
-    @apply text-gray-400 bg-gray-800;
+    @apply text-gray-400 bg-gray-900;
   }
 
   > blockquote,

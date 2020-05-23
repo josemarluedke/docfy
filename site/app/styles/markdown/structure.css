@@ -1,6 +1,7 @@
 /* Source: https://github.com/tailwindcss/docs/blob/master/source/_assets/less/markdown.less */
 
-.markdown {
+.markdown,
+.docfy-demo__description__content {
   @apply leading-relaxed;
 
   > *:first-child {
@@ -52,8 +53,8 @@
   > table td code {
     @apply inline-block;
     @apply rounded-sm;
-    @apply text-sm;
-    @apply px-1;
+    @apply text-base;
+    @apply p-1;
     @apply leading-none;
     @apply whitespace-no-wrap;
     @apply font-mono;
@@ -107,16 +108,18 @@
   > h1 {
     @apply mb-1;
     @apply leading-none;
+    @apply tracking-tight;
     @apply font-medium;
-    @apply text-3xl;
+    @apply text-4xl;
   }
 
   > h2 {
     @apply mt-16;
     @apply mb-4;
     @apply leading-none;
+    @apply tracking-tight;
     @apply font-normal;
-    @apply text-2xl;
+    @apply text-3xl;
   }
 
   > h2 + h3 {
@@ -127,7 +130,7 @@
     @apply mt-12 -mb-3;
     @apply leading-tight;
     @apply font-medium;
-    @apply text-xl;
+    @apply text-2xl;
   }
 
   > h4 {
@@ -135,7 +138,7 @@
     @apply mb-0;
     @apply leading-snug;
     @apply font-medium;
-    @apply text-lg;
+    @apply text-xl;
   }
 
   > h1 + p {
@@ -158,8 +161,8 @@
   }
 
   > p {
-    @apply text-base;
-    @apply leading-normal;
+    @apply text-lg;
+    @apply leading-relaxed;
     @apply font-light;
   }
 

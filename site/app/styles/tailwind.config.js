@@ -1,9 +1,13 @@
 const plugin = require('tailwindcss/plugin');
+const defaultTheme = require('tailwindcss/defaultTheme');
 
 module.exports = {
   purge: [],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans]
+      },
       inset: {
         '16': '4rem'
       },
@@ -12,6 +16,12 @@ module.exports = {
       },
       maxHeight: {
         '(screen-16)': 'calc(100vh - 4rem)'
+      },
+      colors: {
+        gray: {
+          ...defaultTheme.colors.gray,
+          1000: '#12161f'
+        }
       }
     }
   },
