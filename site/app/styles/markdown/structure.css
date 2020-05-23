@@ -24,8 +24,8 @@
   > h2::before,
   > h3::before {
     display: block;
-    height: 6rem;
-    margin-top: -6rem;
+    height: 3rem;
+    margin-top: -3rem;
     visibility: hidden;
     content: '';
   }

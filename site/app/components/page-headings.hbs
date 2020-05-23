@@ -4,13 +4,23 @@
       <ul class="space-y-2">
         {{#each page.headings as |heading|}}
           <li>
-            <a href="#{{heading.id}}">{{heading.title}}</a>
+            <a
+              href="#{{heading.id}}"
+              {{on "click" this.onClick}}
+            >
+              {{heading.title}}
+            </a>
 
             {{#if heading.headings.length}}
               <ul class="pt-2 pl-4 space-y-2">
                 {{#each heading.headings as |subHeading|}}
                   <li>
-                    <a href="#{{subHeading.id}}">{{subHeading.title}}</a>
+                    <a
+                      href="#{{subHeading.id}}"
+                      {{on "click" this.onClick}}
+                    >
+                      {{subHeading.title}}
+                    </a>
                   </li>
                 {{/each}}
               </ul>
