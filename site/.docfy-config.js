@@ -4,6 +4,7 @@ const highlight = require('remark-highlight.js');
 const codeImport = require('remark-code-import');
 
 module.exports = {
+  tocMaxDepth: 3,
   remarkPlugins: [
     [
       autolinkHeadings,
