@@ -1,0 +1,95 @@
+<button
+  type="button"
+  {{on "click" this.toggle}}
+  class="flex items-center px-4 py-2 border rounded lg:hidden dark:border-gray-800
+    {{if this.isOpen "bg-gray-200 dark:bg-gray-1000"}}"
+  >
+  <svg class="w-6 mr-2" fill="currentColor" viewBox="0 0 20 20"><path d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h6a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" fill-rule="evenodd"></path></svg>
+
+  Contents
+</button>
+
+<div
+  class="lg:mt-0 lg:overflow-y-auto lg:sticky top-16 lg:max-h-(screen-16) pt-4 lg:pt-12 pb-4 lg:-mt-12 lg:block
+    {{if this.isOpen "block" "hidden"}}
+  "
+>
+  <ul class="space-y-4">
+    {{#each @node.pages as |page|}}
+      <li>
+        <div class="flex items-center">
+          <span class="pr-3 text-gray-300 dark:text-gray-700">
+            <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+              <circle r="30" cx="50" cy="50"></circle>
+            </svg>
+          </span>
+          <DocfyLink
+            @to={{page.url}}
+            class="font-medium "
+            @activeClass=" font-bold"
+          >
+            {{page.title}}
+          </DocfyLink>
+        </div>
+      </li>
+    {{/each}}
+
+    {{#each @node.children as |child|}}
+      <li>
+        <div class="font-medium ">
+          {{child.label}}
+        </div>
+
+        <ul class="pl-3 font-normal">
+          {{#each child.pages as |page|}}
+            <li class="mt-4">
+              <div class="flex flex-no-wrap items-center">
+                <span class="pr-3 text-gray-300 dark:text-gray-700">
+                  <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+                    <circle r="30" cx="50" cy="50"></circle>
+                  </svg>
+                </span>
+                <DocfyLink
+                  @to={{page.url}}
+                  class="font-medium "
+                  @activeClass=" font-bold"
+                >
+                  {{page.title}}
+                </DocfyLink>
+              </div>
+            </li>
+          {{/each}}
+
+          {{#each child.children as |subChild|}}
+            <li class="mt-4">
+              <div class="font-medium ">
+                {{subChild.label}}
+              </div>
+
+              <ul class="pl-3 font-normal">
+                {{#each subChild.pages as |page|}}
+                  <li class="mt-4">
+                    <div class="flex flex-no-wrap items-center">
+                      <span class="pr-3 text-gray-300 dark:text-gray-700">
+                        <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+                          <circle r="30" cx="50" cy="50"></circle>
+                        </svg>
+                      </span>
+                      <DocfyLink
+                        @to={{page.url}}
+                        class="font-medium "
+                        @activeClass=" font-bold"
+                      >
+                        {{page.title}}
+                      </DocfyLink>
+                    </div>
+                  </li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
+        </ul>
+      </li>
+    {{/each}}
+  </ul>
+</div>

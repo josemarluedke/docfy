@@ -1,6 +1,6 @@
-export { replaceInternalLinks } from './replace-internal-links';
 export { combineDemos } from './combine-demos';
-export { toc } from './toc';
 export { renderMarkdown } from './render-markdown';
-export { uniquefyUrls } from './uniquefy-urls';
+export { replaceInternalLinks } from './replace-internal-links';
 export { staticAssets } from './static-assets';
+export { toc } from './toc';
+export { uniquefyUrls } from './uniquefy-urls';

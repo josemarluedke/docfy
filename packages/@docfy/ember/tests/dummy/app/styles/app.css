@@ -11,14 +11,16 @@
 
 .docfy-demo__description {
   @apply p-4 border-l border-r;
-}
 
-.docfy-demo__description {
   &__header {
     @apply flex justify-between;
 
     &__title {
       @apply mb-4 font-medium leading-tight text-gray-900;
+    }
+
+    &__edit-url {
+      @apply text-sm;
     }
   }
 

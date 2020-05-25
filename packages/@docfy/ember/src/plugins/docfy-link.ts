@@ -34,7 +34,10 @@ export default function docfyLink(ctx: Context): void {
         node.type = 'html';
         node.value = `<DocfyLink @to="${urlParts[0]}" ${
           urlParts[1] ? `@anchor="${urlParts[1]}"` : ''
-        } ${attributes}>${ctx.remark.stringify(toRender)}</DocfyLink>`;
+        } ${attributes}>${ctx.remark
+          .stringify(toRender)
+          .replace(/\n/g, ' ')
+          .trim()}</DocfyLink>`;
         node.children = [];
         node.data = undefined;
       }

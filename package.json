@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "packages/@docfy/*",
-    "packages/examples/*"
+    "packages/examples/*",
+    "site"
   ],
   "scripts": {
     "lint:js": "eslint . --ext .js,.ts",

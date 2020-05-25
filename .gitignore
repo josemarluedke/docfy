@@ -114,9 +114,15 @@ dist
 /packages/**/**/dist/
 /packages/**/**/tmp/
 
+/site/ist/
+/site/tmp/
+
 # dependencies
 /packages/**/**/bower_components/
 /packages/**/**/node_modules/
+
+/site/bower_components/
+/site/node_modules/
 
 # misc
 /packages/**/**/testem.log

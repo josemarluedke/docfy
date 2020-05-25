@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Ember integration with Docfy",
   "keywords": [
     "ember-addon",
@@ -10,7 +10,7 @@
   "license": "MIT",
   "author": "Josemar Luedke <josemarluedke@gmail.com>",
   "directories": {
-    "doc": "doc",
+    "doc": "docs",
     "test": "tests"
   },
   "scripts": {
@@ -24,7 +24,7 @@
     "lint:js": "cd ../../../ && yarn lint:js",
     "start": "ember serve",
     "test": "npm-run-all lint:hbs test:*",
-    "test:ember": "ember test",
+    "test:ember": "ember test --test-port=",
     "test:ember-compatibility": "ember try:each",
     "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean"
@@ -93,6 +93,7 @@
     "prember": "^1.0.4",
     "qunit-dom": "^1.1.0",
     "remark-autolink-headings": "^6.0.0",
+    "remark-code-import": "^0.2.0",
     "remark-highlight.js": "^6.0.0",
     "tailwindcss": "^1.4.6",
     "typescript": "3.7.5"
