@@ -195,7 +195,7 @@
       @apply absolute top-0 left-0 mt-px;
       @apply flex items-center justify-center;
       @apply w-6 h-6 rounded-full;
-      @apply text-xs font-bold;
+      @apply text-xs font-semibold;
       content: counter(item);
       counter-increment: item;
     }
