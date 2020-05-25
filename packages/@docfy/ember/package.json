@@ -10,7 +10,7 @@
   "license": "MIT",
   "author": "Josemar Luedke <josemarluedke@gmail.com>",
   "directories": {
-    "doc": "doc",
+    "doc": "docs",
     "test": "tests"
   },
   "scripts": {
@@ -24,7 +24,7 @@
     "lint:js": "cd ../../../ && yarn lint:js",
     "start": "ember serve",
     "test": "npm-run-all lint:hbs test:*",
-    "test:ember": "ember test",
+    "test:ember": "ember test --test-port=",
     "test:ember-compatibility": "ember try:each",
     "prepublishOnly": "ember ts:precompile",
     "postpublish": "ember ts:clean"
