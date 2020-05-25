@@ -1,7 +1,7 @@
 <button
   type="button"
   {{on "click" this.toggleMode}}
-  class="ml-8 text-gray-200 focus:outline-none focus-visible:shadow-outline"
+  ...attributes
 >
   {{#if this.prefersDark}}
     <VisuallyHidden>Switch to Light Mode</VisuallyHidden>

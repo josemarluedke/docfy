@@ -1,4 +1,6 @@
-# Simple usage
+# Scoping
+
+This example passes the argument `@scope` to the component.
 
 ```hbs template
 <DocfyPreviousAndNextPage @scope="docs" as |previous next|>

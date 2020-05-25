@@ -169,7 +169,7 @@ Indicates how the URLs are generated.
 
 2. **`manual`**: It uses Front Matter information to inform "category" and
    "subcategory" of the file, ignoring the original file location.
-   Resulting in the following schema: `{urlPrefix?}{category}/{subcategory}/{file-name}{urlSuffix?}`
+   Resulting in the following schema: `{category}/{subcategory}/{file-name}`
 
    If no category or subcategory is specified, all files will be at the root level. This option is perfect for documenting monorepo projects to keep
    documentation files next to its implementation.
