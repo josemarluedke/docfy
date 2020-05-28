@@ -45,7 +45,8 @@ if (env !== 'development' || process.env.PURGE_CSS === 'true') {
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
     'ember-inline-css': {
-      filter: ['/assets/vendor.css', '/assets/site.css']
+      filter:
+        env === 'development' ? [] : ['/assets/vendor.css', '/assets/site.css']
     },
     prember: {
       urls: ['/']
