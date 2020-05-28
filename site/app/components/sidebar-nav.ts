@@ -10,4 +10,30 @@ export default class SidebarNav extends Component<SidebarNavArgs> {
   @action toggle(): void {
     this.isOpen = !this.isOpen;
   }
+
+  @action handleSidebarClick(event: Event): void {
+    if (this.isOpen) {
+      const target = event.target as Element;
+
+      if (['A', 'svg', 'path'].includes(target.tagName)) {
+        let parentElement: Element | undefined = target;
+
+        if (target.tagName == 'path') {
+          parentElement = target.parentElement?.closest('svg')
+            ?.parentElement as Element;
+        } else if (target.tagName == 'svg') {
+          parentElement = target.parentElement as Element;
+        }
+
+        if (
+          parentElement &&
+          parentElement.hasAttribute('data-ignore-auto-close')
+        ) {
+          return;
+        }
+
+        this.toggle();
+      }
+    }
+  }
 }
