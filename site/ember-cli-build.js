@@ -11,6 +11,7 @@ const purgecssOptions = {
   content: [
     './app/index.html',
     './app/**/*.hbs',
+    '../**/*.md',
     './node_modules/**/*.hbs',
     '../node_modules/**/*.hbs'
   ],
