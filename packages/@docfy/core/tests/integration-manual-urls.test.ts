@@ -35,7 +35,20 @@ describe('When urlSchema is set to manual', () => {
       expect(
         findPage(result.content, 'packages/package1/components/button.md').demos
           ?.length
-      ).toBe(1);
+      ).toBe(2);
+    });
+
+    test('it has sorted demos', async () => {
+      const demos: string[] = [];
+
+      findPage(
+        result.content,
+        'packages/package1/components/button.md'
+      ).demos.forEach((demo) => {
+        demos.push(demo.meta.title);
+      });
+
+      expect(demos).toMatchSnapshot();
     });
 
     test('it should have generated urls based on frontmatter and should have used urlPrefix', async () => {

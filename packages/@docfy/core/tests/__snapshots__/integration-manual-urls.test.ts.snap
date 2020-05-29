@@ -1,5 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it has sorted demos 1`] = `
+Array [
+  "Button demo",
+  "Another Demo",
+]
+`;
+
 exports[`When urlSchema is set to manual Basic case, no url prefix, or suffix it should have extracted or infered the title 1`] = `
 Array [
   Array [

@@ -39,6 +39,20 @@ function findDemoOwner(contents: PageContent[], demoSource: string): number {
   });
 }
 
+function sortByOrder(pages: PageContent[]): PageContent[] {
+  return pages.sort((a, b) => {
+    const aOrder =
+      typeof a.meta.frontmatter.order !== 'undefined'
+        ? Number(a.meta.frontmatter.order)
+        : 998;
+    const bOrder =
+      typeof b.meta.frontmatter.order !== 'undefined'
+        ? Number(b.meta.frontmatter.order)
+        : 999;
+    return aOrder - bOrder;
+  });
+}
+
 export function combineDemos(context: Context): Context {
   const allDemos: PageContent[] = [];
 
@@ -55,11 +69,13 @@ export function combineDemos(context: Context): Context {
           parent.demos.push(item);
         }
 
+        sortByOrder(parent.demos);
         allDemos.push(item);
       }
     }
   });
 
+  // Delete demos from context pages
   allDemos.forEach((demo) => {
     const index = context.pages.findIndex((i) => i === demo);
     if (index !== -1) {
