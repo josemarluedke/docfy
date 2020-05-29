@@ -1,1 +1,5 @@
-Button demo
+---
+order: 1
+---
+
+# Button demo
