@@ -11,7 +11,10 @@ const slug = Slugger.slug;
 function clearURL(parts: string[], suffix: string): string {
   const url = parts
     .map((item) => {
-      return item.toLowerCase().replace(/\./g, '-');
+      return item
+        .toLowerCase()
+        .replace(/(\._)|(\.)/g, '-')
+        .replace(/_$/, '');
     })
     .join('/');
 

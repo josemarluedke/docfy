@@ -90,6 +90,12 @@ describe('#generateManualUrl', () => {
       generateManualUrl('docs/test.this/something.test.md', {}, 'docs')
     ).toBe('/docs/something-test');
   });
+
+  test('it removes dot and underscore from file names', () => {
+    expect(
+      generateManualUrl('docs/test.this/something._test_.md', {}, 'docs')
+    ).toBe('/docs/something-test');
+  });
 });
 
 describe('#generateAutolUrl', () => {
@@ -149,6 +155,12 @@ describe('#generateAutolUrl', () => {
 
   test('it removes any dot from file names', () => {
     expect(generateAutoUrl('docs/test.this/something.test.md')).toBe(
+      '/docs/test-this/something-test'
+    );
+  });
+
+  test('it removes dot and underscore from file names', () => {
+    expect(generateAutoUrl('docs/test.this/something._test_.md')).toBe(
       '/docs/test-this/something-test'
     );
   });
