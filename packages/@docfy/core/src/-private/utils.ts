@@ -8,12 +8,23 @@ import url from 'url';
 
 const slug = Slugger.slug;
 
+function clearURL(parts: string[], suffix: string): string {
+  const url = parts
+    .map((item) => {
+      return item.toLowerCase().replace(/\./g, '-');
+    })
+    .join('/');
+
+  return `${url}${suffix}`;
+}
+
 export function generateManualUrl(
   source: string,
   meta: Record<string, unknown>,
   prefix?: string,
   suffix?: string
 ): string {
+  let ignoreSuffix = false;
   const parts: string[] = [''];
   if (prefix) {
     parts.push(prefix);
@@ -33,11 +44,12 @@ export function generateManualUrl(
     } else {
       parts.push(fileName, '');
     }
+    ignoreSuffix = true;
   } else {
-    parts.push(`${fileName}${suffix || ''}`);
+    parts.push(fileName);
   }
 
-  return parts.join('/').toLowerCase();
+  return clearURL(parts, ignoreSuffix ? '' : suffix || '');
 }
 
 export function generateAutoUrl(
@@ -45,6 +57,7 @@ export function generateAutoUrl(
   prefix?: string,
   suffix?: string
 ): string {
+  let ignoreSuffix = false;
   source = source.replace(/^\//, '');
   const parts: string[] = [''];
   if (prefix) {
@@ -56,11 +69,12 @@ export function generateAutoUrl(
   if (fileName === 'index' || fileName === 'readme') {
     fileName = path.basename(path.dirname(source));
     parts.push('');
+    ignoreSuffix = true;
   } else {
-    parts.push(`${fileName}${suffix || ''}`);
+    parts.push(fileName);
   }
 
-  return parts.join('/').toLowerCase();
+  return clearURL(parts, ignoreSuffix ? '' : suffix || '');
 }
 
 export function inferTitle(ast: Node): string | undefined {

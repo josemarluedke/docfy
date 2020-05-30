@@ -84,6 +84,12 @@ describe('#generateManualUrl', () => {
       '/docs/cool'
     );
   });
+
+  test('it removes any dot from file names', () => {
+    expect(
+      generateManualUrl('docs/test.this/something.test.md', {}, 'docs')
+    ).toBe('/docs/something-test');
+  });
 });
 
 describe('#generateAutolUrl', () => {
@@ -139,6 +145,12 @@ describe('#generateAutolUrl', () => {
 
   test('it lower cases the url', () => {
     expect(generateAutoUrl('docs/Button/COOL.md')).toBe('/docs/button/cool');
+  });
+
+  test('it removes any dot from file names', () => {
+    expect(generateAutoUrl('docs/test.this/something.test.md')).toBe(
+      '/docs/test-this/something-test'
+    );
   });
 });
 
