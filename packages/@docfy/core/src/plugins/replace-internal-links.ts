@@ -60,9 +60,31 @@ function isReferenceLink(
   return node.type === 'linkReference';
 }
 
+function visitor(ctx: Context, page: PageContent): void {
+  const definitions: Record<string, DefinitionNode> = {};
+
+  visit(page.ast, 'definition', (node: DefinitionNode) => {
+    definitions[node.identifier] = node;
+  });
+
+  visit(
+    page.ast,
+    ['link', 'linkReference'],
+    (node: LinkNode | LinkReferenceNode) => {
+      if (isReferenceLink(node)) {
+        if (definitions[node.identifier]) {
+          replaceURL(ctx, page, definitions[node.identifier]);
+        }
+      } else {
+        replaceURL(ctx, page, node);
+      }
+    }
+  );
+}
+
 /**
  * This plugin finds all internal links from the markdown and replace them with
- * the generated url for the file.
+ * the generated url for that file.
  *
  * For example, a markdown file could contain something like this:
  * ```md
@@ -70,25 +92,13 @@ function isReferenceLink(
  * ```
  */
 export function replaceInternalLinks(ctx: Context): void {
-  ctx.pages.forEach((page: PageContent) => {
-    const definitions: Record<string, DefinitionNode> = {};
+  ctx.pages.forEach((page) => {
+    visitor(ctx, page);
 
-    visit(page.ast, 'definition', (node: DefinitionNode) => {
-      definitions[node.identifier] = node;
-    });
-
-    visit(
-      page.ast,
-      ['link', 'linkReference'],
-      (node: LinkNode | LinkReferenceNode) => {
-        if (isReferenceLink(node)) {
-          if (definitions[node.identifier]) {
-            replaceURL(ctx, page, definitions[node.identifier]);
-          }
-        } else {
-          replaceURL(ctx, page, node);
-        }
-      }
-    );
+    if (Array.isArray(page.demos)) {
+      page.demos.forEach((demo) => {
+        visitor(ctx, demo);
+      });
+    }
   });
 }
