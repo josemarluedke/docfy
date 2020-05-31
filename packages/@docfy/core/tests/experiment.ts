@@ -1,35 +1,3 @@
-// Directories
-// root:
-//   -> docs
-//   -> app/componennts/*.md
-//   -> app/componennts/**/demo/*.md
-// project
-//  docs
-//    - install.md - whatever.md
-//  categorys/
-//    forms/
-//      docs/
-//        - install.md
-//        - styles.md
-//      addon/components/*/
-//        - name.md
-//        demo/
-//          - demo1.md
-//          - demo2.md
-// intro
-// install
-// compoennts
-//   button
-//   button Group
-// modifers
-//   on
-//   bla
-// category
-//   intro
-//   bla
-//   components
-//     bla
-//     blaf
 import Docfy from '../src';
 import path from 'path';
 import hbs from 'remark-hbs';

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Generates Edit Url it should generated edit urls correctly 1`] = `
+exports[`it should correctly generate edit urls 1`] = `
 Array [
   Array [
     "README.md",
