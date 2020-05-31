@@ -6,7 +6,7 @@ import RouterService from '@ember/routing/router-service';
 interface DocfyLinkArgs {
   to: string;
   anchor?: string;
-  activeClass: string;
+  activeClass?: string;
 }
 
 export default class DocfyLink extends Component<DocfyLinkArgs> {

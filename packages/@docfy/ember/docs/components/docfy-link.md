@@ -22,3 +22,11 @@ Ember doesn't have support for anchors.
 
 Below you can see a simple example of this component; however, you can see more
 of its usage throughout the documentation.
+
+# API
+
+| Argument       | Description                                     | Type                    | Default Value |
+|----------------|-------------------------------------------------|-------------------------|---------------|
+| `@to`          | The URL to link                                 | `string`                |               |
+| `@anchor`      | An anchor                                       | `string` \| `undefined` |               |
+| `@activeClass` | The classes to be added when the link is active | `string` \| `undefined` |               |
