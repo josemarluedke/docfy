@@ -1,7 +1,7 @@
 import path from 'path';
 import { DocfyConfig } from '@docfy/core/lib/types';
 import remarkHBS from 'remark-hbs';
-import docfyLink from './plugins/docfy-link';
+import replaceInternalLinksWithDocfyLink from './plugins/replace-internal-links-with-docfy-link';
 import extractDemosToComponents from './plugins/extract-demos-to-components';
 import previewTemplate from './plugins/preview-template';
 
@@ -61,7 +61,7 @@ export default function getDocfyConfig(root: string): DocfyConfig {
     docfyConfig.plugins = [];
   }
   docfyConfig.plugins.push(
-    docfyLink,
+    replaceInternalLinksWithDocfyLink,
     previewTemplate,
     extractDemosToComponents
   );

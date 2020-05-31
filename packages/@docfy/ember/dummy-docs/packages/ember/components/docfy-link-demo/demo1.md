@@ -1,6 +1,8 @@
 # Demo of DocfyLink component
 
-This is a cool feature
+This is a cool feature.
+
+[Link from a demo](../docfy-output.md)
 
 ```hbs template
 This is my Demo:
