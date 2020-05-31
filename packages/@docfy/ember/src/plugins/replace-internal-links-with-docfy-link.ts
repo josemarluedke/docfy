@@ -43,7 +43,7 @@ function visitor(ctx: Context, page: PageContent): void {
  * This function finds all the links starting with an `/` and replace them with
  * the `DocfyLink` component.
  */
-export default function docfyLink(ctx: Context): void {
+export default function replaceInternalLinksWithDocfyLink(ctx: Context): void {
   ctx.pages.forEach((page) => {
     visitor(ctx, page);
 
