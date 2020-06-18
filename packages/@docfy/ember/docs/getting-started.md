@@ -1,7 +1,9 @@
 ---
 order: 1
+title: Getting Started
 ---
-# Getting Started
+
+# Getting Started with Ember
 
 Let's get started by creating a new Ember app and adding Docfy to it. For adding
 to existing apps, jump to the step after creating the app.

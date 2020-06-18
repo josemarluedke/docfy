@@ -3,7 +3,7 @@
 This is a cool feature of Docfy. It is perfect for documenting design systems and
 component libraries.
 
-> Note that this text is extracted into the demo.
+> Note that this text was extracted from the markdown demo file.
 
 ```hbs template
 This is my Demo: <DocfyLink @to={{this.url}}>My Link</DocfyLink>

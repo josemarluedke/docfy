@@ -13,3 +13,9 @@ pages that it can link as previous and next.
 Scoping the pages is useful if you are building different sections of your docs site;
 for example, one section is "Documentation", and another is "Tutorials". This feature
 would prevent linking to a page in tutorials from a documentation page.
+
+# API
+
+| Argument       | Description                    | Type                    | Default Value |
+|----------------|--------------------------------|-------------------------|---------------|
+| `@scope`       | Filter links by a scope name   | `string` \| `undefined` |               |
