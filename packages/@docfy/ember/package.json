@@ -14,20 +14,20 @@
     "test": "tests"
   },
   "scripts": {
-    "compile": "tsc --project src/tsconfig.json",
-    "prestart": "npm-run-all compile",
     "prebuild": "npm-run-all compile",
-    "prepare": "npm-run-all compile",
     "build": "ember build --environment=production",
+    "compile": "tsc --project src/tsconfig.json",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:hbs": "ember-template-lint .",
     "lint:js": "cd ../../../ && yarn lint:js",
+    "prepare": "npm-run-all compile",
+    "prepublishOnly": "ember ts:precompile",
+    "postpublish": "ember ts:clean",
+    "prestart": "npm-run-all compile",
     "start": "ember serve",
     "test": "npm-run-all lint:hbs test:*",
     "test:ember": "ember test --test-port=",
-    "test:ember-compatibility": "echo 'ember try:each TODO'",
-    "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean"
+    "test:ember-compatibility": "echo 'ember try:each TODO'"
   },
   "dependencies": {
     "@docfy/core": "0.0.1",
@@ -100,6 +100,9 @@
   },
   "engines": {
     "node": "10.* || >= 12"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "ember": {
     "edition": "octane"
