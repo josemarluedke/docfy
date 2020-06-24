@@ -1,6 +1,6 @@
 {
   "name": "@docfy/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": false,
   "description": "The core components of Docfy, a documentation site builder",
   "repository": "https://github.com/josemarluedke/docfy",
