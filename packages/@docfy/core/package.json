@@ -2,7 +2,7 @@
   "name": "@docfy/core",
   "version": "0.0.1",
   "private": false,
-  "description": "Documentation Builder",
+  "description": "The core components of Docfy, a documentation site builder",
   "repository": "https://github.com/josemarluedke/docfy",
   "license": "MIT",
   "author": "Josemar Luedke <josemarluedke@gmail.com>",
