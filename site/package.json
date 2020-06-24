@@ -1,7 +1,7 @@
 {
   "name": "site",
   "version": "0.1.0",
-  "private": false,
+  "private": true,
   "description": "The Docfy Site",
   "repository": "https://github.com/josemarluedke/docfy",
   "license": "MIT",
@@ -71,6 +71,9 @@
   },
   "engines": {
     "node": "10.* || >= 12"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "ember": {
     "edition": "octane"
