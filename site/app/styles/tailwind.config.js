@@ -1,6 +1,15 @@
 const plugin = require('tailwindcss/plugin');
 const defaultTheme = require('tailwindcss/defaultTheme');
 
+function makeNegative(obj) {
+  const newObj = {};
+  Object.keys(obj).forEach((key) => {
+    newObj[`-${key}`] = `-${obj[key]}`;
+  });
+
+  return newObj;
+}
+
 module.exports = {
   purge: [],
   theme: {
@@ -8,11 +17,11 @@ module.exports = {
       fontFamily: {
         sans: ['Inter', ...defaultTheme.fontFamily.sans]
       },
-      inset: {
-        '16': '4rem'
-      },
+      inset: { ...defaultTheme.spacing, ...makeNegative(defaultTheme.spacing) },
       maxWidth: {
-        'screen-2xl': '1400px'
+        'screen-2xl': '1400px',
+        256: '64rem',
+        200: '50rem'
       },
       maxHeight: {
         '(screen-16)': 'calc(100vh - 4rem)'

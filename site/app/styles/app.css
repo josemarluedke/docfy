@@ -14,3 +14,16 @@
 @import './highlight.css';
 @import './docfy-demo.css';
 /* purgecss end ignore */
+
+@screen md {
+  .angled {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8rem), 0 100%);
+  }
+}
+
+.bg-dot-lg {
+  background: url(/assets/images/dot-large.svg);
+}
+.bg-dot-brighter-lg {
+  background: url(/assets/images/dot-large-brighter.svg);
+}
