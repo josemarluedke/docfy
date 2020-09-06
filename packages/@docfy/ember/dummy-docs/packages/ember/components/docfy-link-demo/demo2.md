@@ -1,3 +1,7 @@
+---
+order: 1
+---
+
 # This demo only has a template
 
 I can use markdown here.
