@@ -1,7 +1,8 @@
 'use strict';
 
 const browsers = [
-  'last 1 Chrome versions',
+  'Chrome 79', //https://github.com/ember-cli/ember-cli-uglify/issues/49
+  // 'last 1 Chrome versions',
   'last 1 Firefox versions',
   'last 1 Safari versions'
 ];
