@@ -3,6 +3,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./lib",
+    "skipLibCheck": true,
     "paths": {
       "*": ["types/*"]
     },
