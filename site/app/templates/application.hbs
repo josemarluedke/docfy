@@ -31,9 +31,11 @@
       </ul>
 
       <div class="flex items-center">
-        <ThemeSwitcher
-          class="ml-4 text-gray-200 md:ml-6 focus:outline-none focus-visible:shadow-outline hover:text-gray-400"
-        />
+        {{#unless this.isIndex}}
+          <ThemeSwitcher
+            class="ml-4 text-gray-200 md:ml-6 focus:outline-none focus-visible:shadow-outline hover:text-gray-400"
+          />
+        {{/unless}}
         <a
           href="https://github.com/josemarluedke/docfy"
           target="_blank"
