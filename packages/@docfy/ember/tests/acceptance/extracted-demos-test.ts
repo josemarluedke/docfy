@@ -29,28 +29,29 @@ module('Acceptance | extracted demos', function (hooks) {
     const editUrls = findAll('.docfy-demo__description__header__edit-url');
     const contents = findAll('.docfy-demo__description__content');
 
-    assert.dom(titles[0]).hasTextContaining('Demo of DocfyLink component');
-    assert.dom(titles[1]).hasTextContaining('This demo only has a template');
+    assert.dom(titles[0]).hasTextContaining('This demo only has a template');
+    assert.dom(titles[1]).hasTextContaining('Demo of DocfyLink component');
 
     assert
       .dom(editUrls[0])
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo1.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo2.md'
       );
+
     assert
       .dom(editUrls[1])
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo2.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo1.md'
       );
 
-    assert.dom(contents[0]).hasTextContaining('This is a cool feature');
     assert
-      .dom(contents[1])
+      .dom(contents[0])
       .hasTextContaining(
         'I can use markdown here. Item 1 Item 2 Super Cool This is a cool feature.'
       );
+    assert.dom(contents[1]).hasTextContaining('This is a cool feature');
   });
 
   test('it renders code snippets', async function (assert) {
@@ -63,18 +64,17 @@ module('Acceptance | extracted demos', function (hooks) {
 
     assert.dom(tabs[0]).hasTextContaining('Template Component');
     assert.equal(tabs[1], undefined);
-
-    assert.dom(snippets[0]).hasTextContaining('<div data-test-id="demo-1">');
     assert
-      .dom(snippets[1])
+      .dom(snippets[0])
       .hasTextContaining(
         '<DocfyLink @to="/" class="font-bold" data-test-id="demo-2">'
       );
+    assert.dom(snippets[1]).hasTextContaining('<div data-test-id="demo-1">');
 
     await click(findAll('.docfy-demo__snippets__tabs__button')[1]);
-    const snippet0 = findAll('.docfy-demo__snippet')[0];
+    const snippet1 = findAll('.docfy-demo__snippet')[1];
     assert
-      .dom(snippet0)
+      .dom(snippet1)
       .hasTextContaining('export default class MyDemo extends Component');
   });
 });

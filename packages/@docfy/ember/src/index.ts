@@ -9,11 +9,17 @@ import { Node, InputNode } from 'broccoli-node-api';
 import { UnwatchedDir } from 'broccoli-source';
 import Docfy from '@docfy/core';
 import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types';
+import { DemoComponentChunk } from './plugins/types';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
 import { isDemoComponents } from './plugins/utils';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/ember');
+
+const templateOnlyComponent = `
+import templateOnly from '@ember/component/template-only';
+export default templateOnly();
+`;
 
 function ensureDirectoryExistence(filePath: string): void {
   const dirname = path.dirname(filePath);
@@ -22,6 +28,17 @@ function ensureDirectoryExistence(filePath: string): void {
   }
   ensureDirectoryExistence(dirname);
   fs.mkdirSync(dirname);
+}
+
+function hasBackingJS(chunks: DemoComponentChunk[]): boolean {
+  for (let i = 0; i < chunks.length; i++) {
+    const chunk = chunks[i];
+
+    if (chunk.ext === 'js' || chunk.ext === 'ts') {
+      return true;
+    }
+  }
+  return false;
 }
 
 class DocfyBroccoli extends Plugin {
@@ -62,6 +79,16 @@ class DocfyBroccoli extends Plugin {
             ensureDirectoryExistence(chunkPath);
             fs.writeFileSync(chunkPath, chunk.code);
           });
+
+          if (!hasBackingJS(component.chunks)) {
+            const chunkPath = path.join(
+              this.outputPath,
+              'components',
+              `${component.name.dashCase}.js`
+            );
+            ensureDirectoryExistence(chunkPath);
+            fs.writeFileSync(chunkPath, templateOnlyComponent);
+          }
         });
       }
     });
