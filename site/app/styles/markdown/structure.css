@@ -89,7 +89,7 @@
   > pre code,
   > ul li pre code,
   > ol li pre code {
-    @apply overflow-x-scroll;
+    @apply overflow-x-auto;
     @apply p-4;
   }
 
