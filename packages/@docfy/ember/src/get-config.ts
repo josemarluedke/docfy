@@ -60,7 +60,7 @@ export default function getDocfyConfig(root: string): DocfyConfig {
   if (!Array.isArray(docfyConfig.plugins)) {
     docfyConfig.plugins = [];
   }
-  docfyConfig.plugins.push(
+  docfyConfig.plugins.unshift(
     replaceInternalLinksWithDocfyLink,
     previewTemplate,
     extractDemosToComponents
