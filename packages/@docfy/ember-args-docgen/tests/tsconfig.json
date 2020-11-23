@@ -1,0 +1,16 @@
+{
+  "extends": "../../../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "baseUrl": ".",
+    "paths": {
+      "*": ["../types/*"]
+    },
+    "typeRoots": ["../../../../node_modules/@types", "../types"],
+    "types": ["jest", "node"]
+  },
+  "include": ["**/*"]
+}

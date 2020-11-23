@@ -1,0 +1,15 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./lib",
+    "skipLibCheck": true,
+    "paths": {
+      "*": ["types/*"]
+    },
+    "typeRoots": ["../../node_modules/@types", "types"],
+    "types": ["jest", "node"]
+  },
+  "include": ["src/**/*", "types/**/*"],
+  "exclude": ["tests/**/*"]
+}
