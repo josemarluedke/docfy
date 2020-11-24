@@ -1,17 +1,24 @@
-// import glob from 'fast-glob';
-import path from 'path';
+import {
+  getArgsForComponent,
+  isComponent,
+  Argument,
+  getFileName
+} from './utils';
 import { Application } from 'typedoc';
-import fs from 'fs';
-import { ReferenceType } from 'typedoc/dist/lib/models';
-import { getArgsType, isComponent } from './utils';
+import path from 'path';
+import util from 'util';
 
-interface Bla {
+function inspect(obj: unknown): void {
+  console.log(util.inspect(obj, false, 15, true));
+}
+
+interface ComponentDefinition {
   name: string;
-  argsType: string;
+  fileName: string;
+  args: Argument[];
 }
 
 export default function () {
-  const outPath = path.join(__dirname, 'test-bla.json');
   const filePaths = [
     path.resolve(
       path.join(
@@ -21,15 +28,7 @@ export default function () {
     )
   ];
 
-  // Setup our TypeDoc app
   const app = new Application();
-  // app.options.addReader(
-  // new typedoc.TSConfigReader(
-  // path.resolve(__dirname, '../packages/core/tsconfig.json')
-  // )
-  // );
-  // console.log('YOOOOO ', ReflectionType);
-
   app.bootstrap({
     mode: 'file',
     // logger: 'none',
@@ -42,88 +41,18 @@ export default function () {
     excludeExternals: true
   });
 
-  // console.log(app.components);
-
-  // Actually generate the JSON file
   const result = app.convert(filePaths);
-  // app.generateJson(filePaths, outPath);
-  //
+  const components: ComponentDefinition[] = [];
 
   result?.children?.forEach((declaration) => {
     if (isComponent(declaration.extendedTypes?.[0])) {
-      console.log(declaration.name);
-      // const b = declaration.extendedTypes?.[0] as ReferenceType;
-      getArgsType(declaration);
-    }
-    // console.log(isComponent(declaration.extendedTypes?.[0]));
-    // if (i)
-
-    // console.log(declaration.extendedTypes?.[0] as ReferenceType);
-  });
-
-  // Parse it
-  // const json = JSON.parse(fs.readFileSync(outPath, 'utf8'));
-
-  // const components: Bla[] = [
-  // // { name, argsType }
-  // ];
-
-  // // json.forEach((item) => {
-  // json.children.forEach((a) => {
-  // if (a.extendedTypes) {
-  // a.extendedTypes.forEach((b) => {
-  // if (b.name === 'Component') {
-  // console.log(a.extendedTypes);
-  // console.log(a.name);
-  // components.push({ name: a.name, argsType: b.typeArguments[0].name });
-  // }
-  // });
-  // }
-  // });
-
-  // components.forEach((component) => {
-  // const args = [];
-  // const argsType = findByName(json, component.argsType);
-
-  // argsType.children.forEach((item) => {
-  // console.log({
-  // name: item.name,
-  // type: getType(item.type),
-  // isOptional: item.flags.isOptional || false
-  // });
-
-  // // args.push({
-  // // name: item.name,
-  // // type: getType(item.type),
-  // // isOptional: item.flags.isOptional || false
-  // // });
-  // });
-  // console.log(args);
-
-  // // component.args = args;
-  // });
-
-  // console.log(components);
-}
-
-function getType(input) {
-  // let a = new ReflectionType(input);
-  // console.log(a);
-
-  if (input.type === 'intrinsic') {
-    return input.name;
-  } else {
-    return 'TODO -> ' + input.type;
-  }
-}
-
-function findByName(json, name) {
-  let found;
-  json.children.forEach((a) => {
-    console.log(a.name, name);
-    if (a.name === name) {
-      found = a;
+      components.push({
+        name: declaration.name,
+        fileName: getFileName(declaration.sources),
+        args: getArgsForComponent(declaration)
+      });
     }
   });
-  return found;
+
+  inspect(components);
 }

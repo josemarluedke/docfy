@@ -2,21 +2,21 @@
 //
 //
 
-interface Argument {
+import {
+  Type,
+  ReferenceType,
+  Comment,
+  SourceReference,
+  DeclarationReflection
+} from 'typedoc/dist/lib/models';
+
+export interface Argument {
   name: string;
   type: string;
   isRequired: boolean;
   description?: string;
   defaultValue?: string;
 }
-
-import {
-  Type,
-  ReferenceType,
-  DeclarationReflection,
-  Comment
-} from 'typedoc/dist/lib/models';
-
 export function isComponent(type?: Type): type is ReferenceType {
   if (type && type.type === 'reference') {
     return (type as ReferenceType).name == 'Component';
@@ -27,31 +27,6 @@ export function isComponent(type?: Type): type is ReferenceType {
 
 export function isReferenceType(type?: Type): type is ReferenceType {
   return Boolean(type && type.type === 'reference');
-}
-
-export function getArgsTypeB(reference: ReferenceType): string {
-  const firstArg = reference.typeArguments?.[0];
-  const result: Argument[] = [];
-
-  if (isReferenceType(firstArg)) {
-    console.log('bbbb ', firstArg.reflection?.name);
-    const args =
-      (firstArg.reflection as DeclarationReflection | undefined)?.children ||
-      [];
-
-    args.forEach((arg) => {
-      result.push({
-        name: arg.name,
-        type: arg.type?.toString() || '',
-        isRequired: arg.flags.isOptional != true,
-        description: arg.comment?.shortText,
-        defaultValue: getDefaultValue(arg.comment)
-      });
-    });
-  }
-  console.log(result);
-
-  return '';
 }
 
 function getDefaultValue(comment?: Comment): string | undefined {
@@ -68,14 +43,45 @@ function getDefaultValue(comment?: Comment): string | undefined {
   return defaultValue;
 }
 
-export function getArgsType(dec: DeclarationReflection): void {
-  const extendedFrom = dec.extendedTypes?.[0];
+export function getArgsForComponent(dec: DeclarationReflection): Argument[] {
+  const result: Argument[] = [];
+  const reference = dec.extendedTypes?.[0];
 
-  if (isComponent(extendedFrom)) {
-    const bla = getArgsTypeB(extendedFrom);
+  if (isComponent(reference)) {
+    const firstArg = reference.typeArguments?.[0];
+
+    if (isReferenceType(firstArg)) {
+      const args =
+        (firstArg.reflection as DeclarationReflection | undefined)?.children ||
+        [];
+
+      args.forEach((arg) => {
+        result.push({
+          name: arg.name,
+          type: arg.type?.toString() || '',
+          isRequired: arg.flags.isOptional != true,
+          description: arg.comment?.shortText,
+          defaultValue: getDefaultValue(arg.comment)
+        });
+      });
+    }
   }
 
-  // const bla = reference.typeArguments?.[0];
+  return sortArgs(result);
+}
 
-  // console.log(bla);
+function sortArgs(args: Argument[]): Argument[] {
+  return args.sort((a, b) => {
+    const aRequired = a.isRequired ? 1000 : 0;
+    const bRequired = b.isRequired ? 1000 : 0;
+    const requiredOffset = aRequired - bRequired;
+    return String(a.name).localeCompare(b.name) - requiredOffset;
+  });
+}
+
+export function getFileName(source: undefined | SourceReference[]): string {
+  if (source && source.length > 0) {
+    return source[0].fileName;
+  }
+  return '';
 }
