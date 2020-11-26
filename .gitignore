@@ -134,3 +134,4 @@ dist
 
 
 /packages/*/ember/lib/**
+/packages/*/ember-args-docgen/lib/**
