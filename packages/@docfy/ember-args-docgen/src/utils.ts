@@ -1,7 +1,3 @@
-// TODO generate nice formatting for function args eg: function -> (event: Event) => void
-//
-//
-
 import {
   Type,
   ReferenceType,

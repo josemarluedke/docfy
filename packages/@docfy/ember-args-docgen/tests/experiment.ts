@@ -13,7 +13,8 @@ import path from 'path';
       root: path.resolve(
         path.join(__dirname, '../../../../../frontile/packages/overlays/addon')
       ),
-      pattern: 'components/**/*.ts'
+      pattern: 'components/drawer/index.ts'
+      // pattern: 'components/**/*.ts'
     }
   ]);
 })();
