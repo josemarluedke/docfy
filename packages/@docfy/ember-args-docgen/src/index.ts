@@ -2,7 +2,7 @@ import path from 'path';
 import fs from 'fs';
 import glob from 'fast-glob';
 import * as ts from 'typescript';
-import Parser, { ComponentDoc } from './parser';
+import Parser, { ArgumentItem, ComponentDoc } from './parser';
 
 const DEFAULT_IGNORE = [
   '/**/node_modules/**',
@@ -105,6 +105,7 @@ export default function DocGen(sources: Source[]): ComponentDoc[] {
         .map((component) => {
           return {
             ...component,
+            args: sortArgs(component.args),
             fileName: component.fileName.replace(
               path.join(source.root, '/'),
               ''
@@ -115,6 +116,21 @@ export default function DocGen(sources: Source[]): ComponentDoc[] {
   });
 
   return components;
+}
+
+function sortArgs(args: ArgumentItem[]): ArgumentItem[] {
+  return args.sort((a, b) => {
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    return 0;
+  });
 }
 
 function getCompilerOptionsFromTSConfig(
