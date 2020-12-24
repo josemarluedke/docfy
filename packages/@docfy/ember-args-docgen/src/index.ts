@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'fs';
 import glob from 'fast-glob';
 import * as ts from 'typescript';
 import Parser, { ComponentDoc } from './parser';
@@ -10,6 +12,16 @@ const DEFAULT_IGNORE = [
   '.git/**',
   'dist/**'
 ];
+
+interface Options {
+  tsconfigPath?: string;
+
+  /**
+   * TypeScript CompilerOptions
+   * CompilerOptions are ignored if tsconfigPath is defined
+   */
+  compilerOptions?: ts.CompilerOptions;
+}
 
 interface Source {
   /**
@@ -27,54 +39,112 @@ interface Source {
    * Pattern to ignore.
    */
   ignore?: string[];
+
+  /**
+   * The options
+   */
+  options?: Options;
 }
 
-export default function (sources: Source[]): ComponentDoc[] {
-  const filePaths: string[] = [];
+export default function DocGen(sources: Source[]): ComponentDoc[] {
+  const components: ComponentDoc[] = [];
 
-  sources.forEach((item) => {
-    console.log(item.root);
-    const result = glob.sync(item.pattern, {
-      cwd: item.root,
-
-      ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])],
+  sources.forEach((source) => {
+    const filePaths: string[] = [];
+    const result = glob.sync(source.pattern, {
+      cwd: source.root,
+      ignore: [...DEFAULT_IGNORE, ...(source.ignore || [])],
       absolute: true
     });
     filePaths.push(...result);
-  });
 
-  const program = ts.createProgram(filePaths, {});
+    let compilerOptions =
+      (source.options || ({} as Options)).compilerOptions || {};
 
-  const checker = program.getTypeChecker();
-  const parser = new Parser(checker);
+    if (source.options && source.options.tsconfigPath) {
+      compilerOptions = getCompilerOptionsFromTSConfig(
+        source.options.tsconfigPath,
+        source.root
+      );
+    }
 
-  const possibleComponents: ts.ClassDeclaration[] = [];
+    const program = ts.createProgram(filePaths, compilerOptions);
+    const checker = program.getTypeChecker();
+    const parser = new Parser(checker);
 
-  filePaths
-    .map((filePath) => program.getSourceFile(filePath))
-    .filter(
-      (sourceFile): sourceFile is ts.SourceFile =>
-        typeof sourceFile !== 'undefined'
-    )
-    .forEach((sourceFile) => {
-      // use class declarations that are exported
-      sourceFile.statements.forEach((stmt) => {
-        if (ts.isClassDeclaration(stmt)) {
-          if (stmt.modifiers) {
-            const exportModifiers = stmt.modifiers.filter(
-              (m) => m.kind == ts.SyntaxKind.ExportKeyword
-            );
-            if (exportModifiers.length > 0) {
-              possibleComponents.push(stmt);
+    const maybeComponents: ts.ClassDeclaration[] = [];
+
+    filePaths
+      .map((filePath) => program.getSourceFile(filePath))
+      .filter(
+        (sourceFile): sourceFile is ts.SourceFile =>
+          typeof sourceFile !== 'undefined'
+      )
+      .forEach((sourceFile) => {
+        // use class declarations that are exported
+        sourceFile.statements.forEach((stmt) => {
+          if (ts.isClassDeclaration(stmt)) {
+            if (stmt.modifiers) {
+              const exportModifiers = stmt.modifiers.filter(
+                (m) => m.kind == ts.SyntaxKind.ExportKeyword
+              );
+              if (exportModifiers.length > 0) {
+                maybeComponents.push(stmt);
+              }
             }
           }
-        }
+        });
       });
-    });
 
-  return possibleComponents
-    .filter(
-      (declaration) => declaration.name && parser.isComponent(declaration)
-    )
-    .map((component) => parser.getComponentDoc(component));
+    components.push(
+      ...maybeComponents
+        .filter(
+          (declaration) => declaration.name && parser.isComponent(declaration)
+        )
+        .map((component) => parser.getComponentDoc(component))
+        .map((component) => {
+          return {
+            ...component,
+            fileName: component.fileName.replace(
+              path.join(source.root, '/'),
+              ''
+            )
+          };
+        })
+    );
+  });
+
+  return components;
+}
+
+function getCompilerOptionsFromTSConfig(
+  tsconfigPath: string,
+  sourceRoot: string
+): ts.CompilerOptions {
+  if (!path.isAbsolute(tsconfigPath)) {
+    tsconfigPath = path.join(sourceRoot, tsconfigPath);
+  }
+
+  const basePath = path.dirname(tsconfigPath);
+  const { config, error } = ts.readConfigFile(tsconfigPath, (filename) =>
+    fs.readFileSync(filename, 'utf8')
+  );
+
+  if (error !== undefined) {
+    const errorText = `Cannot load custom tsconfig.json from provided path: ${tsconfigPath}, with error code: ${error.code}, message: ${error.messageText}`;
+    throw new Error(errorText);
+  }
+
+  const { options, errors } = ts.parseJsonConfigFileContent(
+    config,
+    ts.sys,
+    basePath,
+    {},
+    tsconfigPath
+  );
+
+  if (errors && errors.length) {
+    throw errors[0];
+  }
+  return options;
 }
