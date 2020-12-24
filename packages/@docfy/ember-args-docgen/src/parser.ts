@@ -1,8 +1,13 @@
 import * as ts from 'typescript';
 
-export interface DocComment {
+export interface DocumentationTag {
+  name: string;
+  value: string;
+}
+
+export interface DocumentationComment {
   description: string;
-  tags: Record<string, string>;
+  tags: Record<string, DocumentationTag>;
 }
 
 export interface ArgumentItem {
@@ -18,7 +23,7 @@ export interface ArgumentItemType {
   options?: string[];
 }
 
-export interface ComponentDoc extends DocComment {
+export interface ComponentDoc extends DocumentationComment {
   name: string;
   fileName: string;
   args: ArgumentItem[];
@@ -37,7 +42,7 @@ export default class Parser {
       name: component.name?.getText() || 'Component',
       fileName: component.getSourceFile().fileName,
       args: this.getComponentArgs(component),
-      ...this.findDocComment(type.symbol)
+      ...this.getDocumentationFromSymbol(type.symbol)
     };
 
     return output;
@@ -59,7 +64,7 @@ export default class Parser {
           name: arg.getName(),
           type: this.getArgumentType(type),
           isRequired: this.isRequired(arg),
-          ...this.findDocComment(arg)
+          ...this.getDocumentationFromSymbol(arg)
         };
       });
     }
@@ -102,48 +107,40 @@ export default class Parser {
     return !isOptional && !hasQuestionToken;
   }
 
-  isComponent(item: ts.HeritageClause | undefined): boolean {
-    if (!item) {
-      return false;
-    }
-    const type = item.types[0];
-    const symbol = this.checker.getSymbolAtLocation(type.expression);
-    const declaration = symbol?.declarations[0];
-    if (!declaration) {
-      return false;
-    }
+  // We consider a component a class declaration that has "args" property
+  isComponent(component: ts.ClassDeclaration): boolean {
+    const componentType = this.checker.getTypeAtLocation(component);
 
-    if (ts.isImportClause(declaration)) {
-      return !!declaration.parent.moduleSpecifier
-        .getText()
-        .match(/@glimmer\/component/);
-    }
-
-    return false;
+    return !!componentType.getProperty('args');
   }
 
-  findDocComment(symbol: ts.Symbol): DocComment {
-    let mainComment = ts.displayPartsToString(
+  getDocumentationFromSymbol(symbol: ts.Symbol): DocumentationComment {
+    let description = ts.displayPartsToString(
       symbol.getDocumentationComment(this.checker)
     );
 
-    if (mainComment) {
-      mainComment = mainComment.replace('\r\n', '\n');
+    if (description) {
+      description = description.replace('\r\n', '\n');
     }
 
-    const tags = symbol.getJsDocTags() || [];
-    const tagMap: Record<string, string> = {};
+    const tags = symbol.getJsDocTags();
+    const tagMap: Record<string, DocumentationTag> = {};
 
     tags.forEach((tag) => {
       const trimmedText = (tag.text || '').trim();
-      const currentValue = tagMap[tag.name];
-      tagMap[tag.name] = currentValue
-        ? currentValue + '\n' + trimmedText
-        : trimmedText;
+
+      if (tagMap[tag.name]) {
+        tagMap[tag.name].value += '\n' + trimmedText;
+      } else {
+        tagMap[tag.name] = {
+          name: tag.name,
+          value: trimmedText
+        };
+      }
     });
 
     return {
-      description: mainComment,
+      description,
       tags: tagMap
     };
   }

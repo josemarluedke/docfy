@@ -74,8 +74,7 @@ export default function (sources: Source[]): ComponentDoc[] {
 
   return possibleComponents
     .filter(
-      (declaration) =>
-        declaration.name && parser.isComponent(declaration.heritageClauses?.[0])
+      (declaration) => declaration.name && parser.isComponent(declaration)
     )
     .map((component) => parser.getComponentDoc(component));
 }
