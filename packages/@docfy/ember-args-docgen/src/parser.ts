@@ -60,11 +60,15 @@ export default class Parser {
       return args.map((arg) => {
         const type = this.checker.getTypeOfSymbolAtLocation(arg, component);
 
+        const { description, tags } = this.getDocumentationFromSymbol(arg);
+
         return {
           name: arg.getName(),
           type: this.getArgumentType(type),
           isRequired: this.isRequired(arg),
-          ...this.getDocumentationFromSymbol(arg)
+          description,
+          tags,
+          defaultValue: tags.defaultValue ? tags.defaultValue.value : undefined
         };
       });
     }
