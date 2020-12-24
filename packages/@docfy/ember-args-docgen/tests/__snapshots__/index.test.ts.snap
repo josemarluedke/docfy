@@ -1,0 +1,306 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DocGen it should work 1`] = `
+Array [
+  Object {
+    "args": Array [
+      Object {
+        "defaultValue": "'md'",
+        "description": "The size",
+        "isRequired": false,
+        "name": "size",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'md'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'xs'",
+            "'sm'",
+            "'md'",
+            "'lg'",
+            "'xl'",
+            "'full'",
+          ],
+          "raw": "\\"xs\\" | \\"sm\\" | \\"md\\" | \\"lg\\" | \\"xl\\" | \\"full\\"",
+        },
+      },
+      Object {
+        "defaultValue": "'button'",
+        "description": "The HTML type of the button",
+        "isRequired": false,
+        "name": "type",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'button'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'button'",
+            "'submit'",
+            "'reset'",
+          ],
+          "raw": "\\"button\\" | \\"submit\\" | \\"reset\\"",
+        },
+      },
+    ],
+    "description": "",
+    "fileName": "button-with-extended-args.ts",
+    "name": "ButtonWithExtendedArgs",
+    "tags": Object {},
+  },
+  Object {
+    "args": Array [
+      Object {
+        "defaultValue": "'default'",
+        "description": "The appearance of the button",
+        "isRequired": false,
+        "name": "appearance",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'default'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'default'",
+            "'outlined'",
+            "'minimal'",
+          ],
+          "raw": "\\"default\\" | \\"outlined\\" | \\"minimal\\"",
+        },
+      },
+      Object {
+        "defaultValue": "'primary'",
+        "description": "The intent of the button",
+        "isRequired": false,
+        "name": "intent",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'primary'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'primary'",
+            "'success'",
+            "'warning'",
+            "'danger'",
+          ],
+          "raw": "\\"primary\\" | \\"success\\" | \\"warning\\" | \\"danger\\"",
+        },
+      },
+      Object {
+        "defaultValue": undefined,
+        "description": "If the button is renderless
+It allows the consumer to render a link for example",
+        "isRequired": false,
+        "name": "isRenderless",
+        "tags": Object {},
+        "type": Object {
+          "name": "boolean",
+        },
+      },
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "size",
+        "tags": Object {},
+        "type": Object {
+          "name": "string",
+        },
+      },
+      Object {
+        "defaultValue": "'button'",
+        "description": "The HTML type of the button",
+        "isRequired": false,
+        "name": "type",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'button'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'button'",
+            "'submit'",
+            "'reset'",
+          ],
+          "raw": "\\"button\\" | \\"submit\\" | \\"reset\\"",
+        },
+      },
+    ],
+    "description": "The button component",
+    "fileName": "button.ts",
+    "name": "Button",
+    "tags": Object {
+      "since": Object {
+        "name": "since",
+        "value": "1.0.0",
+      },
+    },
+  },
+  Object {
+    "args": Array [
+      Object {
+        "defaultValue": "'default'",
+        "description": "The appearance of the button",
+        "isRequired": false,
+        "name": "appearance",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'default'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'default'",
+            "'outlined'",
+            "'minimal'",
+          ],
+          "raw": "\\"default\\" | \\"outlined\\" | \\"minimal\\"",
+        },
+      },
+      Object {
+        "defaultValue": "'primary'",
+        "description": "The intent of the button",
+        "isRequired": false,
+        "name": "intent",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'primary'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'primary'",
+            "'success'",
+            "'warning'",
+            "'danger'",
+          ],
+          "raw": "\\"primary\\" | \\"success\\" | \\"warning\\" | \\"danger\\"",
+        },
+      },
+      Object {
+        "defaultValue": undefined,
+        "description": "If the button is renderless
+It allows the consumer to render a link for example",
+        "isRequired": false,
+        "name": "isRenderless",
+        "tags": Object {},
+        "type": Object {
+          "name": "boolean",
+        },
+      },
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "size",
+        "tags": Object {},
+        "type": Object {
+          "name": "string",
+        },
+      },
+      Object {
+        "defaultValue": "'button'",
+        "description": "The HTML type of the button",
+        "isRequired": false,
+        "name": "type",
+        "tags": Object {
+          "defaultValue": Object {
+            "name": "defaultValue",
+            "value": "'button'",
+          },
+        },
+        "type": Object {
+          "name": "enum",
+          "options": Array [
+            "'button'",
+            "'submit'",
+            "'reset'",
+          ],
+          "raw": "\\"button\\" | \\"submit\\" | \\"reset\\"",
+        },
+      },
+    ],
+    "description": "This component extends the Button component",
+    "fileName": "extended-button.ts",
+    "name": "ExetededButton",
+    "tags": Object {},
+  },
+  Object {
+    "args": Array [
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "appearance",
+        "tags": Object {},
+        "type": Object {
+          "name": "string",
+        },
+      },
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "type",
+        "tags": Object {},
+        "type": Object {
+          "name": "string",
+        },
+      },
+    ],
+    "description": "",
+    "fileName": "multiple-components.ts",
+    "name": "ButtonNotDefault",
+    "tags": Object {},
+  },
+  Object {
+    "args": Array [
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "appearance",
+        "tags": Object {},
+        "type": Object {
+          "name": "string",
+        },
+      },
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "type",
+        "tags": Object {},
+        "type": Object {
+          "name": "string",
+        },
+      },
+    ],
+    "description": "",
+    "fileName": "multiple-components.ts",
+    "name": "ButtonDefault",
+    "tags": Object {},
+  },
+]
+`;

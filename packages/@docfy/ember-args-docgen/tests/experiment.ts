@@ -15,11 +15,13 @@ function inspect(obj: unknown): void {
     // pattern: 'components/**/*.ts'
     // }
     {
-      root: path.resolve(
-        path.join(__dirname, '../../../../../frontile/packages/overlays/addon')
-      ),
-      // pattern: 'components/drawer/index.ts'
-      pattern: 'components/**/*.ts'
+      root: path.resolve(path.join(__dirname, '__fixtures__')),
+      pattern: '*.ts'
+
+      // root: path.resolve(path.join(__dirname, '../../../../../frontile')),
+      // pattern: '**/components/drawer/index.ts'
+      // pattern: '**/addon/**/components/**/*.ts'
+      // pattern: '**/addon/**/components/form-textarea.ts'
     }
   ]);
 
