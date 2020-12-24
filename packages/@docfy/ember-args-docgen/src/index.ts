@@ -1,12 +1,6 @@
-import { Argument } from './utils';
 import glob from 'fast-glob';
-import util from 'util';
 import * as ts from 'typescript';
-import Parser from './parser';
-
-function inspect(obj: unknown): void {
-  console.log(util.inspect(obj, false, 15, true));
-}
+import Parser, { ComponentDoc } from './parser';
 
 const DEFAULT_IGNORE = [
   '/**/node_modules/**',
@@ -16,22 +10,6 @@ const DEFAULT_IGNORE = [
   '.git/**',
   'dist/**'
 ];
-
-interface ComponentDefinition {
-  name: string;
-  fileName: string;
-  args: Argument[];
-}
-
-interface DocComment {
-  description: string;
-  tags: Record<string, string>;
-}
-
-const defaultDocComment: DocComment = {
-  description: '',
-  tags: {}
-};
 
 interface Source {
   /**
@@ -51,15 +29,7 @@ interface Source {
   ignore?: string[];
 }
 
-function formatTag(tag: ts.JSDocTagInfo) {
-  let result = '@' + tag.name;
-  if (tag.text) {
-    result += ' ' + tag.text;
-  }
-  return result;
-}
-
-export default function (sources: Source[]) {
+export default function (sources: Source[]): ComponentDoc[] {
   const filePaths: string[] = [];
 
   sources.forEach((item) => {
@@ -72,12 +42,8 @@ export default function (sources: Source[]) {
     });
     filePaths.push(...result);
   });
-  console.log(filePaths);
 
-  const program = ts.createProgram(filePaths, {
-    module: ts.ModuleKind.CommonJS,
-    target: ts.ScriptTarget.Latest
-  });
+  const program = ts.createProgram(filePaths, {});
 
   const checker = program.getTypeChecker();
   const parser = new Parser(checker);
@@ -91,7 +57,7 @@ export default function (sources: Source[]) {
         typeof sourceFile !== 'undefined'
     )
     .forEach((sourceFile) => {
-      // extract class declarations that are exported
+      // use class declarations that are exported
       sourceFile.statements.forEach((stmt) => {
         if (ts.isClassDeclaration(stmt)) {
           if (stmt.modifiers) {
@@ -106,53 +72,10 @@ export default function (sources: Source[]) {
       });
     });
 
-  // possibleComponents.forEach((item) => {
-  // if (!item.name) {
-  // return;
-  // }
-
-  // if (!parser.isComponent(item.heritageClauses?.[0])) {
-  // return;
-  // }
-
-  // const component: ComponentDefinition = {
-  // name: item.name.getText(),
-  // fileName: item.getSourceFile().fileName,
-  // args: []
-  // };
-
-  // const itemType = checker.getTypeAtLocation(item);
-  // const argsProperty = itemType.getProperty('args');
-
-  // if (argsProperty) {
-  // const args = checker
-  // .getTypeOfSymbolAtLocation(argsProperty, item)
-  // .getApparentProperties();
-
-  // args.forEach((arg) => {
-  // console.log(arg.escapedName);
-  // const doc = parser.findDocComment(arg);
-  // console.log(doc);
-
-  // // const declaration = arg.valueDeclaration || arg.declarations[0];
-  // // if (declaration) {
-  // // console.log(declaration);
-  // // }
-
-  // // const c = checker.getTypeOfSymbolAtLocation(arg, item);
-  // // console.log(c);
-  // });
-  // }
-
-  // components.push(component);
-  // });
-
-  const components = possibleComponents
+  return possibleComponents
     .filter(
       (declaration) =>
         declaration.name && parser.isComponent(declaration.heritageClauses?.[0])
     )
     .map((component) => parser.getComponentDoc(component));
-
-  inspect(components);
 }

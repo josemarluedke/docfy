@@ -1,6 +1,6 @@
 import * as ts from 'typescript';
 
-interface DocComment {
+export interface DocComment {
   description: string;
   tags: Record<string, string>;
 }
@@ -18,7 +18,7 @@ export interface ArgumentItemType {
   options?: string[];
 }
 
-interface ComponentDoc extends DocComment {
+export interface ComponentDoc extends DocComment {
   name: string;
   fileName: string;
   args: ArgumentItem[];
