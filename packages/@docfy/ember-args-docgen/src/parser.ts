@@ -7,9 +7,15 @@ interface DocComment {
 
 export interface ArgumentItem {
   name: string;
-  type: string;
+  type: ArgumentItemType;
   isRequired: boolean;
   defaultValue?: string;
+}
+
+export interface ArgumentItemType {
+  name: string;
+  raw?: string;
+  options?: string[];
 }
 
 interface ComponentDoc extends DocComment {
@@ -46,20 +52,54 @@ export default class Parser {
         .getTypeOfSymbolAtLocation(argsProperty, component)
         .getApparentProperties();
 
-      args.forEach((arg) => {
-        // console.log(arg.escapedName);
-        // const doc = this.findDocComment(arg);
-        // console.log(doc);
-        // const declaration = arg.valueDeclaration || arg.declarations[0];
-        // if (declaration) {
-        // console.log(declaration);
-        // }
-        // const c = checker.getTypeOfSymbolAtLocation(arg, item);
-        // console.log(c);
+      return args.map((arg) => {
+        const type = this.checker.getTypeOfSymbolAtLocation(arg, component);
+
+        return {
+          name: arg.getName(),
+          type: this.getArgumentType(type),
+          isRequired: this.isRequired(arg),
+          ...this.findDocComment(arg)
+        };
       });
     }
 
     return [];
+  }
+
+  getArgumentType(argumentType: ts.Type): ArgumentItemType {
+    const typeAsString = this.checker.typeToString(argumentType);
+
+    if (argumentType.isUnion() && typeAsString !== 'boolean') {
+      return {
+        name: 'enum',
+        raw: typeAsString,
+        options: argumentType.types.map((type) =>
+          this.getValuesFromUnionType(type)
+        )
+      };
+    }
+
+    return { name: typeAsString };
+  }
+
+  getValuesFromUnionType(type: ts.Type): string {
+    if (type.isStringLiteral()) return `'${type.value}'`;
+    if (type.isNumberLiteral()) return `${type.value}`;
+    return this.checker.typeToString(type);
+  }
+
+  isRequired(symbol: ts.Symbol): boolean {
+    const isOptional = (symbol.getFlags() & ts.SymbolFlags.Optional) !== 0;
+
+    const hasQuestionToken = symbol.declarations.every((d) => {
+      if (ts.isPropertySignature(d) || ts.isPropertyDeclaration(d)) {
+        return d.questionToken;
+      }
+      return false;
+    });
+
+    return !isOptional && !hasQuestionToken;
   }
 
   isComponent(item: ts.HeritageClause | undefined): boolean {
