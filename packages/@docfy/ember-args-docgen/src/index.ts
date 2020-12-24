@@ -2,6 +2,7 @@ import { Argument } from './utils';
 import glob from 'fast-glob';
 import util from 'util';
 import * as ts from 'typescript';
+import Parser from './parser';
 
 function inspect(obj: unknown): void {
   console.log(util.inspect(obj, false, 15, true));
@@ -74,31 +75,12 @@ export default function (sources: Source[]) {
   console.log(filePaths);
 
   const program = ts.createProgram(filePaths, {
-    // module: ts.ModuleKind.CommonJS,
-    // target: ts.ScriptTarget.Latest
+    module: ts.ModuleKind.CommonJS,
+    target: ts.ScriptTarget.Latest
   });
 
   const checker = program.getTypeChecker();
-
-  const isComponent = (item: ts.HeritageClause | undefined): boolean => {
-    if (!item) {
-      return false;
-    }
-    const type = item.types[0];
-    const symbol = checker.getSymbolAtLocation(type.expression);
-    const declaration = symbol?.declarations[0];
-    if (!declaration) {
-      return false;
-    }
-
-    if (ts.isImportClause(declaration)) {
-      return !!declaration.parent.moduleSpecifier
-        .getText()
-        .match(/@glimmer\/component/);
-    }
-
-    return false;
-  };
+  const parser = new Parser(checker);
 
   const possibleComponents: ts.ClassDeclaration[] = [];
 
@@ -109,81 +91,68 @@ export default function (sources: Source[]) {
         typeof sourceFile !== 'undefined'
     )
     .forEach((sourceFile) => {
+      // extract class declarations that are exported
       sourceFile.statements.forEach((stmt) => {
         if (ts.isClassDeclaration(stmt)) {
-          possibleComponents.push(stmt);
+          if (stmt.modifiers) {
+            const exportModifiers = stmt.modifiers.filter(
+              (m) => m.kind == ts.SyntaxKind.ExportKeyword
+            );
+            if (exportModifiers.length > 0) {
+              possibleComponents.push(stmt);
+            }
+          }
         }
       });
     });
 
-  const components: ComponentDefinition[] = [];
+  // possibleComponents.forEach((item) => {
+  // if (!item.name) {
+  // return;
+  // }
 
-  const findDocComment = (symbol: ts.Symbol): DocComment => {
-    let mainComment = ts.displayPartsToString(
-      symbol.getDocumentationComment(checker)
-    );
+  // if (!parser.isComponent(item.heritageClauses?.[0])) {
+  // return;
+  // }
 
-    if (mainComment) {
-      mainComment = mainComment.replace('\r\n', '\n');
-    }
+  // const component: ComponentDefinition = {
+  // name: item.name.getText(),
+  // fileName: item.getSourceFile().fileName,
+  // args: []
+  // };
 
-    const tags = symbol.getJsDocTags() || [];
-    const tagMap: Record<string, string> = {};
+  // const itemType = checker.getTypeAtLocation(item);
+  // const argsProperty = itemType.getProperty('args');
 
-    tags.forEach((tag) => {
-      const trimmedText = (tag.text || '').trim();
-      const currentValue = tagMap[tag.name];
-      tagMap[tag.name] = currentValue
-        ? currentValue + '\n' + trimmedText
-        : trimmedText;
-    });
+  // if (argsProperty) {
+  // const args = checker
+  // .getTypeOfSymbolAtLocation(argsProperty, item)
+  // .getApparentProperties();
 
-    return {
-      description: mainComment,
-      tags: tagMap
-    };
-  };
+  // args.forEach((arg) => {
+  // console.log(arg.escapedName);
+  // const doc = parser.findDocComment(arg);
+  // console.log(doc);
 
-  possibleComponents.forEach((item) => {
-    if (!item.name) {
-      return;
-    }
+  // // const declaration = arg.valueDeclaration || arg.declarations[0];
+  // // if (declaration) {
+  // // console.log(declaration);
+  // // }
 
-    if (!isComponent(item.heritageClauses?.[0])) {
-      return;
-    }
+  // // const c = checker.getTypeOfSymbolAtLocation(arg, item);
+  // // console.log(c);
+  // });
+  // }
 
-    const component: ComponentDefinition = {
-      name: item.name.getText(),
-      fileName: item.getSourceFile().fileName,
-      args: []
-    };
+  // components.push(component);
+  // });
 
-    const itemType = checker.getTypeAtLocation(item);
-    const argsProperty = itemType.getProperty('args');
-
-    if (argsProperty) {
-      const args = checker
-        .getTypeOfSymbolAtLocation(argsProperty, item)
-        .getApparentProperties();
-
-      args.forEach((arg) => {
-        console.log(arg.escapedName);
-        const doc = findDocComment(arg);
-        console.log(doc);
-
-        // const declaration = arg.valueDeclaration || arg.declarations[0];
-        // if (declaration) {
-        // console.log(declaration);
-        // }
-
-        // const c = checker.getTypeOfSymbolAtLocation(arg, item);
-        // console.log(c);
-      });
-    }
-
-    components.push(component);
-  });
+  const components = possibleComponents
+    .filter(
+      (declaration) =>
+        declaration.name && parser.isComponent(declaration.heritageClauses?.[0])
+    )
+    .map((component) => parser.getComponentDoc(component));
 
   inspect(components);
 }
