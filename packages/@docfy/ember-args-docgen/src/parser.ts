@@ -1,33 +1,11 @@
 import * as ts from 'typescript';
-
-export interface DocumentationTag {
-  name: string;
-  value: string;
-}
-
-export interface DocumentationComment {
-  description: string;
-  tags: Record<string, DocumentationTag>;
-}
-
-export interface ArgumentItem {
-  name: string;
-  type: ArgumentItemType;
-  isRequired: boolean;
-  defaultValue?: string;
-}
-
-export interface ArgumentItemType {
-  name: string;
-  raw?: string;
-  options?: string[];
-}
-
-export interface ComponentDoc extends DocumentationComment {
-  name: string;
-  fileName: string;
-  args: ArgumentItem[];
-}
+import {
+  DocumentationTag,
+  DocumentationComment,
+  ArgumentItem,
+  ArgumentItemType,
+  ComponentDoc
+} from './types';
 
 export default class Parser {
   checker: ts.TypeChecker;

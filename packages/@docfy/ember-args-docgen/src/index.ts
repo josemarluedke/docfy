@@ -2,7 +2,8 @@ import path from 'path';
 import fs from 'fs';
 import glob from 'fast-glob';
 import * as ts from 'typescript';
-import Parser, { ArgumentItem, ComponentDoc } from './parser';
+import Parser from './parser';
+import { Options, Source, ArgumentItem, ComponentDoc } from './types';
 
 const DEFAULT_IGNORE = [
   '/**/node_modules/**',
@@ -12,39 +13,6 @@ const DEFAULT_IGNORE = [
   '.git/**',
   'dist/**'
 ];
-
-interface Options {
-  tsconfigPath?: string;
-
-  /**
-   * TypeScript CompilerOptions
-   * CompilerOptions are ignored if tsconfigPath is defined
-   */
-  compilerOptions?: ts.CompilerOptions;
-}
-
-interface Source {
-  /**
-   * The absolute path to where the files are located.
-   */
-  root: string;
-
-  /**
-   * Match files using the patterns the shell uses, like stars and stuff. It
-   * uses Glob package.
-   */
-  pattern: string;
-
-  /**
-   * Pattern to ignore.
-   */
-  ignore?: string[];
-
-  /**
-   * The options
-   */
-  options?: Options;
-}
 
 export default function DocGen(sources: Source[]): ComponentDoc[] {
   const components: ComponentDoc[] = [];
