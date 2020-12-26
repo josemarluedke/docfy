@@ -1,6 +1,34 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DocGen it should work 1`] = `
+exports[`DocGen it should work for JavaScript files when using allowJS 1`] = `
+Array [
+  Object {
+    "args": Array [
+      Object {
+        "defaultValue": undefined,
+        "description": "",
+        "isRequired": true,
+        "name": "post",
+        "tags": Object {},
+        "type": Object {
+          "name": "{ title: string; author: string; body: string; }",
+        },
+      },
+    ],
+    "description": "",
+    "fileName": "javascript.js",
+    "name": "BlogPostComponent",
+    "tags": Object {
+      "extends": Object {
+        "name": "extends",
+        "value": "Component<BlogPostArgs>",
+      },
+    },
+  },
+]
+`;
+
+exports[`DocGen it should work for TypeScript files 1`] = `
 Array [
   Object {
     "args": Array [
