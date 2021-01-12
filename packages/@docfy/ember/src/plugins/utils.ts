@@ -27,12 +27,6 @@ export function createDemoNodes(component: DemoComponent): Node[] {
     u('html', `<DocfyDemo @id="${component.name.dashCase}" as |demo|>`)
   ];
 
-  nodes.push(
-    u('html', '<demo.Example>'),
-    u('html', `<${component.name.pascalCase} />`),
-    u('html', '</demo.Example>')
-  );
-
   if (component.description) {
     nodes.push(
       u(
@@ -52,6 +46,12 @@ export function createDemoNodes(component: DemoComponent): Node[] {
       u('html', '</demo.Description>')
     );
   }
+
+  nodes.push(
+    u('html', '<demo.Example>'),
+    u('html', `<${component.name.pascalCase} />`),
+    u('html', '</demo.Example>')
+  );
 
   if (component.chunks.length > 1) {
     nodes.push(u('html', '<demo.Snippets as |Snippet|>'));

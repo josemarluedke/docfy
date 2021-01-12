@@ -3,11 +3,11 @@
 }
 
 .docfy-demo__example {
-  @apply p-4 border-t border-l border-r rounded-t;
+  @apply p-4 border-t border-l border-r;
 }
 
 .docfy-demo__description {
-  @apply p-4 border-t border-l border-r;
+  @apply p-4 border-t border-l border-r rounded-t;
 
   &__header {
     @apply flex justify-between;

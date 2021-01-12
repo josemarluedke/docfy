@@ -6,11 +6,11 @@
 @import './highlight.css';
 
 .docfy-demo__example {
-  @apply p-4 border rounded-t;
+  @apply p-4 border-l border-r;
 }
 
 .docfy-demo__description {
-  @apply p-4 border-l border-r;
+  @apply p-4 border rounded-t;
 
   &__header {
     @apply flex justify-between;
