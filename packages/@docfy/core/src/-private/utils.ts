@@ -119,6 +119,26 @@ export function isAnchorUrl(s: string): boolean {
   return s[0] === '#';
 }
 
+/*
+ * Delete a node from a list of nodes
+ */
+export function deleteNode(
+  nodes: unknown,
+  nodeToDelete: Node | undefined
+): void {
+  if (!nodeToDelete) {
+    return;
+  }
+
+  if (Array.isArray(nodes)) {
+    const index = nodes.findIndex((item) => item === nodeToDelete);
+
+    if (index !== -1) {
+      nodes.splice(index, 1);
+    }
+  }
+}
+
 export const DEFAULT_IGNORE = [
   '/**/node_modules/**',
   '/**/.git/**',
