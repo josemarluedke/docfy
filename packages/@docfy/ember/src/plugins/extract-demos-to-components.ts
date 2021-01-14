@@ -14,12 +14,12 @@ import {
 import path from 'path';
 
 /*
- * Create the heading fro the examples section of the page.
+ * Create the heading for the examples section of the page.
  *
- * It uses the remark stck to make sure any plugins that manage headings can be
+ * It uses the remark stack to make sure any plugins that manage headings can be
  * executed.
  *
- * This is necessary for apps using remark-autolink-headings for example.
+ * This is necessary for apps using remark-autolink-headings, for example.
  */
 function createHeading(ctx: Context): Node {
   const heading = (ctx.remark.runSync(ctx.remark.parse('## Examples'))
@@ -69,19 +69,29 @@ export default function extractDemosToComponents(ctx: Context): void {
             });
           }
         });
+        const componentName = generateDemoComponentName(
+          `docfy-demo-${path.basename(page.source).split('.')[0]}-${
+            path.basename(demo.source).split('.')[0]
+          }`,
+          seenNames
+        );
 
         const demoTitle = findNode(
           demo.ast,
           (node: Node) => node.type === 'heading' && node.depth === 1
         );
 
+        if (demoTitle) {
+          demoTitle.depth = 3;
+          demoTitle.data = {
+            ...(demoTitle.data || {}),
+            id: componentName.dashCase,
+            docfyDelete: true // mark the heading to be deleted by @docfy/core TOC plugin
+          };
+        }
+
         demoComponents.push({
-          name: generateDemoComponentName(
-            `docfy-demo-${path.basename(page.source).split('.')[0]}-${
-              path.basename(demo.source).split('.')[0]
-            }`,
-            seenNames
-          ),
+          name: componentName,
           chunks,
           description: {
             title: demoTitle ? toString(demoTitle) : undefined,
@@ -90,8 +100,7 @@ export default function extractDemosToComponents(ctx: Context): void {
           }
         });
 
-        // Delete used code blocks and title from demo markdown
-        deleteNode(demo.ast.children, demoTitle);
+        // Delete used code blocks
         chunks.forEach(({ snippet }) => {
           deleteNode(demo.ast.children, snippet);
         });

@@ -1,12 +1,14 @@
 import { Context, Heading } from '../types';
 import visit from 'unist-util-visit';
-import { Node } from 'unist';
+import { Node, Parent } from 'unist';
 import toString from 'mdast-util-to-string';
+import { deleteNode } from '../-private/utils';
 
 interface HeadingNode extends Node {
   depth: number;
   data: {
     id: string;
+    docfyDelete?: boolean;
   };
 }
 
@@ -35,20 +37,31 @@ function findParentOfDepth(headings: Heading[], depth: number): Heading[] {
   }
 }
 
+function isHeading(node: Node): node is HeadingNode {
+  return node.type === 'heading';
+}
+
 export function toc(ctx: Context): Context {
   ctx.pages.forEach((page): void => {
     const headings: Heading[] = [];
 
-    visit(page.ast, 'heading', (node: HeadingNode) => {
-      if (node.depth === 1) {
-        return;
-      }
+    visit(page.ast, (node: Node, _, parentNode: Parent | undefined) => {
+      if (isHeading(node)) {
+        if (node.depth === 1) {
+          return;
+        }
 
-      if (node.depth > ctx.options.tocMaxDepth) {
-        return;
+        if (node.depth > ctx.options.tocMaxDepth) {
+          return;
+        }
+        const parent = findParentOfDepth(headings, node.depth);
+
+        parent.push(getHeading(node));
+
+        if (node.data.docfyDelete && parentNode) {
+          deleteNode(parentNode.children, node);
+        }
       }
-      const parent = findParentOfDepth(headings, node.depth);
-      parent.push(getHeading(node));
     });
 
     page.meta.headings = headings;
