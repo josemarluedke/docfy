@@ -19,7 +19,7 @@ module('Integration | Component | DocfyDemo::Description', function (hooks) {
 
     assert.dom('.docfy-demo__description__header__title').hasText('My title');
     assert
-      .dom('.docfy-demo__description__header__title')
+      .dom('.docfy-demo__description__header__title a')
       .hasAttribute('href', '#my-id');
     assert
       .dom('.docfy-demo__description__header__edit-url')
