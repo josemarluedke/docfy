@@ -15,7 +15,7 @@ Object {
                   "name": "form",
                   "pages": Array [
                     Object {
-                      "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
+                      "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
                       "frontmatter": Object {
                         "category": "category1",
                         "order": 1,
@@ -34,7 +34,7 @@ Object {
               "name": "components",
               "pages": Array [
                 Object {
-                  "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/components/button.md",
+                  "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/button.md",
                   "frontmatter": Object {
                     "category": "category1",
                     "order": 0,
@@ -53,7 +53,7 @@ Object {
           "name": "category1",
           "pages": Array [
             Object {
-              "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
+              "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
               "frontmatter": Object {
                 "category": "category1",
               },
@@ -71,7 +71,7 @@ Object {
           "name": "category2",
           "pages": Array [
             Object {
-              "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package2/docs/overview.md",
+              "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/overview.md",
               "frontmatter": Object {
                 "category": "category2",
                 "order": 0,
@@ -84,7 +84,7 @@ Object {
               "url": "/docs/category2/overview",
             },
             Object {
-              "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/packages/package2/docs/styles.md",
+              "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/styles.md",
               "frontmatter": Object {
                 "category": "category2",
                 "order": 1,
@@ -103,7 +103,7 @@ Object {
           "name": "test-custom",
           "pages": Array [
             Object {
-              "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/custom-url.md",
+              "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/custom-url.md",
               "frontmatter": Object {
                 "url": "/test-custom/url",
               },
@@ -120,7 +120,7 @@ Object {
       "name": "docs",
       "pages": Array [
         Object {
-          "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/README.md",
+          "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/README.md",
           "frontmatter": Object {
             "order": -1,
           },
@@ -131,7 +131,7 @@ Object {
           "url": "/docs/",
         },
         Object {
-          "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
+          "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
           "frontmatter": Object {
             "order": 0,
           },
@@ -142,7 +142,7 @@ Object {
           "url": "/docs/how-it-works",
         },
         Object {
-          "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/about.md",
+          "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/about.md",
           "frontmatter": Object {
             "order": 1,
           },
@@ -174,7 +174,7 @@ Object {
           "url": "/docs/about",
         },
         Object {
-          "editUrl": "https://github.com/user/repo/edit/master/packages/@docfy/core/tests/__fixtures__/monorepo/docs/static-asset.md",
+          "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/static-asset.md",
           "frontmatter": Object {},
           "headings": Array [],
           "pluginData": Object {},

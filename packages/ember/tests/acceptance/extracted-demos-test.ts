@@ -36,14 +36,14 @@ module('Acceptance | extracted demos', function (hooks) {
       .dom(editUrls[0])
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo2.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo2.md'
       );
 
     assert
       .dom(editUrls[1])
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo1.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/ember/dummy-docs/packages/ember/components/docfy-link-demo/demo1.md'
       );
 
     assert

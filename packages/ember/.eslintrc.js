@@ -1,6 +1,6 @@
 module.exports = {
   parserOptions: {
-    project: require.resolve('../../../tsconfig.eslint.json')
+    project: require.resolve('../../tsconfig.eslint.json')
   },
   plugins: [],
   extends: ['@underline/eslint-config-ember-typescript'],

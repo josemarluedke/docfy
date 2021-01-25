@@ -44,7 +44,7 @@ module('FastBoot | docs', function (hooks) {
       .dom('[data-test-id="docs-edit-url"]')
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/@docfy/ember/dummy-docs/introduction.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/ember/dummy-docs/introduction.md'
       );
   });
 });

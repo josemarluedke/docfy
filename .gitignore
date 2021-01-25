@@ -7,7 +7,7 @@
 /libpeerconnection.log
 
 # Compiled TS
-/packages/**/core/lib
+/packages/**/lib
 
 # Logs
 logs
@@ -111,15 +111,15 @@ dist
 .tern-port
 
 # Ember
-/packages/**/**/dist/
-/packages/**/**/tmp/
+/packages/**/dist/
+/packages/**/tmp/
 
-/site/ist/
+/site/dist/
 /site/tmp/
 
 # dependencies
-/packages/**/**/bower_components/
-/packages/**/**/node_modules/
+/packages/**/bower_components/
+/packages/**/node_modules/
 
 /site/bower_components/
 /site/node_modules/
@@ -128,9 +128,6 @@ dist
 /packages/**/**/testem.log
 
 # ember-try
-/packages/**/**/.node_modules.ember-try/
-/packages/**/**/bower.json.ember-try
-/packages/**/**/package.json.ember-try
-
-
-/packages/*/ember/lib/**
+/packages/**/.node_modules.ember-try/
+/packages/**/bower.json.ember-try
+/packages/**/package.json.ember-try
