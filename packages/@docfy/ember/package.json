@@ -42,6 +42,7 @@
     "ember-cli-babel": "^7.22.1",
     "ember-cli-htmlbars": "^5.3.1",
     "ember-cli-typescript": "^4.0.0",
+    "ember-get-config": "^0.3.0",
     "mdast-util-to-string": "^1.1.0",
     "remark-hbs": "^0.2.0",
     "unist-builder": "^2.0.3",
