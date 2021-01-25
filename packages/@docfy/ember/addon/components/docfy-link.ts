@@ -2,6 +2,7 @@ import Component from '@glimmer/component';
 import { inject as service } from '@ember/service';
 import { action } from '@ember/object';
 import RouterService from '@ember/routing/router-service';
+import config from 'ember-get-config';
 
 interface DocfyLinkArgs {
   to: string;
@@ -13,7 +14,13 @@ export default class DocfyLink extends Component<DocfyLinkArgs> {
   @service router!: RouterService;
 
   get routeName(): string {
-    return (this.router as any).recognize(this.args.to)?.name; // eslint-disable-line
+    let { to } = this.args;
+
+    if (config.rootURL && config.rootURL !== '/') {
+      to = to.replace(/^\//, config.rootURL);
+    }
+
+    return (this.router as any).recognize(to)?.name; // eslint-disable-line
   }
 
   get href(): string {
