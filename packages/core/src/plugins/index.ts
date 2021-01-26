@@ -4,3 +4,4 @@ export { replaceInternalLinks } from './replace-internal-links';
 export { staticAssets } from './static-assets';
 export { toc } from './toc';
 export { uniquefyUrls } from './uniquefy-urls';
+export { removeUnnecessaryIndex } from './remove-unnecessary-index';

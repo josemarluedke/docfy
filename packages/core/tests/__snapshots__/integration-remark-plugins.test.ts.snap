@@ -76,6 +76,11 @@ config.</p>
     "<h1 id=\\"form-component\\"><a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Form Component</h1>
 ",
   ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "<p>Some other file next to a index.md</p>
+",
+  ],
 ]
 `;
 
@@ -153,6 +158,11 @@ config.</p>
   Array [
     "packages/package1/components/form/index.md",
     "<h1 id=\\"form-component\\">Form Component<a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "<p>Some other file next to a index.md</p>
 ",
   ],
 ]

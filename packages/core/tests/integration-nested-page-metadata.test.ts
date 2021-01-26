@@ -24,7 +24,7 @@ describe('Generates runtime output', () => {
     ]);
   });
 
-  test('it should have generated the nestedPageMetadata,', async () => {
+  test('it should have generated the nestedPageMetadata', async () => {
     expect(result.nestedPageMetadata).toMatchSnapshot();
   });
 });

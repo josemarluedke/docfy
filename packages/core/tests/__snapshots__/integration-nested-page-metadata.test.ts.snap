@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Generates runtime output it should have generated the nestedPageMetadata, 1`] = `
+exports[`Generates runtime output it should have generated the nestedPageMetadata 1`] = `
 Object {
   "children": Array [
     Object {
@@ -8,28 +8,7 @@ Object {
         Object {
           "children": Array [
             Object {
-              "children": Array [
-                Object {
-                  "children": Array [],
-                  "label": "form",
-                  "name": "form",
-                  "pages": Array [
-                    Object {
-                      "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
-                      "frontmatter": Object {
-                        "category": "category1",
-                        "order": 1,
-                        "subcategory": "components",
-                      },
-                      "headings": Array [],
-                      "pluginData": Object {},
-                      "relativeUrl": "",
-                      "title": "Form Component",
-                      "url": "/docs/category1/components/form/",
-                    },
-                  ],
-                },
-              ],
+              "children": Array [],
               "label": "components",
               "name": "components",
               "pages": Array [
@@ -45,6 +24,32 @@ Object {
                   "relativeUrl": "button",
                   "title": "Button Component",
                   "url": "/docs/category1/components/button",
+                },
+                Object {
+                  "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
+                  "frontmatter": Object {
+                    "category": "category1",
+                    "order": 1,
+                    "subcategory": "components",
+                  },
+                  "headings": Array [],
+                  "pluginData": Object {},
+                  "relativeUrl": "form",
+                  "title": "Form Component",
+                  "url": "/docs/category1/components/form",
+                },
+                Object {
+                  "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/something-else.md",
+                  "frontmatter": Object {
+                    "category": "category1",
+                    "order": 2,
+                    "subcategory": "components",
+                  },
+                  "headings": Array [],
+                  "pluginData": Object {},
+                  "relativeUrl": "something-else",
+                  "title": "something-else",
+                  "url": "/docs/category1/components/something-else",
                 },
               ],
             },

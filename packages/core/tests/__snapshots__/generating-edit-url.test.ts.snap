@@ -35,6 +35,10 @@ Array [
     "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
   ],
   Array [
+    "packages/package1/components/form/something-else.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/something-else.md",
+  ],
+  Array [
     "packages/package2/docs/overview.md",
     "https://bitbucket.org/user/repo/src/dev/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/overview.md?mode=edit&spa=0&at=dev&fileviewer=file-view-default",
   ],

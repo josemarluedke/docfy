@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`URLs should be correctly generated when urlSchema is set to auto base base, no url prefix, no suffix 1`] = `
+exports[`URLs should be correctly generated when urlSchema is set to auto base, no url prefix, no suffix 1`] = `
 Array [
   Array [
     "README.md",
@@ -41,6 +41,10 @@ Array [
   Array [
     "packages/package1/components/form/index.md",
     "/packages/package1/components/form/",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "/packages/package1/components/form/something-else",
   ],
 ]
 `;
@@ -86,6 +90,10 @@ Array [
   Array [
     "packages/package1/components/form/index.md",
     "/docs/packages/package1/components/form/",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "/docs/packages/package1/components/form/something-else.html",
   ],
 ]
 `;
