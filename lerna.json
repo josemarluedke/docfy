@@ -1,16 +1,11 @@
 {
   "version": "0.3.1",
-  "packages": [
-    "packages/@docfy/*"
-  ],
+  "packages": ["packages/*"],
   "npmClient": "yarn",
   "useWorkspaces": true,
   "command": {
     "bootstrap": {
-      "npmClientArgs": [
-        "--frozen-lockfile",
-        "--non-interactive"
-      ]
+      "npmClientArgs": ["--frozen-lockfile", "--non-interactive"]
     }
   }
 }

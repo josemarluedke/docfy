@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should correctly generate edit urls 1`] = `
+Array [
+  Array [
+    "README.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/README.md",
+  ],
+  Array [
+    "docs/about.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/about.md",
+  ],
+  Array [
+    "docs/custom-url.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/custom-url.md",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
+  ],
+  Array [
+    "docs/static-asset.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/static-asset.md",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/packages/package1/components/button.md",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "https://bitbucket.org/user/repo/src/dev/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/overview.md?mode=edit&spa=0&at=dev&fileviewer=file-view-default",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "https://bitbucket.org/user/repo/src/dev/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/styles.md?mode=edit&spa=0&at=dev&fileviewer=file-view-default",
+  ],
+]
+`;

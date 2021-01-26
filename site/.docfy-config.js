@@ -22,7 +22,7 @@ module.exports = {
       urlPrefix: 'docs'
     },
     {
-      root: path.resolve(__dirname, '../packages/@docfy/ember/docs'),
+      root: path.resolve(__dirname, '../packages/ember/docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs/ember'

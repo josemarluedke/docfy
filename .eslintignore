@@ -33,5 +33,5 @@
 /packages/**/bower.json.ember-try
 /packages/**/package.json.ember-try
 
-/packages/*/core/lib/
-/packages/*/ember/lib/
+/packages/*/lib/
+/packages/*/lib/

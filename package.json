@@ -2,8 +2,7 @@
   "name": "root",
   "private": true,
   "workspaces": [
-    "packages/@docfy/*",
-    "packages/examples/*",
+    "packages/*",
     "site"
   ],
   "scripts": {
