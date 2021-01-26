@@ -90,24 +90,6 @@ export function inferTitle(ast: Node): string | undefined {
   return docTitle;
 }
 
-export function parseFrontmatter(
-  source: string,
-  ast: Node
-): Record<string, unknown> {
-  let result = {};
-  console.log(ast);
-  visit(ast, 'yaml', (node) => {
-    console.log('YOOOOOOOOOOOOOOOOOOOOOOOO, ', node);
-    try {
-      result = YAML.parse(node.value as string);
-    } catch (e) {
-      console.error(`Error while parsing frontmatter in ${source}: `, e);
-    }
-  });
-
-  return result;
-}
-
 export function isValidUrl(s: string): boolean {
   try {
     new url.URL(s);

@@ -19,6 +19,10 @@ Array [
     "/how-it-works",
   ],
   Array [
+    "docs/math.md",
+    "/math",
+  ],
+  Array [
     "docs/static-asset.md",
     "/static-asset",
   ],
@@ -66,6 +70,10 @@ Array [
   Array [
     "docs/how-it-works.md",
     "/docs/how-it-works.html",
+  ],
+  Array [
+    "docs/math.md",
+    "/docs/math.html",
   ],
   Array [
     "docs/static-asset.md",

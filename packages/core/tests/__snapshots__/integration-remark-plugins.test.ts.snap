@@ -1,5 +1,27 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`When proving rehype plugins When plugin has no options it should have used remark and rehype plugins 1`] = `
+Array [
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\">Testing math remark and rehype plugins</h1>
+<p><span class=\\"math math-inline\\">x</span></p>
+",
+  ],
+]
+`;
+
+exports[`When proving remark plugins Using remark math plugin it should have used the remark math plugin 1`] = `
+Array [
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\">Testing math remark and rehype plugins</h1>
+<p><span class=\\"math math-inline\\">x</span></p>
+",
+  ],
+]
+`;
+
 exports[`When proving remark plugins When plugin has no options it should have rendered the content with the plugin with no options 1`] = `
 Array [
   Array [
@@ -38,6 +60,12 @@ config.</p>
     "<h1 id=\\"how-it-works\\"><a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How it works?</h1>
 <p>This is a description.</p>
 <p><a href=\\"/docs/about\\">Link using reference</a></p>
+",
+  ],
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\"><a href=\\"#testing-math-remark-and-rehype-plugins\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Testing math remark and rehype plugins</h1>
+<p>$x$</p>
 ",
   ],
   Array [
@@ -122,6 +150,12 @@ config.</p>
     "<h1 id=\\"how-it-works\\">How it works?<a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>This is a description.</p>
 <p><a href=\\"/docs/about\\">Link using reference</a></p>
+",
+  ],
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\">Testing math remark and rehype plugins<a href=\\"#testing-math-remark-and-rehype-plugins\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<p>$x$</p>
 ",
   ],
   Array [

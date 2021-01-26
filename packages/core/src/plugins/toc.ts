@@ -69,3 +69,15 @@ export function toc(ctx: Context): Context {
 
   return ctx;
 }
+
+// export const plugin = () => {
+
+// transformMdast(ctx: Context) {
+// ctx.pages
+// }
+
+// trasformHast(ctx: Context) {
+
+// }
+
+// }

@@ -14,8 +14,7 @@ import {
   DEFAULT_IGNORE,
   generateAutoUrl,
   generateManualUrl,
-  inferTitle,
-  parseFrontmatter
+  inferTitle
 } from './-private/utils';
 import { createRemark } from './-private/remark';
 import {
@@ -37,9 +36,9 @@ export default class Docfy {
   private context: Context;
 
   constructor(options: Options = {}) {
-    const { remarkPlugins, ...rest } = options;
+    const { remarkPlugins, rehypePlugins, ...rest } = options;
     this.context = {
-      remark: createRemark(remarkPlugins),
+      remark: createRemark(remarkPlugins, rehypePlugins),
       pages: [],
       staticAssets: [],
       options: {
@@ -54,7 +53,7 @@ export default class Docfy {
       .use(removeUnnecessaryIndex)
       .use(uniquefyUrls)
       .use(replaceInternalLinks)
-      .use(staticAssets);
+      .use(staticAssets, { bla: true }); // @ts-ignore
 
     if (Array.isArray(options.plugins)) {
       options.plugins.forEach((item) => {
@@ -68,20 +67,25 @@ export default class Docfy {
 
   public run(sources: SourceConfig[]): Promise<DocfyResult> {
     return new Promise((resolve, reject) => {
-      this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve({
-            content: ctx.pages,
-            staticAssets: ctx.staticAssets,
-            nestedPageMetadata: transformToNestedPageMetadata(
-              ctx.pages.map((p) => p.meta),
-              ctx.options.labels
-            )
-          });
+      this.pipeline.run(
+        sources,
+        (err: unknown, ctx: Context, ...args): void => {
+          console.log(args);
+
+          if (err) {
+            reject(err);
+          } else {
+            resolve({
+              content: ctx.pages,
+              staticAssets: ctx.staticAssets,
+              nestedPageMetadata: transformToNestedPageMetadata(
+                ctx.pages.map((p) => p.meta),
+                ctx.options.labels
+              )
+            });
+          }
         }
-      });
+      );
     });
   }
 
@@ -127,11 +131,12 @@ export default class Docfy {
 
     const vFile = toVfile.readSync(fullPath);
     const markdown = vFile.contents.toString();
-    const ast = this.context.remark.runSync(
-      this.context.remark.parse(vFile),
-      vFile
-    );
-    const frontmatter = parseFrontmatter(fullPath, ast);
+    const parsed = this.context.remark.parse(vFile);
+    const ast = this.context.remark.runSync(parsed, vFile);
+
+    const frontmatter: Record<string, unknown> =
+      (vFile.data as { frontmatter?: Record<string, unknown> }).frontmatter ||
+      {};
 
     let url: string;
     let title = inferTitle(ast);
