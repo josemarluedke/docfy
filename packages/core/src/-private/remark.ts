@@ -1,30 +1,45 @@
 import unified from 'unified';
 import parse from 'remark-parse';
+import parseFrontmatter from 'remark-parse-yaml';
 import frontmatter from 'remark-frontmatter';
 import slug from 'remark-slug';
 import html from 'remark-html';
-import stringify from 'remark-stringify';
+import stringify from 'rehype-stringify';
+import remark2rehype from 'remark-rehype';
+// import stringify from 'remark-stringify';
+// import rehype2remark from 'rehype-remark';
 import normalizeHeadings from 'remark-normalize-headings';
 import { Processor } from 'unified';
 import { Options } from '../types';
 
-export function createRemark(plugins?: Options['remarkPlugins']): Processor {
+export function createRemark(
+  remarkPlugins?: Options['remarkPlugins'],
+  rehypePlugins?: Options['rehypePlugins']
+): Processor {
   const stack = unified()
     .use(parse)
+    .use(frontmatter)
+    .use(parseFrontmatter)
     .use(normalizeHeadings)
-    .use(slug)
-    .use(stringify)
-    .use(frontmatter, [{ type: 'yaml', marker: '-' }]);
+    .use(slug);
 
-  if (plugins && plugins.length > 0) {
-    plugins.forEach((fn) => {
-      if (Array.isArray(fn)) {
-        stack.use(...fn);
-      } else {
-        stack.use(fn);
-      }
-    });
+  const plugins: Options['rehypePlugins'] = [];
+
+  if (remarkPlugins && remarkPlugins.length > 0) {
+    plugins.push(...remarkPlugins);
+  }
+  if (rehypePlugins && rehypePlugins.length > 0) {
+    plugins.push(...rehypePlugins);
   }
 
-  return stack.use(html);
+  plugins.forEach((fn) => {
+    if (Array.isArray(fn)) {
+      stack.use(...fn);
+    } else {
+      stack.use(fn);
+    }
+  });
+
+  return stack.use(remark2rehype).use(stringify);
+  // .use(html);
 }

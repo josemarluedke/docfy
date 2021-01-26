@@ -95,7 +95,9 @@ export function parseFrontmatter(
   ast: Node
 ): Record<string, unknown> {
   let result = {};
+  console.log(ast);
   visit(ast, 'yaml', (node) => {
+    console.log('YOOOOOOOOOOOOOOOOOOOOOOOO, ', node);
     try {
       result = YAML.parse(node.value as string);
     } catch (e) {

@@ -1,8 +1,8 @@
 import { Node as MarkdownAST } from 'unist';
 import {
   Processor,
-  Plugin as RemarkPlugin,
-  Settings as RemarkSettings
+  Plugin as UnifiedPlugin,
+  Settings as UnifiedSettings
 } from 'unified';
 
 export interface Heading {
@@ -34,7 +34,10 @@ export interface PageContent {
 }
 
 interface ContextOptions
-  extends Omit<Options, 'plugins' | 'remarkPlugins' | 'tocMaxDepth'> {
+  extends Omit<
+    Options,
+    'plugins' | 'remarkPlugins' | 'rehypePlugins' | 'tocMaxDepth'
+  > {
   tocMaxDepth: number;
 }
 
@@ -175,7 +178,20 @@ export interface Options {
    * ];
    * ```
    */
-  remarkPlugins?: ([RemarkPlugin, RemarkSettings] | RemarkPlugin)[];
+  remarkPlugins?: ([UnifiedPlugin, UnifiedSettings] | UnifiedPlugin)[];
+
+  /**
+   * Additional rehype plugins
+   *
+   * Example:
+   *
+   * ```js
+   * const rehypePrism = require('@mapbox/rehype-prism');
+   *
+   * const rehypePlugins = [rehypePrism];
+   * ```
+   */
+  rehypePlugins?: ([UnifiedPlugin, UnifiedSettings] | UnifiedPlugin)[];
 
   /**
    * The max depth of headings
