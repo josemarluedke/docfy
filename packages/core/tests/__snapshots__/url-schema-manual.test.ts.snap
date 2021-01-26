@@ -40,7 +40,11 @@ Array [
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/category1/components/form/",
+    "/category1/components/form",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "/category1/components/something-else",
   ],
 ]
 `;
@@ -85,7 +89,11 @@ Array [
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "/docs/category1/components/form/",
+    "/docs/category1/components/form.html",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "/docs/category1/components/something-else.html",
   ],
 ]
 `;

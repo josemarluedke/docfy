@@ -108,6 +108,10 @@ Array [
     "packages/package1/components/form/index.md",
     Array [],
   ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    Array [],
+  ],
 ]
 `;
 
@@ -203,6 +207,10 @@ Array [
   ],
   Array [
     "packages/package1/components/form/index.md",
+    Array [],
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
     Array [],
   ],
 ]

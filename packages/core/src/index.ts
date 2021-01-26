@@ -24,7 +24,8 @@ import {
   replaceInternalLinks,
   staticAssets,
   toc,
-  uniquefyUrls
+  uniquefyUrls,
+  removeUnnecessaryIndex
 } from './plugins';
 import { getRepoEditUrl } from './-private/repo-info';
 import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
@@ -50,6 +51,7 @@ export default class Docfy {
     this.pipeline = trough<Context>()
       .use<SourceConfig[]>(this.initializePipeline.bind(this))
       .use(combineDemos)
+      .use(removeUnnecessaryIndex)
       .use(uniquefyUrls)
       .use(replaceInternalLinks)
       .use(staticAssets);
