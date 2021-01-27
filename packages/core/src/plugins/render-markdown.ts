@@ -6,7 +6,6 @@ export const renderMarkdown = {
     context.pages.forEach((page) => {
       const rehype = context.rehype().use(stringify, {
         allowDangerousHtml: true
-        // allowDangerousHTML: true
       });
       page.rendered = rehype.stringify(page.ast);
     });

@@ -1,6 +1,5 @@
 const path = require('path');
 const autolinkHeadings = require('remark-autolink-headings');
-const highlight = require('remark-highlight.js');
 const prism = require('@mapbox/rehype-prism');
 const refractor = require('refractor');
 

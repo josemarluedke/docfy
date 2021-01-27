@@ -2,7 +2,7 @@ import Docfy from '../src';
 import { PageContent } from '../src/types';
 import path from 'path';
 import visit from 'unist-util-visit';
-import { Element } from 'hast';
+import type { Element } from 'hast'; //eslint-disable-line
 
 const root = path.resolve(__dirname, './__fixtures__/monorepo');
 function findPage(content: PageContent[], source: string) {

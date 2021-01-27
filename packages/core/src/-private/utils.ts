@@ -3,7 +3,6 @@ import visit from 'unist-util-visit';
 import { Node } from 'unist';
 import toString from 'mdast-util-to-string';
 import Slugger from 'github-slugger';
-import YAML from 'yaml';
 import url from 'url';
 
 const slug = Slugger.slug;
