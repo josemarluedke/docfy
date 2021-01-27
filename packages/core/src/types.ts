@@ -4,6 +4,7 @@ import {
   Plugin as UnifiedPlugin,
   Settings as UnifiedSettings
 } from 'unified';
+import { VFile } from 'vfile';
 
 export interface Heading {
   title: string;
@@ -26,6 +27,7 @@ export interface PageContent {
   meta: PageMetadata;
   sourceConfig: SourceConfig;
   source: string;
+  vFile: VFile;
   ast: MarkdownAST;
   markdown: string;
   rendered: string;
@@ -48,6 +50,7 @@ export interface StaticAssetDefinition {
 
 export interface Context {
   remark: Processor;
+  rehype: Processor;
   pages: PageContent[];
   staticAssets: StaticAssetDefinition[];
   options: ContextOptions;

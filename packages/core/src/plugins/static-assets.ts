@@ -55,64 +55,69 @@ function generateUniqueFileName(
   return candidate;
 }
 
-export function staticAssets(ctx: Context): void {
-  const staticAssetPath = (
-    ctx.options.staticAssetsPath || '/assets/docfy'
-  ).split('/');
+export const staticAssets = {
+  transformMdast(ctx: Context): void {
+    const staticAssetPath = (
+      ctx.options.staticAssetsPath || '/assets/docfy'
+    ).split('/');
 
-  const assets: Record<string, string> = {};
+    const assets: Record<string, string> = {};
 
-  function transform(
-    page: PageContent,
-    node: DefinitionNode | ImageNode
-  ): void {
-    if (!isValidUrl(node.url) && !path.isAbsolute(node.url)) {
-      const absolutePath = path.resolve(
-        path.join(page.sourceConfig.root, path.dirname(page.source)),
-        node.url
-      );
-
-      if (assets[absolutePath]) {
-        node.url = assets[absolutePath].split(path.sep).join('/');
-      } else {
-        const to = path.join(
-          path.sep,
-          ...staticAssetPath,
-          generateUniqueFileName(Object.values(assets), path.basename(node.url))
+    function transform(
+      page: PageContent,
+      node: DefinitionNode | ImageNode
+    ): void {
+      if (!isValidUrl(node.url) && !path.isAbsolute(node.url)) {
+        const absolutePath = path.resolve(
+          path.join(page.sourceConfig.root, path.dirname(page.source)),
+          node.url
         );
 
-        node.url = to.split(path.sep).join('/');
-        assets[absolutePath] = to;
-      }
-    }
-  }
-
-  ctx.pages.forEach((page) => {
-    const definitions: Record<string, DefinitionNode> = {};
-
-    visit(page.ast, 'definition', (node: DefinitionNode) => {
-      definitions[node.identifier] = node;
-    });
-
-    visit(
-      page.ast,
-      ['image', 'imageReference'],
-      (node: ImageNode | ImageReferenceNode) => {
-        if (isImageReference(node)) {
-          if (definitions[node.identifier]) {
-            transform(page, definitions[node.identifier]);
-          }
+        if (assets[absolutePath]) {
+          node.url = assets[absolutePath].split(path.sep).join('/');
         } else {
-          transform(page, node);
+          const to = path.join(
+            path.sep,
+            ...staticAssetPath,
+            generateUniqueFileName(
+              Object.values(assets),
+              path.basename(node.url)
+            )
+          );
+
+          node.url = to.split(path.sep).join('/');
+          assets[absolutePath] = to;
         }
       }
-    );
-  });
+    }
 
-  Object.keys(assets).forEach((key) => {
-    ctx.staticAssets.push({
-      fromPath: key,
-      toPath: assets[key]
+    ctx.pages.forEach((page) => {
+      const definitions: Record<string, DefinitionNode> = {};
+
+      visit(page.ast, 'definition', (node: DefinitionNode) => {
+        definitions[node.identifier] = node;
+      });
+
+      visit(
+        page.ast,
+        ['image', 'imageReference'],
+        (node: ImageNode | ImageReferenceNode) => {
+          if (isImageReference(node)) {
+            if (definitions[node.identifier]) {
+              transform(page, definitions[node.identifier]);
+            }
+          } else {
+            transform(page, node);
+          }
+        }
+      );
     });
-  });
-}
+
+    Object.keys(assets).forEach((key) => {
+      ctx.staticAssets.push({
+        fromPath: key,
+        toPath: assets[key]
+      });
+    });
+  }
+};

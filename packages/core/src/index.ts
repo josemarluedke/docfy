@@ -16,7 +16,7 @@ import {
   generateManualUrl,
   inferTitle
 } from './-private/utils';
-import { createRemark } from './-private/remark';
+import { createRehype, createRemark } from './-private/remark';
 import {
   combineDemos,
   renderMarkdown,
@@ -31,14 +31,44 @@ import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/core');
 
+interface PluginOptions {
+  [key: string]: unknown;
+}
+
+type PluginFn<T = PluginOptions> = (
+  ctx: Context,
+  options?: T
+) => Context | void;
+
+interface PluginObj<T = PluginOptions> {
+  transformMdast?: PluginFn<T>;
+  transformHast?: PluginFn<T>;
+  default?: PluginFn<T>;
+}
+
+type Plugin<T = PluginOptions> =
+  | (PluginFn<T> | PluginObj<T>)
+  | [PluginFn<T> | PluginObj<T>, T];
+
+type PluginWithOptions<T = PluginOptions> = [PluginFn<T>, T];
+
+interface PluginPipeline {
+  mdastTransformers: PluginWithOptions[];
+  hastTransformers: PluginWithOptions[];
+  defaults: PluginWithOptions[];
+}
+
 export default class Docfy {
   private pipeline: Through<Context>;
   private context: Context;
+  private plugins: PluginPipeline;
 
   constructor(options: Options = {}) {
     const { remarkPlugins, rehypePlugins, ...rest } = options;
+
     this.context = {
-      remark: createRemark(remarkPlugins, rehypePlugins),
+      remark: createRemark(remarkPlugins),
+      rehype: createRehype(rehypePlugins),
       pages: [],
       staticAssets: [],
       options: {
@@ -47,46 +77,110 @@ export default class Docfy {
       }
     };
 
-    this.pipeline = trough<Context>()
-      .use<SourceConfig[]>(this.initializePipeline.bind(this))
-      .use(combineDemos)
-      .use(removeUnnecessaryIndex)
-      .use(uniquefyUrls)
-      .use(replaceInternalLinks)
-      .use(staticAssets, { bla: true }); // @ts-ignore
+    const plugins: Plugin[] = [
+      combineDemos,
+      removeUnnecessaryIndex,
+      uniquefyUrls,
+      replaceInternalLinks,
+      staticAssets
+    ];
 
     if (Array.isArray(options.plugins)) {
-      options.plugins.forEach((item) => {
-        this.pipeline.use(item);
-      });
+      plugins.push(...options.plugins);
     }
 
     // Make sure TOC and renderMarkdown plugins are the last ones
-    this.pipeline.use(toc).use(renderMarkdown);
+    plugins.push(toc, renderMarkdown);
+    this.plugins = this.createPluginPipeline(plugins);
+
+    this.pipeline = trough<Context>()
+      .use<SourceConfig[]>(this.initializePipeline.bind(this))
+      .use(this.runMdastTransformers.bind(this))
+      .use(this.runHastTransformers.bind(this))
+      .use(this.runDefaultPlugins.bind(this));
   }
 
   public run(sources: SourceConfig[]): Promise<DocfyResult> {
     return new Promise((resolve, reject) => {
-      this.pipeline.run(
-        sources,
-        (err: unknown, ctx: Context, ...args): void => {
-          console.log(args);
-
-          if (err) {
-            reject(err);
-          } else {
-            resolve({
-              content: ctx.pages,
-              staticAssets: ctx.staticAssets,
-              nestedPageMetadata: transformToNestedPageMetadata(
-                ctx.pages.map((p) => p.meta),
-                ctx.options.labels
-              )
-            });
-          }
+      this.pipeline.run(sources, (err: unknown, ctx: Context): void => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve({
+            content: ctx.pages,
+            staticAssets: ctx.staticAssets,
+            nestedPageMetadata: transformToNestedPageMetadata(
+              ctx.pages.map((p) => p.meta),
+              ctx.options.labels
+            )
+          });
         }
-      );
+      });
     });
+  }
+
+  private runMdastTransformers(ctx: Context): void {
+    this.plugins.mdastTransformers.forEach(([fn, options]) => {
+      fn(ctx, options);
+    });
+  }
+
+  private runHastTransformers(ctx: Context): void {
+    ctx.pages.forEach((page) => {
+      const hast = this.context.rehype.runSync(page.ast, page.vFile);
+      page.ast = hast;
+
+      page.demos?.forEach((demo) => {
+        const hast = this.context.rehype.runSync(demo.ast, demo.vFile);
+        demo.ast = hast;
+      });
+    });
+
+    this.plugins.hastTransformers.forEach(([fn, options]) => {
+      fn(ctx, options);
+    });
+  }
+
+  private runDefaultPlugins(ctx: Context): void {
+    this.plugins.defaults.forEach(([fn, options]) => {
+      fn(ctx, options);
+    });
+  }
+
+  private createPluginPipeline(plugins: Plugin[]): PluginPipeline {
+    const result: PluginPipeline = {
+      mdastTransformers: [],
+      hastTransformers: [],
+      defaults: []
+    };
+
+    const add = (fn: PluginFn | PluginObj, options: PluginOptions): void => {
+      if (typeof fn !== 'function') {
+        if (fn.transformHast) {
+          result.hastTransformers.push([fn.transformHast, options]);
+        }
+
+        if (fn.transformMdast) {
+          result.mdastTransformers.push([fn.transformMdast, options]);
+        }
+
+        if (fn.default) {
+          result.defaults.push([fn.default, options]);
+        }
+      } else {
+        result.defaults.push([fn, options]);
+      }
+    };
+
+    plugins.forEach((plugin) => {
+      if (Array.isArray(plugin)) {
+        add(plugin[0], plugin[1]);
+      } else {
+        add(plugin, {});
+      }
+    });
+
+    return result;
   }
 
   private initializePipeline(sources: SourceConfig[]): Context {
@@ -198,6 +292,7 @@ export default class Docfy {
       meta: metadata,
       source: relativePath,
       sourceConfig,
+      vFile,
       ast,
       markdown,
       rendered: '',

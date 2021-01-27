@@ -1,13 +1,11 @@
 import { Context } from '../types';
-// import stringify from 'rehype-stringify';
-// import remark2rehype from 'remark-rehype';
-import rehype2remark from 'rehype-remark';
-import stringify from 'remark-stringify';
-import html from 'remark-html';
+import stringify from 'rehype-stringify';
 
-export function renderMarkdown(context: Context): void {
-  context.pages.forEach((page) => {
-    const remark = context.remark().use(rehype2remark).use(stringify).use(html);
-    page.rendered = remark.stringify(page.ast);
-  });
-}
+export const renderMarkdown = {
+  transformHast(context: Context): void {
+    context.pages.forEach((page) => {
+      const rehype = context.rehype().use(stringify);
+      page.rendered = rehype.stringify(page.ast);
+    });
+  }
+};

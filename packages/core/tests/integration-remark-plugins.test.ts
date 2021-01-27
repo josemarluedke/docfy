@@ -111,7 +111,6 @@ describe('When proving rehype plugins', () => {
       const htmls = [];
       result.content.forEach((page) => {
         htmls.push([page.source, page.rendered]);
-        console.log(page.ast.children[1]);
       });
 
       expect(htmls).toMatchSnapshot();

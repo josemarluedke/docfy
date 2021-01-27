@@ -41,43 +41,31 @@ function isHeading(node: Node): node is HeadingNode {
   return node.type === 'heading';
 }
 
-export function toc(ctx: Context): Context {
-  ctx.pages.forEach((page): void => {
-    const headings: Heading[] = [];
+export const toc = {
+  transformMdast(ctx: Context): void {
+    ctx.pages.forEach((page): void => {
+      const headings: Heading[] = [];
 
-    visit(page.ast, (node: Node, _, parentNode: Parent | undefined) => {
-      if (isHeading(node)) {
-        if (node.depth === 1) {
-          return;
+      visit(page.ast, (node: Node, _, parentNode: Parent | undefined) => {
+        if (isHeading(node)) {
+          if (node.depth === 1) {
+            return;
+          }
+
+          if (node.depth > ctx.options.tocMaxDepth) {
+            return;
+          }
+          const parent = findParentOfDepth(headings, node.depth);
+
+          parent.push(getHeading(node));
+
+          if (node.data.docfyDelete && parentNode) {
+            deleteNode(parentNode.children, node);
+          }
         }
+      });
 
-        if (node.depth > ctx.options.tocMaxDepth) {
-          return;
-        }
-        const parent = findParentOfDepth(headings, node.depth);
-
-        parent.push(getHeading(node));
-
-        if (node.data.docfyDelete && parentNode) {
-          deleteNode(parentNode.children, node);
-        }
-      }
+      page.meta.headings = headings;
     });
-
-    page.meta.headings = headings;
-  });
-
-  return ctx;
-}
-
-// export const plugin = () => {
-
-// transformMdast(ctx: Context) {
-// ctx.pages
-// }
-
-// trasformHast(ctx: Context) {
-
-// }
-
-// }
+  }
+};

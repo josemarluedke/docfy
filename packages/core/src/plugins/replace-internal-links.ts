@@ -91,14 +91,16 @@ function visitor(ctx: Context, page: PageContent): void {
  * [Link to another page](../some-other-markdown.md)
  * ```
  */
-export function replaceInternalLinks(ctx: Context): void {
-  ctx.pages.forEach((page) => {
-    visitor(ctx, page);
+export const replaceInternalLinks = {
+  transformMdast(ctx: Context): void {
+    ctx.pages.forEach((page) => {
+      visitor(ctx, page);
 
-    if (Array.isArray(page.demos)) {
-      page.demos.forEach((demo) => {
-        visitor(ctx, demo);
-      });
-    }
-  });
-}
+      if (Array.isArray(page.demos)) {
+        page.demos.forEach((demo) => {
+          visitor(ctx, demo);
+        });
+      }
+    });
+  }
+};

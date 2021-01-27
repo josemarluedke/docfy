@@ -10,8 +10,7 @@ import YAML from 'yaml';
 import remark2rehype from 'remark-rehype';
 
 export function createRemark(
-  remarkPlugins?: Options['remarkPlugins'],
-  rehypePlugins?: Options['rehypePlugins']
+  remarkPlugins?: Options['remarkPlugins']
 ): Processor {
   const stack = unified()
     .use(parse)
@@ -20,26 +19,33 @@ export function createRemark(
     .use(normalizeHeadings)
     .use(slug);
 
-  const plugins: Options['rehypePlugins'] = [];
-
   if (remarkPlugins && remarkPlugins.length > 0) {
-    plugins.push(...remarkPlugins);
+    remarkPlugins.forEach((fn) => {
+      if (Array.isArray(fn)) {
+        stack.use(...fn);
+      } else {
+        stack.use(fn);
+      }
+    });
   }
 
-  // stack.use(remark2rehype);
+  return stack;
+}
+
+export function createRehype(
+  rehypePlugins?: Options['rehypePlugins']
+): Processor {
+  const stack = unified().use(remark2rehype);
 
   if (rehypePlugins && rehypePlugins.length > 0) {
-    console.log('HAS rehypePlugins', ...rehypePlugins);
-    plugins.push(...rehypePlugins);
+    rehypePlugins.forEach((fn) => {
+      if (Array.isArray(fn)) {
+        stack.use(...fn);
+      } else {
+        stack.use(fn);
+      }
+    });
   }
-
-  plugins.forEach((fn) => {
-    if (Array.isArray(fn)) {
-      stack.use(...fn);
-    } else {
-      stack.use(fn);
-    }
-  });
 
   return stack;
 }
