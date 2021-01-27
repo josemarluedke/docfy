@@ -153,7 +153,24 @@ interface RepositoryConfig {
   editBranch?: string;
 }
 
-export type Plugin = (ctx: Context) => void | Context; // eslint-disable-line
+export interface PluginOptions {
+  [key: string]: unknown;
+}
+
+export type PluginFn<T = PluginOptions> = (
+  ctx: Context,
+  options?: T
+) => Context | void;
+
+export interface PluginObj<T = PluginOptions> {
+  transformMdast?: PluginFn<T>;
+  transformHast?: PluginFn<T>;
+  default?: PluginFn<T>;
+}
+
+export type Plugin<T = PluginOptions> =
+  | (PluginFn<T> | PluginObj<T>)
+  | [PluginFn<T> | PluginObj<T>, T];
 
 export interface Options {
   /**

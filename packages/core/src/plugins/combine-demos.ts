@@ -53,35 +53,37 @@ function sortByOrder(pages: PageContent[]): PageContent[] {
   });
 }
 
-export function combineDemos(context: Context): Context {
-  const allDemos: PageContent[] = [];
+export const combineDemos = {
+  transformMdast(context: Context): Context {
+    const allDemos: PageContent[] = [];
 
-  context.pages.forEach((item): void => {
-    const folder = path.basename(path.dirname(item.source));
+    context.pages.forEach((item): void => {
+      const folder = path.basename(path.dirname(item.source));
 
-    if (folder.match(/demo$/)) {
-      const parent = context.pages[findDemoOwner(context.pages, item.source)];
+      if (folder.match(/demo$/)) {
+        const parent = context.pages[findDemoOwner(context.pages, item.source)];
 
-      if (parent) {
-        if (!parent.demos) {
-          parent.demos = [item];
-        } else {
-          parent.demos.push(item);
+        if (parent) {
+          if (!parent.demos) {
+            parent.demos = [item];
+          } else {
+            parent.demos.push(item);
+          }
+
+          sortByOrder(parent.demos);
+          allDemos.push(item);
         }
-
-        sortByOrder(parent.demos);
-        allDemos.push(item);
       }
-    }
-  });
+    });
 
-  // Delete demos from context pages
-  allDemos.forEach((demo) => {
-    const index = context.pages.findIndex((i) => i === demo);
-    if (index !== -1) {
-      context.pages.splice(index, 1);
-    }
-  });
+    // Delete demos from context pages
+    allDemos.forEach((demo) => {
+      const index = context.pages.findIndex((i) => i === demo);
+      if (index !== -1) {
+        context.pages.splice(index, 1);
+      }
+    });
 
-  return context;
-}
+    return context;
+  }
+};

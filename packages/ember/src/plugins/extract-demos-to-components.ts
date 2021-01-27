@@ -47,76 +47,78 @@ function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
   }
 }
 
-export default function extractDemosToComponents(ctx: Context): void {
-  const seenNames: Set<string> = new Set();
+export default {
+  transformMdast(ctx: Context): void {
+    const seenNames: Set<string> = new Set();
 
-  ctx.pages.forEach((page) => {
-    if (page.demos) {
-      const demoComponents: DemoComponent[] = [];
+    ctx.pages.forEach((page) => {
+      if (page.demos) {
+        const demoComponents: DemoComponent[] = [];
 
-      page.demos.forEach((demo) => {
-        const chunks: DemoComponentChunk[] = [];
+        page.demos.forEach((demo) => {
+          const chunks: DemoComponentChunk[] = [];
 
-        visit(demo.ast, 'code', (node: CodeNode) => {
-          if (['component', 'template', 'styles'].includes(node.meta || '')) {
-            chunks.push({
-              snippet: node,
-              code: node.value.replace(/\\{{/g, '{{'), // un-escape hbs
-              ext: getExt(
-                node.lang || (node.meta === 'template' ? 'hbs' : 'js')
-              ),
-              type: node.meta as string
-            });
+          visit(demo.ast, 'code', (node: CodeNode) => {
+            if (['component', 'template', 'styles'].includes(node.meta || '')) {
+              chunks.push({
+                snippet: node,
+                code: node.value.replace(/\\{{/g, '{{'), // un-escape hbs
+                ext: getExt(
+                  node.lang || (node.meta === 'template' ? 'hbs' : 'js')
+                ),
+                type: node.meta as string
+              });
+            }
+          });
+          const componentName = generateDemoComponentName(
+            `docfy-demo-${path.basename(page.source).split('.')[0]}-${
+              path.basename(demo.source).split('.')[0]
+            }`,
+            seenNames
+          );
+
+          const demoTitle = findNode(
+            demo.ast,
+            (node: Node) => node.type === 'heading' && node.depth === 1
+          );
+
+          if (demoTitle) {
+            demoTitle.depth = 3;
+            demoTitle.data = {
+              ...(demoTitle.data || {}),
+              id: componentName.dashCase,
+              docfyDelete: true // mark the heading to be deleted by @docfy/core TOC plugin
+            };
           }
+
+          demoComponents.push({
+            name: componentName,
+            chunks,
+            description: {
+              title: demoTitle ? toString(demoTitle) : undefined,
+              ast: demo.ast,
+              editUrl: demo.meta.editUrl
+            }
+          });
+
+          // Delete used code blocks
+          chunks.forEach(({ snippet }) => {
+            deleteNode(demo.ast.children, snippet);
+          });
         });
-        const componentName = generateDemoComponentName(
-          `docfy-demo-${path.basename(page.source).split('.')[0]}-${
-            path.basename(demo.source).split('.')[0]
-          }`,
-          seenNames
-        );
 
-        const demoTitle = findNode(
-          demo.ast,
-          (node: Node) => node.type === 'heading' && node.depth === 1
-        );
+        const toInsert: Node[] = [createHeading(ctx)];
+        demoComponents.forEach((component) => {
+          toInsert.push(...createDemoNodes(component));
+        });
+        insertDemoNodesIntoPage(page, toInsert);
 
-        if (demoTitle) {
-          demoTitle.depth = 3;
-          demoTitle.data = {
-            ...(demoTitle.data || {}),
-            id: componentName.dashCase,
-            docfyDelete: true // mark the heading to be deleted by @docfy/core TOC plugin
-          };
+        if (isDemoComponents(page.pluginData.demoComponents)) {
+          page.pluginData.demoComponents.push(...demoComponents);
+        } else {
+          page.pluginData.demoComponents = demoComponents;
         }
-
-        demoComponents.push({
-          name: componentName,
-          chunks,
-          description: {
-            title: demoTitle ? toString(demoTitle) : undefined,
-            ast: demo.ast,
-            editUrl: demo.meta.editUrl
-          }
-        });
-
-        // Delete used code blocks
-        chunks.forEach(({ snippet }) => {
-          deleteNode(demo.ast.children, snippet);
-        });
-      });
-
-      const toInsert: Node[] = [createHeading(ctx)];
-      demoComponents.forEach((component) => {
-        toInsert.push(...createDemoNodes(component));
-      });
-      insertDemoNodesIntoPage(page, toInsert);
-
-      if (isDemoComponents(page.pluginData.demoComponents)) {
-        page.pluginData.demoComponents.push(...demoComponents);
-      } else {
-        page.pluginData.demoComponents = demoComponents;
       }
-    }
-  });
-}
+    });
+  }
+};

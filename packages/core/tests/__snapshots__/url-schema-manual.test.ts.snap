@@ -19,6 +19,10 @@ Array [
     "/how-it-works",
   ],
   Array [
+    "docs/html.md",
+    "/html",
+  ],
+  Array [
     "docs/math.md",
     "/math",
   ],
@@ -70,6 +74,10 @@ Array [
   Array [
     "docs/how-it-works.md",
     "/docs/how-it-works.html",
+  ],
+  Array [
+    "docs/html.md",
+    "/docs/html.html",
   ],
   Array [
     "docs/math.md",

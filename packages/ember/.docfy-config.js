@@ -1,17 +1,25 @@
 const path = require('path');
 const autolinkHeadings = require('remark-autolink-headings');
 const highlight = require('remark-highlight.js');
+const prism = require('@mapbox/rehype-prism');
+const refractor = require('refractor');
+
+refractor.alias('handlebars', 'hbs');
+refractor.alias('shell', 'sh');
 
 module.exports = {
+  remarkHbsOptions: {
+    escapeCurliesCode: false
+  },
   remarkPlugins: [
     [
       autolinkHeadings,
       {
         behavior: 'wrap'
       }
-    ],
-    highlight
+    ]
   ],
+  rehypePlugins: [prism],
   sources: [
     {
       root: path.join(__dirname, 'dummy-docs'),

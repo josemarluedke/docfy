@@ -57,6 +57,16 @@ config.</p>",
 <p><a href=\\"/docs/about\\">Link using reference</a></p>",
   ],
   Array [
+    "docs/html.md",
+    "<h1 id=\\"html-should-work\\"><a href=\\"#html-should-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>HTML should work</h1>
+<div>
+  test
+</div>
+<main>
+<p><strong>bold</strong></p>
+</main>",
+  ],
+  Array [
     "docs/math.md",
     "<h1 id=\\"testing-math-remark-and-rehype-plugins\\"><a href=\\"#testing-math-remark-and-rehype-plugins\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Testing math remark and rehype plugins</h1>
 <p>$x$</p>",
@@ -133,6 +143,16 @@ config.</p>",
     "<h1 id=\\"how-it-works\\">How it works?<a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>This is a description.</p>
 <p><a href=\\"/docs/about\\">Link using reference</a></p>",
+  ],
+  Array [
+    "docs/html.md",
+    "<h1 id=\\"html-should-work\\">HTML should work<a href=\\"#html-should-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<div>
+  test
+</div>
+<main>
+<p><strong>bold</strong></p>
+</main>",
   ],
   Array [
     "docs/math.md",

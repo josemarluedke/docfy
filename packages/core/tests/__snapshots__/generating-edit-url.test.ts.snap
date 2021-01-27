@@ -19,6 +19,10 @@ Array [
     "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
   ],
   Array [
+    "docs/html.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/html.md",
+  ],
+  Array [
     "docs/math.md",
     "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/math.md",
   ],

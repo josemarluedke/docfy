@@ -8,7 +8,11 @@ import {
   Options,
   SourceConfig,
   PageMetadata,
-  DocfyResult
+  DocfyResult,
+  PluginOptions,
+  PluginFn,
+  Plugin,
+  PluginObj
 } from './types';
 import {
   DEFAULT_IGNORE,
@@ -30,25 +34,6 @@ import { getRepoEditUrl } from './-private/repo-info';
 import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/core');
-
-interface PluginOptions {
-  [key: string]: unknown;
-}
-
-type PluginFn<T = PluginOptions> = (
-  ctx: Context,
-  options?: T
-) => Context | void;
-
-interface PluginObj<T = PluginOptions> {
-  transformMdast?: PluginFn<T>;
-  transformHast?: PluginFn<T>;
-  default?: PluginFn<T>;
-}
-
-type Plugin<T = PluginOptions> =
-  | (PluginFn<T> | PluginObj<T>)
-  | [PluginFn<T> | PluginObj<T>, T];
 
 type PluginWithOptions<T = PluginOptions> = [PluginFn<T>, T];
 

@@ -179,6 +179,15 @@ Object {
           "url": "/docs/about",
         },
         Object {
+          "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/html.md",
+          "frontmatter": Object {},
+          "headings": Array [],
+          "pluginData": Object {},
+          "relativeUrl": "html",
+          "title": "HTML should work",
+          "url": "/docs/html",
+        },
+        Object {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/math.md",
           "frontmatter": Object {},
           "headings": Array [],
