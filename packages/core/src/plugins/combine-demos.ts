@@ -1,5 +1,5 @@
 import path from 'path';
-import { PageContent, Context } from '../types';
+import { PageContent, Context, Plugin } from '../types';
 
 /*
  * Finds the index of the owner for a given demo file.
@@ -53,8 +53,8 @@ function sortByOrder(pages: PageContent[]): PageContent[] {
   });
 }
 
-export const combineDemos = {
-  transformMdast(context: Context): Context {
+export default {
+  runBefore(context: Context): Context {
     const allDemos: PageContent[] = [];
 
     context.pages.forEach((item): void => {

@@ -55,8 +55,8 @@ function generateUniqueFileName(
   return candidate;
 }
 
-export const staticAssets = {
-  transformMdast(ctx: Context): void {
+export default {
+  runWithMdast(ctx: Context): void {
     const staticAssetPath = (
       ctx.options.staticAssetsPath || '/assets/docfy'
     ).split('/');

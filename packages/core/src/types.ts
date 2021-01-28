@@ -157,26 +157,28 @@ export interface PluginOptions {
   [key: string]: unknown;
 }
 
-export type PluginFn<T = PluginOptions> = (
+export type PluginFn<T extends unknown[] = [PluginOptions?]> = (
   ctx: Context,
-  options?: T
+  ...options: T
 ) => Context | void;
 
-export interface PluginObj<T = PluginOptions> {
-  transformMdast?: PluginFn<T>;
-  transformHast?: PluginFn<T>;
-  default?: PluginFn<T>;
+export interface Plugin<T extends unknown[] = [PluginOptions?]> {
+  runBefore?: PluginFn<T>;
+  runWithMdast?: PluginFn<T>;
+  runWithHast?: PluginFn<T>;
+  runAfter?: PluginFn<T>;
 }
 
-export type Plugin<T = PluginOptions> =
-  | (PluginFn<T> | PluginObj<T>)
-  | [PluginFn<T> | PluginObj<T>, T];
+export type PluginTuple<T extends unknown[] = [PluginOptions?]> = [
+  Plugin<T>,
+  ...T
+];
 
 export interface Options {
   /**
    * A list of Docfy plugins.
    */
-  plugins?: Plugin[];
+  plugins?: (Plugin | PluginTuple)[];
 
   /**
    * Additional remark plugins

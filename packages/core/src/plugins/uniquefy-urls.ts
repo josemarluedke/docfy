@@ -26,12 +26,14 @@ function generateUniqueUrl(
  * This plugin makes sure that all the urls are unique. If there is a
  * duplicated url, we will modify it to make unique.
  */
-export function uniquefyUrls(ctx: Context): void {
-  const seenUrls: string[] = [];
-  ctx.pages.forEach((page) => {
-    if (seenUrls.indexOf(page.meta.url) > -1) {
-      page.meta.url = generateUniqueUrl(seenUrls, page.meta.url);
-    }
-    seenUrls.push(page.meta.url);
-  });
-}
+export default {
+  runAfter(ctx: Context): void {
+    const seenUrls: string[] = [];
+    ctx.pages.forEach((page) => {
+      if (seenUrls.indexOf(page.meta.url) > -1) {
+        page.meta.url = generateUniqueUrl(seenUrls, page.meta.url);
+      }
+      seenUrls.push(page.meta.url);
+    });
+  }
+};

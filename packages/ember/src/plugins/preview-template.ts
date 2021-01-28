@@ -11,7 +11,7 @@ import {
 import path from 'path';
 
 export default {
-  transformMdast(ctx: Context): void {
+  runWithMdast(ctx: Context): void {
     const seenNames: Set<string> = new Set();
 
     ctx.pages.forEach((page) => {

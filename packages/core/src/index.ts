@@ -12,7 +12,7 @@ import {
   PluginOptions,
   PluginFn,
   Plugin,
-  PluginObj
+  PluginTuple
 } from './types';
 import {
   DEFAULT_IGNORE,
@@ -35,12 +35,16 @@ import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/core');
 
-type PluginWithOptions<T = PluginOptions> = [PluginFn<T>, T];
+type PluginWithOptions<T extends unknown[] = [PluginOptions?]> = [
+  PluginFn<T>,
+  ...T
+];
 
 interface PluginPipeline {
-  mdastTransformers: PluginWithOptions[];
-  hastTransformers: PluginWithOptions[];
-  defaults: PluginWithOptions[];
+  runBefore: PluginWithOptions[];
+  runWithMdast: PluginWithOptions[];
+  runWithHast: PluginWithOptions[];
+  runAfter: PluginWithOptions[];
 }
 
 export default class Docfy {
@@ -62,7 +66,7 @@ export default class Docfy {
       }
     };
 
-    const plugins: Plugin[] = [
+    const plugins: (Plugin | PluginTuple)[] = [
       combineDemos,
       removeUnnecessaryIndex,
       uniquefyUrls,
@@ -80,9 +84,10 @@ export default class Docfy {
 
     this.pipeline = trough<Context>()
       .use<SourceConfig[]>(this.initializePipeline.bind(this))
+      .use(this.runBeforePlugins.bind(this))
       .use(this.runMdastTransformers.bind(this))
       .use(this.runHastTransformers.bind(this))
-      .use(this.runDefaultPlugins.bind(this));
+      .use(this.runAfterPlugins.bind(this));
   }
 
   public run(sources: SourceConfig[]): Promise<DocfyResult> {
@@ -105,7 +110,7 @@ export default class Docfy {
   }
 
   private runMdastTransformers(ctx: Context): void {
-    this.plugins.mdastTransformers.forEach(([fn, options]) => {
+    this.plugins.runWithMdast.forEach(([fn, options]) => {
       fn(ctx, options);
     });
   }
@@ -121,47 +126,56 @@ export default class Docfy {
       });
     });
 
-    this.plugins.hastTransformers.forEach(([fn, options]) => {
+    this.plugins.runWithHast.forEach(([fn, options]) => {
       fn(ctx, options);
     });
   }
 
-  private runDefaultPlugins(ctx: Context): void {
-    this.plugins.defaults.forEach(([fn, options]) => {
+  private runBeforePlugins(ctx: Context): void {
+    this.plugins.runBefore.forEach(([fn, options]) => {
       fn(ctx, options);
     });
   }
 
-  private createPluginPipeline(plugins: Plugin[]): PluginPipeline {
+  private runAfterPlugins(ctx: Context): void {
+    this.plugins.runAfter.forEach(([fn, options]) => {
+      fn(ctx, options);
+    });
+  }
+
+  private createPluginPipeline(
+    plugins: (Plugin | PluginTuple)[]
+  ): PluginPipeline {
     const result: PluginPipeline = {
-      mdastTransformers: [],
-      hastTransformers: [],
-      defaults: []
+      runBefore: [],
+      runWithMdast: [],
+      runWithHast: [],
+      runAfter: []
     };
 
-    const add = (fn: PluginFn | PluginObj, options: PluginOptions): void => {
-      if (typeof fn !== 'function') {
-        if (fn.transformHast) {
-          result.hastTransformers.push([fn.transformHast, options]);
-        }
+    const add = (fn: Plugin, options: [PluginOptions?]): void => {
+      if (fn.runBefore) {
+        result.runBefore.push([fn.runBefore, ...options]);
+      }
+      if (fn.runWithHast) {
+        result.runWithHast.push([fn.runWithHast, ...options]);
+      }
 
-        if (fn.transformMdast) {
-          result.mdastTransformers.push([fn.transformMdast, options]);
-        }
+      if (fn.runWithMdast) {
+        result.runWithMdast.push([fn.runWithMdast, ...options]);
+      }
 
-        if (fn.default) {
-          result.defaults.push([fn.default, options]);
-        }
-      } else {
-        result.defaults.push([fn, options]);
+      if (fn.runAfter) {
+        result.runAfter.push([fn.runAfter, ...options]);
       }
     };
 
     plugins.forEach((plugin) => {
       if (Array.isArray(plugin)) {
-        add(plugin[0], plugin[1]);
+        const [fn, ...options] = plugin;
+        add(fn, options);
       } else {
-        add(plugin, {});
+        add(plugin, []);
       }
     });
 

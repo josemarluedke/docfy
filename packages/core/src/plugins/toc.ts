@@ -41,8 +41,8 @@ function isHeading(node: Node): node is HeadingNode {
   return node.type === 'heading';
 }
 
-export const toc = {
-  transformMdast(ctx: Context): void {
+export default {
+  runWithMdast(ctx: Context): void {
     ctx.pages.forEach((page): void => {
       const headings: Heading[] = [];
 

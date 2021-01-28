@@ -91,8 +91,8 @@ function visitor(ctx: Context, page: PageContent): void {
  * [Link to another page](../some-other-markdown.md)
  * ```
  */
-export const replaceInternalLinks = {
-  transformMdast(ctx: Context): void {
+export default {
+  runWithMdast(ctx: Context): void {
     ctx.pages.forEach((page) => {
       visitor(ctx, page);
 

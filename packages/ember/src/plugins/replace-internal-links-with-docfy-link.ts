@@ -46,7 +46,7 @@ function visitor(page: PageContent): void {
  * the `DocfyLink` component.
  */
 export default {
-  transformMdast(ctx: Context): void {
+  runWithMdast(ctx: Context): void {
     ctx.pages.forEach((page) => {
       visitor(page);
 
