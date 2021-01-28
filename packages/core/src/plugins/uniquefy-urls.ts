@@ -1,4 +1,4 @@
-import { Context } from '../types';
+import plugin from '../plugin';
 
 function generateUniqueUrl(
   seenUrls: string[],
@@ -26,8 +26,8 @@ function generateUniqueUrl(
  * This plugin makes sure that all the urls are unique. If there is a
  * duplicated url, we will modify it to make unique.
  */
-export default {
-  runAfter(ctx: Context): void {
+export default plugin({
+  runAfter(ctx): void {
     const seenUrls: string[] = [];
     ctx.pages.forEach((page) => {
       if (seenUrls.indexOf(page.meta.url) > -1) {
@@ -36,4 +36,4 @@ export default {
       seenUrls.push(page.meta.url);
     });
   }
-};
+});

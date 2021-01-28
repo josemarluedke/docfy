@@ -1,5 +1,5 @@
 import visit from 'unist-util-visit';
-import { Context } from '@docfy/core/lib/types';
+import plugin from '@docfy/core/lib/plugin';
 import { DemoComponent, CodeNode } from './types';
 import {
   generateDemoComponentName,
@@ -10,8 +10,8 @@ import {
 } from './utils';
 import path from 'path';
 
-export default {
-  runWithMdast(ctx: Context): void {
+export default plugin({
+  runWithMdast(ctx): void {
     const seenNames: Set<string> = new Set();
 
     ctx.pages.forEach((page) => {
@@ -51,4 +51,4 @@ export default {
       }
     });
   }
-};
+});

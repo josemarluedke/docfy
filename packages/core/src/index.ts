@@ -9,10 +9,9 @@ import {
   SourceConfig,
   PageMetadata,
   DocfyResult,
-  PluginOptions,
-  PluginFn,
   Plugin,
-  PluginTuple
+  PluginList,
+  PluginWithOptions
 } from './types';
 import {
   DEFAULT_IGNORE,
@@ -35,22 +34,10 @@ import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/core');
 
-type PluginWithOptions<T extends unknown[] = [PluginOptions?]> = [
-  PluginFn<T>,
-  ...T
-];
-
-interface PluginPipeline {
-  runBefore: PluginWithOptions[];
-  runWithMdast: PluginWithOptions[];
-  runWithHast: PluginWithOptions[];
-  runAfter: PluginWithOptions[];
-}
-
 export default class Docfy {
   private pipeline: Through<Context>;
   private context: Context;
-  private plugins: PluginPipeline;
+  private plugins: PluginList;
 
   constructor(options: Options = {}) {
     const { remarkPlugins, rehypePlugins, ...rest } = options;
@@ -66,7 +53,7 @@ export default class Docfy {
       }
     };
 
-    const plugins: (Plugin | PluginTuple)[] = [
+    const plugins: PluginList = [
       combineDemos,
       removeUnnecessaryIndex,
       uniquefyUrls,
@@ -80,14 +67,15 @@ export default class Docfy {
 
     // Make sure TOC and renderMarkdown plugins are the last ones
     plugins.push(toc, renderMarkdown);
-    this.plugins = this.createPluginPipeline(plugins);
+    this.plugins = plugins;
 
     this.pipeline = trough<Context>()
       .use<SourceConfig[]>(this.initializePipeline.bind(this))
-      .use(this.runBeforePlugins.bind(this))
-      .use(this.runMdastTransformers.bind(this))
-      .use(this.runHastTransformers.bind(this))
-      .use(this.runAfterPlugins.bind(this));
+      .use(this.createPluginPipelineFor('runBefore'))
+      .use(this.createPluginPipelineFor('runWithMdast'))
+      .use(this.transformerMdastToHast)
+      .use(this.createPluginPipelineFor('runWithHast'))
+      .use(this.createPluginPipelineFor('runAfter'));
   }
 
   public run(sources: SourceConfig[]): Promise<DocfyResult> {
@@ -109,77 +97,43 @@ export default class Docfy {
     });
   }
 
-  private runMdastTransformers(ctx: Context): void {
-    this.plugins.runWithMdast.forEach(([fn, options]) => {
-      fn(ctx, options);
-    });
-  }
-
-  private runHastTransformers(ctx: Context): void {
+  private transformerMdastToHast(ctx: Context): void {
     ctx.pages.forEach((page) => {
-      const hast = this.context.rehype.runSync(page.ast, page.vFile);
+      const hast = ctx.rehype.runSync(page.ast, page.vFile);
       page.ast = hast;
 
       page.demos?.forEach((demo) => {
-        const hast = this.context.rehype.runSync(demo.ast, demo.vFile);
+        const hast = ctx.rehype.runSync(demo.ast, demo.vFile);
         demo.ast = hast;
       });
     });
-
-    this.plugins.runWithHast.forEach(([fn, options]) => {
-      fn(ctx, options);
-    });
   }
 
-  private runBeforePlugins(ctx: Context): void {
-    this.plugins.runBefore.forEach(([fn, options]) => {
-      fn(ctx, options);
-    });
-  }
+  private createPluginPipelineFor(
+    funcType: 'runBefore' | 'runAfter' | 'runWithMdast' | 'runWithHast'
+  ): (ctx: Context) => void {
+    function isPluginWithOPtions(
+      plugin: Plugin | PluginWithOptions
+    ): plugin is PluginWithOptions {
+      return '__options' in plugin;
+    }
 
-  private runAfterPlugins(ctx: Context): void {
-    this.plugins.runAfter.forEach(([fn, options]) => {
-      fn(ctx, options);
-    });
-  }
+    const plugins = this.plugins;
 
-  private createPluginPipeline(
-    plugins: (Plugin | PluginTuple)[]
-  ): PluginPipeline {
-    const result: PluginPipeline = {
-      runBefore: [],
-      runWithMdast: [],
-      runWithHast: [],
-      runAfter: []
+    return function (ctx: Context): void {
+      plugins.forEach((plugin) => {
+        let options: unknown;
+
+        if (isPluginWithOPtions(plugin)) {
+          options = plugin.__options;
+        }
+
+        const fn = plugin[funcType];
+        if (fn) {
+          fn(ctx, options as never);
+        }
+      });
     };
-
-    const add = (fn: Plugin, options: [PluginOptions?]): void => {
-      if (fn.runBefore) {
-        result.runBefore.push([fn.runBefore, ...options]);
-      }
-      if (fn.runWithHast) {
-        result.runWithHast.push([fn.runWithHast, ...options]);
-      }
-
-      if (fn.runWithMdast) {
-        result.runWithMdast.push([fn.runWithMdast, ...options]);
-      }
-
-      if (fn.runAfter) {
-        result.runAfter.push([fn.runAfter, ...options]);
-      }
-    };
-
-    plugins.forEach((plugin) => {
-      if (Array.isArray(plugin)) {
-        const [fn, ...options] = plugin;
-        add(fn, options);
-      } else {
-        add(plugin, []);
-      }
-    });
-
-    return result;
   }
 
   private initializePipeline(sources: SourceConfig[]): Context {

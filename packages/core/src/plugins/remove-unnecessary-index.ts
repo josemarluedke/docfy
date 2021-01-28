@@ -1,12 +1,12 @@
-import { Context } from '../types';
+import plugin from '../plugin';
 
 /**
  * This plugin removes unnecessary index pages.
  * These can happen when there are folders with an
  * index.md/readme.md and no subfolder/pages nested.
  */
-export default {
-  runAfter(ctx: Context): void {
+export default plugin({
+  runAfter(ctx): void {
     const urls: string[] = [];
     ctx.pages.forEach((page) => {
       urls.push(page.meta.url);
@@ -28,4 +28,4 @@ export default {
       }
     });
   }
-};
+});

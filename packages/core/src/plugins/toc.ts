@@ -1,4 +1,5 @@
-import { Context, Heading } from '../types';
+import plugin from '../plugin';
+import { Heading } from '../types';
 import visit from 'unist-util-visit';
 import { Node, Parent } from 'unist';
 import toString from 'mdast-util-to-string';
@@ -41,8 +42,8 @@ function isHeading(node: Node): node is HeadingNode {
   return node.type === 'heading';
 }
 
-export default {
-  runWithMdast(ctx: Context): void {
+export default plugin({
+  runWithMdast(ctx): void {
     ctx.pages.forEach((page): void => {
       const headings: Heading[] = [];
 
@@ -68,4 +69,4 @@ export default {
       page.meta.headings = headings;
     });
   }
-};
+});

@@ -1,5 +1,6 @@
 import visit from 'unist-util-visit';
-import { Context, PageContent } from '../types';
+import plugin from '../plugin';
+import { PageContent } from '../types';
 import { isValidUrl } from '../-private/utils';
 import { Node } from 'unist';
 import path from 'path';
@@ -55,8 +56,8 @@ function generateUniqueFileName(
   return candidate;
 }
 
-export default {
-  runWithMdast(ctx: Context): void {
+export default plugin({
+  runWithMdast(ctx): void {
     const staticAssetPath = (
       ctx.options.staticAssetsPath || '/assets/docfy'
     ).split('/');
@@ -120,4 +121,4 @@ export default {
       });
     });
   }
-};
+});

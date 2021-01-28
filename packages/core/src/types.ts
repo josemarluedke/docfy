@@ -157,28 +157,34 @@ export interface PluginOptions {
   [key: string]: unknown;
 }
 
-export type PluginFn<T extends unknown[] = [PluginOptions?]> = (
+export type PluginHandler<T = PluginOptions | undefined | null> = (
   ctx: Context,
-  ...options: T
-) => Context | void;
+  options: T
+) => void;
 
-export interface Plugin<T extends unknown[] = [PluginOptions?]> {
-  runBefore?: PluginFn<T>;
-  runWithMdast?: PluginFn<T>;
-  runWithHast?: PluginFn<T>;
-  runAfter?: PluginFn<T>;
+export interface Plugin<T = PluginOptions | undefined | null> {
+  runBefore?: PluginHandler<T>;
+  runWithMdast?: PluginHandler<T>;
+  runWithHast?: PluginHandler<T>;
+  runAfter?: PluginHandler<T>;
 }
 
-export type PluginTuple<T extends unknown[] = [PluginOptions?]> = [
-  Plugin<T>,
-  ...T
-];
+export interface PluginWithOptions<T = PluginOptions> extends Plugin<T> {
+  __options: T;
+}
+
+export type PluginWithOptionsFunction<T = PluginOptions> = (
+  options: T
+) => PluginWithOptions<T>;
+
+//eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PluginList = (Plugin | PluginWithOptions<any>)[];
 
 export interface Options {
   /**
    * A list of Docfy plugins.
    */
-  plugins?: (Plugin | PluginTuple)[];
+  plugins?: PluginList;
 
   /**
    * Additional remark plugins

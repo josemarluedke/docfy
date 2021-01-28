@@ -1,5 +1,6 @@
 import visit from 'unist-util-visit';
 import { Context, PageContent } from '@docfy/core/lib/types';
+import plugin from '@docfy/core/lib/plugin';
 import { Node } from 'unist';
 import findNode from 'unist-util-find';
 import toString from 'mdast-util-to-string';
@@ -47,7 +48,7 @@ function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
   }
 }
 
-export default {
+export default plugin({
   runWithMdast(ctx: Context): void {
     const seenNames: Set<string> = new Set();
 
@@ -121,4 +122,4 @@ export default {
       }
     });
   }
-};
+});

@@ -1,8 +1,8 @@
-import { Context } from '../types';
+import plugin from '../plugin';
 import stringify from 'rehype-stringify';
 
-export default {
-  runAfter(context: Context): void {
+export default plugin({
+  runAfter(context): void {
     context.pages.forEach((page) => {
       const rehype = context.rehype().use(stringify, {
         allowDangerousHtml: true
@@ -10,4 +10,4 @@ export default {
       page.rendered = rehype.stringify(page.ast);
     });
   }
-};
+});

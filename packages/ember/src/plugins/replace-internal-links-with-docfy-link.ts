@@ -1,5 +1,6 @@
+import plugin from '@docfy/core/lib/plugin';
 import visit from 'unist-util-visit';
-import { Context, PageContent } from '@docfy/core/lib/types';
+import { PageContent } from '@docfy/core/lib/types';
 import { Node } from 'unist';
 import u from 'unist-builder';
 
@@ -45,8 +46,8 @@ function visitor(page: PageContent): void {
  * This function finds all the links starting with an `/` and replace them with
  * the `DocfyLink` component.
  */
-export default {
-  runWithMdast(ctx: Context): void {
+export default plugin({
+  runWithMdast(ctx): void {
     ctx.pages.forEach((page) => {
       visitor(page);
 
@@ -57,4 +58,4 @@ export default {
       }
     });
   }
-};
+});
