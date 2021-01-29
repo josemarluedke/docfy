@@ -117,7 +117,7 @@ class DocfyBroccoli extends Plugin {
 }
 
 module.exports = {
-  name: require('../package').name, // eslint-disable-line @typescript-eslint/no-var-requires
+  name: require('../package').name, // eslint-disable-line
 
   docfyConfig: undefined,
 
