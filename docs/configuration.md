@@ -12,7 +12,7 @@ Here you can customize the base options, such as the Docfy plugins, remark plugi
 Below you can see an example of how to pass these options to Docfy.
 
 ```js
-const Docfy = require('@docfy/core').default;
+const Docfy = require('@docfy/core');
 
 const docfy = new Docfy({
   plugins: [],

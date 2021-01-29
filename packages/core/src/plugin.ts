@@ -26,3 +26,4 @@ function pluginWithOptions<T = PluginOptions>(
 plugin.withOptions = pluginWithOptions;
 
 export default plugin;
+module.exports = plugin;

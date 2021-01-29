@@ -266,3 +266,4 @@ class Docfy {
 }
 
 export default Docfy;
+module.exports = Docfy;
