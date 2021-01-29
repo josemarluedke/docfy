@@ -47,7 +47,7 @@ const root = path.resolve(__dirname, projectRoot);
 
 ## Compatibility
 
-* Node.js v10 or above
+* Node.js v12 or above
 
 ## License
 
