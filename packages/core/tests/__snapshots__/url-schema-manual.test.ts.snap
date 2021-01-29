@@ -19,8 +19,20 @@ Array [
     "/how-it-works",
   ],
   Array [
+    "docs/html.md",
+    "/html",
+  ],
+  Array [
+    "docs/math.md",
+    "/math",
+  ],
+  Array [
     "docs/static-asset.md",
     "/static-asset",
+  ],
+  Array [
+    "docs/table.md",
+    "/table",
   ],
   Array [
     "packages/package1/components/button.md",
@@ -68,8 +80,20 @@ Array [
     "/docs/how-it-works.html",
   ],
   Array [
+    "docs/html.md",
+    "/docs/html.html",
+  ],
+  Array [
+    "docs/math.md",
+    "/docs/math.html",
+  ],
+  Array [
     "docs/static-asset.md",
     "/docs/static-asset.html",
+  ],
+  Array [
+    "docs/table.md",
+    "/docs/table.html",
   ],
   Array [
     "packages/package1/components/button.md",

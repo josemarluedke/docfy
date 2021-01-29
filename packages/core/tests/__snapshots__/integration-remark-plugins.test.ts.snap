@@ -1,11 +1,30 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`When proving rehype plugins When plugin has no options it should have used remark and rehype plugins 1`] = `
+Array [
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\">Testing math remark and rehype plugins</h1>
+<p><span class=\\"math math-inline\\"><span class=\\"katex\\"><span class=\\"katex-mathml\\"><math xmlns=\\"http://www.w3.org/1998/Math/MathML\\"><semantics><mrow><mi>x</mi></mrow><annotation encoding=\\"application/x-tex\\">x</annotation></semantics></math></span><span class=\\"katex-html\\" aria-hidden=\\"true\\"><span class=\\"base\\"><span class=\\"strut\\" style=\\"height:0.43056em;vertical-align:0em;\\"></span><span class=\\"mord mathnormal\\">x</span></span></span></span></span></p>",
+  ],
+]
+`;
+
+exports[`When proving remark plugins Using remark math plugin it should have used the remark math plugin 1`] = `
+Array [
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\">Testing math remark and rehype plugins</h1>
+<p><span class=\\"math math-inline\\">x</span></p>",
+  ],
+]
+`;
+
 exports[`When proving remark plugins When plugin has no options it should have rendered the content with the plugin with no options 1`] = `
 Array [
   Array [
     "README.md",
-    "<h1 id=\\"the-index\\"><a href=\\"#the-index\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>The index</h1>
-",
+    "<h1 id=\\"the-index\\"><a href=\\"#the-index\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>The index</h1>",
   ],
   Array [
     "docs/about.md",
@@ -23,63 +42,90 @@ Array [
 <h4 id=\\"4-level\\"><a href=\\"#4-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>4 level</h4>
 <h5 id=\\"5-level\\"><a href=\\"#5-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>5 level</h5>
 <h6 id=\\"6-level\\"><a href=\\"#6-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>6 level</h6>
-<h4 id=\\"4-level-2nd\\"><a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>4 level 2nd</h4>
-",
+<h4 id=\\"4-level-2nd\\"><a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>4 level 2nd</h4>",
   ],
   Array [
     "docs/custom-url.md",
     "<h1 id=\\"this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\"><a href=\\"#this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>This a test for the ability to change the url using frontmatter</h1>
 <p>The url will still contain any prefix and suffix if specified in the source
-config.</p>
-",
+config.</p>",
   ],
   Array [
     "docs/how-it-works.md",
     "<h1 id=\\"how-it-works\\"><a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How it works?</h1>
 <p>This is a description.</p>
-<p><a href=\\"/docs/about\\">Link using reference</a></p>
-",
+<p><a href=\\"/docs/about\\">Link using reference</a></p>",
+  ],
+  Array [
+    "docs/html.md",
+    "<h1 id=\\"html-should-work\\"><a href=\\"#html-should-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>HTML should work</h1>
+<div>
+  test
+</div>
+<main>
+<p><strong>bold</strong></p>
+</main>",
+  ],
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\"><a href=\\"#testing-math-remark-and-rehype-plugins\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Testing math remark and rehype plugins</h1>
+<p>$x$</p>",
   ],
   Array [
     "docs/static-asset.md",
     "<h1 id=\\"this-is-a-markdown-that-has-a-image\\"><a href=\\"#this-is-a-markdown-that-has-a-image\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>This is a markdown that has a image</h1>
 <p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"GitHub\\"></p>
 <p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"Alt text\\" title=\\"The GitHub Icon\\"></p>
-<p>With a reference later in the document defining the Image location:</p>
-",
+<p>With a reference later in the document defining the Image location:</p>",
+  ],
+  Array [
+    "docs/table.md",
+    "<h1 id=\\"table-example\\"><a href=\\"#table-example\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Table example</h1>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@scope</code></td>
+<td>Filter links by a scope name</td>
+<td><code>string</code> | <code>undefined</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>",
   ],
   Array [
     "packages/package1/components/button.md",
-    "<h1 id=\\"button-component\\"><a href=\\"#button-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Button Component</h1>
-",
+    "<h1 id=\\"button-component\\"><a href=\\"#button-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Button Component</h1>",
   ],
   Array [
     "packages/package1/docs/intro.md",
-    "<h1 id=\\"docs-intro\\"><a href=\\"#docs-intro\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Docs Intro</h1>
-",
+    "<h1 id=\\"docs-intro\\"><a href=\\"#docs-intro\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Docs Intro</h1>",
   ],
   Array [
     "packages/package2/docs/overview.md",
     "<h1 id=\\"this-is-the-overview-page\\"><a href=\\"#this-is-the-overview-page\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>This is the overview page</h1>
-<p>This is a <a href=\\"/docs/category1/components/button\\">link to another file in a different package</a>.</p>
-",
+<p>This is a <a href=\\"/docs/category1/components/button\\">link to another file in a different package</a>.</p>",
   ],
   Array [
     "packages/package2/docs/styles.md",
     "<h1 id=\\"how-styles-work\\"><a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>How styles work</h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/category2/overview#get-started\\">overview</a> to get started.</p>
-",
+<p>Please refer to <a href=\\"/docs/category2/overview#get-started\\">overview</a> to get started.</p>",
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "<h1 id=\\"form-component\\"><a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Form Component</h1>
-",
+    "<h1 id=\\"form-component\\"><a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a>Form Component</h1>",
   ],
   Array [
     "packages/package1/components/form/something-else.md",
-    "<p>Some other file next to a index.md</p>
-",
+    "<p>Some other file next to a index.md</p>",
   ],
 ]
 `;
@@ -88,8 +134,7 @@ exports[`When proving remark plugins When plugin has options it should have rend
 Array [
   Array [
     "README.md",
-    "<h1 id=\\"the-index\\">The index<a href=\\"#the-index\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-",
+    "<h1 id=\\"the-index\\">The index<a href=\\"#the-index\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>",
   ],
   Array [
     "docs/about.md",
@@ -107,63 +152,90 @@ Array [
 <h4 id=\\"4-level\\">4 level<a href=\\"#4-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h4>
 <h5 id=\\"5-level\\">5 level<a href=\\"#5-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h5>
 <h6 id=\\"6-level\\">6 level<a href=\\"#6-level\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h6>
-<h4 id=\\"4-level-2nd\\">4 level 2nd<a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h4>
-",
+<h4 id=\\"4-level-2nd\\">4 level 2nd<a href=\\"#4-level-2nd\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h4>",
   ],
   Array [
     "docs/custom-url.md",
     "<h1 id=\\"this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\">This a test for the ability to change the url using frontmatter<a href=\\"#this-a-test-for-the-ability-to-change-the-url-using-frontmatter\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>The url will still contain any prefix and suffix if specified in the source
-config.</p>
-",
+config.</p>",
   ],
   Array [
     "docs/how-it-works.md",
     "<h1 id=\\"how-it-works\\">How it works?<a href=\\"#how-it-works\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>This is a description.</p>
-<p><a href=\\"/docs/about\\">Link using reference</a></p>
-",
+<p><a href=\\"/docs/about\\">Link using reference</a></p>",
+  ],
+  Array [
+    "docs/html.md",
+    "<h1 id=\\"html-should-work\\">HTML should work<a href=\\"#html-should-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<div>
+  test
+</div>
+<main>
+<p><strong>bold</strong></p>
+</main>",
+  ],
+  Array [
+    "docs/math.md",
+    "<h1 id=\\"testing-math-remark-and-rehype-plugins\\">Testing math remark and rehype plugins<a href=\\"#testing-math-remark-and-rehype-plugins\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<p>$x$</p>",
   ],
   Array [
     "docs/static-asset.md",
     "<h1 id=\\"this-is-a-markdown-that-has-a-image\\">This is a markdown that has a image<a href=\\"#this-is-a-markdown-that-has-a-image\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"GitHub\\"></p>
 <p><img src=\\"/assets/docfy/github-icon.png\\" alt=\\"Alt text\\" title=\\"The GitHub Icon\\"></p>
-<p>With a reference later in the document defining the Image location:</p>
-",
+<p>With a reference later in the document defining the Image location:</p>",
+  ],
+  Array [
+    "docs/table.md",
+    "<h1 id=\\"table-example\\">Table example<a href=\\"#table-example\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
+<table>
+<thead>
+<tr>
+<th>Argument</th>
+<th>Description</th>
+<th>Type</th>
+<th>Default Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@scope</code></td>
+<td>Filter links by a scope name</td>
+<td><code>string</code> | <code>undefined</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>",
   ],
   Array [
     "packages/package1/components/button.md",
-    "<h1 id=\\"button-component\\">Button Component<a href=\\"#button-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-",
+    "<h1 id=\\"button-component\\">Button Component<a href=\\"#button-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>",
   ],
   Array [
     "packages/package1/docs/intro.md",
-    "<h1 id=\\"docs-intro\\">Docs Intro<a href=\\"#docs-intro\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-",
+    "<h1 id=\\"docs-intro\\">Docs Intro<a href=\\"#docs-intro\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>",
   ],
   Array [
     "packages/package2/docs/overview.md",
     "<h1 id=\\"this-is-the-overview-page\\">This is the overview page<a href=\\"#this-is-the-overview-page\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-<p>This is a <a href=\\"/docs/category1/components/button\\">link to another file in a different package</a>.</p>
-",
+<p>This is a <a href=\\"/docs/category1/components/button\\">link to another file in a different package</a>.</p>",
   ],
   Array [
     "packages/package2/docs/styles.md",
     "<h1 id=\\"how-styles-work\\">How styles work<a href=\\"#how-styles-work\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
 <p>Short description.</p>
-<p>Please refer to <a href=\\"/docs/category2/overview#get-started\\">overview</a> to get started.</p>
-",
+<p>Please refer to <a href=\\"/docs/category2/overview#get-started\\">overview</a> to get started.</p>",
   ],
   Array [
     "packages/package1/components/form/index.md",
-    "<h1 id=\\"form-component\\">Form Component<a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>
-",
+    "<h1 id=\\"form-component\\">Form Component<a href=\\"#form-component\\" aria-hidden=\\"true\\" tabindex=\\"-1\\"><span class=\\"icon icon-link\\"></span></a></h1>",
   ],
   Array [
     "packages/package1/components/form/something-else.md",
-    "<p>Some other file next to a index.md</p>
-",
+    "<p>Some other file next to a index.md</p>",
   ],
 ]
 `;

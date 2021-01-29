@@ -1,7 +1,17 @@
-import { Context } from '../types';
+import plugin from '../plugin';
+import stringify from 'rehype-stringify';
 
-export function renderMarkdown(context: Context): void {
-  context.pages.forEach((page) => {
-    page.rendered = context.remark.stringify(page.ast);
-  });
-}
+export default plugin({
+  runAfter(context): void {
+    const rehype = context.rehype().use(stringify, {
+      allowDangerousHtml: true
+    });
+
+    context.pages.forEach((page) => {
+      page.rendered = rehype.stringify(page.ast);
+      page.demos?.forEach((demo) => {
+        demo.rendered = rehype.stringify(demo.ast);
+      });
+    });
+  }
+});
