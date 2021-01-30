@@ -5,7 +5,10 @@ module.exports = {
   plugins: [],
   extends: ['@underline/eslint-config-ember-typescript'],
   rules: {
-    'prefer-rest-params': 'off'
+    'prefer-rest-params': 'off',
+    'ember/no-shadow-route-definition': 'off',
+    'ember/no-empty-glimmer-component-classes': 'off',
+    'ember/no-private-routing-service': 'off'
   },
   overrides: [
     // node files

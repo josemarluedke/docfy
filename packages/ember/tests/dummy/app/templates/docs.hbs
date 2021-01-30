@@ -1,14 +1,21 @@
 <div class="flex">
   <div class="relative flex-shrink-0">
-    <div class="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"></div>
-    <nav class="sticky w-64 h-screen pt-8 pt-10 mr-8 overflow-y-scroll leading-snug top-16">
+    <div
+      class="absolute inset-y-0 right-0 w-screen border-r border-gray-200 bg-gray-50"
+    ></div>
+    <nav
+      class="sticky w-64 h-screen pt-8 pt-10 mr-8 overflow-y-scroll leading-snug top-16"
+    >
       <DocfyOutput @scope="docs" as |node|>
         <ul class="-mt-4" data-test-id="docs-nav">
           {{#each node.pages as |page|}}
             <li class="mt-4">
               <div class="flex items-center">
                 <span class="pr-3 text-gray-300">
-                  <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+                  <svg
+                    viewBox="0 0 100 100"
+                    class="inline-block w-2 h-2 fill-current"
+                  >
                     <circle r="30" cx="50" cy="50"></circle>
                   </svg>
                 </span>
@@ -34,7 +41,10 @@
                   <li class="mt-4">
                     <div class="flex flex-no-wrap items-center">
                       <span class="pr-3 text-gray-300">
-                        <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+                        <svg
+                          viewBox="0 0 100 100"
+                          class="inline-block w-2 h-2 fill-current"
+                        >
                           <circle r="30" cx="50" cy="50"></circle>
                         </svg>
                       </span>
@@ -60,7 +70,10 @@
                         <li class="mt-4">
                           <div class="flex flex-no-wrap items-center">
                             <span class="pr-3 text-gray-300">
-                              <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+                              <svg
+                                viewBox="0 0 100 100"
+                                class="inline-block w-2 h-2 fill-current"
+                              >
                                 <circle r="30" cx="50" cy="50"></circle>
                               </svg>
                             </span>
@@ -93,7 +106,10 @@
               {{#each page.headings as |heading|}}
                 <li class="mt-4">
                   <span class="pr-3 text-gray-300">
-                    <svg viewBox="0 0 100 100" class="inline-block w-2 h-2 fill-current">
+                    <svg
+                      viewBox="0 0 100 100"
+                      class="inline-block w-2 h-2 fill-current"
+                    >
                       <circle r="30" cx="50" cy="50"></circle>
                     </svg>
                   </span>
@@ -106,7 +122,6 @@
           {{/if}}
         </DocfyOutput>
       </div>
-
     </nav>
   </div>
 
@@ -129,7 +144,9 @@
       <DocfyPreviousAndNextPage as |previous next|>
         <div>
           {{#if previous}}
-            <div class="text-sm">Previous</div>
+            <div class="text-sm">
+              Previous
+            </div>
 
             <DocfyLink @to={{previous.url}} class="text-xl text-blue-500">
               {{previous.title}}
@@ -138,7 +155,9 @@
         </div>
         <div>
           {{#if next}}
-            <div class="text-sm text-right">Next</div>
+            <div class="text-sm text-right">
+              Next
+            </div>
 
             <DocfyLink @to={{next.url}} class="text-xl text-blue-500">
               {{next.title}}

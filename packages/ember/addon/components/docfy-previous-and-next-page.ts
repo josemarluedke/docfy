@@ -7,9 +7,7 @@ interface DocfyPreviousAndNextPageArgs {
   scope?: string;
 }
 
-export default class DocfyPreviousAndNextPage extends Component<
-  DocfyPreviousAndNextPageArgs
-> {
+export default class DocfyPreviousAndNextPage extends Component<DocfyPreviousAndNextPageArgs> {
   @service docfy!: DocfyService;
 
   get previous(): PageMetadata | undefined {
