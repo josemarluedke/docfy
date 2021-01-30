@@ -2,7 +2,6 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
-@import './markdown.css';
 @import './highlight.css';
 
 .docfy-demo__example {
@@ -10,7 +9,7 @@
 }
 
 .docfy-demo__description {
-  @apply p-4 border rounded-t;
+  @apply mt-8 p-4 border rounded-t;
 
   &__header {
     @apply flex justify-between;
@@ -22,10 +21,6 @@
     &__edit-url {
       @apply text-sm;
     }
-  }
-
-  &__content {
-    @apply markdown;
   }
 }
 .docfy-demo__snippets {
@@ -44,6 +39,8 @@
 }
 
 .docfy-demo__snippet {
+  @apply mb-8;
+
   pre {
     @apply p-4;
     @apply flex text-gray-200 bg-gray-800;

@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Node as MarkdownAST } from 'unist';
 import {
   Processor,
-  Plugin as RemarkPlugin,
-  Settings as RemarkSettings
+  Plugin as UnifiedPlugin,
+  Settings as UnifiedSettings
 } from 'unified';
+import { VFile } from 'vfile';
 
 export interface Heading {
   title: string;
@@ -26,6 +29,7 @@ export interface PageContent {
   meta: PageMetadata;
   sourceConfig: SourceConfig;
   source: string;
+  vFile: VFile;
   ast: MarkdownAST;
   markdown: string;
   rendered: string;
@@ -34,7 +38,10 @@ export interface PageContent {
 }
 
 interface ContextOptions
-  extends Omit<Options, 'plugins' | 'remarkPlugins' | 'tocMaxDepth'> {
+  extends Omit<
+    Options,
+    'plugins' | 'remarkPlugins' | 'rehypePlugins' | 'tocMaxDepth'
+  > {
   tocMaxDepth: number;
 }
 
@@ -45,6 +52,7 @@ export interface StaticAssetDefinition {
 
 export interface Context {
   remark: Processor;
+  rehype: Processor;
   pages: PageContent[];
   staticAssets: StaticAssetDefinition[];
   options: ContextOptions;
@@ -147,13 +155,41 @@ interface RepositoryConfig {
   editBranch?: string;
 }
 
-export type Plugin = (ctx: Context) => void | Context; // eslint-disable-line
+export interface PluginOptions {
+  [key: string]: unknown;
+}
+
+export type PluginHandler<T = PluginOptions | undefined | null> = (
+  ctx: Context,
+  options: T
+) => void;
+
+export interface Plugin<T = PluginOptions | undefined | null> {
+  runBefore?: PluginHandler<T>;
+  runWithMdast?: PluginHandler<T>;
+  runWithHast?: PluginHandler<T>;
+  runAfter?: PluginHandler<T>;
+}
+
+export interface PluginWithOptions<T = PluginOptions> extends Plugin<T> {
+  __options?: T;
+}
+
+export type PluginWithOptionsFunction<T = PluginOptions> = (
+  options?: T
+) => PluginWithOptions<T>;
+
+export type PluginList = (
+  | Plugin
+  | PluginWithOptions<any>
+  | PluginWithOptionsFunction<any>
+)[];
 
 export interface Options {
   /**
    * A list of Docfy plugins.
    */
-  plugins?: Plugin[];
+  plugins?: PluginList;
 
   /**
    * Additional remark plugins
@@ -175,7 +211,20 @@ export interface Options {
    * ];
    * ```
    */
-  remarkPlugins?: ([RemarkPlugin, RemarkSettings] | RemarkPlugin)[];
+  remarkPlugins?: ([UnifiedPlugin, UnifiedSettings] | UnifiedPlugin)[];
+
+  /**
+   * Additional rehype plugins
+   *
+   * Example:
+   *
+   * ```js
+   * const rehypePrism = require('@mapbox/rehype-prism');
+   *
+   * const rehypePlugins = [rehypePrism];
+   * ```
+   */
+  rehypePlugins?: ([UnifiedPlugin, UnifiedSettings] | UnifiedPlugin)[];
 
   /**
    * The max depth of headings

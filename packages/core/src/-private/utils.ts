@@ -3,7 +3,6 @@ import visit from 'unist-util-visit';
 import { Node } from 'unist';
 import toString from 'mdast-util-to-string';
 import Slugger from 'github-slugger';
-import YAML from 'yaml';
 import url from 'url';
 
 const slug = Slugger.slug;
@@ -88,22 +87,6 @@ export function inferTitle(ast: Node): string | undefined {
     docTitle = toString(node);
   });
   return docTitle;
-}
-
-export function parseFrontmatter(
-  source: string,
-  ast: Node
-): Record<string, unknown> {
-  let result = {};
-  visit(ast, 'yaml', (node) => {
-    try {
-      result = YAML.parse(node.value as string);
-    } catch (e) {
-      console.error(`Error while parsing frontmatter in ${source}: `, e);
-    }
-  });
-
-  return result;
 }
 
 export function isValidUrl(s: string): boolean {

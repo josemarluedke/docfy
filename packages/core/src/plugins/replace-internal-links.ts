@@ -1,4 +1,5 @@
 import path from 'path';
+import plugin from '../plugin';
 import { Node } from 'unist';
 import visit from 'unist-util-visit';
 import { isValidUrl, isAnchorUrl } from '../-private/utils';
@@ -91,14 +92,16 @@ function visitor(ctx: Context, page: PageContent): void {
  * [Link to another page](../some-other-markdown.md)
  * ```
  */
-export function replaceInternalLinks(ctx: Context): void {
-  ctx.pages.forEach((page) => {
-    visitor(ctx, page);
+export default plugin({
+  runWithMdast(ctx): void {
+    ctx.pages.forEach((page) => {
+      visitor(ctx, page);
 
-    if (Array.isArray(page.demos)) {
-      page.demos.forEach((demo) => {
-        visitor(ctx, demo);
-      });
-    }
-  });
-}
+      if (Array.isArray(page.demos)) {
+        page.demos.forEach((demo) => {
+          visitor(ctx, demo);
+        });
+      }
+    });
+  }
+});

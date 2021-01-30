@@ -8,16 +8,19 @@ import {
   Options,
   SourceConfig,
   PageMetadata,
-  DocfyResult
+  DocfyResult,
+  Plugin,
+  PluginList,
+  PluginWithOptions,
+  PluginWithOptionsFunction
 } from './types';
 import {
   DEFAULT_IGNORE,
   generateAutoUrl,
   generateManualUrl,
-  inferTitle,
-  parseFrontmatter
+  inferTitle
 } from './-private/utils';
-import { createRemark } from './-private/remark';
+import { createRehype, createRemark } from './-private/remark';
 import {
   combineDemos,
   renderMarkdown,
@@ -32,14 +35,17 @@ import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/core');
 
-export default class Docfy {
+class Docfy {
   private pipeline: Through<Context>;
   private context: Context;
+  private plugins: PluginList;
 
   constructor(options: Options = {}) {
-    const { remarkPlugins, ...rest } = options;
+    const { remarkPlugins, rehypePlugins, ...rest } = options;
+
     this.context = {
       remark: createRemark(remarkPlugins),
+      rehype: createRehype(rehypePlugins),
       pages: [],
       staticAssets: [],
       options: {
@@ -48,22 +54,29 @@ export default class Docfy {
       }
     };
 
-    this.pipeline = trough<Context>()
-      .use<SourceConfig[]>(this.initializePipeline.bind(this))
-      .use(combineDemos)
-      .use(removeUnnecessaryIndex)
-      .use(uniquefyUrls)
-      .use(replaceInternalLinks)
-      .use(staticAssets);
+    const plugins: PluginList = [
+      combineDemos,
+      removeUnnecessaryIndex,
+      uniquefyUrls,
+      replaceInternalLinks,
+      staticAssets
+    ];
 
     if (Array.isArray(options.plugins)) {
-      options.plugins.forEach((item) => {
-        this.pipeline.use(item);
-      });
+      plugins.push(...options.plugins);
     }
 
     // Make sure TOC and renderMarkdown plugins are the last ones
-    this.pipeline.use(toc).use(renderMarkdown);
+    plugins.push(toc, renderMarkdown);
+    this.plugins = plugins;
+
+    this.pipeline = trough<Context>()
+      .use<SourceConfig[]>(this.initializePipeline.bind(this))
+      .use(this.createPluginPipelineFor('runBefore'))
+      .use(this.createPluginPipelineFor('runWithMdast'))
+      .use(this.transformerMdastToHast)
+      .use(this.createPluginPipelineFor('runWithHast'))
+      .use(this.createPluginPipelineFor('runAfter'));
   }
 
   public run(sources: SourceConfig[]): Promise<DocfyResult> {
@@ -83,6 +96,55 @@ export default class Docfy {
         }
       });
     });
+  }
+
+  private transformerMdastToHast(ctx: Context): void {
+    ctx.pages.forEach((page) => {
+      const hast = ctx.rehype.runSync(page.ast, page.vFile);
+      page.ast = hast;
+
+      page.demos?.forEach((demo) => {
+        const hast = ctx.rehype.runSync(demo.ast, demo.vFile);
+        demo.ast = hast;
+      });
+    });
+  }
+
+  private createPluginPipelineFor(
+    funcType: 'runBefore' | 'runAfter' | 'runWithMdast' | 'runWithHast'
+  ): (ctx: Context) => void {
+    function isPluginWithOptionsFunction(
+      plugin: Plugin | PluginWithOptions | PluginWithOptionsFunction
+    ): plugin is PluginWithOptionsFunction {
+      return typeof plugin === 'function' && '__isOptionsFunction' in plugin;
+    }
+
+    function isPluginWithOptions(
+      plugin: Plugin | PluginWithOptions | PluginWithOptionsFunction
+    ): plugin is PluginWithOptions {
+      return '__options' in plugin;
+    }
+
+    const plugins = this.plugins;
+
+    return function (ctx: Context): void {
+      plugins.forEach((plugin) => {
+        let options: unknown;
+
+        if (isPluginWithOptionsFunction(plugin)) {
+          plugin = plugin();
+        }
+
+        if (isPluginWithOptions(plugin)) {
+          options = plugin.__options;
+        }
+
+        const fn = plugin[funcType];
+        if (fn) {
+          fn(ctx, options as never);
+        }
+      });
+    };
   }
 
   private initializePipeline(sources: SourceConfig[]): Context {
@@ -127,11 +189,12 @@ export default class Docfy {
 
     const vFile = toVfile.readSync(fullPath);
     const markdown = vFile.contents.toString();
-    const ast = this.context.remark.runSync(
-      this.context.remark.parse(vFile),
-      vFile
-    );
-    const frontmatter = parseFrontmatter(fullPath, ast);
+    const parsed = this.context.remark.parse(vFile);
+    const ast = this.context.remark.runSync(parsed, vFile);
+
+    const frontmatter: Record<string, unknown> =
+      (vFile.data as { frontmatter?: Record<string, unknown> }).frontmatter ||
+      {};
 
     let url: string;
     let title = inferTitle(ast);
@@ -193,6 +256,7 @@ export default class Docfy {
       meta: metadata,
       source: relativePath,
       sourceConfig,
+      vFile,
       ast,
       markdown,
       rendered: '',
@@ -200,3 +264,6 @@ export default class Docfy {
     };
   }
 }
+
+export default Docfy;
+module.exports = Docfy;

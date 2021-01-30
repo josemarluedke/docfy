@@ -3,8 +3,7 @@ import {
   generateAutoUrl,
   isAnchorUrl,
   isValidUrl,
-  inferTitle,
-  parseFrontmatter
+  inferTitle
 } from '../src/-private/utils';
 import { createRemark } from '../src/-private/remark';
 
@@ -192,19 +191,5 @@ describe('#inferTitle', () => {
 
     const ast = createRemark().parse(markdown);
     expect(inferTitle(ast)).toBe(undefined);
-  });
-});
-
-describe('#parseFrontmatter', () => {
-  test('it returns an object with parsed frontmatter', () => {
-    const markdown = '---\ntitle: My Title\nsubcategory: test\n---\n\n# test\n';
-    const remark = createRemark();
-    const ast = remark.runSync(remark.parse(markdown));
-    const result = parseFrontmatter('my-file.md', ast);
-
-    expect(result).toEqual({
-      title: 'My Title',
-      subcategory: 'test'
-    });
   });
 });

@@ -32,7 +32,7 @@ yarn add @docfy/core
 
 ```js
 // index.js
-const Docfy = require('@docfy/core').default;
+const Docfy = require('@docfy/core');
 const path = require('path');
 
 new Docfy().run([

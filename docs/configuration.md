@@ -8,15 +8,17 @@ Docfy has a few options you can change to enhance and, or modify Docfy behavior.
 
 ## Base configuration
 
-Here you can customize the base options, such as the Docfy plugins, remark plugins, the git repository URL, and more.
+Here you can customize the base options, such as the Docfy plugins, remark
+plugins, rehype plugins, the git repository URL, and more.
 Below you can see an example of how to pass these options to Docfy.
 
 ```js
-const Docfy = require('@docfy/core').default;
+const Docfy = require('@docfy/core');
 
 const docfy = new Docfy({
   plugins: [],
   remarkPlugins: [],
+  rehypePlugins: [],
   staticAssetsPath: '/assets/docfy',
   tocMaxDepth: 6,
   repository: {
@@ -40,15 +42,33 @@ const hbs = require('remark-hbs');
 const autolinkHeadings = require('remark-autolink-headings');
 
 const remarkPlugins = [
+  autolinkHeadings,
+  hbs
+];
+
+//...
+```
+
+In case the plugin has options, you can specify as the example below:
+
+```js
+// ..
+const remarkPlugins = [
   [
     autolinkHeadings,
     {
       behavior: 'wrap'
     }
   ],
-  hbs
 ];
 ```
+
+### `rehypePlugins`
+
+• **rehypePlugins**? : *function | [function, RehypePluginOptions][]* - Additional rehype plugins
+
+You can also pass options to rehype plugins the same way as remark plugins.
+
 
 ### `staticAssetsPath`
 

@@ -19,8 +19,20 @@ Array [
     "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
   ],
   Array [
+    "docs/html.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/html.md",
+  ],
+  Array [
+    "docs/math.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/math.md",
+  ],
+  Array [
     "docs/static-asset.md",
     "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/static-asset.md",
+  ],
+  Array [
+    "docs/table.md",
+    "https://github.com/user/repo/edit/dev/packages/core/tests/__fixtures__/monorepo/docs/table.md",
   ],
   Array [
     "packages/package1/components/button.md",

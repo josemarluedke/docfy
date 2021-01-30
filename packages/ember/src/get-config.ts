@@ -1,9 +1,10 @@
 import path from 'path';
 import { DocfyConfig } from '@docfy/core/lib/types';
-import remarkHBS from 'remark-hbs';
+import remarkHbs from 'remark-hbs';
 import replaceInternalLinksWithDocfyLink from './plugins/replace-internal-links-with-docfy-link';
 import extractDemosToComponents from './plugins/extract-demos-to-components';
 import previewTemplate from './plugins/preview-template';
+import type { RemarkHbsOptions } from 'remark-hbs';
 
 const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
@@ -14,9 +15,13 @@ const DEFAULT_CONFIG: DocfyConfig = {
   ]
 };
 
-export default function getDocfyConfig(root: string): DocfyConfig {
+interface EmberDocfyConfig extends DocfyConfig {
+  remarkHbsOptions?: RemarkHbsOptions;
+}
+
+export default function getDocfyConfig(root: string): EmberDocfyConfig {
   const configPath = path.join(root, '.docfy-config.js');
-  let docfyConfig: DocfyConfig = DEFAULT_CONFIG;
+  let docfyConfig: EmberDocfyConfig = DEFAULT_CONFIG;
 
   const pkg = require(path.join(root, 'package.json')); // eslint-disable-line
 
@@ -70,7 +75,10 @@ export default function getDocfyConfig(root: string): DocfyConfig {
     docfyConfig.remarkPlugins = [];
   }
 
-  docfyConfig.remarkPlugins.push(remarkHBS);
+  docfyConfig.remarkPlugins.push([
+    remarkHbs,
+    docfyConfig.remarkHbsOptions || {}
+  ]);
 
   docfyConfig.sources.forEach((source) => {
     if (typeof source.root === 'undefined') {

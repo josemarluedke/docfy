@@ -1,4 +1,4 @@
-import { uniquefyUrls } from '../src/plugins/uniquefy-urls';
+import uniquefyUrls from '../src/plugins/uniquefy-urls';
 import { Context } from '../src/types';
 
 describe('it changes the url if duplicatd', () => {
@@ -18,7 +18,7 @@ describe('it changes the url if duplicatd', () => {
       ]
     };
 
-    uniquefyUrls(content as Context);
+    uniquefyUrls.runAfter(content as Context, undefined);
 
     expect(content.pages.map((page) => page.meta.url)).toEqual([
       '/something/cool',
@@ -47,7 +47,7 @@ describe('it changes the url if duplicatd', () => {
       ]
     };
 
-    uniquefyUrls(content as Context);
+    uniquefyUrls.runAfter(content as Context, undefined);
 
     expect(content.pages.map((page) => page.meta.url)).toEqual([
       '/something/cool',
@@ -72,7 +72,7 @@ describe('it changes the url if duplicatd', () => {
       ]
     };
 
-    uniquefyUrls(content as Context);
+    uniquefyUrls.runAfter(content as Context, undefined);
 
     expect(content.pages.map((page) => page.meta.url)).toEqual([
       '/something/blog/',
