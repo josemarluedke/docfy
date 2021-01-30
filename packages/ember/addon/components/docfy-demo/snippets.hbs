@@ -3,7 +3,11 @@
     {{#each this.snippets as |snippet|}}
       <button
         type="button"
-        class="docfy-demo__snippets__tabs__button {{if (docfy-eq this.active snippet.id) "docfy-demo__snippets__tabs__button--active"}}"
+        class="docfy-demo__snippets__tabs__button {{
+          if
+          (docfy-eq this.active snippet.id)
+          "docfy-demo__snippets__tabs__button--active"
+        }}"
         {{on "click" (fn this.setActiveSnippet snippet.id)}}
       >
         {{snippet.name}}
