@@ -17,8 +17,8 @@ import debugFactory from 'debug';
 const debug = debugFactory('@docfy/ember');
 
 const templateOnlyComponent = `
-import templateOnly from '@ember/component/template-only';
-export default templateOnly();
+import Component from '@glimmer/component';
+export default class extends Component {}
 `;
 
 function ensureDirectoryExistence(filePath: string): void {
