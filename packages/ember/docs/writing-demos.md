@@ -33,11 +33,14 @@ of the code block. The possible values are `component`, `template`, and `styles`
 ## Preview Template
 
 When writing documentation in Ember apps, we might want to write some template
-code to demonstrate how to use a component, while having the code been executed
-as well. Creating a demo markdown might be too much of an effort; for this purpose,
-Docfy has another feature called `preview-template`. It will extract the template
-from the markdown code block then it will create a template only component. It will
-also add the code snippet so users can see the code.
+code to demonstrate how to use a component whilst also having the code
+executed to embed the same template into the rendered markdown. Creating a
+demo markdown might be too much of an effort; for this purpose, Docfy has
+another feature called `preview-template`. It will extract the template from
+the markdown code block and create a component backed by an empty Glimmer
+component class to provide a `this` context so helpers such as `mut` or `set`
+can be used within the demonstration. It will also add the code snippet so
+users can see the code.
 
 Below is an example of how it works:
 
