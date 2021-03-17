@@ -14678,11 +14678,12 @@ remark-gfm@^1.0.0:
     mdast-util-gfm "^0.1.0"
     micromark-extension-gfm "^0.3.0"
 
-remark-hbs@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/remark-hbs/-/remark-hbs-0.3.1.tgz#57174aa0b13023bc286e51f9b06bc736cc78d982"
-  integrity sha512-Um4hb9eB3ao0syls4ZMBSf+N/MMFdOho9QrCSWbsoHV2S4A+39Oq1i1MjcYG3kyr78dJeW6i/vr2XJQzygcUBQ==
+remark-hbs@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/remark-hbs/-/remark-hbs-0.4.0.tgz#3b0af809091fbee872487c7d695acf687a1a0b96"
+  integrity sha512-2dtEz+t8FMedZgJ7oT76ON4bCYlsnqhL9xvo1UXzv0x3P54YYb7jssEiWsAGNzn0/HXtF+/CVNR6SBJhbB7bUQ==
   dependencies:
+    unist-builder "^2.0.3"
     unist-util-visit "^2.0.3"
 
 remark-highlight.js@^6.0.0:
