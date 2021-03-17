@@ -44,7 +44,7 @@
     "ember-cli-typescript": "^4.0.0",
     "ember-get-config": "^0.3.0",
     "mdast-util-to-string": "^2.0.0",
-    "remark-hbs": "^0.3.1",
+    "remark-hbs": "^0.4.0",
     "unist-builder": "^2.0.3",
     "unist-util-find": "^1.0.2",
     "unist-util-visit": "^2.0.2"
