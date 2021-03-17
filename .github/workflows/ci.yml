@@ -1,18 +1,19 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - 'v*'
+  pull_request: {}
 
 jobs:
   test:
     name: Tests
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     env:
       CI: 'true'
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macOS-latest]
 
     steps:
       - uses: actions/checkout@v2
