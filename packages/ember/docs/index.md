@@ -103,7 +103,7 @@ for building design systems that use the styles from your design in your docs.
 We can add a `docs` template that will be used when rendering any documentation
 page because of Ember's routing and templating patterns.
 
-In your `app/templates/docs.hbs` add the follwoing:
+In your `app/templates/docs.hbs` add the following:
 
 ```hbs
 <DocfyOutput @scope="docs" as |node|>
