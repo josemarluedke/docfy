@@ -4,7 +4,7 @@ order: 2
 # Configuration
 
 Docfy has a set of options you can configure and might have read about them
-[here](../../../../docs/configuration.md). You might have been wondering how
+[here](../../../docs/configuration.md). You might have been wondering how
 to set these options in the Ember app context.
 
 The Docfy integration with Ember reads a file named `.docfy-config.js` from the
