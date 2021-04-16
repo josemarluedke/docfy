@@ -98,7 +98,7 @@ Example:
 const config = {
   repository: {
     url: 'https://github.com/josemarluedke/docfy',
-    editBranch: 'master'
+    editBranch: 'main'
   }
 }
 ```
