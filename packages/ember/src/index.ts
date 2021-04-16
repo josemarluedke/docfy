@@ -41,6 +41,11 @@ function hasBackingJS(chunks: DemoComponentChunk[]): boolean {
   return false;
 }
 
+// eslint-disable-next-line
+function isDeepAddonInstance(addon: any): boolean {
+  return addon.parent !== addon.project;
+}
+
 class DocfyBroccoli extends Plugin {
   config: DocfyConfig;
 
@@ -122,14 +127,18 @@ module.exports = {
   docfyConfig: undefined,
 
   included(...args: unknown[]): void {
-    this.docfyConfig = getDocfyConfig(this.project.root);
-
-    this.bridge = new BroccoliBridge();
+    if (!isDeepAddonInstance(this)) {
+      this.docfyConfig = getDocfyConfig(this.project.root);
+      this.bridge = new BroccoliBridge();
+    }
     this._super.included.apply(this, args);
   },
 
-  treeForApp(tree: InputNode): Node {
-    const trees: InputNode[] = [this._super.treeForApp.call(this, tree)];
+  treeForApp(tree: Node): Node {
+    const trees: Node[] = [this._super.treeForApp.call(this, tree)];
+    if (isDeepAddonInstance(this)) {
+      return trees[0];
+    }
 
     const inputs: InputNode[] = [new UnwatchedDir(this.project.root)];
 
@@ -147,8 +156,12 @@ module.exports = {
     return new MergeTrees(trees, { overwrite: true });
   },
 
-  treeForAddon(tree: InputNode): Node {
-    const trees: InputNode[] = [this._super.treeForAddon.call(this, tree)];
+  treeForAddon(tree: Node): Node {
+    const trees: Node[] = [this._super.treeForAddon.call(this, tree)];
+    if (isDeepAddonInstance(this)) {
+      return trees[0];
+    }
+
     const EmberApp = require('ember-cli/lib/broccoli/ember-app'); // eslint-disable-line
     const modulePrefix = this.project.config(EmberApp.env()).modulePrefix;
 
@@ -157,7 +170,11 @@ module.exports = {
     return new MergeTrees(trees);
   },
 
-  treeForPublic(): Node {
+  treeForPublic(): Node | undefined {
+    if (isDeepAddonInstance(this)) {
+      return;
+    }
+
     return new Funnel(
       (this.bridge as BroccoliBridge).placeholderFor('docfy-tree'),
       {
