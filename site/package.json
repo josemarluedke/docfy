@@ -1,6 +1,6 @@
 {
   "name": "site",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "private": true,
   "description": "The Docfy Site",
   "repository": "https://github.com/josemarluedke/docfy",
@@ -20,7 +20,7 @@
     "test:ember": "ember test --test-port="
   },
   "devDependencies": {
-    "@docfy/ember": "^0.4.2",
+    "@docfy/ember": "^0.4.3",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.1.4",
     "@frontile/core": "^0.3.0",
