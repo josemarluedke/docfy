@@ -8,7 +8,6 @@ Here is another example that builds a top nav that could be used for the entire
 application. It will link to any top-level pages as well as to the first page of
 every child.
 
-
 ```hbs template
 <DocfyOutput @type="nested" as |node|>
   <ul>

@@ -24,16 +24,16 @@ const docfy = new Docfy({
   repository: {
     url: 'https://github.com/josemarluedke/docfy'
   }
-})
+});
 ```
 
 ### `plugins`
 
-• **plugins**? : *Plugin[]* - A list of Docfy plugins.
+• **plugins**? : _Plugin[]_ - A list of Docfy plugins.
 
 ### `remarkPlugins`
 
-• **remarkPlugins**? : *function | [function, RemarkPluginOptions][]* - Additional remark plugins
+• **remarkPlugins**? : _function | [function, RemarkPluginOptions][]_ - Additional remark plugins
 
 Example:
 
@@ -41,10 +41,7 @@ Example:
 const hbs = require('remark-hbs');
 const autolinkHeadings = require('remark-autolink-headings');
 
-const remarkPlugins = [
-  autolinkHeadings,
-  hbs
-];
+const remarkPlugins = [autolinkHeadings, hbs];
 
 //...
 ```
@@ -59,38 +56,35 @@ const remarkPlugins = [
     {
       behavior: 'wrap'
     }
-  ],
+  ]
 ];
 ```
 
 ### `rehypePlugins`
 
-• **rehypePlugins**? : *function | [function, RehypePluginOptions][]* - Additional rehype plugins
+• **rehypePlugins**? : _function | [function, RehypePluginOptions][]_ - Additional rehype plugins
 
 You can also pass options to rehype plugins the same way as remark plugins.
 
-
 ### `staticAssetsPath`
 
-• **staticAssetsPath**? : *string* - The static asset path to be used in the URL. Assets such as images are considered static.
+• **staticAssetsPath**? : _string_ - The static asset path to be used in the URL. Assets such as images are considered static.
 
 **`default`** "/assets/docfy"
 
-
 ### `tocMaxDepth`
 
-• **tocMaxDepth**? : *number* - The max depth of headings
+• **tocMaxDepth**? : _number_ - The max depth of headings
 
 **`default`** 6
 
-
 ### `labels`
 
-• **labels**? : *Record‹string, string›* - Labels to be used while generating `nestedPageMetadata`.
+• **labels**? : _Record‹string, string›_ - Labels to be used while generating `nestedPageMetadata`.
 
 ### `repository`
 
-• **repository**? : *RepositoryConfig* - The repository config.
+• **repository**? : _RepositoryConfig_ - The repository config.
 
 Example:
 
@@ -100,13 +94,13 @@ const config = {
     url: 'https://github.com/josemarluedke/docfy',
     editBranch: 'main'
   }
-}
+};
 ```
 
 #### `RepositoryConfig`
 
-- **url**: *string* - The URL to the Git Repository, for example: `https://github.com/josemarluedke/docfy`
-- **editBranch**? : *string* - Branch used to edit your markdown when clicking
+- **url**: _string_ - The URL to the Git Repository, for example: `https://github.com/josemarluedke/docfy`
+- **editBranch**? : _string_ - Branch used to edit your markdown when clicking
   on an "Edit this page" link. **defaults to `"master"`**
 
 ## Source Configuration
@@ -116,40 +110,42 @@ Below you can see an example of how to pass these options to Docfy.
 
 ```js
 // ...
-docfy.run([
-  {
-    root: __dirname,
-    pattern: '**/*.md',
-    ignore: ['private/**'],
-    urlPrefix: 'docs',
-    urlSchema: 'manual'
-  }
-]).then((result) => {
-  console.log(result)
-})
+docfy
+  .run([
+    {
+      root: __dirname,
+      pattern: '**/*.md',
+      ignore: ['private/**'],
+      urlPrefix: 'docs',
+      urlSchema: 'manual'
+    }
+  ])
+  .then((result) => {
+    console.log(result);
+  });
 ```
 
-###  root
+### root
 
-• **root**: *string*
+• **root**: _string_
 
 This option specifies the absolute path indicating where to search for markdown files.
 
 ### `pattern`
 
-• **pattern**: *string*
+• **pattern**: _string_
 
 Match files using the patterns the shell uses, like stars and stuff.
 
 ### `ignore`
 
-• **ignore**? : *string[]*
+• **ignore**? : _string[]_
 
 List of files to ignore, it can be a specific file or a pattern.
 
 ### `urlPrefix`
 
-• **urlPrefix**? : *string*
+• **urlPrefix**? : _string_
 
 The prefix for URLs.
 
@@ -159,7 +155,7 @@ For example:
 
 ### `urlSuffix`
 
-• **urlSuffix**? : *string*
+• **urlSuffix**? : _string_
 
 The suffix the URLs.
 
@@ -168,19 +164,22 @@ For example:
 
 ### `urlSchema`
 
-• **urlSchema**? : *"auto" | "manual"*
+• **urlSchema**? : _"auto" | "manual"_
 
 Indicates how the URLs are generated.
 
 1. **`auto`**: Uses the folder structure to inform how the URLs structure.
    For example, if you have the following files:
+
    ```
    - install.md
    - components/
      - button.md
      - card.md
    ```
+
    The URLs would look like this, (assuming `urlPrefix` is set to `docs`).
+
    ```
    - docs/install
    - docs/components/buttons
@@ -194,9 +193,8 @@ Indicates how the URLs are generated.
    If no category or subcategory is specified, all files will be at the root level. This option is perfect for documenting monorepo projects to keep
    documentation files next to its implementation.
 
-###  repository
+### repository
 
-• **repository**? : *RepositoryConfig*
+• **repository**? : _RepositoryConfig_
 
 Overwrite base repository config for this source.
-

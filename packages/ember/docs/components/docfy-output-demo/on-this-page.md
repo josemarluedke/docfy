@@ -1,6 +1,7 @@
 ---
 order: 2
 ---
+
 # On this page
 
 In this example, we are using the option `@fromCurrentURL`. It tells the component
@@ -10,7 +11,6 @@ Table of Content. The `headings` is a recursive data structure, meaning that you
 can render their child for subheadings and their sub-subheadings. The depth of
 headings available here is default to 6 but can be changed using the configuration
 option `tocMaxDepth`.
-
 
 ```hbs template
 <DocfyOutput @fromCurrentURL={{true}} as |page|>

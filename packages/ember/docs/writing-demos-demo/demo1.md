@@ -13,6 +13,6 @@ This is my Demo: <DocfyLink @to={{this.url}}>My Link</DocfyLink>
 import Component from '@glimmer/component';
 
 export default class MyDemo extends Component {
-  url = '/docs'
+  url = '/docs';
 }
 ```

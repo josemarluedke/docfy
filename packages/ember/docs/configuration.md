@@ -1,6 +1,7 @@
 ---
 order: 2
 ---
+
 # Configuration
 
 Docfy has a set of options you can configure and might have read about them
@@ -24,10 +25,7 @@ const codeImport = require('remark-code-import');
 
 module.exports = {
   remarkPlugins: [
-    [
-      autolinkHeadings,
-      { behavior: 'wrap' }
-    ],
+    [autolinkHeadings, { behavior: 'wrap' }],
     codeImport,
     highlight
   ],

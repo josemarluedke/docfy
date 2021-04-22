@@ -8,7 +8,6 @@ title: Getting Started
 Let's get started by creating a new Ember app and adding Docfy to it. For adding
 to existing apps, jump to the step after creating the app.
 
-
 ## Generate the App
 
 There isn't anything special here; just create the ember app and remove the
@@ -45,8 +44,8 @@ export default class Router extends EmberRouter {
   rootURL = config.rootURL;
 }
 
-Router.map(function() {
-  addDocfyRoutes(this)
+Router.map(function () {
+  addDocfyRoutes(this);
 });
 ```
 
@@ -127,7 +126,6 @@ This example uses two components, `DocfyOutput` and `DocfyLink`. It is also
 the simplest navigation component we can build, ignoring any nested sections
 you might define. You can learn more about these components and their capabilities
 in their respective documentation page.
-
 
 ## Add Previous and Next Page Links
 

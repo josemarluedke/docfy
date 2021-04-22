@@ -4,7 +4,7 @@ The core components of Docfy, a documentation site builder.
 
 ## Compatibility
 
-* Node.js v10 or above
+- Node.js v10 or above
 
 ## Installation
 
@@ -16,20 +16,21 @@ yarn add @docfy/core
 
 ## Usage
 
-
 ```js
 const Docfy = require('@docfy/core').default;
 const path = require('path');
 
-new Docfy().run([
-  {
-    root: path.join(__dirname, 'docs'),
-    urlPrefix: 'docs',
-    pattern: '**/*.md'
-  }
-]).then((result) => {
-  console.log(result)
-});
+new Docfy()
+  .run([
+    {
+      root: path.join(__dirname, 'docs'),
+      urlPrefix: 'docs',
+      pattern: '**/*.md'
+    }
+  ])
+  .then((result) => {
+    console.log(result);
+  });
 ```
 
 Refer to the [documentation site](https://docfy.dev).

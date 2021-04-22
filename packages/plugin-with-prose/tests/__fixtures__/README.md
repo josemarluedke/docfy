@@ -6,5 +6,4 @@ Some text
   This is a DIV
 </div>
 
-
 Some other text
