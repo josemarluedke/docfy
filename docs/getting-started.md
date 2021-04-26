@@ -35,15 +35,17 @@ yarn add @docfy/core
 const Docfy = require('@docfy/core');
 const path = require('path');
 
-new Docfy().run([
-  {
-    root: path.join(__dirname, 'docs'),
-    urlPrefix: 'docs',
-    pattern: '**/*.md'
-  }
-]).then((result) => {
-  console.log(result)
-});
+new Docfy()
+  .run([
+    {
+      root: path.join(__dirname, 'docs'),
+      urlPrefix: 'docs',
+      pattern: '**/*.md'
+    }
+  ])
+  .then((result) => {
+    console.log(result);
+  });
 ```
 
 ## Create a markdown file

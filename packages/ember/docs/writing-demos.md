@@ -1,6 +1,7 @@
 ---
 order: 3
 ---
+
 # Writing Demos
 
 Docfy has a concept of "demo" markdown files. It allows you to write code in
@@ -18,6 +19,7 @@ template only components by only specifying the HBS template.
 Below you can see how a demo markdown file looks like.
 
 ```md file=writing-demos-demo/demo1.md
+
 ```
 
 The demo will be injected into the owner file as a new section called "Examples";
@@ -44,11 +46,11 @@ users can see the code.
 
 Below is an example of how it works:
 
-~~~md
+````md
 ```hbs preview-template
 Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
 ```
-~~~
+````
 
 And here you can see how it looks like when rendered:
 

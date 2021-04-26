@@ -16,6 +16,6 @@ would prevent linking to a page in tutorials from a documentation page.
 
 # API
 
-| Argument       | Description                    | Type                    | Default Value |
-|----------------|--------------------------------|-------------------------|---------------|
-| `@scope`       | Filter links by a scope name   | `string` \| `undefined` |               |
+| Argument | Description                  | Type                    | Default Value |
+| -------- | ---------------------------- | ----------------------- | ------------- |
+| `@scope` | Filter links by a scope name | `string` \| `undefined` |               |

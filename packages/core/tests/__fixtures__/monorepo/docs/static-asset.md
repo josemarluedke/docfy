@@ -6,4 +6,4 @@
 
 With a reference later in the document defining the Image location:
 
-[my-image]: ./github-icon.png "The GitHub Icon"
+[my-image]: ./github-icon.png 'The GitHub Icon'

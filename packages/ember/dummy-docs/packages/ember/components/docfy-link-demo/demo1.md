@@ -21,6 +21,6 @@ This is a cool feature.
 import Component from '@glimmer/component';
 
 export default class MyDemo extends Component {
-  url = '/docs/ember/'
+  url = '/docs/ember/';
 }
 ```

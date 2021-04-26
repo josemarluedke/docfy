@@ -23,7 +23,7 @@ Byblis vobisque me venerisque possem **una** nihil volui desiderioque quam
 parilique quosque victor contingere urbem monendo. Meae est precor moenibus.
 
 1. Suis cum ille
-3. Recipit precor in opus quam Philyreia potest
+2. Recipit precor in opus quam Philyreia potest
 
 ```js
 import Docfy from '@docfy/core';

@@ -1,6 +1,7 @@
 ---
 order: 1
 ---
+
 # Sidebar Navigation
 
 In this example, we are filtering the `NestedPageMetadata` by the scope name `docs`.
@@ -42,4 +43,3 @@ more deep into the tree or more shadow.
   </ul>
 </DocfyOutput>
 ```
-

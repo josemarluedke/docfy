@@ -2,7 +2,6 @@
 
 This is a simple markdown
 
-
 Where are a lot of cool features here. One of them is to preview a template.
 
 ```hbs preview-template
