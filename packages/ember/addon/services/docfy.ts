@@ -20,10 +20,25 @@ export default class DocfyService extends Service {
     return this.findByUrl(this.router.currentURL);
   }
 
-  findNestedChildrenByName(name: string): NestedPageMetadata | undefined {
-    return this.nested.children.find((item) => {
+  findNestedChildrenByName(
+    scope: string,
+    previousNested: NestedPageMetadata | undefined | null = null
+  ): NestedPageMetadata | undefined {
+    if (previousNested === null) {
+      previousNested = this.nested;
+    }
+    const parts = scope.split('/');
+    const name = parts.shift();
+
+    const foundScope = previousNested?.children.find((item) => {
       return item.name === name;
     });
+
+    if (parts.length > 0) {
+      return this.findNestedChildrenByName(parts.join('/'), foundScope);
+    }
+
+    return foundScope;
   }
 
   findByUrl(url: string, scopeByNestedName?: string): PageMetadata | undefined {

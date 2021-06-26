@@ -23,6 +23,15 @@ module('Unit | Service | docfy', function (hooks) {
     assert.equal(service.findNestedChildrenByName('docs')?.name, 'docs');
   });
 
+  test('it returns the nested children by name when scope has slashes', function (assert) {
+    const service: DocfyService = this.owner.lookup('service:docfy');
+    assert.equal(service.findNestedChildrenByName('docs/core')?.name, 'core');
+    assert.equal(
+      service.findNestedChildrenByName('docs/ember/components')?.name,
+      'components'
+    );
+  });
+
   test('it returns the page by current url', function (assert) {
     const service: DocfyService = this.owner.lookup('service:docfy');
     const routerService = this.owner.lookup('service:router');
