@@ -23,6 +23,7 @@ export interface PageMetadata {
   headings: Heading[];
   frontmatter: Record<string, unknown>;
   pluginData: Record<string, unknown>;
+  parentLabel: undefined | string;
 }
 
 export interface PageContent {

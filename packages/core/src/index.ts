@@ -249,7 +249,8 @@ class Docfy {
       relativeUrl: undefined,
       headings: [],
       frontmatter: frontmatter,
-      pluginData: {}
+      pluginData: {},
+      parentLabel: undefined
     };
 
     return {
