@@ -42,6 +42,8 @@ export function transformToNestedPageMetadata(
     url = url[0] === '/' ? url.substring(1) : url;
     const urlParts = url.split('/');
 
+    item.parentLabel = node.label;
+
     if (urlParts.length === 1) {
       item.relativeUrl = urlParts[0];
       node.pages.push(item);
