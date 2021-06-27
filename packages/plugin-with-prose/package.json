@@ -1,6 +1,6 @@
 {
   "name": "@docfy/plugin-with-prose",
-  "version": "0.4.2",
+  "version": "0.4.4",
   "private": false,
   "description": "A Docfy plugin to wrap Markdown content in a prose class",
   "repository": "https://github.com/josemarluedke/docfy",
@@ -17,7 +17,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@docfy/core": "^0.4.2"
+    "@docfy/core": "^0.4.4"
   },
   "devDependencies": {
     "@types/unist": "^2.0.3",
