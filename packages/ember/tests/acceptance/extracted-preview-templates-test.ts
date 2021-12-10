@@ -20,6 +20,7 @@ module('Acceptance | extracted preview templates', function (hooks) {
 
     const snippets = findAll('.docfy-demo__snippet');
     assert.dom(snippets[0]).hasTextContaining('data-test-id="preview-1"');
-    assert.dom(snippets[1]).hasTextContaining(' data-test-id="preview-2"');
+    assert.dom(snippets[1]).hasTextContaining('demo for ember folder');
+    assert.dom(snippets[2]).hasTextContaining('data-test-id="preview-2"');
   });
 });
