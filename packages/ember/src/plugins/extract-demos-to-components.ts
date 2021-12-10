@@ -71,8 +71,15 @@ export default plugin({
               });
             }
           });
+
+          let baseName = path.basename(page.source);
+
+          if (baseName === 'index') {
+            baseName = path.basename(baseName);
+          }
+
           const componentName = generateDemoComponentName(
-            `docfy-demo-${path.basename(page.source).split('.')[0]}-${
+            `docfy-demo-${baseName.split('.')[0]}-${
               path.basename(demo.source).split('.')[0]
             }`,
             seenNames
