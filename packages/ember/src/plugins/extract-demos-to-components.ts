@@ -72,14 +72,12 @@ export default plugin({
             }
           });
 
-          let baseName = path.basename(page.source);
-
-          if (baseName === 'index') {
-            baseName = path.basename(baseName);
-          }
+          // 1. exclude extension
+          // 2. remove /index.md because of web conventions
+          const baseName = page.source.replace('/index.md', '').split('.')[0];
 
           const componentName = generateDemoComponentName(
-            `docfy-demo-${baseName.split('.')[0]}-${
+            `docfy-demo-${baseName}-${
               path.basename(demo.source).split('.')[0]
             }`,
             seenNames
