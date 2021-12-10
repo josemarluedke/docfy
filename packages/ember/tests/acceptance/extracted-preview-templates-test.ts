@@ -7,7 +7,7 @@ module('Acceptance | extracted preview templates', function (hooks) {
 
   test('it renders all preview-templates', async function (assert) {
     await visit('/docs/ember');
-    assert.dom('.docfy-demo').exists({ count: 2 });
+    assert.dom('.docfy-demo').exists({ count: 3 });
 
     assert
       .dom('[data-test-id="preview-1"]')
