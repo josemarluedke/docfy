@@ -71,8 +71,13 @@ export default plugin({
               });
             }
           });
+
+          // 1. exclude extension
+          // 2. remove /index.md because of web conventions
+          const baseName = page.source.replace('/index.md', '').split('.')[0];
+
           const componentName = generateDemoComponentName(
-            `docfy-demo-${path.basename(page.source).split('.')[0]}-${
+            `docfy-demo-${baseName}-${
               path.basename(demo.source).split('.')[0]
             }`,
             seenNames
