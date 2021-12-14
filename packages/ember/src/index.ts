@@ -13,6 +13,7 @@ import { DemoComponentChunk } from './plugins/types';
 import docfyOutputTemplate from './docfy-output-template';
 import getDocfyConfig from './get-config';
 import { isDemoComponents } from './plugins/utils';
+import cacheKeyForTree from 'calculate-cache-key-for-tree';
 import debugFactory from 'debug';
 const debug = debugFactory('@docfy/ember');
 
@@ -132,6 +133,12 @@ module.exports = {
       this.bridge = new BroccoliBridge();
     }
     this._super.included.apply(this, args);
+  },
+
+  // Re-enables caching of this addon, due to opting out
+  // of the caching implicitly by specifying treeFor* methods
+  cacheKeyForTree(treeType) {
+    return cacheKeyForTree(treeType, this);
   },
 
   treeForApp(tree: Node): Node {
