@@ -38,6 +38,7 @@
     "broccoli-node-api": "^1.7.0",
     "broccoli-plugin": "^4.0.3",
     "broccoli-source": "^3.0.0",
+    "calculate-cache-key-for-tree": "2.0.0",
     "debug": "^4.3.1",
     "ember-cli-babel": "^7.23.1",
     "ember-cli-htmlbars": "^5.3.1",
