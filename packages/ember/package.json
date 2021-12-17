@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember",
-  "version": "0.4.7",
+  "version": "0.4.8",
   "description": "Ember integration with Docfy",
   "keywords": [
     "ember-addon",
