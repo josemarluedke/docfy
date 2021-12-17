@@ -140,9 +140,9 @@ module.exports = {
   cacheKeyForTree(treeType: string): string {
     switch (treeType) {
       case 'app': {
-        const sources = (this.docfyConfig as DocfyConfig).sources
-          .map((item) => item.root)
-          .join(',');
+        const sources = (this.docfyConfig as DocfyConfig)?.sources
+          ?.map((item) => item.root)
+          ?.join(',');
         return cacheKeyForTree(treeType, this, [sources]);
       }
       default:
