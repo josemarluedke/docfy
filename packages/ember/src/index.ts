@@ -139,11 +139,9 @@ module.exports = {
   // of the caching implicitly by specifying treeFor* methods
   cacheKeyForTree(treeType: string): string {
     switch (treeType) {
-      case 'app': {
-        const sources = (this.docfyConfig as DocfyConfig)?.sources
-          ?.map((item) => item.root)
-          ?.join(',');
-        return cacheKeyForTree(treeType, this, [sources]);
+      case 'app':
+      case 'addon': {
+        return cacheKeyForTree(treeType, this, [this.docfyConfig]);
       }
       default:
         return cacheKeyForTree(treeType, this);
