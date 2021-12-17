@@ -137,7 +137,7 @@ module.exports = {
 
   // Re-enables caching of this addon, due to opting out
   // of the caching implicitly by specifying treeFor* methods
-  cacheKeyForTree(treeType) {
+  cacheKeyForTree(treeType: string): string {
     switch (treeType) {
       case 'app': {
         const sources = (this.docfyConfig as DocfyConfig).sources
