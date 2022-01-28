@@ -12,8 +12,10 @@ module('Integration | Component | DocfyLink', function (hooks) {
     assert.expect(4);
 
     const router = this.owner.lookup('router:main');
+    // @ts-ignore
     router.setupRouter();
     const routerService = this.owner.lookup('service:router');
+    // @ts-ignore
     sinon.stub(routerService, 'transitionTo').callsFake((routeName: string) => {
       assert.equal(routeName, 'docs.introduction');
     });
@@ -38,9 +40,11 @@ module('Integration | Component | DocfyLink', function (hooks) {
 
   test('it adds active class when active', async function (assert) {
     const router = this.owner.lookup('router:main');
+    // @ts-ignore
     router.setupRouter();
     const routerService = this.owner.lookup('service:router');
     sinon
+      // @ts-ignore
       .stub(routerService, 'currentRouteName')
       .get(() => 'docs.introduction');
 

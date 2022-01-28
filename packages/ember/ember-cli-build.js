@@ -59,12 +59,14 @@ module.exports = function (defaults) {
 
   if (process.env.EMBROIDER) {
     const { Webpack } = require('@embroider/webpack');
-    return require('@embroider/compat').compatBuild(app, Webpack, {
+    const compiledApp = require('@embroider/compat').compatBuild(app, Webpack, {
       staticAddonTestSupportTrees: true,
       staticAddonTrees: true,
       staticHelpers: true,
       staticComponents: true
     });
+
+    return require('prember').prerender(app, compiledApp);
   }
 
   return app.toTree();

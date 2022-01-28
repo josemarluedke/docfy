@@ -82,7 +82,7 @@ export function generateAutoUrl(
 export function inferTitle(ast: Node): string | undefined {
   let docTitle: string | undefined;
   visit(ast, 'heading', (node) => {
-    const { depth } = node;
+    const { depth } = node as never;
     if (depth !== 1) return;
     docTitle = toString(node);
   });

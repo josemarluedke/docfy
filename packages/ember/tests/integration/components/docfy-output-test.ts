@@ -69,9 +69,11 @@ module('Integration | Component | DocfyOutput', function (hooks) {
 
   test('it returns the page fromCurrentURL', async function (assert) {
     const router = this.owner.lookup('router:main');
+    // @ts-ignore
     router.setupRouter();
 
     const routerService = this.owner.lookup('service:router');
+    // @ts-ignore
     sinon.stub(routerService, 'currentURL').get(() => '/docs/installation');
     this.set('fromCurrentURL', true);
     await render(template);
