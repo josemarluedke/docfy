@@ -23,8 +23,9 @@ import path from 'path';
  * This is necessary for apps using remark-autolink-headings, for example.
  */
 function createHeading(ctx: Context): Node {
-  const heading = (ctx.remark.runSync(ctx.remark.parse('## Examples'))
-    .children as Node[])[0];
+  const heading = (
+    ctx.remark.runSync(ctx.remark.parse('## Examples')).children as Node[]
+  )[0];
   heading.depth = 2;
   return heading;
 }

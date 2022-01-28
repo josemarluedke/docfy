@@ -9,8 +9,10 @@ module('Integration | Component | DocfyPreviousAndNextPage', function (hooks) {
 
   test('it yields previous and next pages', async function (assert) {
     const router = this.owner.lookup('router:main');
+    // @ts-ignore
     router.setupRouter();
     const routerService = this.owner.lookup('service:router');
+    // @ts-ignore
     sinon.stub(routerService, 'currentURL').get(() => '/docs/introduction');
 
     await render(hbs`
