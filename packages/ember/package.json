@@ -101,7 +101,7 @@
     "ember-resolver": "^8.0.3",
     "ember-router-helpers": "^0.4.0",
     "ember-sinon": "^5.0.0",
-    "ember-source": "~3.24.1",
+    "ember-source": "~4.1.0",
     "ember-source-channel-url": "^3.0.0",
     "ember-template-lint": "^2.18.0",
     "ember-try": "^2.0.0",
