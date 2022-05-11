@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should use custom class 1`] = `
+Array [
+  Array [
+    "README.md",
+    "<div class=\\"prose dark:prose-light\\">
+<h1 id=\\"the-index\\">The index</h1>
+<p>Some text</p>
+</div>
+<div>
+  This is a DIV
+</div>
+<div class=\\"prose dark:prose-light\\">
+<p>Some other text</p>
+</div>",
+  ],
+  Array [
+    "button.md",
+    "<div class=\\"prose dark:prose-light\\">
+<h1 id=\\"button-component\\">Button Component</h1>
+<p>Some text</p>
+</div>
+<pre><code class=\\"language-hbs\\">&#x3C;button>This is Preview Templace&#x3C;/button>
+</code></pre>",
+  ],
+  Array [
+    "button-demo/demo1.md",
+    "<div class=\\"prose dark:prose-light\\">
+<h1 id=\\"button-demo\\">Button demo</h1>
+<p>Some text</p>
+</div>
+<pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
+</code></pre>
+<div class=\\"prose dark:prose-light\\">
+<p>Some other text</p>
+</div>
+<pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
+</code></pre>
+<div class=\\"prose dark:prose-light\\">
+<p>More text</p>
+<pre><code class=\\"language-sh\\">ember install @docfy/ember
+</code></pre>
+</div>",
+  ],
+]
+`;
+
+exports[`it should work 1`] = `
+Array [
+  Array [
+    "README.md",
+    "<div class=\\"prose\\">
+<h1 id=\\"the-index\\">The index</h1>
+<p>Some text</p>
+</div>
+<div>
+  This is a DIV
+</div>
+<div class=\\"prose\\">
+<p>Some other text</p>
+</div>",
+  ],
+  Array [
+    "button.md",
+    "<div class=\\"prose\\">
+<h1 id=\\"button-component\\">Button Component</h1>
+<p>Some text</p>
+</div>
+<pre><code class=\\"language-hbs\\">&#x3C;button>This is Preview Templace&#x3C;/button>
+</code></pre>",
+  ],
+  Array [
+    "button-demo/demo1.md",
+    "<div class=\\"prose\\">
+<h1 id=\\"button-demo\\">Button demo</h1>
+<p>Some text</p>
+</div>
+<pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
+</code></pre>
+<div class=\\"prose\\">
+<p>Some other text</p>
+</div>
+<pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
+</code></pre>
+<div class=\\"prose\\">
+<p>More text</p>
+<pre><code class=\\"language-sh\\">ember install @docfy/ember
+</code></pre>
+</div>",
+  ],
+]
+`;

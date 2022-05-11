@@ -5,7 +5,7 @@ order: 1
 # Introduction
 
 Documentation is an essential part of any software today. Without documentation,
- users are not able to take full advantage of projects. To allow developers and
+users are not able to take full advantage of projects. To allow developers and
 teams to build documentation sites, having a powerful tool under the hood to help
 them to deliver well-crafted documentation sites is the reason Docfy exists.
 
@@ -15,7 +15,7 @@ for writing documentation sites for other frameworks or libraries.
 
 A common use case for documentation sites is for demoing a component library or a
 design system where you want to render your components in-place next to your markdown
-content.  Therefore, having the documentation site use the same framework or
+content. Therefore, having the documentation site use the same framework or
 libraries as your design system is essential for delivering a pleasant experience
 to its users.
 

@@ -1,7 +1,7 @@
-<img width="978" alt="Docfy Logo" src="https://user-images.githubusercontent.com/230476/86977062-ac358100-c130-11ea-9e75-7397ea17d6da.jpg">
+<img width="978" alt="Docfy Logo" src="https://repository-images.githubusercontent.com/254531229/d6e4fc80-5efd-11eb-9c08-99fd3d8bce07">
 <p align="center">
   <a href="https://github.com/josemarluedke/docfy/actions?query=workflow%3ACI"><img src="https://github.com/josemarluedke/docfy/workflows/CI/badge.svg" alt="Build Status"></a>
-  <a href="https://github.com/josemarluedke/docfy/blob/master/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license"></a>
+  <a href="https://github.com/josemarluedke/docfy/blob/main/LICENSE.md"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="GitHub license"></a>
 </p>
 
 Docfy is a modular JavaScript tool to help build documentation sites. Its core
@@ -47,7 +47,7 @@ const root = path.resolve(__dirname, projectRoot);
 
 ## Compatibility
 
-* Node.js v10 or above
+- Node.js v12 or above
 
 ## License
 

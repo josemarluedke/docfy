@@ -1,0 +1,11 @@
+{
+  "name": "docfy",
+  "version": "0.5.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'Tests ignored'"
+  },
+  "author": "",
+  "license": "MIT"
+}

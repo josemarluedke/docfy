@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`URLs should be correctly generated when urlSchema is set to manual base base, no url prefix, no suffix 1`] = `
+Array [
+  Array [
+    "README.md",
+    "/",
+  ],
+  Array [
+    "docs/about.md",
+    "/about",
+  ],
+  Array [
+    "docs/custom-url.md",
+    "/test-custom/url",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "/how-it-works",
+  ],
+  Array [
+    "docs/html.md",
+    "/html",
+  ],
+  Array [
+    "docs/math.md",
+    "/math",
+  ],
+  Array [
+    "docs/static-asset.md",
+    "/static-asset",
+  ],
+  Array [
+    "docs/table.md",
+    "/table",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "/category1/components/button",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "/category1/intro",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "/category2/overview",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "/category2/styles",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/category1/components/form",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "/category1/components/something-else",
+  ],
+]
+`;
+
+exports[`URLs should be correctly generated when urlSchema is set to manual when source defines url prefix and suffix 1`] = `
+Array [
+  Array [
+    "README.md",
+    "/docs/",
+  ],
+  Array [
+    "docs/about.md",
+    "/docs/about.html",
+  ],
+  Array [
+    "docs/custom-url.md",
+    "/docs/test-custom/url.html",
+  ],
+  Array [
+    "docs/how-it-works.md",
+    "/docs/how-it-works.html",
+  ],
+  Array [
+    "docs/html.md",
+    "/docs/html.html",
+  ],
+  Array [
+    "docs/math.md",
+    "/docs/math.html",
+  ],
+  Array [
+    "docs/static-asset.md",
+    "/docs/static-asset.html",
+  ],
+  Array [
+    "docs/table.md",
+    "/docs/table.html",
+  ],
+  Array [
+    "packages/package1/components/button.md",
+    "/docs/category1/components/button.html",
+  ],
+  Array [
+    "packages/package1/docs/intro.md",
+    "/docs/category1/intro.html",
+  ],
+  Array [
+    "packages/package2/docs/overview.md",
+    "/docs/category2/overview.html",
+  ],
+  Array [
+    "packages/package2/docs/styles.md",
+    "/docs/category2/styles.html",
+  ],
+  Array [
+    "packages/package1/components/form/index.md",
+    "/docs/category1/components/form.html",
+  ],
+  Array [
+    "packages/package1/components/form/something-else.md",
+    "/docs/category1/components/something-else.html",
+  ],
+]
+`;

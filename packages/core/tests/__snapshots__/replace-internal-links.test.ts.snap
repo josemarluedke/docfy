@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`it should have replace internal links between files 1`] = `
+"<h1 id=\\"how-it-works\\">How it works?</h1>
+<p>This is a description.</p>
+<p><a href=\\"/docs/about\\">Link using reference</a></p>"
+`;
+
+exports[`it should have replace internal links between files 2`] = `
+"<h1 id=\\"this-is-the-overview-page\\">This is the overview page</h1>
+<p>This is a <a href=\\"/packages/package1/components/button\\">link to another file in a different package</a>.</p>"
+`;
+
+exports[`it should have replace internal links between files 3`] = `
+"<h1 id=\\"how-styles-work\\">How styles work</h1>
+<p>Short description.</p>
+<p>Please refer to <a href=\\"/packages/package2/docs/overview#get-started\\">overview</a> to get started.</p>"
+`;
+
+exports[`it should have replace internal links between files 4`] = `"/packages/package1/docs/intro"`;
