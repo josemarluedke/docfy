@@ -10,19 +10,22 @@ interface NodeWithMeta extends Node {
 // https://github.com/tailwindlabs/tailwindcss.com/blob/1234b4faded6c7a06b734c49c61257137b4acc9b/remark/withProse.js
 
 function shouldUnproseNode(node: NodeWithMeta): boolean {
-  return (
-    Boolean(
-      node.type === 'code' &&
-        node.meta &&
-        ['component', 'template', 'preview-template'].includes(node.meta)
-    )
+  return Boolean(
+    node.type === 'code' &&
+      node.meta &&
+      ['component', 'template', 'preview-template'].includes(node.meta)
   );
 }
 
-
 function withProse(tree: Parent, className = 'prose'): void {
-  const openProse = () => ({ type: 'html', value: `<div class="${className}">` });
-  const openNotProse = () => ({ type: 'html', value: `<div class="not-${className}">` });
+  const openProse = () => ({
+    type: 'html',
+    value: `<div class="${className}">`
+  });
+  const openNotProse = () => ({
+    type: 'html',
+    value: `<div class="not-${className}">`
+  });
   const close = () => ({ type: 'html', value: '</div>' });
 
   tree.children = [
@@ -34,7 +37,7 @@ function withProse(tree: Parent, className = 'prose'): void {
 
       return [node];
     }),
-    close(),
+    close()
   ].flat();
 }
 
@@ -56,7 +59,7 @@ const DocfyPluginWithProse = plugin.withOptions<WithProseOptions | undefined>({
     ctx.pages.forEach((pageContent: PageContent) => {
       // PageContent may not have children, which is required for withProse
       // TODO: pageContent may need to be a union type
-      let page = pageContent as unknown as Page;
+      const page = pageContent as unknown as Page;
       withProse(page.ast, options?.className);
 
       page.demos?.forEach((demo) => {
