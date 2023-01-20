@@ -11,6 +11,13 @@ Array [
   This is a DIV
 </div>
 <p>Some other text</p>
+<div class=\\"not-prose additional classes\\">
+<ul>
+<li>this list</li>
+<li>has</li>
+<li>escaped prose's CSS</li>
+</ul>
+</div>
 </div>",
   ],
   Array [
@@ -57,6 +64,13 @@ Array [
   This is a DIV
 </div>
 <p>Some other text</p>
+<div class=\\"not-prose additional classes\\">
+<ul>
+<li>this list</li>
+<li>has</li>
+<li>escaped prose's CSS</li>
+</ul>
+</div>
 </div>",
   ],
   Array [
