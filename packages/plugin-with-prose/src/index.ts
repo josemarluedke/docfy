@@ -1,4 +1,5 @@
 import plugin from '@docfy/core/lib/plugin';
+import { PageContent } from '@docfy/core/lib/types';
 import type { Node, Parent } from 'unist';
 
 interface NodeWithMeta extends Node {
@@ -52,7 +53,10 @@ interface Page {
 
 const DocfyPluginWithProse = plugin.withOptions<WithProseOptions | undefined>({
   runWithMdast(ctx, options) {
-    ctx.pages.forEach((page: Page) => {
+    ctx.pages.forEach((pageContent: PageContent) => {
+      // PageContent may not have children, which is required for withProse
+      // TODO: pageContent may need to be a union type
+      let page = pageContent as unknown as Page;
       withProse(page.ast, options?.className);
 
       page.demos?.forEach((demo) => {
