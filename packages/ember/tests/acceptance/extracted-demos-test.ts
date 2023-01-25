@@ -117,4 +117,16 @@ module('Acceptance | extracted demos', function (hooks) {
 
     assert.strictEqual(demosAll?.length, 2);
   });
+
+  test('it correctly resolves demo components with hyphenated numbers', async function (assert) {
+    await visit('/docs/ember/components/docfy-with-hyphenated-number-2');
+
+    // Since this page has a hyphenated number in it, demo components must be transformed with
+    // preceding underscores like this:
+    //   <DocfyDemoPackagesEmberComponentsDocfyWithHyphenatedNumber_2Demo1/>
+
+    assert
+      .dom('.docfy-demo__example .hyphenated-demo')
+      .hasText('Assertable DOM node');
+  });
 });
