@@ -1,7 +1,7 @@
 import visit from 'unist-util-visit';
 import { Context, PageContent } from '@docfy/core/lib/types';
 import plugin from '@docfy/core/lib/plugin';
-import { Node } from 'unist';
+import { Node, Parent } from 'unist';
 import findNode from 'unist-util-find';
 import toString from 'mdast-util-to-string';
 import { DemoComponent, DemoComponentChunk, CodeNode } from './types';
@@ -30,6 +30,13 @@ function createHeading(ctx: Context): Node {
   return heading;
 }
 
+const demoMarkerRegex = /^\[\[demo:(.+?)\]\]$/;
+const demoMarker = (node: Parent): boolean =>
+  node.type === 'paragraph' &&
+  node.children.length === 1 &&
+  node.children[0].type === 'text' &&
+  demoMarkerRegex.test(node.children[0].value as string);
+
 /*
  * Insert Demo nodes into the page.
  */
@@ -46,6 +53,37 @@ function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
     } else {
       page.ast.children.push(...toInsert);
     }
+  }
+}
+
+function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
+  if (Array.isArray(page.ast.children)) {
+    const markers: Parent[] = [];
+
+    visit(page.ast, 'paragraph', (node: Parent) => {
+      if (demoMarker(node)) markers.push(node);
+    });
+
+    markers.forEach((marker) => {
+      const child = marker.children[0];
+      const matches = (child.value as string).match(demoMarkerRegex);
+      if (!matches) return;
+
+      // TODO: This is an inner loop and can cause perf issues if someone
+      // out there has many demos on a single page. It would be better to
+      // create a demo component hash that can be looked up by demo name.
+      const demoName = matches[1];
+      const demo = demos.find((d) => d.name.dashCase.endsWith(demoName));
+
+      if (!demo) {
+        console.warn(
+          `Found demo marker "${demoName}" with no matching demo component in ${page.source}`
+        );
+        return;
+      }
+
+      marker.children.splice(0, 1, ...createDemoNodes(demo));
+    });
   }
 }
 
@@ -114,11 +152,19 @@ export default plugin({
           });
         });
 
-        const toInsert: Node[] = [createHeading(ctx)];
-        demoComponents.forEach((component) => {
-          toInsert.push(...createDemoNodes(component));
-        });
-        insertDemoNodesIntoPage(page, toInsert);
+        if (page.meta.frontmatter.manualDemoInsertion) {
+          // Manual demo insertion inserts demos into markdown files
+          // wherever there is a demo marker ([[demo:name]])
+          replaceDemoMarkers(page, demoComponents);
+        } else {
+          // Automatic demo insertion creates an Example block after
+          // the first heading.
+          const toInsert: Node[] = [createHeading(ctx)];
+          demoComponents.forEach((component) => {
+            toInsert.push(...createDemoNodes(component));
+          });
+          insertDemoNodesIntoPage(page, toInsert);
+        }
 
         if (isDemoComponents(page.pluginData.demoComponents)) {
           page.pluginData.demoComponents.push(...demoComponents);
