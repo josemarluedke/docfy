@@ -91,6 +91,7 @@ function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
         return;
       }
 
+      marker.type = 'div';
       marker.children.splice(0, 1, ...createDemoNodes(demo));
     });
 
@@ -99,6 +100,7 @@ function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
         .map((component) => createDemoNodes(component))
         .flat();
 
+      marker.type = 'div';
       marker.children.splice(0, 1, ...demoNodes);
     });
   }
