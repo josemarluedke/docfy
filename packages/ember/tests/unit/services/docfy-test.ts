@@ -117,9 +117,9 @@ module('Unit | Service | docfy', function (hooks) {
       sinon
         // @ts-ignore
         .stub(routerService, 'currentURL')
-        .get(() => '/docs/ember/components/docfy-output');
+        .get(() => '/docs/ember/plugins/manual-demo-insertion');
 
-      assert.equal(service.previousPage()?.title, 'Docfy Link Component');
+      assert.equal(service.previousPage()?.title, 'Docfy Output Component');
       assert.equal(service.nextPage()?.title, undefined);
     });
 

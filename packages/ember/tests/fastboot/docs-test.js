@@ -25,7 +25,7 @@ module('FastBoot | docs', function (hooks) {
     assert
       .dom('[data-test-id="docs-nav"]')
       .hasText(
-        'Welcome to Docfy Introduction Installation Overview @docfy/core Overview Helpers genereateFlatOutput genereateNestedOutput @docfy/ember Working with Ember Installation Components Docfy Link Component Docfy Output Component'
+        'Welcome to Docfy Introduction Installation Overview @docfy/core Overview Helpers genereateFlatOutput genereateNestedOutput @docfy/ember Working with Ember Installation Components Docfy Link Component Docfy Output Component Plugins Manual Demo Insertion'
       );
   });
 
