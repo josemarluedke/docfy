@@ -30,12 +30,19 @@ function createHeading(ctx: Context): Node {
   return heading;
 }
 
-const demoMarkerRegex = /^\[\[demo:(.+?)\]\]$/;
-const demoMarker = (node: Parent): boolean =>
+const isTextMarker = (node: Parent): boolean =>
   node.type === 'paragraph' &&
   node.children.length === 1 &&
-  node.children[0].type === 'text' &&
-  demoMarkerRegex.test(node.children[0].value as string);
+  node.children[0].type === 'text';
+
+const demoMarkerRegex = /^\[\[demo:(.+?)\]\]$/;
+const demoMarker = (node: Parent): boolean =>
+  isTextMarker(node) && demoMarkerRegex.test(node.children[0].value as string);
+
+const demosAllMarkerRegex = /^\[\[demos-all\]\]$/;
+const demosAllMarker = (node: Parent): boolean =>
+  isTextMarker(node) &&
+  demosAllMarkerRegex.test(node.children[0].value as string);
 
 /*
  * Insert Demo nodes into the page.
@@ -59,9 +66,11 @@ function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
 function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
   if (Array.isArray(page.ast.children)) {
     const markers: Parent[] = [];
+    const allMarkers: Parent[] = [];
 
     visit(page.ast, 'paragraph', (node: Parent) => {
       if (demoMarker(node)) markers.push(node);
+      if (demosAllMarker(node)) allMarkers.push(node);
     });
 
     markers.forEach((marker) => {
@@ -83,6 +92,14 @@ function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
       }
 
       marker.children.splice(0, 1, ...createDemoNodes(demo));
+    });
+
+    allMarkers.forEach((marker) => {
+      const demoNodes = demos
+        .map((component) => createDemoNodes(component))
+        .flat();
+
+      marker.children.splice(0, 1, ...demoNodes);
     });
   }
 }
@@ -154,7 +171,7 @@ export default plugin({
 
         if (page.meta.frontmatter.manualDemoInsertion) {
           // Manual demo insertion inserts demos into markdown files
-          // wherever there is a demo marker ([[demo:name]])
+          // wherever there is a demo marker ([[demo:name]] or [[demos-all]])
           replaceDemoMarkers(page, demoComponents);
         } else {
           // Automatic demo insertion creates an Example block after
