@@ -7,3 +7,12 @@ Some text
 </div>
 
 Some other text
+
+
+<div class="not-prose additional classes">
+
+ - this list
+ - has
+ - escaped prose's CSS
+
+</div>

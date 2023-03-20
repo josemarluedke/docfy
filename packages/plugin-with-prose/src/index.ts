@@ -1,4 +1,5 @@
 import plugin from '@docfy/core/lib/plugin';
+import { PageContent } from '@docfy/core/lib/types';
 import type { Node, Parent } from 'unist';
 
 interface NodeWithMeta extends Node {
@@ -9,38 +10,35 @@ interface NodeWithMeta extends Node {
 // https://github.com/tailwindlabs/tailwindcss.com/blob/1234b4faded6c7a06b734c49c61257137b4acc9b/remark/withProse.js
 
 function shouldUnproseNode(node: NodeWithMeta): boolean {
-  return (
-    ['html'].includes(node.type) ||
-    Boolean(
-      node.type === 'code' &&
-        node.meta &&
-        ['component', 'template', 'preview-template'].includes(node.meta)
-    )
+  return Boolean(
+    node.type === 'code' &&
+      node.meta &&
+      ['component', 'template', 'preview-template'].includes(node.meta)
   );
 }
 
 function withProse(tree: Parent, className = 'prose'): void {
-  let insideProse = false;
-  tree.children = tree.children.flatMap((node, i) => {
-    if (insideProse && shouldUnproseNode(node)) {
-      insideProse = false;
-      return [{ type: 'html', value: '</div>' }, node];
-    }
-    if (!insideProse && !shouldUnproseNode(node)) {
-      insideProse = true;
-      return [
-        { type: 'html', value: `<div class="${className}">` },
-        node,
-        ...(i === tree.children.length - 1
-          ? [{ type: 'html', value: '</div>' }]
-          : [])
-      ];
-    }
-    if (i === tree.children.length - 1 && insideProse) {
-      return [node, { type: 'html', value: '</div>' }];
-    }
-    return [node];
+  const openProse = () => ({
+    type: 'html',
+    value: `<div class="${className}">`
   });
+  const openNotProse = () => ({
+    type: 'html',
+    value: `<div class="not-${className}">`
+  });
+  const close = () => ({ type: 'html', value: '</div>' });
+
+  tree.children = [
+    openProse(),
+    tree.children.flatMap((node) => {
+      if (shouldUnproseNode(node)) {
+        return [openNotProse(), node, close()];
+      }
+
+      return [node];
+    }),
+    close()
+  ].flat();
 }
 
 interface WithProseOptions {
@@ -51,13 +49,21 @@ interface WithProseOptions {
   className?: string;
 }
 
+interface Page {
+  ast: Parent;
+  demos?: Page[];
+}
+
 const DocfyPluginWithProse = plugin.withOptions<WithProseOptions | undefined>({
   runWithMdast(ctx, options) {
-    ctx.pages.forEach((page) => {
-      withProse(page.ast as Parent, options?.className);
+    ctx.pages.forEach((pageContent: PageContent) => {
+      // PageContent may not have children, which is required for withProse
+      // TODO: pageContent may need to be a union type
+      const page = pageContent as unknown as Page;
+      withProse(page.ast, options?.className);
 
       page.demos?.forEach((demo) => {
-        withProse(demo.ast as Parent, options?.className);
+        withProse(demo.ast, options?.className);
       });
     });
   }

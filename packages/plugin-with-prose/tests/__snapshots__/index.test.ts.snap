@@ -7,12 +7,17 @@ Array [
     "<div class=\\"prose dark:prose-light\\">
 <h1 id=\\"the-index\\">The index</h1>
 <p>Some text</p>
-</div>
 <div>
   This is a DIV
 </div>
-<div class=\\"prose dark:prose-light\\">
 <p>Some other text</p>
+<div class=\\"not-prose additional classes\\">
+<ul>
+<li>this list</li>
+<li>has</li>
+<li>escaped prose's CSS</li>
+</ul>
+</div>
 </div>",
   ],
   Array [
@@ -20,24 +25,26 @@ Array [
     "<div class=\\"prose dark:prose-light\\">
 <h1 id=\\"button-component\\">Button Component</h1>
 <p>Some text</p>
-</div>
+<div class=\\"not-prose dark:prose-light\\">
 <pre><code class=\\"language-hbs\\">&#x3C;button>This is Preview Templace&#x3C;/button>
-</code></pre>",
+</code></pre>
+</div>
+</div>",
   ],
   Array [
     "button-demo/demo1.md",
     "<div class=\\"prose dark:prose-light\\">
 <h1 id=\\"button-demo\\">Button demo</h1>
 <p>Some text</p>
-</div>
+<div class=\\"not-prose dark:prose-light\\">
 <pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
 </code></pre>
-<div class=\\"prose dark:prose-light\\">
+</div>
 <p>Some other text</p>
-</div>
+<div class=\\"not-prose dark:prose-light\\">
 <pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
 </code></pre>
-<div class=\\"prose dark:prose-light\\">
+</div>
 <p>More text</p>
 <pre><code class=\\"language-sh\\">ember install @docfy/ember
 </code></pre>
@@ -53,12 +60,17 @@ Array [
     "<div class=\\"prose\\">
 <h1 id=\\"the-index\\">The index</h1>
 <p>Some text</p>
-</div>
 <div>
   This is a DIV
 </div>
-<div class=\\"prose\\">
 <p>Some other text</p>
+<div class=\\"not-prose additional classes\\">
+<ul>
+<li>this list</li>
+<li>has</li>
+<li>escaped prose's CSS</li>
+</ul>
+</div>
 </div>",
   ],
   Array [
@@ -66,24 +78,26 @@ Array [
     "<div class=\\"prose\\">
 <h1 id=\\"button-component\\">Button Component</h1>
 <p>Some text</p>
-</div>
+<div class=\\"not-prose\\">
 <pre><code class=\\"language-hbs\\">&#x3C;button>This is Preview Templace&#x3C;/button>
-</code></pre>",
+</code></pre>
+</div>
+</div>",
   ],
   Array [
     "button-demo/demo1.md",
     "<div class=\\"prose\\">
 <h1 id=\\"button-demo\\">Button demo</h1>
 <p>Some text</p>
-</div>
+<div class=\\"not-prose\\">
 <pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
 </code></pre>
-<div class=\\"prose\\">
+</div>
 <p>Some other text</p>
-</div>
+<div class=\\"not-prose\\">
 <pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
 </code></pre>
-<div class=\\"prose\\">
+</div>
 <p>More text</p>
 <pre><code class=\\"language-sh\\">ember install @docfy/ember
 </code></pre>
