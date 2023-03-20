@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Ember integration with Docfy",
   "keywords": [
     "ember-addon",
@@ -30,7 +30,7 @@
     "test:ember-compatibility": "echo 'ember try:each TODO'"
   },
   "dependencies": {
-    "@docfy/core": "^0.5.0",
+    "@docfy/core": "^0.6.0",
     "broccoli-bridge": "^1.0.0",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-funnel": "^3.0.8",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.16.7",
-    "@docfy/plugin-with-prose": "^0.5.0",
+    "@docfy/plugin-with-prose": "^0.6.0",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@embroider/compat": "^1.0.0",
