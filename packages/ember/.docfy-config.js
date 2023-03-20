@@ -31,6 +31,7 @@ module.exports = {
   ],
   labels: {
     components: 'Components',
+    plugins: 'Plugins',
     helpers: 'Helpers',
     core: '@docfy/core',
     ember: '@docfy/ember',

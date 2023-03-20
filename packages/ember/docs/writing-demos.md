@@ -22,7 +22,7 @@ Below you can see how a demo markdown file looks like.
 
 ```
 
-The demo will be injected into the owner file as a new section called "Examples";
+The demo will be inserted into the owner file as a new section called "Examples";
 you can see it below.
 
 Please note that you must pass a metadata to the code block, it can be seen
@@ -56,4 +56,54 @@ And here you can see how it looks like when rendered:
 
 ```hbs preview-template
 Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
+```
+
+## Manual Insertion
+
+To make getting started with Docfy as simple as possible, by default demos will
+be automatically inserted into the owner file under a new section called
+"Examples" before the second heading of the page.
+
+If you want more control over how demos are inserted into the page, you can
+declare `manualDemoInsertion` in a markdown page's frontmatter.
+
+```
+---
+title: Document with many examples
+manualDemoInsertion: true
+---
+```
+
+When a page is using `manualDemoInsertion`, by default no demos are inserted
+into the page. Instead, you must provide markers in your markdown that will be
+replaced. They follow the form `[[demo:name-of-demo]]`.
+
+```md
+# Title here
+
+The demo will be inserted after this line.
+
+[[demo:demo1]]
+
+And the prose of the document will continue exactly how the author wishes.
+```
+
+Sometimes as an author, you want control over where in the page demos will be
+inserted, but you don't need to control this location demo by demo. As a
+shorthand, you can provide the `[[demos-all]]` marker to insert all demos.
+
+```md
+# Title here
+
+All demos go here.
+
+[[demos-all]]
+
+Below is the equivalent if you had to mark all demos individually.
+
+[[demo:demo1]]
+
+[[demo:demo2]]
+
+[[demo:demo3]]
 ```

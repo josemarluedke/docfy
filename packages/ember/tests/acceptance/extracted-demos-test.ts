@@ -77,4 +77,44 @@ module('Acceptance | extracted demos', function (hooks) {
       .dom(snippet1)
       .hasTextContaining('export default class MyDemo extends Component');
   });
+
+  test('when manualDemoInsertion is true, replaces demo markers with demo components', async function (assert) {
+    await visit('/docs/ember/plugins/manual-demo-insertion');
+
+    // The element before the demo is marked for insertion
+    const tomsterDemoPretext = findAll('p').find(
+      (el) => el.innerText.trim() === 'Here is the tomster demo'
+    );
+
+    // An element from within the demo
+    const tomsterDemoNode =
+      tomsterDemoPretext?.nextElementSibling?.querySelector(
+        '[data-test-id="tomster"]'
+      );
+
+    assert.dom(tomsterDemoNode).exists();
+
+    const zoeyDemoPretext = findAll('p').find(
+      (el) => el.innerText.trim() === 'And here is the zoey demo'
+    );
+
+    const zoeyDemoNode = zoeyDemoPretext?.nextElementSibling?.querySelector(
+      '[data-test-id="zoey"]'
+    );
+
+    assert.dom(zoeyDemoNode).exists();
+  });
+
+  test('when manualDemoInsertion is true, replaces demos-all marker with all demo components', async function (assert) {
+    await visit('/docs/ember/plugins/manual-demo-insertion');
+
+    const demosAllHeading = findAll('h2').find(
+      (el) => el.innerText.trim() === 'Or you can add all demos'
+    );
+
+    const demosAll =
+      demosAllHeading?.nextElementSibling?.querySelectorAll('.docfy-demo');
+
+    assert.strictEqual(demosAll?.length, 2);
+  });
 });
