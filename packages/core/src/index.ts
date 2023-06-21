@@ -247,6 +247,7 @@ class Docfy {
       title,
       editUrl,
       relativeUrl: undefined,
+      relativePath,
       headings: [],
       frontmatter: frontmatter,
       pluginData: {},
