@@ -60,7 +60,9 @@ class DocfyBroccoli extends Plugin {
     debug('Config: ', this.config);
     const docfy = new Docfy(this.config);
     const result = await docfy.run(this.config.sources as SourceConfig[]);
-
+    const snippets = {
+      components: {}
+    };
     result.content.forEach((page) => {
       const parts = [this.outputPath, 'templates', page.meta.url];
 
@@ -70,6 +72,7 @@ class DocfyBroccoli extends Plugin {
 
       const fileName = `${path.join(...parts)}.hbs`;
 
+      // console.log(fileName, "RENDERED AS", page.rendered);
       ensureDirectoryExistence(fileName);
       fs.writeFileSync(fileName, page.rendered);
 
@@ -83,6 +86,11 @@ class DocfyBroccoli extends Plugin {
               `${component.name.dashCase}.${chunk.ext}`
             );
             ensureDirectoryExistence(chunkPath);
+
+            snippets.components[`${component.name.dashCase}`] = {
+              ...(snippets.components[`${component.name.dashCase}`] || {}),
+              [chunk.ext]: chunk.code
+            };
             fs.writeFileSync(chunkPath, chunk.code);
           });
 
@@ -93,6 +101,10 @@ class DocfyBroccoli extends Plugin {
               `${component.name.dashCase}.js`
             );
             ensureDirectoryExistence(chunkPath);
+            snippets.components[`${component.name.dashCase}`] = {
+              ...(snippets.components[`${component.name.dashCase}`] || {}),
+              js: templateOnlyComponent
+            };
             fs.writeFileSync(chunkPath, templateOnlyComponent);
           }
         });
@@ -109,11 +121,19 @@ class DocfyBroccoli extends Plugin {
       'public',
       'docfy-urls.json'
     );
+
     ensureDirectoryExistence(urlsJsonFile);
     fs.writeFileSync(
       urlsJsonFile,
       JSON.stringify(result.content.map((page) => page.meta.url))
     );
+    const snippetsJsonFile = path.join(
+      this.outputPath,
+      'public',
+      'docfy-snippets.json'
+    );
+    ensureDirectoryExistence(snippetsJsonFile);
+    fs.writeFileSync(snippetsJsonFile, JSON.stringify(snippets));
     result.staticAssets.forEach((asset) => {
       const dest = path.join(this.outputPath, 'public', asset.toPath);
       ensureDirectoryExistence(dest);
