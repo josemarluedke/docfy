@@ -18,6 +18,7 @@ export interface Heading {
 export interface PageMetadata {
   url: string;
   relativeUrl: undefined | string;
+  relativePath: string;
   editUrl: string;
   title: string;
   headings: Heading[];

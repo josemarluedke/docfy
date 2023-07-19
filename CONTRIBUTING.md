@@ -16,7 +16,15 @@ yarn compile
 
 ## Ember
 
-```
+```bash
 cd packages/ember
 yarn start
+```
+
+## Core
+
+```bash
+cd packages/core
+# yarn test --watch for watch mode
+yarn test
 ```
