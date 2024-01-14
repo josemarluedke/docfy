@@ -18,7 +18,7 @@ export default plugin({
       const demoComponents: DemoComponent[] = [];
 
       visit(page.ast, 'code', (node: CodeNode) => {
-        if (['preview-template'].includes(node.meta || '')) {
+        if (['preview-template', 'preview'].includes(node.meta || '')) {
           demoComponents.push({
             name: generateDemoComponentName(
               `docfy-demo-preview-${path.basename(page.meta.url)}`,

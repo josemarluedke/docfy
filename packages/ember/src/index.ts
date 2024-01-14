@@ -35,7 +35,7 @@ function hasBackingJS(chunks: DemoComponentChunk[]): boolean {
   for (let i = 0; i < chunks.length; i++) {
     const chunk = chunks[i];
 
-    if (chunk.ext === 'js' || chunk.ext === 'ts') {
+    if (['js', 'ts', 'gts', 'gjs'].includes(chunk.ext)) {
       return true;
     }
   }
