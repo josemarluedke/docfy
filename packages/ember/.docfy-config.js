@@ -20,7 +20,7 @@ module.exports = {
     ]
   ],
   plugins: [docfyWithProse],
-  rehypePlugins: [prism],
+  rehypePlugins: [() => [prism, { alias: { gts: 'ts', gjs: 'js' } }]],
   sources: [
     {
       root: path.join(__dirname, 'dummy-docs'),
