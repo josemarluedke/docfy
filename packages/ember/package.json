@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember",
-  "version": "0.8.3",
+  "version": "0.8.4",
   "description": "Ember integration with Docfy",
   "keywords": [
     "ember-addon",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.16.7",
-    "@docfy/plugin-with-prose": "^0.8.3",
+    "@docfy/plugin-with-prose": "^0.8.4",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.6.0",
     "@embroider/compat": "^1.0.0",
