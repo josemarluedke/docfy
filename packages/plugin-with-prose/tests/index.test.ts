@@ -30,7 +30,7 @@ test('it should work', async () => {
 
 test('it should use custom class', async () => {
   const docfy = new Docfy({
-    plugins: [withProse({ className: 'prose dark:prose-light' })]
+    plugins: [withProse({ className: 'prose dark:prose-invert' })]
   });
   const result = await docfy.run([
     {
