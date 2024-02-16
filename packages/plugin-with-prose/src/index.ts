@@ -13,7 +13,9 @@ function shouldUnproseNode(node: NodeWithMeta): boolean {
   return Boolean(
     node.type === 'code' &&
       node.meta &&
-      ['component', 'template', 'preview-template'].includes(node.meta)
+      ['component', 'template', 'preview-template', 'preview'].includes(
+        node.meta
+      )
   );
 }
 
