@@ -19,14 +19,18 @@ function shouldUnproseNode(node: NodeWithMeta): boolean {
   );
 }
 
-function withProse(tree: Parent, className = 'prose'): void {
+function withProse(
+  tree: Parent,
+  className = 'prose',
+  notClassName = 'not-prose'
+): void {
   const openProse = () => ({
     type: 'html',
     value: `<div class="${className}">`
   });
   const openNotProse = () => ({
     type: 'html',
-    value: `<div class="not-${className}">`
+    value: `<div class="${notClassName}">`
   });
   const close = () => ({ type: 'html', value: '</div>' });
 
