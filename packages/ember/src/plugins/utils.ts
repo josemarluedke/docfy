@@ -153,6 +153,9 @@ export function generateDemoComponentName(
     .replace(/(\w)(\w*)/g, function (_, g1, g2) {
       return `${g1.toUpperCase()}${g2.toLowerCase()}`;
     })
+    .replace(/-(\d+)/g, function (_, g1) {
+      return `_${g1}`;
+    })
     .replace(/-/g, '');
 
   if (seenNames.has(dashCase)) {

@@ -20,6 +20,8 @@ module('Unit | Demo component generation', function (hooks) {
     // dummy/docs/packages/ember/components/docfy-link-demo/{demo-file}.md
     has('packages-ember-components-docfy-link-demo1');
     has('packages-ember-components-docfy-link-demo2');
+    // dummy/docs/packages/ember/components/docfy-with-hyphenated-number-2/{demo-file}.md
+    has('packages-ember-components-docfy-with-hyphenated-number-2-demo1');
     // where do these come from?
     has('preview-ember');
     has('preview-ember1');

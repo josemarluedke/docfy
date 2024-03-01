@@ -119,7 +119,10 @@ module('Unit | Service | docfy', function (hooks) {
         .stub(routerService, 'currentURL')
         .get(() => '/docs/ember/plugins/manual-demo-insertion');
 
-      assert.equal(service.previousPage()?.title, 'Docfy Output Component');
+      assert.equal(
+        service.previousPage()?.title,
+        'Docfy With Hyphenated Number 2'
+      );
       assert.equal(service.nextPage()?.title, undefined);
     });
 
