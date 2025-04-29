@@ -25,7 +25,7 @@ Array [
     "<div class=\\"prose dark:prose-invert\\">
 <h1 id=\\"button-component\\">Button Component</h1>
 <p>Some text</p>
-<div class=\\"not-prose dark:prose-invert\\">
+<div class=\\"not-prose\\">
 <pre><code class=\\"language-hbs\\">&#x3C;button>This is Preview Templace&#x3C;/button>
 </code></pre>
 </div>
@@ -36,12 +36,12 @@ Array [
     "<div class=\\"prose dark:prose-invert\\">
 <h1 id=\\"button-demo\\">Button demo</h1>
 <p>Some text</p>
-<div class=\\"not-prose dark:prose-invert\\">
+<div class=\\"not-prose\\">
 <pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
 </code></pre>
 </div>
 <p>Some other text</p>
-<div class=\\"not-prose dark:prose-invert\\">
+<div class=\\"not-prose\\">
 <pre><code class=\\"language-html\\">&#x3C;button>Cool&#x3C;/button>
 </code></pre>
 </div>
