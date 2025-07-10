@@ -1,10 +1,14 @@
 import output from '@docfy/ember/output';
-import RouterDSL from '@ember/routing/-private/router-dsl';
 import { NestedPageMetadata } from '@docfy/core/lib/types';
+
+// Minimal interface for router DSL context to avoid depending on private APIs
+interface RouterDSLContext {
+  route(name: string, callback?: () => void): void;
+}
 export { default as DocfyService } from './services/docfy';
 
-function addFromNested(context: RouterDSL, nested: NestedPageMetadata): void {
-  function add(this: RouterDSL): void {
+function addFromNested(context: RouterDSLContext, nested: NestedPageMetadata): void {
+  function add(this: RouterDSLContext): void {
     nested.pages.forEach((page) => {
       const url = page.relativeUrl;
       if (typeof url === 'string') {
@@ -26,6 +30,6 @@ function addFromNested(context: RouterDSL, nested: NestedPageMetadata): void {
   }
 }
 
-export function addDocfyRoutes(context: RouterDSL): void {
+export function addDocfyRoutes(context: RouterDSLContext): void {
   addFromNested(context, output.nested);
 }
