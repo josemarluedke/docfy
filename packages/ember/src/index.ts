@@ -146,123 +146,13 @@ module.exports = {
   name: require('../package').name, // eslint-disable-line
 
   docfyConfig: undefined,
-  _loadingConfig: false,
 
   included(...args: unknown[]): void {
     if (!isDeepAddonInstance(this)) {
+      this.docfyConfig = getDocfyConfig(this.project.root);
       this.bridge = new BroccoliBridge();
-      // Don't load config here, defer until needed
     }
     this._super.included.apply(this, args);
-  },
-
-  // Helper method to ensure config is loaded
-  _ensureDocfyConfig(): void {
-    if (!this.docfyConfig && !this._loadingConfig) {
-      this._loadingConfig = true;
-      // Use a synchronous approach for now, falling back to default config for ESM cases
-      try {
-        this.docfyConfig = this._getDocfyConfigSync(this.project.root);
-      } catch (error) {
-        console.warn('Failed to load docfy config, using defaults:', error);
-        this.docfyConfig = {
-          sources: [
-            {
-              pattern: '**/*.md',
-              urlPrefix: 'docs',
-              root: this.project.root + '/docs'
-            }
-          ]
-        };
-      }
-    }
-  },
-
-  _getDocfyConfigSync(root: string): any {
-    const path = require('path');
-    const configPath = path.join(root, '.docfy-config.js');
-    
-    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
-    const pkg = require(path.join(root, 'package.json'));
-    
-    let docfyConfig: any = {};
-    
-    try {
-      // Try to require the config file
-      // eslint-disable-next-line @typescript-eslint/no-require-imports
-      docfyConfig = require(configPath);
-    } catch (e: any) {
-      // If it's an ESM module, we can't load it synchronously
-      // Fall back to empty config which will be filled with defaults
-      const isESMError =
-        e.code === 'ERR_REQUIRE_ESM' ||
-        e.message?.includes('must use import to load ES Module') ||
-        e.message?.includes('Cannot use import statement outside a module');
-      
-      if (!isESMError && e.code !== 'ERR_MODULE_NOT_FOUND') {
-        throw e;
-      }
-      
-      docfyConfig = {};
-    }
-
-    if (typeof docfyConfig !== 'object' || docfyConfig == null) {
-      docfyConfig = {};
-    }
-
-    if (!Array.isArray(docfyConfig.sources)) {
-      docfyConfig.sources = [
-        {
-          pattern: '**/*.md',
-          urlPrefix: 'docs'
-        }
-      ];
-    }
-
-    if (!Array.isArray(docfyConfig.plugins)) {
-      docfyConfig.plugins = [];
-    }
-
-    // Add default plugins
-    const replaceInternalLinksWithDocfyLink = require('./plugins/replace-internal-links-with-docfy-link').default;
-    const previewTemplate = require('./plugins/preview-template').default;
-    const extractDemosToComponents = require('./plugins/extract-demos-to-components').default;
-    
-    docfyConfig.plugins.unshift(
-      replaceInternalLinksWithDocfyLink,
-      previewTemplate,
-      extractDemosToComponents
-    );
-
-    if (!Array.isArray(docfyConfig.remarkPlugins)) {
-      docfyConfig.remarkPlugins = [];
-    }
-
-    const remarkHbs = require('remark-hbs').default;
-    docfyConfig.remarkPlugins.push([
-      remarkHbs,
-      docfyConfig.remarkHbsOptions || {}
-    ]);
-
-    const repoUrl = pkg.repository?.url || pkg.repository;
-
-    if (
-      !docfyConfig.repository &&
-      typeof repoUrl === 'string' &&
-      repoUrl !== ''
-    ) {
-      docfyConfig.repository = {
-        url: repoUrl
-      };
-    }
-
-    docfyConfig.sources.forEach((source: any) => {
-      if (typeof source.root === 'undefined') {
-        source.root = path.join(root, 'docs');
-      }
-    });
-
-    return docfyConfig;
   },
 
   // Re-enables caching of this addon, due to opting out
@@ -271,7 +161,6 @@ module.exports = {
     switch (treeType) {
       case 'app':
       case 'addon': {
-        this._ensureDocfyConfig();
         return cacheKeyForTree(treeType, this, [this.docfyConfig]);
       }
       default:
@@ -284,8 +173,6 @@ module.exports = {
     if (isDeepAddonInstance(this)) {
       return trees[0];
     }
-
-    this._ensureDocfyConfig();
 
     const inputs: InputNode[] = [new UnwatchedDir(this.project.root)];
 

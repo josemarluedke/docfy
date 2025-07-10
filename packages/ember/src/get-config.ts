@@ -1,5 +1,4 @@
 import path from 'path';
-import { pathToFileURL } from 'url';
 import { DocfyConfig } from '@docfy/core/lib/types';
 import remarkHbs from 'remark-hbs';
 import replaceInternalLinksWithDocfyLink from './plugins/replace-internal-links-with-docfy-link';
@@ -20,9 +19,9 @@ interface EmberDocfyConfig extends DocfyConfig {
   remarkHbsOptions?: RemarkHbsOptions;
 }
 
-export default async function getDocfyConfig(
+export default function getDocfyConfig(
   root: string
-): Promise<EmberDocfyConfig> {
+): EmberDocfyConfig {
   const configPath = path.join(root, '.docfy-config.js');
   let docfyConfig: Partial<EmberDocfyConfig> = {};
 
@@ -35,26 +34,15 @@ export default async function getDocfyConfig(
     docfyConfig = require(configPath);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    // Fallback to ESM if the error indicates ESM-only module
+    // For ESM modules or missing files, fall back to empty config
     const isESMError =
       e.code === 'ERR_REQUIRE_ESM' ||
       e.message?.includes('must use import to load ES Module') ||
       e.message?.includes('Cannot use import statement outside a module');
 
     if (isESMError || e.code === 'ERR_MODULE_NOT_FOUND') {
-      try {
-        const imported = await import(pathToFileURL(configPath).href);
-        docfyConfig = imported?.default ?? imported;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (esmErr: any) {
-        const notFound =
-          esmErr.code === 'ERR_MODULE_NOT_FOUND' ||
-          esmErr.message?.includes('Cannot find module');
-        if (!notFound) {
-          throw esmErr;
-        }
-        docfyConfig = {};
-      }
+      // ESM configs are not supported in synchronous mode, use defaults
+      docfyConfig = {};
     } else {
       throw e;
     }
