@@ -2,38 +2,13 @@ import type { Plugin, ResolvedConfig } from 'vite';
 import { createFilter } from '@rollup/pluginutils';
 import Docfy from '@docfy/core';
 import type { DocfyConfig } from '@docfy/core/lib/types';
-import { loadDocfyConfig } from './config';
-import { createVirtualModules } from './virtual-modules';
-import { processMarkdown } from './markdown-processor';
-import { generateGJSComponents } from './gjs-generator';
+import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
+import { createVirtualModules } from './virtual-modules.js';
+import { processMarkdown } from './markdown-processor.js';
+import { generateGJSComponents } from './gjs-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin');
-
-export interface DocfyVitePluginOptions extends Partial<DocfyConfig> {
-  /**
-   * Root directory for the Ember app
-   */
-  root?: string;
-
-  /**
-   * Include patterns for markdown files
-   * @default ['**\/*.md']
-   */
-  include?: string | string[];
-
-  /**
-   * Exclude patterns for markdown files
-   * @default ['node_modules/**']
-   */
-  exclude?: string | string[];
-
-  /**
-   * Enable hot module replacement for markdown files
-   * @default true
-   */
-  hmr?: boolean;
-}
 
 export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): Plugin[] {
   const {
@@ -116,3 +91,4 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
 
 // Export types for consumers
 export type { DocfyConfig } from '@docfy/core/lib/types';
+export type { DocfyVitePluginOptions } from './config.js';

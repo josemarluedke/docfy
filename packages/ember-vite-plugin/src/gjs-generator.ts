@@ -2,7 +2,7 @@ import type { PluginContext } from 'rollup';
 import type Docfy from '@docfy/core';
 import type { DocfyConfig, PageContent, SourceConfig } from '@docfy/core/lib/types';
 import path from 'path';
-import { toPascalCase, toDashCase } from './utils';
+import { toPascalCase, toDashCase } from './utils.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:gjs-generator');

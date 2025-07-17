@@ -1,13 +1,37 @@
 import path from 'path';
 import { pathToFileURL } from 'url';
 import type { DocfyConfig } from '@docfy/core/lib/types';
-import type { DocfyVitePluginOptions } from './index';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:config');
 
 interface EmberDocfyConfig extends DocfyConfig {
   remarkHbsOptions?: any;
+}
+
+export interface DocfyVitePluginOptions extends Partial<DocfyConfig> {
+  /**
+   * Root directory for the Ember app
+   */
+  root?: string;
+
+  /**
+   * Include patterns for markdown files
+   * @default ['**\/*.md']
+   */
+  include?: string | string[];
+
+  /**
+   * Exclude patterns for markdown files
+   * @default ['node_modules/**']
+   */
+  exclude?: string | string[];
+
+  /**
+   * Enable hot module replacement for markdown files
+   * @default true
+   */
+  hmr?: boolean;
 }
 
 const DEFAULT_CONFIG: DocfyConfig = {
@@ -30,38 +54,23 @@ export async function loadDocfyConfig(
   const pkg = await loadPackageJson(root);
 
   try {
-    // Attempt to require (CJS)
-    docfyConfig = require(configPath);
-    debug('Loaded CJS config', { configPath });
+    // Use dynamic import for both CJS and ESM
+    const imported = await import(pathToFileURL(configPath).href);
+    docfyConfig = imported?.default ?? imported;
+    debug('Loaded config', { configPath });
   } catch (e: any) {
-    // Fallback to ESM if the error indicates ESM-only module
-    const isESMError =
-      e.code === 'ERR_REQUIRE_ESM' ||
-      e.message?.includes('must use import to load ES Module') ||
-      e.message?.includes('Cannot use import statement outside a module');
-
-    if (isESMError || e.code === 'ERR_MODULE_NOT_FOUND') {
-      try {
-        const imported = await import(pathToFileURL(configPath).href);
-        docfyConfig = imported?.default ?? imported;
-        debug('Loaded ESM config', { configPath });
-      } catch (esmErr: any) {
-        const notFound =
-          esmErr.code === 'ERR_MODULE_NOT_FOUND' ||
-          esmErr.message?.includes('Cannot find module');
-        if (!notFound) {
-          throw esmErr;
-        }
-        debug('No config file found, using defaults', { configPath });
-        docfyConfig = {};
-      }
-    } else {
+    const notFound =
+      e.code === 'ERR_MODULE_NOT_FOUND' ||
+      e.message?.includes('Cannot find module');
+    if (!notFound) {
       throw e;
     }
+    debug('No config file found, using defaults', { configPath });
+    docfyConfig = {};
   }
 
   // Merge with options and set defaults
-  const mergedConfig = mergeConfig(docfyConfig, options, pkg);
+  const mergedConfig = await mergeConfig(docfyConfig, options, pkg);
   debug('Final config', { sources: mergedConfig.sources?.length });
   
   return mergedConfig;
@@ -70,18 +79,19 @@ export async function loadDocfyConfig(
 async function loadPackageJson(root: string): Promise<any> {
   try {
     const pkgPath = path.join(root, 'package.json');
-    return require(pkgPath);
+    const imported = await import(pathToFileURL(pkgPath).href, { assert: { type: 'json' } });
+    return imported.default;
   } catch (e) {
     debug('Could not load package.json', { root });
     return {};
   }
 }
 
-function mergeConfig(
+async function mergeConfig(
   docfyConfig: Partial<EmberDocfyConfig>,
   options: DocfyVitePluginOptions,
   pkg: any
-): EmberDocfyConfig {
+): Promise<EmberDocfyConfig> {
   if (typeof docfyConfig !== 'object' || docfyConfig == null) {
     docfyConfig = {};
   }
@@ -112,7 +122,7 @@ function mergeConfig(
   }
 
   // Add remark-hbs plugin
-  const remarkHbs = require('remark-hbs');
+  const remarkHbs = (await import('remark-hbs')).default;
   docfyConfig.remarkPlugins.push([
     remarkHbs,
     docfyConfig.remarkHbsOptions || {}

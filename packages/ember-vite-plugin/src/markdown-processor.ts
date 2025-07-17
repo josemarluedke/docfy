@@ -2,7 +2,7 @@ import type { ResolvedConfig } from 'vite';
 import type Docfy from '@docfy/core';
 import type { SourceConfig } from '@docfy/core/lib/types';
 import path from 'path';
-import { generateGJSTemplate } from './gjs-generator';
+import { generateGJSTemplate } from './gjs-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:markdown-processor');
