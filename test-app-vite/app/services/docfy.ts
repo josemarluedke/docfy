@@ -1,7 +1,8 @@
 import Service from '@ember/service';
 import output from 'virtual:docfy-output';
 import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
-import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import type RouterService from '@ember/routing/router-service';
 
 function flatNested(
   output?: NestedPageMetadata,
@@ -21,7 +22,7 @@ function flatNested(
 }
 
 export default class DocfyService extends Service {
-  router!: RouterService;
+  @service declare router: RouterService;
 
   get flat(): PageMetadata[] {
     return flatNested(this.nested);
@@ -32,7 +33,9 @@ export default class DocfyService extends Service {
   }
 
   get currentPage(): PageMetadata | undefined {
-    return this.findByUrl(this.router.currentURL);
+    const currentURL = this.router.currentURL;
+    if (!currentURL) return undefined;
+    return this.findByUrl(currentURL);
   }
 
   findNestedChildrenByName(
@@ -63,11 +66,11 @@ export default class DocfyService extends Service {
       pages = flatNested(this.findNestedChildrenByName(scopeByNestedName));
     }
 
-    url = url.split('#')[0];
-    url = url.replace(/\/$/, '');
+    const cleanedUrl = url.split('#')[0] || '';
+    const finalUrl = cleanedUrl.replace(/\/$/, '');
 
     return pages.find((item) => {
-      return item.url === url || item.url === `${url}/`;
+      return item.url === finalUrl || item.url === `${finalUrl}/`;
     });
   }
 

@@ -15,9 +15,15 @@ interface NestedNode {
   children: NestedNode[];
 }
 
+interface SidebarNavArgs {
+  node: NestedNode;
+}
+
 interface SidebarNavSignature {
-  Args: {
-    node: NestedNode;
+  Args: SidebarNavArgs;
+  Element: HTMLDivElement;
+  Blocks: {
+    default: [];
   };
 }
 

@@ -1,20 +1,25 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
-import RouterService from '@ember/routing/router-service';
+import { service } from '@ember/service';
+import type RouterService from '@ember/routing/router-service';
 
 import type DocfyService from '../services/docfy';
 import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 
-interface DocfyOutputArgs {
-  type?: 'flat' | 'nested';
-  fromCurrentURL?: boolean;
-  url?: string;
-  scope?: string;
+interface DocfyOutputSignature {
+  Args: {
+    type?: 'flat' | 'nested';
+    fromCurrentURL?: boolean;
+    url?: string;
+    scope?: string;
+  };
+  Blocks: {
+    default: [output: NestedPageMetadata | PageMetadata[] | PageMetadata | undefined];
+  };
 }
 
-export default class DocfyOutput extends Component<DocfyOutputArgs> {
-  @service router!: RouterService;
-  @service docfy!: DocfyService;
+export default class DocfyOutput extends Component<DocfyOutputSignature> {
+  @service declare router: RouterService;
+  @service declare docfy: DocfyService;
 
   get output(): NestedPageMetadata | PageMetadata[] | PageMetadata | undefined {
     if (this.args.url) {
@@ -22,7 +27,9 @@ export default class DocfyOutput extends Component<DocfyOutputArgs> {
     }
 
     if (this.args.fromCurrentURL) {
-      return this.docfy.findByUrl(this.router.currentURL, this.args.scope);
+      const currentURL = this.router.currentURL;
+      if (!currentURL) return undefined;
+      return this.docfy.findByUrl(currentURL, this.args.scope);
     }
 
     if (this.args.scope) {

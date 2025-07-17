@@ -3,15 +3,24 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { on } from '@ember/modifier';
+import type Owner from '@ember/owner';
+
+interface ThemeSwitcherArgs {
+  // No args currently needed, but could be extended later
+}
 
 interface ThemeSwitcherSignature {
+  Args: ThemeSwitcherArgs;
   Element: HTMLButtonElement;
+  Blocks: {
+    default: [];
+  };
 }
 
 export default class ThemeSwitcher extends Component<ThemeSwitcherSignature> {
   @tracked prefersDark = false;
 
-  constructor(owner: unknown, args: object) {
+  constructor(owner: Owner, args: ThemeSwitcherArgs) {
     super(owner, args);
     if (typeof window === 'undefined') {
       return;

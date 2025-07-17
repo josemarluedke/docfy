@@ -9,14 +9,20 @@ interface Heading {
   headings: Heading[];
 }
 
+interface PageHeadingsArgs {
+  headings: Heading[];
+  currentHeadingId?: string;
+}
+
 interface PageHeadingsSignature {
-  Args: {
-    headings: Heading[];
-    currentHeadingId?: string;
+  Args: PageHeadingsArgs;
+  Element: HTMLDivElement;
+  Blocks: {
+    default: [];
   };
 }
 
-const isEqual = (a: string, b: string): boolean => a === b;
+const isEqual = (a: string, b?: string): boolean => a === b;
 
 export default class PageHeadings extends Component<PageHeadingsSignature> {
   @action onClick(evt: Event): void {

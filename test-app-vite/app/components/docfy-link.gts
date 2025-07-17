@@ -1,18 +1,33 @@
 import Component from '@glimmer/component';
-import { inject as service } from '@ember/service';
+import { service } from '@ember/service';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
+import type RouterService from '@ember/routing/router-service';
 
-export default class DocfyLink extends Component {
-  @service router;
+interface DocfyLinkArgs {
+  to: string;
+  anchor?: string;
+  activeClass?: string;
+}
 
-  get routeName() {
-    let { to } = this.args;
+interface DocfyLinkSignature {
+  Args: DocfyLinkArgs;
+  Element: HTMLAnchorElement;
+  Blocks: {
+    default: [];
+  };
+}
+
+export default class DocfyLink extends Component<DocfyLinkSignature> {
+  @service declare router: RouterService;
+
+  get routeName(): string | undefined {
+    const { to } = this.args;
 
     return this.router.recognize(to)?.name;
   }
 
-  get href() {
+  get href(): string {
     let url = this.args.to;
     if (this.routeName) {
       url = this.router.urlFor(this.routeName);
@@ -25,12 +40,12 @@ export default class DocfyLink extends Component {
     }
   }
 
-  get isActive() {
+  get isActive(): boolean {
     return this.router.currentRouteName === this.routeName;
   }
 
   @action
-  navigate(event) {
+  navigate(event: MouseEvent): void {
     if (event.ctrlKey || event.metaKey) {
       return;
     }

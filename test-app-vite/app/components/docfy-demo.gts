@@ -6,76 +6,100 @@ import { schedule } from '@ember/runloop';
 import { helper } from '@ember/component/helper';
 import { on } from '@ember/modifier';
 import { fn } from '@ember/helper';
+import { hash } from '@ember/helper';
+import type Owner from '@ember/owner';
+import type { TOC } from '@ember/component/template-only';
 
 // Helper function for equality comparison
 const docfyEq = helper(function docfyEq(params: unknown[]): boolean {
   return params[0] === params[1];
 });
 
-// Type definitions
-interface DocfyDemoArgs {
+// Shared type for snippet registration
+interface SnippetRegisterArgs {
   id: string;
+  name: string;
 }
 
+// Description subcomponent
 interface DocfyDemoDescriptionArgs {
   id?: string;
   title?: string;
   editUrl?: string;
 }
 
-interface SnippetRegisterArgs {
-  id: string;
-  name: string;
+interface DocfyDemoDescriptionSignature {
+  Args: DocfyDemoDescriptionArgs;
+  Element: HTMLDivElement;
+  Blocks: {
+    default: [];
+  };
 }
 
+class DocfyDemoDescription extends Component<DocfyDemoDescriptionSignature> {
+  <template>
+    <div class="docfy-demo__description" ...attributes>
+      <div class="docfy-demo__description__header">
+        {{#if @title}}
+          <h3 class="docfy-demo__description__header__title">
+            <a href="#{{@id}}">
+              <span class="icon icon-link"></span>
+            </a>
+            {{@title}}
+          </h3>
+        {{/if}}
+        {{#if @editUrl}}
+          <a
+            href={{@editUrl}}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="docfy-demo__description__header__edit-url"
+          >
+            Edit this demo
+          </a>
+        {{/if}}
+      </div>
+
+      <div class="docfy-demo__description__content">
+        {{yield}}
+      </div>
+    </div>
+  </template>
+}
+
+// Example subcomponent
+interface DocfyDemoExampleSignature {
+  Element: HTMLDivElement;
+  Blocks: {
+    default: [];
+  };
+}
+
+const DocfyDemoExample: TOC<DocfyDemoExampleSignature> = <template>
+  <div class="docfy-demo__example not-prose" ...attributes>
+    {{yield}}
+  </div>
+</template>;
+
+// Snippet subcomponent
 interface DocfyDemoSnippetArgs {
   name: string;
   active: string;
   registerSnippet: (snippet: SnippetRegisterArgs) => void;
 }
 
-// Description subcomponent
-const Description = <template>
-  <div class="docfy-demo__description" ...attributes>
-    <div class="docfy-demo__description__header">
-      {{#if @title}}
-        <h3 class="docfy-demo__description__header__title">
-          <a href="#{{@id}}">
-            <span class="icon icon-link"></span>
-          </a>
-          {{@title}}
-        </h3>
-      {{/if}}
-      {{#if @editUrl}}
-        <a
-          href={{@editUrl}}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="docfy-demo__description__header__edit-url"
-        >
-          Edit this demo
-        </a>
-      {{/if}}
-    </div>
+interface DocfyDemoSnippetSignature {
+  Args: DocfyDemoSnippetArgs;
+  Element: HTMLDivElement;
+  Blocks: {
+    default: [];
+  };
+}
 
-    <div class="docfy-demo__description__content">
-      {{yield}}
-    </div>
-  </div>
-</template>;
-
-// Example subcomponent
-const Example = <template>
-  <div class="docfy-demo__example not-prose" ...attributes>
-    {{yield}}
-  </div>
-</template>;
-
-// Snippet subcomponent class
-class DocfyDemoSnippet extends Component<DocfyDemoSnippetArgs> {
+class DocfyDemoSnippet extends Component<DocfyDemoSnippetSignature> {
   id = guidFor(this);
 
-  constructor(owner: unknown, args: DocfyDemoSnippetArgs) {
+  constructor(owner: Owner, args: DocfyDemoSnippetArgs) {
     super(owner, args);
 
     if (typeof this.args.registerSnippet === 'function') {
@@ -106,8 +130,14 @@ class DocfyDemoSnippet extends Component<DocfyDemoSnippetArgs> {
   </template>
 }
 
-// Snippets subcomponent class
-class DocfyDemoSnippets extends Component {
+// Snippets subcomponent
+interface DocfyDemoSnippetsSignature {
+  Blocks: {
+    default: [any];
+  };
+}
+
+class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignature> {
   @tracked snippets: SnippetRegisterArgs[] = [];
   @tracked active?: string;
 
@@ -148,13 +178,32 @@ class DocfyDemoSnippets extends Component {
 }
 
 // Main DocfyDemo component
-export default class DocfyDemo extends Component<DocfyDemoArgs> {
+interface DocfyDemoArgs {
+  id: string;
+}
+
+interface DocfyDemoSignature {
+  Args: DocfyDemoArgs;
+  Element: HTMLDivElement;
+  Blocks: {
+    default: [
+      {
+        Example: TOC<DocfyDemoExampleSignature>;
+        Description: any;
+        Snippet: any;
+        Snippets: typeof DocfyDemoSnippets;
+      }
+    ];
+  };
+}
+
+export default class DocfyDemo extends Component<DocfyDemoSignature> {
   <template>
     <div id={{@id}} class="docfy-demo" ...attributes>
       {{yield
         (hash
-          Example=Example
-          Description=(component Description id=@id)
+          Example=DocfyDemoExample
+          Description=(component DocfyDemoDescription id=@id)
           Snippet=DocfyDemoSnippet
           Snippets=DocfyDemoSnippets
         )

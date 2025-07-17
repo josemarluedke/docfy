@@ -3,6 +3,9 @@
   "include": [
     "app", "tests", "types"
   ],
+  "exclude": [
+    "app/templates/docs/*"
+  ],
   "glint": {
     "environment": [
       "ember-loose",

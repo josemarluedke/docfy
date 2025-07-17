@@ -3,10 +3,13 @@ import { service } from '@ember/service';
 import type DocfyService from '../services/docfy';
 import type { PageMetadata } from '@docfy/core/lib/types';
 
+interface DocfyPreviousAndNextPageArgs {
+  scope?: string;
+}
+
 interface DocfyPreviousAndNextPageSignature {
-  Args: {
-    scope?: string;
-  };
+  Args: DocfyPreviousAndNextPageArgs;
+  Element: HTMLDivElement;
   Blocks: {
     default: [previous: PageMetadata | undefined, next: PageMetadata | undefined];
   };
