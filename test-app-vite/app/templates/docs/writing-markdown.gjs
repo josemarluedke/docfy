@@ -1,4 +1,5 @@
-<h1 id="writing-markdown">Writing Markdown</h1>
+<template>
+  <h1 id="writing-markdown">Writing Markdown</h1>
 <p>For most developers writing markdown is something they are used to; therefore,
 they can use their previous knowledge for writing markdowns in the context of Docfy.
 In case you are not familiar with markdown, <a href="https://www.markdownguide.org/basic-syntax/">check this guide out</a>.</p>
@@ -121,3 +122,4 @@ export default class MyDemo extends Component {
 }
 ```
 </code></pre>
+</template>

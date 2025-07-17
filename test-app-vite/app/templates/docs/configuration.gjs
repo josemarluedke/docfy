@@ -1,4 +1,5 @@
-<h1 id="configuration">Configuration</h1>
+<template>
+  <h1 id="configuration">Configuration</h1>
 <p>Docfy has a few options you can change to enhance and, or modify Docfy behavior. There are two categories of options, first, base configuration, and second, the source of files configuration.</p>
 <h2 id="base-configuration">Base configuration</h2>
 <p>Here you can customize the base options, such as the Docfy plugins, remark
@@ -134,3 +135,4 @@ documentation files next to its implementation.</p>
 <h3 id="repository-1">repository</h3>
 <p>• <strong>repository</strong>? : <em>RepositoryConfig</em></p>
 <p>Overwrite base repository config for this source.</p>
+</template>

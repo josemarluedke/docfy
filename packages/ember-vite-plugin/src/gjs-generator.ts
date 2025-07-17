@@ -7,6 +7,46 @@ import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:gjs-generator');
 
+interface ComponentImport {
+  name: string;
+  path: string;
+}
+
+/**
+ * Extract component imports from rendered HTML
+ * This function analyzes the HTML to find any component usage and generates appropriate import statements
+ */
+function extractComponentImports(html: string): ComponentImport[] {
+  const imports: ComponentImport[] = [];
+  
+  // Common patterns for component usage in HTML
+  // This is a basic implementation - you might want to extend this based on your specific needs
+  
+  // Look for custom elements that might be components (PascalCase tags)
+  const componentRegex = /<([A-Z][a-zA-Z0-9]*(?::[a-zA-Z0-9]+)*)/g;
+  const matches = html.matchAll(componentRegex);
+  
+  for (const match of matches) {
+    const tagName = match[1];
+    
+    // Skip known HTML elements that happen to be capitalized
+    if (!['HTML', 'HEAD', 'BODY', 'DIV', 'SPAN', 'P', 'A', 'IMG', 'BR', 'HR'].includes(tagName)) {
+      // Convert PascalCase to kebab-case for component path
+      const componentPath = `../components/${toDashCase(tagName)}`;
+      
+      // Only add if not already present
+      if (!imports.some(imp => imp.name === tagName)) {
+        imports.push({
+          name: tagName,
+          path: componentPath
+        });
+      }
+    }
+  }
+  
+  return imports;
+}
+
 export interface DemoComponent {
   name: {
     pascalCase: string;
@@ -49,19 +89,26 @@ export function generateTemplatePath(url: string): string {
     parts.push('index');
   }
   
-  return `${parts.join('/')}.hbs`;
+  return `${parts.join('/')}.gjs`;
 }
 
 /**
- * Generate a plain HBS template for a markdown page
+ * Generate a GJS template for a markdown page
  * This ensures compatibility with Ember's template resolution
  */
 export function generatePageTemplate(page: PageContent): string {
-  debug('Generating page template for route', { url: page.meta.url });
+  debug('Generating GJS page template for route', { url: page.meta.url });
   
-  // For Ember templates, we just need the rendered HTML content directly
-  // No need for triple-stash syntax - just the plain HTML
-  return page.rendered;
+  // Extract any component usage from the rendered HTML to generate imports
+  const imports = extractComponentImports(page.rendered);
+  
+  const importStatements = imports.length > 0 
+    ? imports.map(imp => `import ${imp.name} from '${imp.path}';`).join('\n') + '\n\n'
+    : '';
+  
+  return `${importStatements}<template>
+  ${page.rendered}
+</template>`;
 }
 
 export async function generateGJSComponents(

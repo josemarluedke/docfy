@@ -1,4 +1,5 @@
-<h1 id="getting-started">Getting Started</h1>
+<template>
+  <h1 id="getting-started">Getting Started</h1>
 <p>Here you can find a simple getting started with the Docfy Core. The core will
 output an object with the processed content, metadata, and some additional data
 structures for your convenience.</p>
@@ -39,3 +40,4 @@ echo '# Hello Docfy.' > docs/README.md
 <p>Now you can run the <code>index.js</code> we created earlier.</p>
 <pre><code class="language-sh">node index.js
 </code></pre>
+</template>

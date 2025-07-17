@@ -1,4 +1,5 @@
-<h1 id="introduction">Introduction</h1>
+<template>
+  <h1 id="introduction">Introduction</h1>
 <p>Documentation is an essential part of any software today. Without documentation,
 users are not able to take full advantage of projects. To allow developers and
 teams to build documentation sites, having a powerful tool under the hood to help
@@ -19,3 +20,4 @@ allows extending the markdown processor by using <a href="https://remark.js.org/
 under the hood. Remark has
 <a href="https://github.com/remarkjs/remark/blob/master/doc/plugins.md">many plugins</a>
 that can help you to extend and modify your markdown files.</p>
+</template>
