@@ -6,4 +6,9 @@ export default class Router extends EmberRouter {
   rootURL = config.rootURL;
 }
 
-Router.map(function () {});
+Router.map(function () {
+  // For now, we'll add routes manually until we implement addDocfyRoutes equivalent
+  this.route('docs', { path: '/docs' }, function() {
+    this.route('page', { path: '/*path' });
+  });
+});

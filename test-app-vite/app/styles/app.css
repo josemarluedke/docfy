@@ -1,1 +1,74 @@
-/* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
+/* @tailwind base; */
+/* @tailwind components; */
+/* @tailwind utilities; */
+/**/
+/* /* Basic styles for the Docfy test app */ */
+/**/
+/* /* Additional utility classes */ */
+/* .sr-only { */
+/*   position: absolute; */
+/*   width: 1px; */
+/*   height: 1px; */
+/*   padding: 0; */
+/*   margin: -1px; */
+/*   overflow: hidden; */
+/*   clip: rect(0, 0, 0, 0); */
+/*   white-space: nowrap; */
+/*   border: 0; */
+/* } */
+/**/
+/* /* Dark mode support */ */
+/* @media (prefers-color-scheme: dark) { */
+/*   .mode-dark { */
+/*     color-scheme: dark; */
+/*   } */
+/* } */
+/**/
+/* /* Basic markdown styles */ */
+/* .markdown { */
+/*   @apply prose prose-lg max-w-none; */
+/* } */
+/**/
+/* .markdown h1 { */
+/*   @apply text-3xl font-bold mb-4; */
+/* } */
+/**/
+/* .markdown h2 { */
+/*   @apply text-2xl font-bold mb-3; */
+/* } */
+/**/
+/* .markdown h3 { */
+/*   @apply text-xl font-bold mb-2; */
+/* } */
+/**/
+/* .markdown p { */
+/*   @apply mb-4; */
+/* } */
+/**/
+/* .markdown ul { */
+/*   @apply list-disc ml-6 mb-4; */
+/* } */
+/**/
+/* .markdown ol { */
+/*   @apply list-decimal ml-6 mb-4; */
+/* } */
+/**/
+/* .markdown li { */
+/*   @apply mb-2; */
+/* } */
+/**/
+/* .markdown a { */
+/*   @apply text-green-600 hover:text-green-800 underline; */
+/* } */
+/**/
+/* .markdown code { */
+/*   @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm; */
+/* } */
+/**/
+/* .markdown pre { */
+/*   @apply bg-gray-100 dark:bg-gray-800 p-4 rounded overflow-x-auto mb-4; */
+/* } */
+/**/
+/* .markdown blockquote { */
+/*   @apply border-l-4 border-gray-300 pl-4 italic mb-4; */
+/* } */
