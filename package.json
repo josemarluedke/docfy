@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "site"
+    "site",
+    "test-app-vite"
   ],
   "scripts": {
     "lint:js": "eslint . --ext .js,.ts",
