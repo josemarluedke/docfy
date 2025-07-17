@@ -26,6 +26,7 @@
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
     "lint:js:fix": "eslint . --fix",
+    "lint:types": "glint",
     "start": "vite",
     "test": "vite build --mode development && testem ci"
   },
@@ -49,6 +50,10 @@
     "@embroider/vite": "^1.1.5",
     "@eslint/js": "^9.27.0",
     "@glimmer/component": "^2.0.0",
+    "@glint/core": "^1.5.2",
+    "@glint/environment-ember-loose": "^1.5.2",
+    "@glint/environment-ember-template-imports": "^1.5.2",
+    "@glint/template": "^1.5.2",
     "@rollup/plugin-babel": "^6.0.4",
     "@tailwindcss/typography": "^0.5.0",
     "@types/qunit": "^2.19.12",
