@@ -20,45 +20,52 @@ This document outlines the step-by-step plan for creating a Vite-compatible vers
 
 ## Implementation Plan
 
-### **Phase 1: Foundation Setup**
+### **Phase 1: Foundation Setup** ✅
 
 #### ✅ Step 1: Create New Package Structure
 
-- [ ] Create `packages/ember-vite-plugin/` directory
-- [ ] Set up `package.json` with dependencies:
+- [x] Create `packages/ember-vite-plugin/` directory
+- [x] Set up `package.json` with dependencies:
   - `@docfy/core` (reuse existing core)
   - `vite` (peer dependency)
   - `@rollup/pluginutils` (for file filtering)
   - `@embroider/vite` (peer dependency)
+- [x] Create `tsconfig.json` for TypeScript configuration
 
 #### ✅ Step 2: Core Plugin Architecture
 
-- [ ] Create `packages/ember-vite-plugin/src/index.ts` with multi-plugin structure
-- [ ] Implement base plugin that returns array of plugins (dev/build specific)
-- [ ] Set up virtual module system for Docfy outputs
+- [x] Create `packages/ember-vite-plugin/src/index.ts` with multi-plugin structure
+- [x] Implement base plugin that returns array of plugins (dev/build specific)
+- [x] Set up virtual module system for Docfy outputs
+- [x] Add proper TypeScript types and exports
 
-### **Phase 2: Core Functionality Migration**
+### **Phase 2: Core Functionality Migration** ✅
 
 #### ✅ Step 3: Migrate Broccoli Logic to Vite Hooks
 
-- [ ] Replace `DocfyBroccoli` class with Vite plugin hooks:
-  - [ ] `buildStart()` → Initialize Docfy instance
-  - [ ] `transform()` → Process markdown files
-  - [ ] `generateBundle()` → Emit static assets
-  - [ ] `resolveId()/load()` → Handle virtual modules
+- [x] Replace `DocfyBroccoli` class with Vite plugin hooks:
+  - [x] `buildStart()` → Initialize Docfy instance
+  - [x] `transform()` → Process markdown files
+  - [x] `generateBundle()` → Emit static assets
+  - [x] `resolveId()/load()` → Handle virtual modules
+- [x] Create `src/markdown-processor.ts` for markdown transformation
 
 #### ✅ Step 4: Virtual Module System Implementation
 
-- [ ] Create virtual modules for:
-  - [ ] `virtual:docfy-output` (equivalent to current `docfy-output.js`)
-  - [ ] `virtual:docfy-urls` (replaces `docfy-urls.json`)
-  - [ ] `virtual:docfy-snippets` (replaces `docfy-snippets.json`)
+- [x] Create virtual modules for:
+  - [x] `virtual:docfy-output` (equivalent to current `docfy-output.js`)
+  - [x] `virtual:docfy-urls` (replaces `docfy-urls.json`)
+  - [x] `virtual:docfy-snippets` (replaces `docfy-snippets.json`)
+- [x] Create `src/virtual-modules.ts` with full virtual module system
+- [x] Add asset generation and HMR invalidation support
 
 #### ✅ Step 5: Component Generation System
 
-- [ ] Transform current file writing logic to use `this.emitFile()`
-- [ ] Generate demo components as Vite chunks/assets, these will need to be compiled by Embroider Vite build system.
-- [ ] Maintain current template-only component fallback logic
+- [x] Transform current file writing logic to use `this.emitFile()`
+- [x] Generate demo components as Vite chunks/assets, these will need to be compiled by Embroider Vite build system.
+- [x] Maintain current template-only component fallback logic
+- [x] Create `src/gjs-generator.ts` with modern GJS component generation
+- [x] Support both `<template>` syntax and `setComponentTemplate` patterns
 
 ### **Phase 3: Ember Integration**
 
@@ -274,7 +281,19 @@ export default class ${component.name.pascalCase} extends Component {
 - Test thoroughly with existing Docfy projects
 - **Modern Ember Ecosystem**: Embrace GJS and Embroider patterns
 
+## Files Created
+
+### Phase 1 & 2 Implementation Files
+- ✅ `packages/ember-vite-plugin/package.json` - Package configuration with dependencies
+- ✅ `packages/ember-vite-plugin/tsconfig.json` - TypeScript configuration
+- ✅ `packages/ember-vite-plugin/src/index.ts` - Main plugin entry point with multi-plugin architecture
+- ✅ `packages/ember-vite-plugin/src/virtual-modules.ts` - Virtual module system for Docfy outputs
+- ✅ `packages/ember-vite-plugin/src/config.ts` - Configuration loading (CJS/ESM compatible)
+- ✅ `packages/ember-vite-plugin/src/markdown-processor.ts` - Markdown file transformation
+- ✅ `packages/ember-vite-plugin/src/gjs-generator.ts` - GJS component generation with modern patterns
+- ✅ `packages/ember-vite-plugin/src/utils.ts` - Utility functions for string manipulation
+
 ---
 
-**Status**: Planning Complete ✅
-**Next Step**: Begin Phase 1 - Foundation Setup
+**Status**: Phase 1 & 2 Complete ✅  
+**Next Step**: Begin Phase 3 - Ember Integration
