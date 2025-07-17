@@ -1,5 +1,3 @@
-import DocfyOutput from '../components/docfy-output';
-
 <template>
   <h1 id="docfyoutput">{{"<DocfyOutput>"}}</h1>
 <p>This component exposes some of the result data from the build that you can use

@@ -1,5 +1,3 @@
-import DocfyDemo from '../components/docfy-demo';
-
 <template>
   <h1 id="docfydemo">{{"<DocfyDemo>"}}</h1>
 <p>This component is used internally to render demos. It's not meant to be used directly,

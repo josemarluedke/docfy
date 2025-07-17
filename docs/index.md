@@ -28,3 +28,7 @@ allows extending the markdown processor by using [remark](https://remark.js.org/
 under the hood. Remark has
 [many plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md)
 that can help you to extend and modify your markdown files.
+
+```gjs preview
+<template>COOL ?</template>
+```

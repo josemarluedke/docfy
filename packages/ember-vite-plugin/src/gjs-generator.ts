@@ -7,11 +7,6 @@ import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:gjs-generator');
 
-interface ComponentImport {
-  name: string;
-  path: string;
-}
-
 /**
  * Clean up rendered content to remove excessive empty lines and whitespace
  * This function addresses issues where the rendered HTML contains thousands of empty lines
@@ -36,40 +31,6 @@ function cleanUpRenderedContent(rendered: string): string {
   return cleaned;
 }
 
-/**
- * Extract component imports from rendered HTML
- * This function analyzes the HTML to find any component usage and generates appropriate import statements
- */
-function extractComponentImports(html: string): ComponentImport[] {
-  const imports: ComponentImport[] = [];
-  
-  // Common patterns for component usage in HTML
-  // This is a basic implementation - you might want to extend this based on your specific needs
-  
-  // Look for custom elements that might be components (PascalCase tags)
-  const componentRegex = /<([A-Z][a-zA-Z0-9]*(?::[a-zA-Z0-9]+)*)/g;
-  const matches = html.matchAll(componentRegex);
-  
-  for (const match of matches) {
-    const tagName = match[1];
-    
-    // Skip known HTML elements that happen to be capitalized
-    if (!['HTML', 'HEAD', 'BODY', 'DIV', 'SPAN', 'P', 'A', 'IMG', 'BR', 'HR'].includes(tagName)) {
-      // Convert PascalCase to kebab-case for component path
-      const componentPath = `../components/${toDashCase(tagName)}`;
-      
-      // Only add if not already present
-      if (!imports.some(imp => imp.name === tagName)) {
-        imports.push({
-          name: tagName,
-          path: componentPath
-        });
-      }
-    }
-  }
-  
-  return imports;
-}
 
 export interface DemoComponent {
   name: {
@@ -117,6 +78,110 @@ export function generateTemplatePath(url: string): string {
 }
 
 /**
+ * Generate an inline component definition for use within a GJS template
+ */
+function generateInlineComponent(component: DemoComponent): string {
+  debug('Generating inline component', { name: component.name.dashCase });
+
+  // Find the template chunk
+  const templateChunk = component.chunks.find(chunk => 
+    chunk.ext === 'hbs' || chunk.ext === 'html'
+  );
+
+  // Find the JavaScript/TypeScript chunk
+  const jsChunk = component.chunks.find(chunk => 
+    ['js', 'ts', 'gjs', 'gts'].includes(chunk.ext)
+  );
+
+  if (templateChunk && jsChunk) {
+    // Component has both template and logic
+    return generateInlineComponentWithLogic(component, templateChunk, jsChunk);
+  } else if (templateChunk) {
+    // Template-only component
+    return generateInlineTemplateOnlyComponent(component, templateChunk);
+  } else if (jsChunk) {
+    // JavaScript-only component (might already be GJS)
+    return generateInlineJSOnlyComponent(component, jsChunk);
+  }
+
+  // Fallback: empty component
+  return generateInlineEmptyComponent(component);
+}
+
+function generateInlineComponentWithLogic(
+  component: DemoComponent,
+  templateChunk: { code: string },
+  jsChunk: { code: string }
+): string {
+  // Parse the JS chunk to extract the class content
+  const jsContent = jsChunk.code.trim();
+  
+  // Extract class body from the JS code
+  // This is a simple approach - we'll look for the class declaration and extract its content
+  const classMatch = jsContent.match(/export\s+default\s+class\s+\w+\s+extends\s+Component\s*\{([\s\S]*)\}/);
+  
+  if (classMatch) {
+    const classBody = classMatch[1].trim();
+    return `const ${component.name.pascalCase} = <template>
+  ${templateChunk.code}
+</template>;
+
+// Component logic for ${component.name.pascalCase}
+class ${component.name.pascalCase}Class extends Component {
+  ${classBody}
+}
+
+// Apply the logic to the template component
+Object.assign(${component.name.pascalCase}, ${component.name.pascalCase}Class.prototype);`;
+  } else {
+    // If we can't parse the class, fall back to a simpler approach
+    return `const ${component.name.pascalCase} = <template>
+  ${templateChunk.code}
+</template>;
+
+// Component logic
+${jsContent}`;
+  }
+}
+
+function generateInlineTemplateOnlyComponent(
+  component: DemoComponent,
+  templateChunk: { code: string }
+): string {
+  return `const ${component.name.pascalCase} = <template>
+  ${templateChunk.code}
+</template>;`;
+}
+
+function generateInlineJSOnlyComponent(
+  component: DemoComponent,
+  jsChunk: { code: string }
+): string {
+  // If it's already GJS/GTS, return as-is
+  if (jsChunk.code.includes('<template>')) {
+    return `const ${component.name.pascalCase} = ${jsChunk.code};`;
+  }
+
+  // Otherwise, wrap with template-only component
+  return `const ${component.name.pascalCase} = <template>
+  <div class="demo-component">
+    <!-- Component logic defined above -->
+  </div>
+</template>;
+
+// Component logic
+${jsChunk.code}`;
+}
+
+function generateInlineEmptyComponent(component: DemoComponent): string {
+  return `const ${component.name.pascalCase} = <template>
+  <div class="demo-component demo-component--empty">
+    <!-- ${component.name.dashCase} -->
+  </div>
+</template>;`;
+}
+
+/**
  * Generate a GJS template for a markdown page
  * This ensures compatibility with Ember's template resolution
  */
@@ -126,14 +191,20 @@ export function generatePageTemplate(page: PageContent): string {
   // Clean up the rendered content to remove excessive empty lines
   const cleanRendered = cleanUpRenderedContent(page.rendered);
   
-  // Extract any component usage from the rendered HTML to generate imports
-  const imports = extractComponentImports(cleanRendered);
+  // Extract demo components from the page using our demo processor
+  const { processPageDemos } = require('./demo-processor.js');
+  const demoComponents = processPageDemos(page);
   
-  const importStatements = imports.length > 0 
-    ? imports.map(imp => `import ${imp.name} from '${imp.path}';`).join('\n') + '\n\n'
-    : '';
+  debug('Found demo components', { url: page.meta.url, count: demoComponents.length });
   
-  return `${importStatements}<template>
+  // Generate inline component definitions
+  const inlineComponents = demoComponents.map(component => {
+    return generateInlineComponent(component);
+  }).join('\n\n');
+  
+  const componentsSection = inlineComponents ? `${inlineComponents}\n\n` : '';
+  
+  return `${componentsSection}<template>
   ${cleanRendered}
 </template>`;
 }

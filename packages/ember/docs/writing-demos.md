@@ -107,3 +107,4 @@ Below is the equivalent if you had to mark all demos individually.
 
 [[demo:demo3]]
 ```
+test

@@ -20,4 +20,6 @@ allows extending the markdown processor by using <a href="https://remark.js.org/
 under the hood. Remark has
 <a href="https://github.com/remarkjs/remark/blob/master/doc/plugins.md">many plugins</a>
 that can help you to extend and modify your markdown files.</p>
+<pre><code class="language-gjs">&#x3C;template>COOL ?&#x3C;/template>
+</code></pre>
 </template>

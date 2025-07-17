@@ -1,7 +1,9 @@
 import path from 'path';
-import { pathToFileURL } from 'url';
+import { pathToFileURL, fileURLToPath } from 'url';
 import type { DocfyConfig } from '@docfy/core/lib/types';
 import debugFactory from 'debug';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const debug = debugFactory('@docfy/ember-vite-plugin:config');
 
@@ -95,15 +97,8 @@ async function mergeConfig(
     docfyConfig.plugins = [];
   }
 
-  // Add Ember-specific plugins
-  const emberPlugins = [
-    // Import these from the ember package
-    // replaceInternalLinksWithDocfyLink,
-    // previewTemplate,
-    // extractDemosToComponents
-  ];
-
-  docfyConfig.plugins.unshift(...emberPlugins);
+  // Note: Demo processing is now handled directly in the template generation
+  // instead of using separate plugins to avoid module resolution issues
 
   // Setup remark plugins
   if (!Array.isArray(docfyConfig.remarkPlugins)) {

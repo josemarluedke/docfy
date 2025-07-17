@@ -1,5 +1,3 @@
-import DocfyPreviousAndNextPage from '../components/docfy-previous-and-next-page';
-
 <template>
   <h1 id="docfypreviousandnextpage">{{"<DocfyPreviousAndNextPage>"}}</h1>
 <p>This component yields the previous and next page (<code>PageMetadata</code>) if it exists.

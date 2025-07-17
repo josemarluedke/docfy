@@ -1,5 +1,3 @@
-import DocfyLink from '../components/docfy-link';
-
 <template>
   <h1 id="docfylink">{{"<DocfyLink>"}}</h1>
 <p>This component is useful for linking to pages created by Docfy. It understands
