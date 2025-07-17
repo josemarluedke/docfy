@@ -4,24 +4,41 @@ import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import DocfyLink from './docfy-link';
 
-export default class SidebarNav extends Component {
+interface Page {
+  url: string;
+  title: string;
+}
+
+interface NestedNode {
+  label: string;
+  pages: Page[];
+  children: NestedNode[];
+}
+
+interface SidebarNavSignature {
+  Args: {
+    node: NestedNode;
+  };
+}
+
+export default class SidebarNav extends Component<SidebarNavSignature> {
   @tracked isOpen = false;
 
-  @action toggle() {
+  @action toggle(): void {
     this.isOpen = !this.isOpen;
   }
 
-  @action handleSidebarClick(event) {
+  @action handleSidebarClick(event: Event): void {
     if (this.isOpen) {
-      const target = event.target;
+      const target = event.target as HTMLElement;
 
       if (['A', 'svg', 'path'].includes(target.tagName)) {
         let parentElement = target;
 
-        if (target.tagName == 'path') {
-          parentElement = target.parentElement?.closest('svg')?.parentElement;
-        } else if (target.tagName == 'svg') {
-          parentElement = target.parentElement;
+        if (target.tagName === 'path') {
+          parentElement = target.parentElement?.closest('svg')?.parentElement as HTMLElement;
+        } else if (target.tagName === 'svg') {
+          parentElement = target.parentElement as HTMLElement;
         }
 
         if (
@@ -146,4 +163,3 @@ export default class SidebarNav extends Component {
     </div>
   </template>
 }
-

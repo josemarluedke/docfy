@@ -4,10 +4,14 @@ import { action } from '@ember/object';
 import { later } from '@ember/runloop';
 import { on } from '@ember/modifier';
 
-export default class ThemeSwitcher extends Component {
+interface ThemeSwitcherSignature {
+  Element: HTMLButtonElement;
+}
+
+export default class ThemeSwitcher extends Component<ThemeSwitcherSignature> {
   @tracked prefersDark = false;
 
-  constructor(owner, args) {
+  constructor(owner: unknown, args: object) {
     super(owner, args);
     if (typeof window === 'undefined') {
       return;
@@ -16,7 +20,7 @@ export default class ThemeSwitcher extends Component {
     this.prefersDark = root.classList.value.includes('mode-dark');
 
     const mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
-    mediaQueryList.onchange = ({ matches }) => {
+    mediaQueryList.onchange = ({ matches }: MediaQueryListEvent) => {
       if (!localStorage.getItem('prefersMode')) {
         this.prefersDark = matches;
         this.applyClasses();
@@ -24,8 +28,8 @@ export default class ThemeSwitcher extends Component {
     };
   }
 
-  @action toggleMode() {
-    let newMode;
+  @action toggleMode(): void {
+    let newMode: string;
     if (this.prefersDark) {
       newMode = 'light';
       this.prefersDark = false;
@@ -37,7 +41,7 @@ export default class ThemeSwitcher extends Component {
     this.applyClasses();
   }
 
-  applyClasses() {
+  applyClasses(): void {
     const body = document.body;
     body.style.transition = 'background-color 0.2s ease, color 0.2s ease';
     body.style.transitionDelay = '0s, 0s';
@@ -90,4 +94,3 @@ export default class ThemeSwitcher extends Component {
     </button>
   </template>
 }
-

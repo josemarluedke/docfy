@@ -1,8 +1,9 @@
 import Component from '@glimmer/component';
-import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 import { inject as service } from '@ember/service';
 import RouterService from '@ember/routing/router-service';
-import DocfyService from '../services/docfy';
+
+import type DocfyService from '../services/docfy';
+import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 
 interface DocfyOutputArgs {
   type?: 'flat' | 'nested';

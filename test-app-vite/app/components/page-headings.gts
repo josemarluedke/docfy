@@ -2,12 +2,26 @@ import Component from '@glimmer/component';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import { scrollToElement } from '../utils/scroll-to';
-// Simple equality helper
-const isEqual = (a, b) => a === b;
 
-export default class PageHeadings extends Component {
-  @action onClick(evt) {
-    const href = evt.target.getAttribute('href');
+interface Heading {
+  id: string;
+  title: string;
+  headings: Heading[];
+}
+
+interface PageHeadingsSignature {
+  Args: {
+    headings: Heading[];
+    currentHeadingId?: string;
+  };
+}
+
+const isEqual = (a: string, b: string): boolean => a === b;
+
+export default class PageHeadings extends Component<PageHeadingsSignature> {
+  @action onClick(evt: Event): void {
+    const target = evt.target as HTMLElement;
+    const href = target.getAttribute('href');
     if (href) {
       const toElement = document.querySelector(href);
       scrollToElement(toElement);
@@ -62,4 +76,3 @@ export default class PageHeadings extends Component {
     </div>
   </template>
 }
-
