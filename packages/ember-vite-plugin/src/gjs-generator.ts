@@ -1,8 +1,11 @@
 import type { PluginContext } from 'rollup';
 import type Docfy from '@docfy/core';
 import type { DocfyConfig, PageContent, SourceConfig } from '@docfy/core/lib/types';
+import type { ImportStatement, InlineComponent } from './types.js';
 import path from 'path';
 import { toPascalCase, toDashCase } from './utils.js';
+import { processPageForGJS } from './gjs-processor.js';
+import { generateComponentFiles, getComponentImports } from './component-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:gjs-generator');
@@ -32,34 +35,9 @@ function cleanUpRenderedContent(rendered: string): string {
 }
 
 
-export interface DemoComponent {
-  name: {
-    pascalCase: string;
-    dashCase: string;
-  };
-  chunks: Array<{
-    ext: string;
-    code: string;
-  }>;
-}
+// DemoComponent interface moved to types.ts
 
-export function generateGJSTemplate(page: PageContent): string {
-  debug('Generating GJS template for page', { url: page.meta.url });
-
-  const className = toPascalCase(page.meta.title || path.basename(page.source, '.md'));
-  
-  return `
-import Component from '@glimmer/component';
-
-export default class ${className} extends Component {
-  <template>
-    <div class="docfy-page">
-      {{{${JSON.stringify(page.rendered)}}}}
-    </div>
-  </template>
-}
-`;
-}
+// Old generateGJSTemplate function removed - replaced by enhanced architecture
 
 /**
  * Generate the template path for a markdown page URL
@@ -77,309 +55,152 @@ export function generateTemplatePath(url: string): string {
   return `${parts.join('/')}.gjs`;
 }
 
-/**
- * Generate an inline component definition for use within a GJS template
- */
-function generateInlineComponent(component: DemoComponent): string {
-  debug('Generating inline component', { name: component.name.dashCase });
-
-  // Find the template chunk
-  const templateChunk = component.chunks.find(chunk => 
-    chunk.ext === 'hbs' || chunk.ext === 'html'
-  );
-
-  // Find the JavaScript/TypeScript chunk
-  const jsChunk = component.chunks.find(chunk => 
-    ['js', 'ts', 'gjs', 'gts'].includes(chunk.ext)
-  );
-
-  if (templateChunk && jsChunk) {
-    // Component has both template and logic
-    return generateInlineComponentWithLogic(component, templateChunk, jsChunk);
-  } else if (templateChunk) {
-    // Template-only component
-    return generateInlineTemplateOnlyComponent(component, templateChunk);
-  } else if (jsChunk) {
-    // JavaScript-only component (might already be GJS)
-    return generateInlineJSOnlyComponent(component, jsChunk);
-  }
-
-  // Fallback: empty component
-  return generateInlineEmptyComponent(component);
-}
-
-function generateInlineComponentWithLogic(
-  component: DemoComponent,
-  templateChunk: { code: string },
-  jsChunk: { code: string }
-): string {
-  // Parse the JS chunk to extract the class content
-  const jsContent = jsChunk.code.trim();
-  
-  // Extract class body from the JS code
-  // This is a simple approach - we'll look for the class declaration and extract its content
-  const classMatch = jsContent.match(/export\s+default\s+class\s+\w+\s+extends\s+Component\s*\{([\s\S]*)\}/);
-  
-  if (classMatch) {
-    const classBody = classMatch[1].trim();
-    return `const ${component.name.pascalCase} = <template>
-  ${templateChunk.code}
-</template>;
-
-// Component logic for ${component.name.pascalCase}
-class ${component.name.pascalCase}Class extends Component {
-  ${classBody}
-}
-
-// Apply the logic to the template component
-Object.assign(${component.name.pascalCase}, ${component.name.pascalCase}Class.prototype);`;
-  } else {
-    // If we can't parse the class, fall back to a simpler approach
-    return `const ${component.name.pascalCase} = <template>
-  ${templateChunk.code}
-</template>;
-
-// Component logic
-${jsContent}`;
-  }
-}
-
-function generateInlineTemplateOnlyComponent(
-  component: DemoComponent,
-  templateChunk: { code: string }
-): string {
-  return `const ${component.name.pascalCase} = <template>
-  ${templateChunk.code}
-</template>;`;
-}
-
-function generateInlineJSOnlyComponent(
-  component: DemoComponent,
-  jsChunk: { code: string }
-): string {
-  // If it's already GJS/GTS, return as-is
-  if (jsChunk.code.includes('<template>')) {
-    return `const ${component.name.pascalCase} = ${jsChunk.code};`;
-  }
-
-  // Otherwise, wrap with template-only component
-  return `const ${component.name.pascalCase} = <template>
-  <div class="demo-component">
-    <!-- Component logic defined above -->
-  </div>
-</template>;
-
-// Component logic
-${jsChunk.code}`;
-}
-
-function generateInlineEmptyComponent(component: DemoComponent): string {
-  return `const ${component.name.pascalCase} = <template>
-  <div class="demo-component demo-component--empty">
-    <!-- ${component.name.dashCase} -->
-  </div>
-</template>;`;
-}
+// Old inline component generation functions removed - now handled by plugin system
 
 /**
  * Generate a GJS template for a markdown page
  * This ensures compatibility with Ember's template resolution
  */
-export function generatePageTemplate(page: PageContent): string {
+export function generatePageTemplate(
+  page: PageContent, 
+  ctx?: PluginContext
+): string {
   debug('Generating GJS page template for route', { url: page.meta.url });
   
-  // Clean up the rendered content to remove excessive empty lines
-  const cleanRendered = cleanUpRenderedContent(page.rendered);
+  // Generate separate component files if needed
+  let componentImports: string[] = [];
+  if (ctx) {
+    const generatedFiles = generateComponentFiles(ctx, page);
+    componentImports = getComponentImports(page, generatedFiles);
+  }
   
-  // Extract demo components from the page using our demo processor
-  const { processPageDemos } = require('./demo-processor.js');
-  const demoComponents = processPageDemos(page);
+  // Process page using the new file-based approach
+  const gjsMetadata = processPageForGJS(page, componentImports);
   
-  debug('Found demo components', { url: page.meta.url, count: demoComponents.length });
+  // Use modified content if available, otherwise fall back to original rendered content
+  const templateContent = gjsMetadata.templateContent || page.rendered || '';
+  const cleanTemplateContent = cleanUpRenderedContent(templateContent);
   
-  // Generate inline component definitions
-  const inlineComponents = demoComponents.map(component => {
-    return generateInlineComponent(component);
-  }).join('\n\n');
+  // Generate the complete GJS template
+  return generateGJSTemplate(gjsMetadata, cleanTemplateContent);
+}
+
+/**
+ * Generate a complete GJS template with proper structure
+ */
+function generateGJSTemplate(gjsMetadata: any, templateContent: string): string {
   
-  const componentsSection = inlineComponents ? `${inlineComponents}\n\n` : '';
+  // Generate import statements
+  const importsSection = gjsMetadata.imports.length > 0 
+    ? gjsMetadata.imports.map(imp => generateImportStatement(imp)).join('\n') + '\n\n'
+    : '';
   
-  return `${componentsSection}<template>
-  ${cleanRendered}
+  // Generate inline components
+  const inlineComponentsSection = gjsMetadata.inlineComponents.length > 0
+    ? gjsMetadata.inlineComponents.map(comp => generateInlineComponentDefinition(comp)).join('\n\n') + '\n\n'
+    : '';
+  
+  // Generate additional content
+  const additionalContentSection = gjsMetadata.additionalContent 
+    ? gjsMetadata.additionalContent + '\n\n'
+    : '';
+  
+  // Combine all sections
+  const template = `${importsSection}${inlineComponentsSection}${additionalContentSection}<template>
+  ${templateContent}
 </template>`;
-}
 
-export async function generateGJSComponents(
-  context: PluginContext,
-  docfyInstance: Docfy,
-  config: DocfyConfig
-): Promise<void> {
-  debug('Generating GJS components for build');
-
-  // Run Docfy to get all processed content
-  const sources: SourceConfig[] = (config.sources || []).map(source => ({
-    ...source,
-    root: source.root || process.cwd()
-  }));
-  
-  try {
-    const result = await docfyInstance.run(sources);
-    
-    result.content.forEach(page => {
-      // Generate demo components only (templates are generated in the main plugin)
-      const demoComponents = extractDemoComponents(page);
-      demoComponents.forEach(component => {
-        const componentGJS = generateDemoComponentGJS(component);
-        const componentFileName = `components/${component.name.dashCase}.gjs`;
-        
-        debug('Generating demo component', { 
-          name: component.name.dashCase, 
-          fileName: componentFileName
-        });
-        
-        context.emitFile({
-          type: 'asset',
-          fileName: componentFileName,
-          source: componentGJS
-        });
-      });
-    });
-  } catch (error) {
-    debug('Error generating GJS components', { error });
-    throw error;
-  }
-}
-
-function extractDemoComponents(page: PageContent): DemoComponent[] {
-  const demoComponents: DemoComponent[] = [];
-  
-  // Check if the page has demo components in its plugin data
-  const pluginDemoComponents = page.pluginData?.demoComponents;
-  if (Array.isArray(pluginDemoComponents)) {
-    pluginDemoComponents.forEach((component: any) => {
-      if (component.name && component.chunks) {
-        demoComponents.push({
-          name: {
-            pascalCase: toPascalCase(component.name),
-            dashCase: toDashCase(component.name)
-          },
-          chunks: component.chunks
-        });
-      }
-    });
-  }
-
-  debug('Extracted demo components', { 
-    pageUrl: page.meta.url, 
-    componentCount: demoComponents.length 
+  debug('Generated GJS template', {
+    importsCount: gjsMetadata.imports.length,
+    inlineComponentsCount: gjsMetadata.inlineComponents.length,
+    hasAdditionalContent: gjsMetadata.additionalContent.length > 0
   });
 
-  return demoComponents;
+  return template;
 }
 
-function generateDemoComponentGJS(component: DemoComponent): string {
-  debug('Generating GJS for demo component', { name: component.name.dashCase });
+/**
+ * Generate an import statement from ImportStatement metadata
+ */
+function generateImportStatement(importStmt: ImportStatement): string {
+  if (importStmt.isDefault && importStmt.namedImports) {
+    // Mixed import: import Default, { named1, named2 } from 'path'
+    return `import ${importStmt.name}, { ${importStmt.namedImports.join(', ')} } from '${importStmt.path}';`;
+  } else if (importStmt.isDefault) {
+    // Default import: import Default from 'path'
+    return `import ${importStmt.name} from '${importStmt.path}';`;
+  } else if (importStmt.namedImports) {
+    // Named imports: import { named1, named2 } from 'path'
+    return `import { ${importStmt.namedImports.join(', ')} } from '${importStmt.path}';`;
+  } else {
+    // Single named import: import { name } from 'path'
+    return `import { ${importStmt.name} } from '${importStmt.path}';`;
+  }
+}
 
-  // Find the template chunk
-  const templateChunk = component.chunks.find(chunk => 
-    chunk.ext === 'hbs' || chunk.ext === 'html'
-  );
+/**
+ * Generate an inline component definition
+ */
+function generateInlineComponentDefinition(component: InlineComponent): string {
+  switch (component.type) {
+    case 'const-template':
+      return `const ${component.name} = <template>
+  ${component.template}
+</template>;`;
+    
+    case 'template-only':
+      return `const ${component.name} = <template>
+  ${component.template}
+</template>;`;
+    
+    case 'class-based':
+      return generateClassBasedComponent(component);
+    
+    default:
+      return `const ${component.name} = <template>
+  ${component.template}
+</template>;`;
+  }
+}
 
-  // Find the JavaScript/TypeScript chunk
-  const jsChunk = component.chunks.find(chunk => 
-    ['js', 'ts', 'gjs', 'gts'].includes(chunk.ext)
-  );
-
-  if (templateChunk && jsChunk) {
-    // Component has both template and logic
-    return generateGJSWithSeparateTemplate(component, templateChunk, jsChunk);
-  } else if (templateChunk) {
-    // Template-only component
-    return generateTemplateOnlyGJS(component, templateChunk);
-  } else if (jsChunk) {
-    // JavaScript-only component (might already be GJS)
-    return generateJSOnlyGJS(component, jsChunk);
+/**
+ * Generate a class-based component with both template and logic
+ */
+function generateClassBasedComponent(component: InlineComponent): string {
+  if (!component.script) {
+    // Fallback to template-only if no script
+    return `const ${component.name} = <template>
+  ${component.template}
+</template>;`;
   }
 
-  // Fallback: empty component
-  return generateEmptyGJS(component);
+  // Extract class content from script
+  const classMatch = component.script.match(/export\s+default\s+class\s+\w+\s+extends\s+Component\s*\{([\s\S]*)\}/);
+  
+  if (classMatch) {
+    const classBody = classMatch[1].trim();
+    
+    // Use the const template + class pattern for compatibility
+    return `const ${component.name} = <template>
+  ${component.template}
+</template>;
+
+// Component logic for ${component.name}
+class ${component.name}Class extends Component {
+  ${classBody}
 }
 
-function generateGJSWithSeparateTemplate(
-  component: DemoComponent,
-  templateChunk: { code: string },
-  jsChunk: { code: string }
-): string {
-  // Use setComponentTemplate pattern for components with separate template and JS
-  return `
-import { setComponentTemplate } from '@ember/component';
-import { hbs } from 'ember-cli-htmlbars';
-import Component from '@glimmer/component';
+// Apply the logic to the template component
+Object.assign(${component.name}, ${component.name}Class.prototype);`;
+  } else {
+    // Fallback if we can't parse the class
+    return `const ${component.name} = <template>
+  ${component.template}
+</template>;
 
-${jsChunk.code}
-
-// Set the template for the component
-setComponentTemplate(hbs\`${templateChunk.code}\`, ${component.name.pascalCase});
-
-export default ${component.name.pascalCase};
-`;
-}
-
-function generateTemplateOnlyGJS(
-  component: DemoComponent,
-  templateChunk: { code: string }
-): string {
-  // Use modern <template> syntax for template-only components
-  return `
-import Component from '@glimmer/component';
-
-export default class ${component.name.pascalCase} extends Component {
-  <template>
-    ${templateChunk.code}
-  </template>
-}
-`;
-}
-
-function generateJSOnlyGJS(
-  component: DemoComponent,
-  jsChunk: { code: string }
-): string {
-  // If it's already GJS/GTS, return as-is
-  if (jsChunk.code.includes('<template>')) {
-    return jsChunk.code;
+// Component logic
+${component.script}`;
   }
-
-  // Otherwise, wrap with template-only component
-  return `
-import Component from '@glimmer/component';
-
-${jsChunk.code}
-
-export default class ${component.name.pascalCase} extends Component {
-  <template>
-    <div class="demo-component">
-      <!-- Component logic defined above -->
-    </div>
-  </template>
-}
-`;
 }
 
-function generateEmptyGJS(component: DemoComponent): string {
-  return `
-import Component from '@glimmer/component';
-
-export default class ${component.name.pascalCase} extends Component {
-  <template>
-    <div class="demo-component demo-component--empty">
-      <!-- ${component.name.dashCase} -->
-    </div>
-  </template>
-}
-`;
-}
-
-function hasBackingJS(chunks: Array<{ ext: string }>): boolean {
-  return chunks.some(chunk => ['js', 'ts', 'gts', 'gjs'].includes(chunk.ext));
-}
+// Old generateGJSComponents function removed - demo components are now handled inline

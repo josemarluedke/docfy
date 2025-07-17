@@ -48,14 +48,16 @@ Below is an example of how it works:
 
 ````md
 ```hbs preview-template
-Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
+Click in the link to navigate to the home page:
+<DocfyLink @to='/'>Home</DocfyLink>
 ```
 ````
 
 And here you can see how it looks like when rendered:
 
 ```hbs preview-template
-Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
+Click in the link to navigate to the home page:
+<DocfyLink @to='/'>Home</DocfyLink>
 ```
 
 ## Manual Insertion
@@ -107,4 +109,5 @@ Below is the equivalent if you had to mark all demos individually.
 
 [[demo:demo3]]
 ```
-test
+Updated file
+Trigger rebuild Thu Jul 17 13:44:48 PDT 2025

@@ -1,3 +1,5 @@
+import PreviewTemplate1 from './index_gen/previewtemplate1.gjs';
+
 <template>
   <h1 id="introduction">Introduction</h1>
 <p>Documentation is an essential part of any software today. Without documentation,

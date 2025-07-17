@@ -1,4 +1,5 @@
 import type { Plugin, ResolvedConfig } from 'vite';
+import type { PluginContext } from 'rollup';
 import Docfy from '@docfy/core';
 import type { DocfyConfig } from '@docfy/core/lib/types';
 import path from 'path';
@@ -6,7 +7,6 @@ import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
 import { createVirtualModules } from './virtual-modules.js';
 import { processMarkdown } from './markdown-processor.js';
 import {
-  generateGJSComponents,
   generateTemplatePath,
   generatePageTemplate
 } from './gjs-generator.js';
@@ -140,7 +140,7 @@ export default function docfyVitePlugin(
           debug('Writing templates to file system...');
           result.content.forEach((page) => {
             const templatePath = generateTemplatePath(page.meta.url);
-            const pageTemplate = generatePageTemplate(page);
+            const pageTemplate = generatePageTemplate(page, this);
 
             // Write template to file system
             const fullPath = path.join(process.cwd(), templatePath);
@@ -227,7 +227,11 @@ export default function docfyVitePlugin(
               if (changedPage) {
                 // Only regenerate the template for the changed file
                 const templatePath = generateTemplatePath(changedPage.meta.url);
-                const pageTemplate = generatePageTemplate(changedPage);
+                // Create a minimal context-like object for component generation
+                const contextForGeneration = {
+                  emitFile: () => {}, // Not needed in HMR - we write directly to filesystem
+                } as unknown as PluginContext;
+                const pageTemplate = generatePageTemplate(changedPage, contextForGeneration);
 
                 const fullPath = path.join(process.cwd(), templatePath);
                 const dir = path.dirname(fullPath);
