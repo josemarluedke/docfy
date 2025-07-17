@@ -1,6 +1,6 @@
 import type { PluginContext } from 'rollup';
 import type { PageContent } from '@docfy/core/lib/types';
-import type { DemoComponent, DemoComponentChunk, PreviewTemplateComponent } from './types.js';
+import type { DemoComponent, DemoComponentChunk } from './types.js';
 import path from 'path';
 import fs from 'fs';
 import { generateTemplatePath } from './gjs-generator.js';
@@ -18,11 +18,10 @@ export function generateComponentFiles(
 ): string[] {
   const generatedFiles: string[] = [];
   
-  // Get components from pluginData
+  // Get demo components from pluginData (preview templates are now included in demoComponents)
   const demoComponents = page.pluginData?.demoComponents as DemoComponent[] | undefined;
-  const previewComponents = page.pluginData?.previewComponents as PreviewTemplateComponent[] | undefined;
   
-  if (!demoComponents?.length && !previewComponents?.length) {
+  if (!demoComponents?.length) {
     return generatedFiles;
   }
 
@@ -42,18 +41,6 @@ export function generateComponentFiles(
     });
   }
 
-  // Generate preview template component files (matching original ember implementation)
-  if (previewComponents?.length) {
-    previewComponents.forEach(preview => {
-      const previewFiles = generatePreviewComponentFiles(preview, componentFolderPath);
-      generatedFiles.push(...previewFiles);
-      debug('Generated preview component files', { 
-        name: preview.name, 
-        files: previewFiles.length,
-        extension: preview.ext
-      });
-    });
-  }
 
   debug('Generated component files for page', { 
     url: page.meta.url, 
@@ -142,40 +129,6 @@ export default class extends Component {}
   return generatedFiles;
 }
 
-/**
- * Generate preview template component files (matching original ember implementation)
- */
-function generatePreviewComponentFiles(preview: PreviewTemplateComponent, componentFolderPath: string): string[] {
-  const generatedFiles: string[] = [];
-  
-  // Generate the main template file with the correct extension
-  const componentPath = `${componentFolderPath}/${preview.name.toLowerCase()}.${preview.ext}`;
-  const fullPath = path.join(process.cwd(), componentPath);
-  const dir = path.dirname(fullPath);
-  
-  // Ensure directory exists
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true });
-  }
-  
-  // Write template content exactly as authored (no wrapping for any format)
-  fs.writeFileSync(fullPath, preview.template);
-  generatedFiles.push(componentPath);
-  
-  // For HBS files, generate a template-only component class
-  if (preview.ext === 'hbs') {
-    const templateOnlyComponent = `import Component from '@glimmer/component';
-export default class extends Component {}
-`;
-    const jsComponentPath = `${componentFolderPath}/${preview.name.toLowerCase()}.js`;
-    const jsFullPath = path.join(process.cwd(), jsComponentPath);
-    
-    fs.writeFileSync(jsFullPath, templateOnlyComponent);
-    generatedFiles.push(jsComponentPath);
-  }
-  
-  return generatedFiles;
-}
 
 /**
  * Get import statements for generated components
@@ -187,9 +140,8 @@ export function getComponentImports(
   const imports: string[] = [];
   
   const demoComponents = page.pluginData?.demoComponents as DemoComponent[] | undefined;
-  const previewComponents = page.pluginData?.previewComponents as PreviewTemplateComponent[] | undefined;
   
-  // Generate imports for demo components
+  // Generate imports for demo components (including preview templates)
   if (demoComponents?.length) {
     demoComponents.forEach(demo => {
       // For GJS/GTS files, import directly; otherwise import the JS file
@@ -203,16 +155,6 @@ export function getComponentImports(
       
       const componentPath = getComponentImportPath(page.meta.url, demo.name, ext);
       imports.push(`import ${demo.name} from '${componentPath}';`);
-    });
-  }
-  
-  // Generate imports for preview components  
-  if (previewComponents?.length) {
-    previewComponents.forEach(preview => {
-      // For HBS files, import the JS file; for GJS/GTS, import directly
-      const importExt = preview.ext === 'hbs' ? 'js' : preview.ext;
-      const componentPath = getComponentImportPath(page.meta.url, preview.name, importExt);
-      imports.push(`import ${preview.name} from '${componentPath}';`);
     });
   }
   

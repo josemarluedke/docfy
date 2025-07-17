@@ -32,3 +32,5 @@ that can help you to extend and modify your markdown files.
 ```gjs preview
 <template>COOL ?</template>
 ```
+
+cool stuff

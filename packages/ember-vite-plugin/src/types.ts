@@ -47,6 +47,11 @@ export interface DemoComponentChunk {
 export interface DemoComponent {
   name: string;
   chunks: DemoComponentChunk[];
+  description?: {
+    title?: string;
+    editUrl?: string;
+    content?: string;
+  };
 }
 
 export interface PreviewTemplateComponent {

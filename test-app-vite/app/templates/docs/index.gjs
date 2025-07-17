@@ -1,4 +1,5 @@
-import PreviewTemplate1 from './index_gen/previewtemplate1.gjs';
+import DocfyDemoPreviewDocs from './index_gen/docfydemopreviewdocs.gjs';
+import DocfyDemo from 'test-app-vite/components/docfy-demo';
 
 <template>
   <h1 id="introduction">Introduction</h1>
@@ -22,6 +23,15 @@ allows extending the markdown processor by using <a href="https://remark.js.org/
 under the hood. Remark has
 <a href="https://github.com/remarkjs/remark/blob/master/doc/plugins.md">many plugins</a>
 that can help you to extend and modify your markdown files.</p>
-<pre><code class="language-gjs">&#x3C;template>COOL ?&#x3C;/template>
-</code></pre>
+<DocfyDemo @id="docfy-demo-preview-docs--2" as |demo|>
+<demo.Example>
+<DocfyDemoPreviewDocs />
+</demo.Example>
+<demo.Snippets as |Snippet|>
+<Snippet @name="preview">
+<pre><code class="language-gjs">&lt;template&gt;COOL ?&lt;/template&gt;</code></pre>
+</Snippet>
+</demo.Snippets>
+</DocfyDemo>
+<p>cool stuff</p>
 </template>

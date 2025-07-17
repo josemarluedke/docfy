@@ -1,3 +1,6 @@
+import DocfyDemoWritingMarkdownDemo1 from './writing-markdown_gen/docfydemowritingmarkdowndemo1.js';
+import DocfyDemo from 'test-app-vite/components/docfy-demo';
+
 <template>
   <h1 id="writing-markdown">Writing Markdown</h1>
 <p>For most developers writing markdown is something they are used to; therefore,
@@ -122,4 +125,27 @@ url = '/docs/ember/';
 }
 ```
 </code></pre>
+
+<h2>Examples</h2>
+
+<DocfyDemo @id="docfydemowritingmarkdowndemo1" as |demo|>
+<demo.Description @title="DocfyLink Example">
+</demo.Description>
+<demo.Example>
+<DocfyDemoWritingMarkdownDemo1 />
+</demo.Example>
+<demo.Snippets as |Snippet|>
+<Snippet @name="template">
+<pre><code class="language-hbs">&lt;DocfyLink @to=&quot;/docs/getting-started&quot;&gt;
+Get Started with Docfy
+&lt;/DocfyLink&gt;</code></pre>
+</Snippet>
+<Snippet @name="component">
+<pre><code class="language-js">import Component from &#039;@glimmer/component&#039;;
+
+export default class MyDemo extends Component {
+}</code></pre>
+</Snippet>
+</demo.Snippets>
+</DocfyDemo>
 </template>

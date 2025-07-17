@@ -19,7 +19,14 @@
       "Bash(touch:*)",
       "Bash(DEBUG=@docfy/ember-vite-plugin:gjs-generator,@docfy/ember-vite-plugin:enhance-page-metadata,@docfy/ember-vite-plugin:process-demos,@docfy/ember-vite-plugin:process-preview-templates npm run start)",
       "Bash(npx tsc:*)",
-      "Bash(yarn lint:*)"
+      "Bash(yarn lint:*)",
+      "Bash(mkdir:*)",
+      "Bash(yarn build)",
+      "Bash(yarn build:*)",
+      "Bash(grep:*)",
+      "Bash(npm install:*)",
+      "Bash(yarn add:*)",
+      "Bash(DEBUG=@docfy/ember-vite-plugin:gjs-processor npm run build)"
     ],
     "deny": []
   }
