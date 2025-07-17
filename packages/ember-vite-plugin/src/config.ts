@@ -16,18 +16,6 @@ export interface DocfyVitePluginOptions extends Partial<DocfyConfig> {
   root?: string;
 
   /**
-   * Include patterns for markdown files
-   * @default ['**\/*.md']
-   */
-  include?: string | string[];
-
-  /**
-   * Exclude patterns for markdown files
-   * @default ['node_modules/**']
-   */
-  exclude?: string | string[];
-
-  /**
    * Enable hot module replacement for markdown files
    * @default true
    */

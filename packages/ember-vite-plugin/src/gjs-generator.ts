@@ -13,6 +13,30 @@ interface ComponentImport {
 }
 
 /**
+ * Clean up rendered content to remove excessive empty lines and whitespace
+ * This function addresses issues where the rendered HTML contains thousands of empty lines
+ */
+function cleanUpRenderedContent(rendered: string): string {
+  if (!rendered || typeof rendered !== 'string') {
+    return '';
+  }
+  
+  // Remove excessive empty lines (more than 2 consecutive empty lines becomes 2)
+  let cleaned = rendered.replace(/\n\s*\n\s*\n(\s*\n)*/g, '\n\n');
+  
+  // Remove leading and trailing whitespace
+  cleaned = cleaned.trim();
+  
+  // Remove any excessive whitespace at the beginning or end of lines
+  cleaned = cleaned.replace(/^[ \t]+|[ \t]+$/gm, '');
+  
+  // Ensure we don't have more than 2 consecutive empty lines anywhere
+  cleaned = cleaned.replace(/\n{3,}/g, '\n\n');
+  
+  return cleaned;
+}
+
+/**
  * Extract component imports from rendered HTML
  * This function analyzes the HTML to find any component usage and generates appropriate import statements
  */
@@ -99,15 +123,18 @@ export function generateTemplatePath(url: string): string {
 export function generatePageTemplate(page: PageContent): string {
   debug('Generating GJS page template for route', { url: page.meta.url });
   
+  // Clean up the rendered content to remove excessive empty lines
+  const cleanRendered = cleanUpRenderedContent(page.rendered);
+  
   // Extract any component usage from the rendered HTML to generate imports
-  const imports = extractComponentImports(page.rendered);
+  const imports = extractComponentImports(cleanRendered);
   
   const importStatements = imports.length > 0 
     ? imports.map(imp => `import ${imp.name} from '${imp.path}';`).join('\n') + '\n\n'
     : '';
   
   return `${importStatements}<template>
-  ${page.rendered}
+  ${cleanRendered}
 </template>`;
 }
 
@@ -128,25 +155,7 @@ export async function generateGJSComponents(
     const result = await docfyInstance.run(sources);
     
     result.content.forEach(page => {
-      // Generate route template for each markdown page
-      // This mirrors the existing Ember CLI behavior where templates are generated
-      // in the templates/ directory following the URL structure
-      const templatePath = generateTemplatePath(page.meta.url);
-      const pageTemplate = generatePageTemplate(page);
-      
-      debug('Generating route template', { 
-        url: page.meta.url, 
-        templatePath,
-        hasContent: !!page.rendered
-      });
-      
-      context.emitFile({
-        type: 'asset',
-        fileName: templatePath,
-        source: pageTemplate
-      });
-
-      // Generate demo components
+      // Generate demo components only (templates are generated in the main plugin)
       const demoComponents = extractDemoComponents(page);
       demoComponents.forEach(component => {
         const componentGJS = generateDemoComponentGJS(component);

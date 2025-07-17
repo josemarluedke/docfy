@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(git checkout:*)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(DEBUG=@docfy/ember-vite-plugin npm start)",
+      "Bash(ls:*)",
+      "Bash(npm ls:*)",
+      "Bash(node:*)",
+      "Bash(npm run start:*)",
+      "Bash(npm run:*)"
+    ],
+    "deny": []
+  }
+}

@@ -149,6 +149,10 @@ class Docfy {
 
   private initializePipeline(sources: SourceConfig[]): Context {
     const ctx = this.context;
+    
+    // Clear previous results to ensure fresh content on each run
+    ctx.pages = [];
+    ctx.staticAssets = [];
 
     sources.forEach((item) => {
       let repoEditUrl: string | null;

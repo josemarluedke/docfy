@@ -35,25 +35,32 @@ export function createVirtualModules(): VirtualModuleSystem {
     },
 
     load(id: string): string | null {
-      if (!docfyResult) {
-        debug('No Docfy result available for virtual module', { id });
-        return null;
-      }
-
       switch (id) {
         case VIRTUAL_MODULES['virtual:docfy-output']:
-          debug('Loading virtual:docfy-output');
+          debug('Loading virtual:docfy-output', { hasResult: !!docfyResult });
+          if (!docfyResult) {
+            // Return empty structure when no result is available yet
+            return `export default ${JSON.stringify({
+              nested: { name: '/', pages: [], children: [] }
+            })};`;
+          }
           return `export default ${JSON.stringify({
             nested: docfyResult.nestedPageMetadata
           })};`;
 
         case VIRTUAL_MODULES['virtual:docfy-urls']:
-          debug('Loading virtual:docfy-urls');
+          debug('Loading virtual:docfy-urls', { hasResult: !!docfyResult });
+          if (!docfyResult) {
+            return `export default ${JSON.stringify([])};`;
+          }
           const urls = docfyResult.content.map(page => page.meta.url);
           return `export default ${JSON.stringify(urls)};`;
 
         case VIRTUAL_MODULES['virtual:docfy-snippets']:
-          debug('Loading virtual:docfy-snippets');
+          debug('Loading virtual:docfy-snippets', { hasResult: !!docfyResult });
+          if (!docfyResult) {
+            return `export default ${JSON.stringify({ components: {} })};`;
+          }
           const snippets = extractSnippets(docfyResult);
           return `export default ${JSON.stringify(snippets)};`;
 

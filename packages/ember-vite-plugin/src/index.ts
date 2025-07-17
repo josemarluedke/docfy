@@ -1,5 +1,4 @@
 import type { Plugin, ResolvedConfig } from 'vite';
-import { createFilter } from '@rollup/pluginutils';
 import Docfy from '@docfy/core';
 import type { DocfyConfig } from '@docfy/core/lib/types';
 import path from 'path';
@@ -9,6 +8,7 @@ import { processMarkdown } from './markdown-processor.js';
 import { generateGJSComponents, generateTemplatePath, generatePageTemplate } from './gjs-generator.js';
 import debugFactory from 'debug';
 import fs from 'fs';
+import fastGlob from 'fast-glob';
 
 const debug = debugFactory('@docfy/ember-vite-plugin');
 
@@ -32,13 +32,57 @@ function findSourceConfigForFile(filePath: string, docfyInstance: Docfy): any {
 export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): Plugin[] {
   const {
     root = process.cwd(),
-    include = ['**/*.md'],
-    exclude = ['node_modules/**'],
     hmr = true,
     ...docfyOptions
   } = options;
 
-  const filter = createFilter(include, exclude);
+  function shouldProcessFile(filePath: string): boolean {
+    if (!docfyConfig?.sources) return false;
+    
+    return docfyConfig.sources.some(source => {
+      const sourceRoot = path.resolve(source.root || root);
+      const resolvedFilePath = path.resolve(filePath);
+      
+      // Check if file is within source root
+      if (!resolvedFilePath.startsWith(sourceRoot)) {
+        return false;
+      }
+      
+      // Simple pattern matching for .md files
+      return filePath.endsWith('.md');
+    });
+  }
+
+  async function getDocfySourceFiles(): Promise<string[]> {
+    if (!docfyConfig?.sources) return [];
+    
+    const allFiles: string[] = [];
+    
+    for (const source of docfyConfig.sources) {
+      const sourceRoot = path.resolve(source.root || root);
+      const pattern = source.pattern || '**/*.md';
+      const ignore = source.ignore || [];
+      
+      try {
+        const files = await fastGlob(pattern, {
+          cwd: sourceRoot,
+          absolute: true,
+          ignore: ['node_modules/**', ...ignore]
+        });
+        
+        allFiles.push(...files);
+        debug('Found source files for pattern', { 
+          pattern, 
+          sourceRoot, 
+          fileCount: files.length 
+        });
+      } catch (error) {
+        debug('Error globbing files', { pattern, sourceRoot, error });
+      }
+    }
+    
+    return allFiles;
+  }
   
   let config: ResolvedConfig;
   let docfyConfig: DocfyConfig;
@@ -60,13 +104,20 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
         debug('Docfy configuration loaded', { 
           sources: docfyConfig.sources?.length,
           sourcesDetails: docfyConfig.sources?.map(s => ({ root: s.root, pattern: s.pattern, urlPrefix: s.urlPrefix })),
-          include,
-          exclude,
           root
         });
         docfyInstance = new Docfy(docfyConfig);
         virtualModules = createVirtualModules();
         
+        // Add all Docfy source files to Vite's watch list
+        if (config.command === 'serve') {
+          const sourceFiles = await getDocfySourceFiles();
+          sourceFiles.forEach(file => {
+            debug('Adding file to watch list', { file });
+            this.addWatchFile(file);
+          });
+        }
+
         // Process markdown files immediately to populate virtual modules
         try {
           debug('Processing markdown files...');
@@ -77,50 +128,31 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
             staticAssetsCount: result.staticAssets.length 
           });
           
-          // Generate templates for production build using emitFile
-          if (config.command === 'build') {
-            result.content.forEach(page => {
-              const templatePath = generateTemplatePath(page.meta.url);
-              const pageTemplate = generatePageTemplate(page);
-              
-              debug('Generating template in buildStart', { 
-                url: page.meta.url, 
-                templatePath,
-                command: config.command
-              });
-              
-              this.emitFile({
-                type: 'asset',
-                fileName: templatePath,
-                source: pageTemplate
-              });
+          // Generate templates for both development and production using file system writes
+          debug('Writing templates to file system...');
+          result.content.forEach(page => {
+            const templatePath = generateTemplatePath(page.meta.url);
+            const pageTemplate = generatePageTemplate(page);
+            
+            // Write template to file system
+            const fullPath = path.join(process.cwd(), templatePath);
+            const dir = path.dirname(fullPath);
+            
+            debug('Writing template to file system', { 
+              url: page.meta.url, 
+              templatePath, 
+              fullPath,
+              command: config.command
             });
-          } else {
-            // For development mode, write templates to file system immediately
-            debug('Writing templates to file system for development...');
-            result.content.forEach(page => {
-              const templatePath = generateTemplatePath(page.meta.url);
-              const pageTemplate = generatePageTemplate(page);
-              
-              // Write template to file system for development
-              const fullPath = path.join(process.cwd(), templatePath);
-              const dir = path.dirname(fullPath);
-              
-              debug('Writing template to file system', { 
-                url: page.meta.url, 
-                templatePath, 
-                fullPath 
-              });
-              
-              // Ensure directory exists
-              if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-              }
-              
-              // Write template file
-              fs.writeFileSync(fullPath, pageTemplate);
-            });
-          }
+            
+            // Ensure directory exists
+            if (!fs.existsSync(dir)) {
+              fs.mkdirSync(dir, { recursive: true });
+            }
+            
+            // Write template file
+            fs.writeFileSync(fullPath, pageTemplate);
+          });
         } catch (error) {
           debug('Error processing markdown files', { error });
         }
@@ -148,47 +180,14 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
       },
 
       async transform(code, id) {
-        if (!filter(id)) return null;
+        if (!shouldProcessFile(id)) return null;
         
         debug('Processing markdown file', { id });
         const result = await processMarkdown(code, id, docfyInstance, config);
         
-        // For development mode, we'll handle template generation differently
-        // since emitFile() is not supported in serve mode
-        if (result && config.command === 'build') {
-          try {
-            // Re-run docfy to get the processed page info
-            const sourceConfig = findSourceConfigForFile(id, docfyInstance);
-            if (sourceConfig) {
-              const docfyResult = await docfyInstance.run([{
-                ...sourceConfig,
-                pattern: path.basename(id),
-                root: path.dirname(id)
-              }]);
-              
-              if (docfyResult.content.length > 0) {
-                const page = docfyResult.content[0];
-                const templatePath = generateTemplatePath(page.meta.url);
-                const pageTemplate = generatePageTemplate(page);
-                
-                debug('Emitting template file', { 
-                  id, 
-                  templatePath, 
-                  url: page.meta.url,
-                  command: config.command
-                });
-                
-                this.emitFile({
-                  type: 'asset',
-                  fileName: templatePath,
-                  source: pageTemplate
-                });
-              }
-            }
-          } catch (error) {
-            debug('Error emitting template file', { id, error });
-          }
-        }
+        // For development mode, templates are generated in buildStart
+        // For production, templates are generated in the second plugin's generateBundle hook
+        // No need to generate templates here to avoid conflicts
         
         return result;
       },
@@ -200,14 +199,72 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
 
 
       ...(hmr && {
-        handleHotUpdate(ctx) {
-          if (config?.command === 'serve' && filter(ctx.file)) {
+        async handleHotUpdate(ctx) {
+          if (config?.command === 'serve' && shouldProcessFile(ctx.file)) {
             debug('HMR update for markdown file', { file: ctx.file });
+            
+            // Regenerate templates when markdown files change
+            try {
+              debug('Regenerating templates due to file change...');
+              const result = await docfyInstance.run(docfyConfig.sources as any);
+              virtualModules.updateResult(result);
+              
+              // Find the specific page that corresponds to the changed file
+              const changedPage = result.content.find(page => {
+                // Check if this page's source file matches the changed file
+                return page.vFile.path === ctx.file;
+              });
+              
+              if (changedPage) {
+                // Only regenerate the template for the changed file
+                const templatePath = generateTemplatePath(changedPage.meta.url);
+                const pageTemplate = generatePageTemplate(changedPage);
+                
+                const fullPath = path.join(process.cwd(), templatePath);
+                const dir = path.dirname(fullPath);
+                
+                debug('Regenerating template file for changed page', { 
+                  url: changedPage.meta.url, 
+                  templatePath, 
+                  fullPath,
+                  changedFile: ctx.file
+                });
+                
+                // Ensure directory exists
+                if (!fs.existsSync(dir)) {
+                  fs.mkdirSync(dir, { recursive: true });
+                }
+                
+                // Write template file
+                fs.writeFileSync(fullPath, pageTemplate);
+                
+                // Invalidate the specific template file in Vite's module graph
+                const templateModule = ctx.server.moduleGraph.getModuleById(fullPath);
+                if (templateModule) {
+                  ctx.server.reloadModule(templateModule);
+                } else {
+                  // If template module doesn't exist in graph, try to find it by looking at imports
+                  const modules = ctx.server.moduleGraph.getModulesByFile(fullPath);
+                  if (modules) {
+                    for (const mod of modules) {
+                      ctx.server.reloadModule(mod);
+                    }
+                  }
+                }
+              } else {
+                debug('No matching page found for changed file', { file: ctx.file });
+              }
+              
+              debug('Template regenerated successfully');
+            } catch (error) {
+              debug('Error regenerating templates', { error });
+            }
+            
             // Invalidate virtual modules on markdown file changes
             virtualModules.invalidate();
-            ctx.server.ws.send({
-              type: 'full-reload'
-            });
+            
+            // Return empty array to prevent default HMR behavior
+            return [];
           }
         }
       })
@@ -218,15 +275,9 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
       enforce: 'pre', // Ensure this runs before other plugins
       
       async generateBundle() {
-        debug('Generating templates for build...');
-        // Generate templates for all markdown pages
-        try {
-          await generateGJSComponents(this, docfyInstance, docfyConfig);
-        } catch (error) {
-          debug('Error generating templates', { error });
-          // Don't throw to prevent build failure, just log
-          console.warn('Failed to generate some templates:', error);
-        }
+        debug('Generating bundle assets...');
+        // Generate virtual module assets, but not templates (already handled in first plugin)
+        virtualModules.generateAssets(this);
       }
     }
   ];

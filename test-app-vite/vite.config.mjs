@@ -8,8 +8,6 @@ export default defineConfig({
     // Docfy plugin must run BEFORE ember plugin so templates are available
     docfyVitePlugin({
       root: process.cwd(),
-      include: ['../docs/**/*.md'],
-      exclude: ['node_modules/**'],
       hmr: true,
     }),
     classicEmberSupport(),
