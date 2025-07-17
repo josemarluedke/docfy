@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
-import { LinkTo } from '@ember/routing';
+import DocfyLink from './docfy-link';
 
 export default class SidebarNav extends Component {
   @tracked isOpen = false;
@@ -60,14 +60,13 @@ export default class SidebarNav extends Component {
       <ul class="font-light space-y-3" {{on "click" this.handleSidebarClick}}>
         {{#each @node.pages as |page|}}
           <li>
-            <LinkTo
-              @route="docs.page"
-              @model={{page.url}}
+            <DocfyLink
+              @to={{page.url}}
               class="hover:text-green-800 dark-hover:text-green-500"
               @activeClass="font-semibold text-green-800 dark:text-green-500"
             >
               {{page.title}}
-            </LinkTo>
+            </DocfyLink>
           </li>
         {{/each}}
 
@@ -82,14 +81,13 @@ export default class SidebarNav extends Component {
             >
               {{#each child.pages as |page|}}
                 <li class="truncate">
-                  <LinkTo
-                    @route="docs.page"
-                    @model={{page.url}}
+                  <DocfyLink
+                    @to={{page.url}}
                     class="hover:text-green-800 dark-hover:text-green-500"
                     @activeClass="font-semibold text-green-800 dark:text-green-500"
                   >
                     {{page.title}}
-                  </LinkTo>
+                  </DocfyLink>
                 </li>
               {{/each}}
 
@@ -104,14 +102,13 @@ export default class SidebarNav extends Component {
                   >
                     {{#each subChild.pages as |page|}}
                       <li class="truncate">
-                        <LinkTo
-                          @route="docs.page"
-                          @model={{page.url}}
+                        <DocfyLink
+                          @to={{page.url}}
                           class="hover:text-green-800 dark-hover:text-green-500"
                           @activeClass="font-semibold text-green-800 dark:text-green-500"
                         >
                           {{page.title}}
-                        </LinkTo>
+                        </DocfyLink>
                       </li>
                     {{/each}}
                   </ul>

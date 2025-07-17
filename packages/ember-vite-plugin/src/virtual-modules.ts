@@ -118,6 +118,7 @@ export function createVirtualModules(): VirtualModuleSystem {
   };
 }
 
+
 function extractSnippets(result: DocfyResult): Record<string, any> {
   const snippets: Record<string, any> = {
     components: {}

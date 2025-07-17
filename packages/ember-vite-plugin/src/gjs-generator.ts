@@ -36,11 +36,39 @@ export default class ${className} extends Component {
 `;
 }
 
-export function generateGJSComponents(
+/**
+ * Generate the template path for a markdown page URL
+ * This mirrors the existing Ember CLI behavior from DocfyBroccoli.build()
+ * Templates should be in app/templates/ for Ember to find them
+ */
+export function generateTemplatePath(url: string): string {
+  const parts = ['app', 'templates', ...url.split('/').filter(Boolean)];
+  
+  // Handle index routes - if URL ends with '/', add 'index'
+  if (url.endsWith('/')) {
+    parts.push('index');
+  }
+  
+  return `${parts.join('/')}.hbs`;
+}
+
+/**
+ * Generate a plain HBS template for a markdown page
+ * This ensures compatibility with Ember's template resolution
+ */
+export function generatePageTemplate(page: PageContent): string {
+  debug('Generating page template for route', { url: page.meta.url });
+  
+  // For Ember templates, we just need the rendered HTML content directly
+  // No need for triple-stash syntax - just the plain HTML
+  return page.rendered;
+}
+
+export async function generateGJSComponents(
   context: PluginContext,
   docfyInstance: Docfy,
   config: DocfyConfig
-): void {
+): Promise<void> {
   debug('Generating GJS components for build');
 
   // Run Docfy to get all processed content
@@ -49,15 +77,25 @@ export function generateGJSComponents(
     root: source.root || process.cwd()
   }));
   
-  docfyInstance.run(sources).then(result => {
+  try {
+    const result = await docfyInstance.run(sources);
+    
     result.content.forEach(page => {
-      // Generate page template
-      const pageTemplate = generateGJSTemplate(page);
-      const pageFileName = `templates/${page.meta.url.replace(/\//g, '-')}.gjs`;
+      // Generate route template for each markdown page
+      // This mirrors the existing Ember CLI behavior where templates are generated
+      // in the templates/ directory following the URL structure
+      const templatePath = generateTemplatePath(page.meta.url);
+      const pageTemplate = generatePageTemplate(page);
+      
+      debug('Generating route template', { 
+        url: page.meta.url, 
+        templatePath,
+        hasContent: !!page.rendered
+      });
       
       context.emitFile({
         type: 'asset',
-        fileName: pageFileName,
+        fileName: templatePath,
         source: pageTemplate
       });
 
@@ -67,6 +105,11 @@ export function generateGJSComponents(
         const componentGJS = generateDemoComponentGJS(component);
         const componentFileName = `components/${component.name.dashCase}.gjs`;
         
+        debug('Generating demo component', { 
+          name: component.name.dashCase, 
+          fileName: componentFileName
+        });
+        
         context.emitFile({
           type: 'asset',
           fileName: componentFileName,
@@ -74,10 +117,10 @@ export function generateGJSComponents(
         });
       });
     });
-  }).catch(error => {
+  } catch (error) {
     debug('Error generating GJS components', { error });
     throw error;
-  });
+  }
 }
 
 function extractDemoComponents(page: PageContent): DemoComponent[] {

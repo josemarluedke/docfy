@@ -1,5 +1,5 @@
 import { pageTitle } from 'ember-page-title';
-import { LinkTo } from '@ember/routing';
+import DocfyLink from '../components/docfy-link';
 
 <template>
   {{pageTitle "Home"}}
@@ -14,12 +14,12 @@ import { LinkTo } from '@ember/routing';
       </p>
 
       <div class="space-x-4">
-        <LinkTo
-          @route="docs"
+        <DocfyLink
+          @to="/docs"
           class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-600 hover:bg-green-700"
         >
           Get Started
-        </LinkTo>
+        </DocfyLink>
 
         <a
           href="https://github.com/josemarluedke/docfy"

@@ -280,10 +280,12 @@ export default class ${component.name.pascalCase} extends Component {
 - Maintain current user-facing API and configuration
 - Test thoroughly with existing Docfy projects
 - **Modern Ember Ecosystem**: Embrace GJS and Embroider patterns
+- to test the application, run `DEBUG=@docfy/ember-vite-plugin* yarn start` inside `test-app-vite`.
 
 ## Files Created
 
 ### Phase 1 & 2 Implementation Files
+
 - ✅ `packages/ember-vite-plugin/package.json` - Package configuration with dependencies
 - ✅ `packages/ember-vite-plugin/tsconfig.json` - TypeScript configuration
 - ✅ `packages/ember-vite-plugin/src/index.ts` - Main plugin entry point with multi-plugin architecture

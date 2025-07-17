@@ -2,7 +2,7 @@ import type { ResolvedConfig } from 'vite';
 import type Docfy from '@docfy/core';
 import type { SourceConfig } from '@docfy/core/lib/types';
 import path from 'path';
-import { generateGJSTemplate } from './gjs-generator.js';
+import { generateGJSTemplate, generatePageTemplate } from './gjs-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:markdown-processor');
@@ -47,19 +47,8 @@ export async function processMarkdown(
       hasPluginData: Object.keys(page.pluginData).length > 0
     });
 
-    // Generate GJS template for this page
-    const gjsTemplate = generateGJSTemplate(page);
-
-    // In development, we might want to return the template directly
-    // In production, we'll emit it as a file
-    if (config.command === 'serve') {
-      return {
-        code: gjsTemplate,
-        map: null
-      };
-    }
-
-    // For build, we'll handle this in the generateBundle hook
+    // Return page metadata for both development and production
+    // Template generation happens in both transform and generateBundle hooks
     return {
       code: `// Processed by Docfy - ${page.meta.title}
 export default ${JSON.stringify(page.meta)};`,
