@@ -9,7 +9,7 @@ export default defineConfig({
     ember(),
     docfyVitePlugin({
       root: process.cwd(),
-      include: ['docs/**/*.md'],
+      include: ['../docs/**/*.md'],
       exclude: ['node_modules/**'],
       hmr: true,
     }),

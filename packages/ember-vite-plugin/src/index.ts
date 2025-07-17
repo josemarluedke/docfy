@@ -37,18 +37,49 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
       async buildStart() {
         debug('Loading Docfy configuration...');
         docfyConfig = await loadDocfyConfig(root, docfyOptions);
+        debug('Docfy configuration loaded', { 
+          sources: docfyConfig.sources?.length,
+          sourcesDetails: docfyConfig.sources?.map(s => ({ root: s.root, pattern: s.pattern, urlPrefix: s.urlPrefix })),
+          include,
+          exclude,
+          root
+        });
         docfyInstance = new Docfy(docfyConfig);
         virtualModules = createVirtualModules();
         
-        debug('Docfy configuration loaded', { sources: docfyConfig.sources?.length });
+        // Process markdown files immediately to populate virtual modules
+        try {
+          debug('Processing markdown files...');
+          const result = await docfyInstance.run(docfyConfig.sources as any);
+          virtualModules.updateResult(result);
+          debug('Markdown processing completed', { 
+            contentCount: result.content.length,
+            staticAssetsCount: result.staticAssets.length 
+          });
+        } catch (error) {
+          debug('Error processing markdown files', { error });
+        }
+        
+        debug('Docfy instance created and virtual modules initialized');
       },
 
       resolveId(id) {
-        return virtualModules.resolveId(id);
+        debug('Attempting to resolve ID', { id });
+        const resolved = virtualModules.resolveId(id);
+        if (resolved) {
+          debug('Resolved virtual module', { id, resolved });
+        } else if (id.startsWith('virtual:')) {
+          debug('Failed to resolve virtual module', { id });
+        }
+        return resolved;
       },
 
       load(id) {
-        return virtualModules.load(id);
+        const loaded = virtualModules.load(id);
+        if (loaded) {
+          debug('Loaded virtual module', { id, contentLength: loaded.length });
+        }
+        return loaded;
       },
 
       async transform(code, id) {

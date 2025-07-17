@@ -79,10 +79,11 @@ export async function loadDocfyConfig(
 async function loadPackageJson(root: string): Promise<any> {
   try {
     const pkgPath = path.join(root, 'package.json');
-    const imported = await import(pathToFileURL(pkgPath).href, { assert: { type: 'json' } });
-    return imported.default;
+    const fs = await import('fs');
+    const content = fs.readFileSync(pkgPath, 'utf-8');
+    return JSON.parse(content);
   } catch (e) {
-    debug('Could not load package.json', { root });
+    debug('Could not load package.json', { root, error: e });
     return {};
   }
 }

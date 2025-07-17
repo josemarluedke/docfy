@@ -11,4 +11,5 @@ Router.map(function () {
   this.route('docs', { path: '/docs' }, function() {
     this.route('page', { path: '/*path' });
   });
+  this.route('test-virtual');
 });
