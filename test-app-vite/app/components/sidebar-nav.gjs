@@ -37,6 +37,7 @@ export default class SidebarNav extends Component {
   }
 
   <template>
+
     <button
       type="button"
       class="flex items-center px-4 py-2 border rounded lg:hidden dark:border-gray-800
@@ -109,6 +110,30 @@ export default class SidebarNav extends Component {
                         >
                           {{page.title}}
                         </DocfyLink>
+                      </li>
+                    {{/each}}
+
+                    {{#each subChild.children as |subSubChild|}}
+                      <li>
+                        <div class="pb-2">
+                          {{subSubChild.label}}
+                        </div>
+
+                        <ul
+                          class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
+                        >
+                          {{#each subSubChild.pages as |page|}}
+                            <li class="truncate">
+                              <DocfyLink
+                                @to={{page.url}}
+                                class="hover:text-green-800 dark-hover:text-green-500"
+                                @activeClass="font-semibold text-green-800 dark:text-green-500"
+                              >
+                                {{page.title}}
+                              </DocfyLink>
+                            </li>
+                          {{/each}}
+                        </ul>
                       </li>
                     {{/each}}
                   </ul>
