@@ -1,8 +1,10 @@
+import DocfyLink from 'test-app-vite/components/docfy-link';
+
 
 <template>
   <h1 id="configuration">Configuration</h1>
 <p>Docfy has a set of options you can configure and might have read about them
-<a href="/docs/configuration">here</a>. You might have been wondering how
+<DocfyLink @to="/docs/configuration"  >here</DocfyLink>. You might have been wondering how
 to set these options in the Ember app context.</p>
 <p>The Docfy integration with Ember reads a file named <code>.docfy-config.js</code> from the
 root of your app to set the config.</p>

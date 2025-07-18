@@ -1,10 +1,12 @@
+import DocfyLink from 'test-app-vite/components/docfy-link';
+
 
 <template>
   <h1 id="docfydemo">{{"<DocfyDemo>"}}</h1>
 <p>This component is used internally to render demos. It's not meant to be used directly,
 although that's possible. The scope of what you want to understand is the CSS
 classes such that you can style the parts of the demo component yourself.</p>
-<p>Make sure to look at <a href="/docs/ember/writing-demos">writing demos</a>, so you can understand how demos look.</p>
+<p>Make sure to look at <DocfyLink @to="/docs/ember/writing-demos"  >writing demos</DocfyLink>, so you can understand how demos look.</p>
 <p>Below is an example of how styling could look like. It uses
 <a href="https://tailwindcss.com/">TailwindCSS</a> and <a href="https://github.com/postcss/postcss-nested">PostCSS Nested</a>.</p>
 <pre><code class="language-css">.docfy-demo__example {

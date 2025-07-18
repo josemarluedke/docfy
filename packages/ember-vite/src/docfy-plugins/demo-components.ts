@@ -12,7 +12,7 @@ import {
 } from './utils.js';
 
 import type { Context, PageContent } from '@docfy/core/lib/types';
-import type { DemoComponent, DemoComponentChunk, CodeNode } from '../types.js';
+import type { DemoComponent, DemoComponentChunk, CodeNode, PluginData } from '../types.js';
 import type { Node, Parent } from 'unist';
 
 /*
@@ -186,10 +186,11 @@ export default plugin({
           insertDemoNodesIntoPage(page, toInsert);
         }
 
-        if (isDemoComponents(page.pluginData.demoComponents)) {
-          page.pluginData.demoComponents.push(...demoComponents);
+        const pluginData = page.pluginData as PluginData;
+        if (isDemoComponents(pluginData.demoComponents)) {
+          pluginData.demoComponents!.push(...demoComponents);
         } else {
-          page.pluginData.demoComponents = demoComponents;
+          pluginData.demoComponents = demoComponents;
         }
       }
     });

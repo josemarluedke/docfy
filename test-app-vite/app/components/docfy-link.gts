@@ -58,9 +58,13 @@ export default class DocfyLink extends Component<DocfyLinkSignature> {
 
   <template>
     <a
-      class={{if this.isActive @activeClass}}
+      class="docfy-link {{if this.isActive @activeClass}}"
       ...attributes
       href={{this.href}}
+      data-test-docfy-link
+      data-test-to={{@to}}
+      data-test-anchor={{@anchor}}
+      data-test-is-active={{this.isActive}}
       {{on "click" this.navigate}}
     >
       {{yield}}

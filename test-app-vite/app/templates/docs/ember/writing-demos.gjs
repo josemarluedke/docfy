@@ -1,13 +1,14 @@
 import DocfyDemoPreviewWritingDemos from './writing-demos_gen/docfy-demo-preview-writing-demos.js';
 import DocfyDemoWritingDemosDemo1 from './writing-demos_gen/docfy-demo-writing-demos-demo1.js';
 import DocfyDemo from 'test-app-vite/components/docfy-demo';
+import DocfyLink from 'test-app-vite/components/docfy-link';
 
 
 <template>
   <h1 id="writing-demos">Writing Demos</h1>
 <p>Docfy has a concept of "demo" markdown files. It allows you to write code in
 markdown and have them be extracted as executable code in the host app. You can
-learn more about the file location rules in <a href="/docs/writing-markdown#demos">Writing Markdown - Demos</a>.</p>
+learn more about the file location rules in <DocfyLink @to="/docs/writing-markdown" @anchor="demos" >Writing Markdown - Demos</DocfyLink>.</p>
 <p>In the context of Ember, all demos are extracted as components. These components
 can have a template, component, and style code block. Components can also be
 template only components by only specifying the HBS template.</p>

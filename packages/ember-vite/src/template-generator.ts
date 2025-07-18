@@ -3,7 +3,8 @@ import type { PageContent } from '@docfy/core/lib/types';
 import type {
   ImportStatement,
   DemoComponent,
-  FileToGenerate
+  FileToGenerate,
+  PluginData
 } from './types.js';
 import { generateComponentFiles } from './component-generator.js';
 import debugFactory from 'debug';
@@ -59,9 +60,8 @@ function processPageImports(page: PageContent): ImportStatement[] {
   debug('Processing page imports', { url: page.meta.url });
 
   const imports: ImportStatement[] = [];
-  const demoComponents = page.pluginData?.demoComponents as
-    | DemoComponent[]
-    | undefined;
+  const pluginData = page.pluginData as PluginData | undefined;
+  const demoComponents = pluginData?.demoComponents;
 
   // Generate imports for demo components
   if (demoComponents?.length) {
@@ -96,6 +96,19 @@ function processPageImports(page: PageContent): ImportStatement[] {
       name: 'DocfyDemo',
       path: 'test-app-vite/components/docfy-demo',
       isDefault: true
+    });
+  }
+
+  // Process plugin imports (e.g., from replace-internal-links-with-docfy-link plugin)
+  if (pluginData?.imports?.length) {
+    pluginData.imports.forEach((imp: ImportStatement) => {
+      imports.push({
+        type: imp.type || 'component',
+        name: imp.name,
+        path: imp.path,
+        isDefault: imp.isDefault ?? true,
+        namedImports: imp.namedImports
+      });
     });
   }
 

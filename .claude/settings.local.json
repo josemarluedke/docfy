@@ -36,7 +36,12 @@
       "mcp__puppeteer__puppeteer_screenshot",
       "Bash(npm test)",
       "Bash(pnpm test:*)",
-      "Bash(pnpm start:*)"
+      "Bash(pnpm start:*)",
+      "Bash(DEBUG=@docfy/ember-vite:*)",
+      "Bash(/dev/null)",
+      "Bash(yarn test:ember:*)",
+      "Bash(yarn test:*)",
+      "Bash(testem:*)"
     ],
     "deny": []
   }

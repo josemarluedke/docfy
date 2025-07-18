@@ -1,3 +1,5 @@
+import DocfyLink from 'test-app-vite/components/docfy-link';
+
 
 <template>
   <h1 id="writing-markdown">Writing Markdown</h1>
@@ -30,7 +32,7 @@ in the markdown. This property can be used to inform consumers to build the side
 <li><strong>url</strong>? : <em>string</em> - Use this option to overwrite the auto-generated URL for
 the page. The URL will still contain any prefix or suffix specified for the source.</li>
 <li><strong>category</strong>? : <em>string</em> - This property is used when the source URL Schema is
-set to <code>manual</code>. Refer to <a href="/docs/configuration#urlschema">Source Configuration</a> to learn more.</li>
+set to <code>manual</code>. Refer to <DocfyLink @to="/docs/configuration" @anchor="urlschema" >Source Configuration</DocfyLink> to learn more.</li>
 <li><strong>subcategory</strong>? : <em>string</em> - This property is used when the source URL Schema is set to <code>manual</code>.</li>
 </ul>
 <blockquote>
@@ -65,7 +67,7 @@ it would be something like <code>/docs/other-document</code>. The actual URL dep
 <p>You can also link to static files such as images. Docfy will collect any
 reference to images and make them available to consumers so that they can move
 these assets to a public folder. Docfy will modify the URL of these assets using
-the <a href="/docs/configuration#staticassetspath">base configuration <code>staticAssetsPath</code></a>.</p>
+the <DocfyLink @to="/docs/configuration" @anchor="staticassetspath" >base configuration <code>staticAssetsPath</code></DocfyLink>.</p>
 <p>These static assets can be placed next to documents; there is no need to put them
 in a particular folder, although you can if you would like so.</p>
 <p>Example:</p>
