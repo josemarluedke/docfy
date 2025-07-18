@@ -210,8 +210,11 @@ export default function docfyVitePlugin(
                 const contextForGeneration = {
                   emitFile: () => {} // Not needed in HMR - we write directly to filesystem
                 } as unknown as PluginContext;
-                
-                const pageResult = generatePage(changedPage, contextForGeneration);
+
+                const pageResult = generatePage(
+                  changedPage,
+                  contextForGeneration
+                );
                 const fullPath = path.join(process.cwd(), pageResult.path);
                 const dir = path.dirname(fullPath);
 
