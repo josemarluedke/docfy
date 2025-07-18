@@ -8,6 +8,7 @@ export default {
     url: 'https://github.com/josemarluedke/docfy',
     editBranch: 'main'
   },
+  tocMaxDepth: 3,
   sources: [
     {
       root: path.join(__dirname, '../docs'),

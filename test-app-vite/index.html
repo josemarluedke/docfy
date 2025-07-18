@@ -18,9 +18,9 @@
       // Initialize dark mode before content renders to prevent flash
       (function() {
         const stored = localStorage.getItem('prefersMode');
-        const prefersDark = stored === 'dark' || 
+        const prefersDark = stored === 'dark' ||
           (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches);
-        
+
         if (prefersDark) {
           document.documentElement.classList.add('dark');
         }

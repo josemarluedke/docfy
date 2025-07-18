@@ -36,15 +36,16 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
   <template>
     {{pageTitle "Documentation"}}
 
-    <div class="px-4 mx-auto lg:px-6 max-w-(--breakpoint-2xl)">
+    <div class="px-4 mx-auto lg:px-6 max-w-(--breakpoint-2xl)" data-test-id="docs-layout">
       <div class="relative lg:flex">
-        <div class="flex-none pt-12 pr-4 lg:w-64">
+        <div class="flex-none pt-12 pr-4 lg:w-64" data-test-id="sidebar-nav">
           <SidebarNav @node={{@model.navigation}} />
         </div>
 
-        <div class="flex-1 w-full min-w-0 px-0 pt-12 lg:px-4">
+        <div class="flex-1 w-full min-w-0 px-0 pt-12 lg:px-4" data-test-id="main-content">
           <div
             class="markdown"
+            data-test-id="markdown-content"
             {{intersectHeadings
               this.setCurrentHeadingId
               headings=this.docfy.currentPage.headings
@@ -60,6 +61,7 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center"
+                data-test-id="edit-page-link"
               >
                 <svg class="w-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path
@@ -73,6 +75,7 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
 
           <div
             class="flex flex-wrap justify-between mt-5 mb-10 border-t border-gray-400 dark:border-gray-800"
+            data-test-id="previous-next-navigation"
           >
             <DocfyPreviousAndNextPage as |previous next|>
               <div class="flex items-center pt-6 pr-2">
@@ -115,7 +118,7 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
           </div>
         </div>
 
-        <div class="flex-none hidden w-56 pl-4 lg:block">
+        <div class="flex-none hidden w-56 pl-4 lg:block" data-test-id="right-sidebar">
           <PageHeadings />
         </div>
       </div>

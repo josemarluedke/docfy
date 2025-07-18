@@ -33,7 +33,10 @@
       "Bash(npx tailwindcss:*)",
       "mcp__puppeteer__puppeteer_navigate",
       "mcp__puppeteer__puppeteer_evaluate",
-      "mcp__puppeteer__puppeteer_screenshot"
+      "mcp__puppeteer__puppeteer_screenshot",
+      "Bash(npm test)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm start:*)"
     ],
     "deny": []
   }

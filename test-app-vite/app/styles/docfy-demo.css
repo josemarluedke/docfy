@@ -8,41 +8,40 @@
 
 .docfy-demo__description {
   @apply p-4 border-t border-l border-r rounded-t;
-
-  &__header {
-    @apply flex justify-between;
-
-    &__title {
-      @apply mb-4 text-xl font-semibold leading-tight;
-      @apply text-green-700;
-    }
-
-    &__edit-url {
-      @apply text-sm;
-      &:hover {
-        @apply text-green-600;
-      }
-    }
-  }
-
-  &__content {
-    /* @apply markdown; */
-  }
 }
 
-.docfy-demo__snippets {
-  &__tabs {
-    @apply px-2 border-t border-l border-r;
+.docfy-demo__description__header {
+  @apply flex justify-between;
+}
 
-    &__button {
-      @apply p-2 mr-2 border-b-4 border-transparent;
+.docfy-demo__description__header__title {
+  @apply mb-4 text-xl font-semibold leading-tight;
+  @apply text-green-700;
+}
 
-      &--active,
-      &:hover {
-        @apply border-green-700;
-      }
-    }
-  }
+.docfy-demo__description__header__edit-url {
+  @apply text-sm;
+}
+
+.docfy-demo__description__header__edit-url:hover {
+  @apply text-green-600;
+}
+
+.docfy-demo__description__content {
+  /* @apply markdown; */
+}
+
+.docfy-demo__snippets__tabs {
+  @apply px-2 border-t border-l border-r;
+}
+
+.docfy-demo__snippets__tabs__button {
+  @apply p-2 mr-2 border-b-4 border-transparent;
+}
+
+.docfy-demo__snippets__tabs__button--active,
+.docfy-demo__snippets__tabs__button:hover {
+  @apply border-green-700;
 }
 
 .docfy-demo__snippet {

@@ -38,10 +38,10 @@ interface DocfyDemoDescriptionSignature {
 
 class DocfyDemoDescription extends Component<DocfyDemoDescriptionSignature> {
   <template>
-    <div class="docfy-demo__description" ...attributes>
-      <div class="docfy-demo__description__header">
+    <div class="docfy-demo__description" data-test-id="demo-description" ...attributes>
+      <div class="docfy-demo__description__header" data-test-id="demo-header">
         {{#if @title}}
-          <h3 class="docfy-demo__description__header__title">
+          <h3 class="docfy-demo__description__header__title" data-test-id="demo-title">
             <a href="#{{@id}}">
               <span class="icon icon-link"></span>
             </a>
@@ -54,13 +54,14 @@ class DocfyDemoDescription extends Component<DocfyDemoDescriptionSignature> {
             target="_blank"
             rel="noopener noreferrer"
             class="docfy-demo__description__header__edit-url"
+            data-test-id="demo-edit-url"
           >
             Edit this demo
           </a>
         {{/if}}
       </div>
 
-      <div class="docfy-demo__description__content">
+      <div class="docfy-demo__description__content" data-test-id="demo-content">
         {{yield}}
       </div>
     </div>
@@ -76,7 +77,7 @@ interface DocfyDemoExampleSignature {
 }
 
 const DocfyDemoExample: TOC<DocfyDemoExampleSignature> = <template>
-  <div class="docfy-demo__example not-prose" ...attributes>
+  <div class="docfy-demo__example not-prose" data-test-id="demo-example" ...attributes>
     {{yield}}
   </div>
 </template>;
@@ -123,7 +124,7 @@ class DocfyDemoSnippet extends Component<DocfyDemoSnippetSignature> {
 
   <template>
     {{#if this.isActive}}
-      <div class="docfy-demo__snippet" ...attributes>
+      <div class="docfy-demo__snippet" data-test-id="demo-snippet" data-test-snippet-name="{{@name}}" ...attributes>
         {{yield}}
       </div>
     {{/if}}
@@ -155,8 +156,8 @@ class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignature> {
   }
 
   <template>
-    <div class="docfy-demo__snippets">
-      <div class="docfy-demo__snippets__tabs">
+    <div class="docfy-demo__snippets" data-test-id="demo-snippets">
+      <div class="docfy-demo__snippets__tabs" data-test-id="demo-tabs">
         {{#each this.snippets as |snippet|}}
           <button
             type="button"
@@ -165,6 +166,9 @@ class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignature> {
               (docfyEq this.active snippet.id)
               "docfy-demo__snippets__tabs__button--active"
             }}"
+            data-test-id="demo-tab-button"
+            data-test-snippet-name="{{snippet.name}}"
+            data-test-is-active="{{if (docfyEq this.active snippet.id) 'true' 'false'}}"
             {{on "click" (fn this.setActiveSnippet snippet.id)}}
           >
             {{snippet.name}}
@@ -199,7 +203,7 @@ interface DocfyDemoSignature {
 
 export default class DocfyDemo extends Component<DocfyDemoSignature> {
   <template>
-    <div id={{@id}} class="docfy-demo" ...attributes>
+    <div id={{@id}} class="docfy-demo" data-test-id="docfy-demo" data-test-demo-id="{{@id}}" ...attributes>
       {{yield
         (hash
           Example=DocfyDemoExample

@@ -27,16 +27,19 @@ export default class PageHeadings extends Component<PageHeadingsSignature> {
     const href = target.getAttribute('href');
     if (href) {
       const toElement = document.querySelector(href);
-      scrollToElement(toElement);
+      if (toElement) {
+        scrollToElement(toElement as HTMLElement);
+      }
     }
   }
 
   <template>
     <div
       class="overflow-y-auto sticky top-16 max-h-(screen-16) pt-12 pb-4 -mt-12 text-sm"
+      data-test-id="page-headings"
     >
       {{#if this.docfy.currentPage.headings.length}}
-        <ul>
+        <ul data-test-id="headings-list">
           {{#each this.docfy.currentPage.headings as |heading|}}
             <li class="pb-2 border-l border-gray-400 dark:border-gray-700">
               <a
@@ -47,6 +50,9 @@ export default class PageHeadings extends Component<PageHeadingsSignature> {
                     'border-green-700 text-green-700 dark:border-green-500 dark:text-green-500'
                     'border-transparent'
                   }}"
+                data-test-id="heading-link"
+                data-test-heading-id="{{heading.id}}"
+                data-test-is-active="{{if (isEqual heading.id this.currentHeading.currentHeadingId) 'true' 'false'}}"
                 {{on "click" this.onClick}}
               >
                 {{heading.title}}
@@ -66,6 +72,9 @@ export default class PageHeadings extends Component<PageHeadingsSignature> {
                             'border-green-700 text-green-700 dark:border-green-500 dark:text-green-500'
                             'border-transparent'
                           }}"
+                        data-test-id="subheading-link"
+                        data-test-heading-id="{{subHeading.id}}"
+                        data-test-is-active="{{if (isEqual subHeading.id this.currentHeading.currentHeadingId) 'true' 'false'}}"
                         {{on "click" this.onClick}}
                       >
                         {{subHeading.title}}
