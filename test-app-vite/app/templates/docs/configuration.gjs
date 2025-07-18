@@ -1,3 +1,4 @@
+
 <template>
   <h1 id="configuration">Configuration</h1>
 <p>Docfy has a few options you can change to enhance and, or modify Docfy behavior. There are two categories of options, first, base configuration, and second, the source of files configuration.</p>
@@ -8,14 +9,14 @@ Below you can see an example of how to pass these options to Docfy.</p>
 <pre><code class="language-js">const Docfy = require('@docfy/core');
 
 const docfy = new Docfy({
-plugins: [],
-remarkPlugins: [],
-rehypePlugins: [],
-staticAssetsPath: '/assets/docfy',
-tocMaxDepth: 6,
-repository: {
-url: 'https://github.com/josemarluedke/docfy'
-}
+  plugins: [],
+  remarkPlugins: [],
+  rehypePlugins: [],
+  staticAssetsPath: '/assets/docfy',
+  tocMaxDepth: 6,
+  repository: {
+    url: 'https://github.com/josemarluedke/docfy'
+  }
 });
 </code></pre>
 <h3 id="plugins"><code>plugins</code></h3>
@@ -33,12 +34,12 @@ const remarkPlugins = [autolinkHeadings, hbs];
 <p>In case the plugin has options, you can specify as the example below:</p>
 <pre><code class="language-js">// ..
 const remarkPlugins = [
-[
-autolinkHeadings,
-{
-behavior: 'wrap'
-}
-]
+  [
+    autolinkHeadings,
+    {
+      behavior: 'wrap'
+    }
+  ]
 ];
 </code></pre>
 <h3 id="rehypeplugins"><code>rehypePlugins</code></h3>
@@ -56,10 +57,10 @@ behavior: 'wrap'
 <p>• <strong>repository</strong>? : <em>RepositoryConfig</em> - The repository config.</p>
 <p>Example:</p>
 <pre><code class="language-js">const config = {
-repository: {
-url: 'https://github.com/josemarluedke/docfy',
-editBranch: 'main'
-}
+  repository: {
+    url: 'https://github.com/josemarluedke/docfy',
+    editBranch: 'main'
+  }
 };
 </code></pre>
 <h4 id="repositoryconfig"><code>RepositoryConfig</code></h4>
@@ -73,18 +74,18 @@ on an "Edit this page" link. <strong>defaults to <code>"master"</code></strong><
 Below you can see an example of how to pass these options to Docfy.</p>
 <pre><code class="language-js">// ...
 docfy
-.run([
-{
-root: __dirname,
-pattern: '**/*.md',
-ignore: ['private/**'],
-urlPrefix: 'docs',
-urlSchema: 'manual'
-}
-])
-.then((result) => {
-console.log(result);
-});
+  .run([
+    {
+      root: __dirname,
+      pattern: '**/*.md',
+      ignore: ['private/**'],
+      urlPrefix: 'docs',
+      urlSchema: 'manual'
+    }
+  ])
+  .then((result) => {
+    console.log(result);
+  });
 </code></pre>
 <h3 id="root">root</h3>
 <p>• <strong>root</strong>: <em>string</em></p>
@@ -115,8 +116,8 @@ console.log(result);
 For example, if you have the following files:</p>
 <pre><code>- install.md
 - components/
-- button.md
-- card.md
+  - button.md
+  - card.md
 </code></pre>
 <p>The URLs would look like this, (assuming <code>urlPrefix</code> is set to <code>docs</code>).</p>
 <pre><code>- docs/install

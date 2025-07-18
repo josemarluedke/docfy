@@ -1,5 +1,6 @@
-import DocfyDemoWritingMarkdownDemo1 from './writing-markdown_gen/docfydemowritingmarkdowndemo1.js';
+import DocfyDemoWritingMarkdownDemo1 from './writing-markdown_gen/docfy-demo-writing-markdown-demo1.js';
 import DocfyDemo from 'test-app-vite/components/docfy-demo';
+
 
 <template>
   <h1 id="writing-markdown">Writing Markdown</h1>
@@ -14,6 +15,31 @@ format that it uses. Everything is possible with plugins, such as
 <a href="https://github.com/remarkjs/remark-lint">checking Markdown code style (remark-lint)</a>,
 <a href="https://github.com/mapbox/remark-react">transforming safely to React (remark-react)</a>,
 or <a href="https://github.com/remarkjs/remark-toc">adding a table of contents (remark-toc)</a>.</p>
+<h2 id="examples">Examples</h2>
+<DocfyDemo @id="docfy-demo-writing-markdown-demo1" as |demo|>
+<demo.Description
+          @title="DocfyLink Example" >
+<p>This is a demo of how to use the DocfyLink component.</p>
+</demo.Description>
+<demo.Example>
+<DocfyDemoWritingMarkdownDemo1 />
+</demo.Example>
+<demo.Snippets as |Snippet|>
+<Snippet @name="template">
+<pre><code class="language-hbs">&#x3C;DocfyLink @to="/docs/getting-started">
+  Get Started with Docfy
+&#x3C;/DocfyLink>
+</code></pre>
+</Snippet>
+<Snippet @name="component">
+<pre><code class="language-js">import Component from '@glimmer/component';
+
+export default class MyDemo extends Component {
+}
+</code></pre>
+</Snippet>
+</demo.Snippets>
+</DocfyDemo>
 <h2 id="front-matter">Front Matter</h2>
 <p>Front Matter allows you to customize the result of Docfy by the built-in properties
 and exposes any additional values to its consumer. Docfy uses YAML format with <code>---</code> as the marker.</p>
@@ -121,31 +147,16 @@ This is my Demo:
 import Component from '@glimmer/component';
 
 export default class MyDemo extends Component {
-url = '/docs/ember/';
+  url = '/docs/ember/';
 }
 ```
 </code></pre>
 
 <h2>Examples</h2>
 
-<DocfyDemo @id="docfydemowritingmarkdowndemo1" as |demo|>
-<demo.Description @title="DocfyLink Example">
-</demo.Description>
-<demo.Example>
-<DocfyDemoWritingMarkdownDemo1 />
-</demo.Example>
-<demo.Snippets as |Snippet|>
-<Snippet @name="template">
-<pre><code class="language-hbs">&lt;DocfyLink @to=&quot;/docs/getting-started&quot;&gt;
-Get Started with Docfy
-&lt;/DocfyLink&gt;</code></pre>
-</Snippet>
-<Snippet @name="component">
-<pre><code class="language-js">import Component from &#039;@glimmer/component&#039;;
-
-export default class MyDemo extends Component {
-}</code></pre>
-</Snippet>
-</demo.Snippets>
+<DocfyDemo @id="docfy-demo-writing-markdown-demo1" as |demo|>
+<demo.Example><DocfyDemoWritingMarkdownDemo1 /></demo.Example>
 </DocfyDemo>
+
+
 </template>

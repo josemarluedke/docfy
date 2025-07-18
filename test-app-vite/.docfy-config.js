@@ -7,12 +7,12 @@ module.exports = {
       pattern: '**/*.md',
       urlPrefix: 'docs'
     },
-    // {
-    //   root: path.resolve(__dirname, '../packages/ember/docs'),
-    //   pattern: '**/*.md',
-    //   urlSchema: 'manual',
-    //   urlPrefix: 'docs/ember'
-    // }
+    {
+      root: path.resolve(__dirname, '../packages/ember/docs'),
+      pattern: '**/*.md',
+      urlSchema: 'manual',
+      urlPrefix: 'docs/ember'
+    }
   ],
   labels: {
     components: 'Components',

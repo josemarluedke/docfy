@@ -99,6 +99,7 @@ async function mergeConfig(
 
   // Add Docfy core plugins for demo and preview template processing
   const { demoComponents, previewTemplates } = await import('./docfy-plugins/index.js');
+  // Debug: plugins loaded
   docfyConfig.plugins.unshift(
     previewTemplates,  // Process preview templates first
     demoComponents     // Then process demo components

@@ -26,7 +26,11 @@
       "Bash(grep:*)",
       "Bash(npm install:*)",
       "Bash(yarn add:*)",
-      "Bash(DEBUG=@docfy/ember-vite-plugin:gjs-processor npm run build)"
+      "Bash(DEBUG=@docfy/ember-vite-plugin:gjs-processor npm run build)",
+      "Bash(DEBUG=@docfy/ember-vite-plugin*)",
+      "Bash(DEBUG=@docfy/ember-vite-plugin:*)",
+      "Bash(npm start)",
+      "Bash(pnpm build:*)"
     ],
     "deny": []
   }

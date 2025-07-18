@@ -1,200 +1,124 @@
 import plugin from '@docfy/core/lib/plugin.js';
-import { Context, PageContent } from '@docfy/core/lib/types';
-import { DemoComponent, DemoComponentChunk } from '../types.js';
 import visit from 'unist-util-visit';
 import findNode from 'unist-util-find';
 import toString from 'mdast-util-to-string';
 import path from 'path';
-import { replaceNode, createDemoNodes } from './utils.js';
+import {
+  generateDemoComponentName,
+  getExt,
+  createDemoNodes,
+  deleteNode,
+  isDemoComponents
+} from './utils.js';
 
-// Map language names to file extensions (same as original ember implementation)
-const MAP_LANG_TO_EXT = {
-  javascript: 'js',
-  typescript: 'ts',
-  handlebars: 'hbs',
-  'html.hbs': 'hbs',
-  'html.handlebars': 'hbs'
-};
+import type { Context, PageContent } from '@docfy/core/lib/types';
+import type { DemoComponent, DemoComponentChunk, CodeNode } from '../types.js';
+import type { Node, Parent } from 'unist';
 
-function getExt(lang: string): string {
-  lang = lang.toLowerCase();
-  return MAP_LANG_TO_EXT[lang] || lang;
-}
-
-/**
- * Generate component name like the original ember implementation
+/*
+ * Create the heading for the examples section of the page.
+ *
+ * It uses the remark stack to make sure any plugins that manage headings can be
+ * executed.
+ *
+ * This is necessary for apps using remark-autolink-headings, for example.
  */
-function generateDemoComponentName(
-  identifier: string,
-  seenNames: Set<string>,
-  tentativeCount = 1
-): { dashCase: string; pascalCase: string } {
-  const dashCase = identifier
-    .split('.')[0]
-    .toLowerCase()
-    .replace(/\/|\\/g, '-')
-    .replace(/[^a-zA-Z0-9|-]/g, '');
-
-  const pascalCase = dashCase
-    .replace(/(\w)(\w*)/g, function (_, g1, g2) {
-      return `${g1.toUpperCase()}${g2.toLowerCase()}`;
-    })
-    .replace(/-(\d+)/g, function (_, g1) {
-      return `_${g1}`;
-    })
-    .replace(/-/g, '');
-
-  if (seenNames.has(dashCase)) {
-    return generateDemoComponentName(
-      `${dashCase}${tentativeCount}`,
-      seenNames,
-      tentativeCount + 1
-    );
-  }
-
-  seenNames.add(dashCase);
-  return {
-    dashCase,
-    pascalCase
-  };
+function createHeading(ctx: Context): Node {
+  const heading = (
+    ctx.remark.runSync(ctx.remark.parse('## Examples')).children as Node[]
+  )[0];
+  heading.depth = 2;
+  return heading;
 }
 
-/**
- * Delete a node from AST children array
- */
-function deleteNode(nodes: any[], nodeToDelete: any): void {
-  if (!nodeToDelete || !Array.isArray(nodes)) {
-    return;
-  }
+const isTextMarker = (node: Parent): boolean =>
+  node.type === 'paragraph' &&
+  node.children.length === 1 &&
+  node.children[0].type === 'text';
 
-  const index = nodes.findIndex((item) => item === nodeToDelete);
-  if (index !== -1) {
-    nodes.splice(index, 1);
-  }
-}
-
-// Manual demo insertion regexes (matching original ember implementation)
 const demoMarkerRegex = /^\[\[demo:(.+?)\]\]$/;
+const demoMarker = (node: Parent): boolean =>
+  isTextMarker(node) && demoMarkerRegex.test(node.children[0].value as string);
+
 const demosAllMarkerRegex = /^\[\[demos-all\]\]$/;
+const demosAllMarker = (node: Parent): boolean =>
+  isTextMarker(node) &&
+  demosAllMarkerRegex.test(node.children[0].value as string);
 
-/**
- * Check if a node is a demo marker
+/*
+ * Insert Demo nodes into the page.
  */
-function demoMarker(node: any): string | null {
-  if (node?.type === 'paragraph' && node?.children?.length === 1) {
-    const textNode = node.children[0];
-    if (textNode?.type === 'text') {
-      const match = textNode.value.match(demoMarkerRegex);
-      return match ? match[1] : null;
+function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
+  if (Array.isArray(page.ast.children)) {
+    const secondHeading = findNode(
+      page.ast,
+      (node: Node) => node.type === 'heading' && node.depth !== 1
+    );
+
+    if (secondHeading) {
+      const index = page.ast.children.findIndex((el) => el === secondHeading);
+      page.ast.children.splice(index, 0, ...toInsert);
+    } else {
+      page.ast.children.push(...toInsert);
     }
   }
-  return null;
 }
 
-/**
- * Check if a node is a demos-all marker
- */
-function demosAllMarker(node: any): boolean {
-  if (node?.type === 'paragraph' && node?.children?.length === 1) {
-    const textNode = node.children[0];
-    if (textNode?.type === 'text') {
-      return demosAllMarkerRegex.test(textNode.value);
-    }
-  }
-  return false;
-}
+function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
+  if (Array.isArray(page.ast.children)) {
+    const markers: Parent[] = [];
+    const allMarkers: Parent[] = [];
 
-/**
- * Replace demo markers with actual demo nodes
- */
-function replaceDemoMarkers(
-  page: PageContent,
-  demoComponents: DemoComponent[]
-): void {
-  if (!page.meta?.frontmatter?.manualDemoInsertion) {
-    return;
-  }
+    visit(page.ast, 'paragraph', (node: Parent) => {
+      if (demoMarker(node)) markers.push(node);
+      if (demosAllMarker(node)) allMarkers.push(node);
+    });
 
-  const nodesToReplace: { node: any; replacements: any[] }[] = [];
+    markers.forEach((marker) => {
+      const child = marker.children[0];
+      const matches = (child.value as string).match(demoMarkerRegex);
+      if (!matches) return;
 
-  // Find all marker nodes
-  visit(page.ast, 'paragraph', (node: any) => {
-    const markerName = demoMarker(node);
-    if (markerName) {
-      // Find matching demo component
-      const matchingDemo = demoComponents.find((d) =>
-        d.name
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, '')
-          .endsWith(markerName.toLowerCase().replace(/[^a-z0-9]/g, ''))
-      );
+      // TODO: This is an inner loop and can cause perf issues if someone
+      // out there has many demos on a single page. It would be better to
+      // create a demo component hash that can be looked up by demo name.
+      const demoName = matches[1];
+      const demo = demos.find((d) => d.name.dashCase.endsWith(demoName));
 
-      if (matchingDemo) {
-        // Convert paragraph to div and replace with demo nodes
-        node.type = 'div';
-        // Create component structure that createDemoNodes expects
-        const componentForNodes = {
-          name: {
-            dashCase: matchingDemo.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-            pascalCase: matchingDemo.name
-          },
-          chunks: matchingDemo.chunks
-        };
-        nodesToReplace.push({
-          node,
-          replacements: createDemoNodes(componentForNodes)
-        });
-      } else {
+      if (!demo) {
         console.warn(
-          `Demo component "${markerName}" not found for marker in ${page.meta.url}`
+          `Found demo marker "${demoName}" with no matching demo component in ${page.source}`
         );
+        return;
       }
-    } else if (demosAllMarker(node)) {
-      // Replace with all demo components
-      node.type = 'div';
-      const allDemoNodes: any[] = [];
-      demoComponents.forEach((demo) => {
-        // Create component structure that createDemoNodes expects
-        const componentForNodes = {
-          name: {
-            dashCase: demo.name.toLowerCase().replace(/[^a-z0-9]/g, '-'),
-            pascalCase: demo.name
-          },
-          chunks: demo.chunks
-        };
-        allDemoNodes.push(...createDemoNodes(componentForNodes));
-      });
-      nodesToReplace.push({
-        node,
-        replacements: allDemoNodes
-      });
-    }
-  });
 
-  // Apply replacements
-  nodesToReplace.forEach(({ node, replacements }) => {
-    replaceNode(page.ast.children, node, ...replacements);
-  });
+      marker.type = 'div';
+      marker.children.splice(0, 1, ...createDemoNodes(demo));
+    });
+
+    allMarkers.forEach((marker) => {
+      const demoNodes = demos
+        .map((component) => createDemoNodes(component))
+        .flat();
+
+      marker.type = 'div';
+      marker.children.splice(0, 1, ...demoNodes);
+    });
+  }
 }
 
-/**
- * Docfy core plugin to extract demo components from page metadata
- * This plugin processes existing demo data and stores it in a standardized format
- * for consumption by the GJS template generator (matching original ember implementation)
- */
 export default plugin({
   runWithMdast(ctx: Context): void {
     const seenNames: Set<string> = new Set();
 
-    ctx.pages.forEach((page: PageContent) => {
+    ctx.pages.forEach((page) => {
       if (page.demos) {
         const demoComponents: DemoComponent[] = [];
 
         page.demos.forEach((demo) => {
           const chunks: DemoComponentChunk[] = [];
 
-          // Extract code chunks from demo ast like the original
-          visit(demo.ast, 'code', (node: any) => {
+          visit(demo.ast, 'code', (node: CodeNode) => {
             if (['component', 'template', 'styles'].includes(node.meta || '')) {
               chunks.push({
                 snippet: node,
@@ -207,61 +131,66 @@ export default plugin({
             }
           });
 
-          if (chunks.length > 0) {
-            // Generate component name like the original ember implementation
-            const baseName = page.source.replace('/index.md', '').split('.')[0];
-            const componentName = generateDemoComponentName(
-              `docfy-demo-${baseName}-${
-                path.basename(demo.source).split('.')[0]
-              }`,
-              seenNames
-            );
+          // 1. exclude extension
+          // 2. remove /index.md because of web conventions
+          const baseName = page.source.replace('/index.md', '').split('.')[0];
 
-            // Find demo title heading like the original
-            const demoTitle = findNode(
-              demo.ast,
-              (node: any) => node.type === 'heading' && node.depth === 1
-            );
+          const componentName = generateDemoComponentName(
+            `docfy-demo-${baseName}-${
+              path.basename(demo.source).split('.')[0]
+            }`,
+            seenNames
+          );
 
-            let description: DemoComponent['description'] | undefined;
-            if (demoTitle) {
-              // Mark heading for deletion by TOC plugin
-              demoTitle.depth = 3;
-              demoTitle.data = {
-                ...(demoTitle.data || {}),
-                id: componentName.dashCase,
-                docfyDelete: true
-              };
+          const demoTitle = findNode(
+            demo.ast,
+            (node: Node) => node.type === 'heading' && node.depth === 1
+          );
 
-              description = {
-                title: toString(demoTitle),
-                editUrl: demo.meta?.editUrl
-              };
-            }
-
-            demoComponents.push({
-              name: componentName.pascalCase,
-              chunks,
-              description
-            });
-
-            // Delete used code blocks like the original
-            chunks.forEach(({ snippet }) => {
-              if (demo.ast && Array.isArray(demo.ast.children)) {
-                deleteNode(demo.ast.children, snippet);
-              }
-            });
+          if (demoTitle) {
+            demoTitle.depth = 3;
+            demoTitle.data = {
+              ...(demoTitle.data || {}),
+              id: componentName.dashCase,
+              docfyDelete: true // mark the heading to be deleted by @docfy/core TOC plugin
+            };
           }
+
+          demoComponents.push({
+            name: componentName,
+            chunks,
+            description: {
+              title: demoTitle ? toString(demoTitle) : undefined,
+              ast: demo.ast,
+              editUrl: demo.meta.editUrl
+            }
+          });
+
+          // Delete used code blocks
+          chunks.forEach(({ snippet }) => {
+            deleteNode(demo.ast.children, snippet);
+          });
         });
 
-        // Store demo components in pluginData for the GJS generator to consume
-        if (!page.pluginData) {
-          page.pluginData = {};
+        if (page.meta.frontmatter.manualDemoInsertion) {
+          // Manual demo insertion inserts demos into markdown files
+          // wherever there is a demo marker ([[demo:name]] or [[demos-all]])
+          replaceDemoMarkers(page, demoComponents);
+        } else {
+          // Automatic demo insertion creates an Example block after
+          // the first heading.
+          const toInsert: Node[] = [createHeading(ctx)];
+          demoComponents.forEach((component) => {
+            toInsert.push(...createDemoNodes(component));
+          });
+          insertDemoNodesIntoPage(page, toInsert);
         }
-        page.pluginData.demoComponents = demoComponents;
 
-        // Handle manual demo insertion if enabled
-        replaceDemoMarkers(page, demoComponents);
+        if (isDemoComponents(page.pluginData.demoComponents)) {
+          page.pluginData.demoComponents.push(...demoComponents);
+        } else {
+          page.pluginData.demoComponents = demoComponents;
+        }
       }
     });
   }

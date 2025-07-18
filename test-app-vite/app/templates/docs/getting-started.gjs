@@ -1,3 +1,4 @@
+
 <template>
   <h1 id="getting-started">Getting Started</h1>
 <p>Here you can find a simple getting started with the Docfy Core. The core will
@@ -21,16 +22,16 @@ const Docfy = require('@docfy/core');
 const path = require('path');
 
 new Docfy()
-.run([
-{
-root: path.join(__dirname, 'docs'),
-urlPrefix: 'docs',
-pattern: '**/*.md'
-}
-])
-.then((result) => {
-console.log(result);
-});
+  .run([
+    {
+      root: path.join(__dirname, 'docs'),
+      urlPrefix: 'docs',
+      pattern: '**/*.md'
+    }
+  ])
+  .then((result) => {
+    console.log(result);
+  });
 </code></pre>
 <h2 id="create-a-markdown-file">Create a markdown file</h2>
 <pre><code class="language-sh">mkdir docs
