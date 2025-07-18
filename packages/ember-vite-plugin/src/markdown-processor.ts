@@ -2,7 +2,6 @@ import type { ResolvedConfig } from 'vite';
 import type Docfy from '@docfy/core';
 import type { SourceConfig } from '@docfy/core/lib/types';
 import path from 'path';
-import { generatePageTemplate } from './gjs-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:markdown-processor');
@@ -29,11 +28,13 @@ export async function processMarkdown(
     }
 
     // Run Docfy processing on the single file
-    const result = await docfyInstance.run([{
-      ...sourceConfig,
-      pattern: path.basename(id),
-      root: path.dirname(id)
-    }]);
+    const result = await docfyInstance.run([
+      {
+        ...sourceConfig,
+        pattern: path.basename(id),
+        root: path.dirname(id)
+      }
+    ]);
 
     if (!result.content.length) {
       debug('No content generated from markdown file', { id });
@@ -41,7 +42,7 @@ export async function processMarkdown(
     }
 
     const page = result.content[0];
-    debug('Generated page', { 
+    debug('Generated page', {
       url: page.meta.url,
       title: page.meta.title,
       hasPluginData: Object.keys(page.pluginData).length > 0
@@ -54,26 +55,28 @@ export async function processMarkdown(
 export default ${JSON.stringify(page.meta)};`,
       map: null
     };
-
   } catch (error) {
     debug('Error processing markdown file', { id, error });
     throw error;
   }
 }
 
-function findSourceConfigForFile(filePath: string, docfyInstance: Docfy): SourceConfig | null {
+function findSourceConfigForFile(
+  filePath: string,
+  docfyInstance: Docfy
+): SourceConfig | null {
   // Access the docfy config sources
   const sources = (docfyInstance as any).context?.options?.sources || [];
-  
+
   for (const source of sources) {
     const sourcePath = path.resolve(source.root);
     const resolvedFilePath = path.resolve(filePath);
-    
+
     if (resolvedFilePath.startsWith(sourcePath)) {
       return source;
     }
   }
-  
+
   return null;
 }
 
@@ -84,3 +87,4 @@ export interface ProcessedMarkdownFile {
   rendered: string;
   demos?: any[];
 }
+

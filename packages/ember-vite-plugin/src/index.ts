@@ -6,7 +6,7 @@ import path from 'path';
 import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
 import { createVirtualModules } from './virtual-modules.js';
 import { processMarkdown } from './markdown-processor.js';
-import { generateTemplatePath, generatePageTemplate } from './gjs-generator.js';
+import { generatePage } from './template-generator.js';
 import debugFactory from 'debug';
 import fs from 'fs';
 import fastGlob from 'fast-glob';
@@ -120,16 +120,15 @@ export default function docfyVitePlugin(
           // Generate templates for both development and production using file system writes
           debug('Writing templates to file system...');
           result.content.forEach((page) => {
-            const templatePath = generateTemplatePath(page.meta.url);
-            const pageTemplate = generatePageTemplate(page, this);
+            const pageResult = generatePage(page, this);
 
             // Write template to file system
-            const fullPath = path.join(process.cwd(), templatePath);
+            const fullPath = path.join(process.cwd(), pageResult.path);
             const dir = path.dirname(fullPath);
 
             debug('Writing template to file system', {
               url: page.meta.url,
-              templatePath,
+              templatePath: pageResult.path,
               fullPath,
               command: config.command
             });
@@ -140,7 +139,7 @@ export default function docfyVitePlugin(
             }
 
             // Write template file
-            fs.writeFileSync(fullPath, pageTemplate);
+            fs.writeFileSync(fullPath, pageResult.content);
           });
         } catch (error) {
           debug('Error processing markdown files', { error });
@@ -207,22 +206,18 @@ export default function docfyVitePlugin(
 
               if (changedPage) {
                 // Only regenerate the template for the changed file
-                const templatePath = generateTemplatePath(changedPage.meta.url);
                 // Create a minimal context-like object for component generation
                 const contextForGeneration = {
                   emitFile: () => {} // Not needed in HMR - we write directly to filesystem
                 } as unknown as PluginContext;
-                const pageTemplate = generatePageTemplate(
-                  changedPage,
-                  contextForGeneration
-                );
-
-                const fullPath = path.join(process.cwd(), templatePath);
+                
+                const pageResult = generatePage(changedPage, contextForGeneration);
+                const fullPath = path.join(process.cwd(), pageResult.path);
                 const dir = path.dirname(fullPath);
 
                 debug('Regenerating template file for changed page', {
                   url: changedPage.meta.url,
-                  templatePath,
+                  templatePath: pageResult.path,
                   fullPath,
                   changedFile: ctx.file
                 });
@@ -233,7 +228,7 @@ export default function docfyVitePlugin(
                 }
 
                 // Write template file
-                fs.writeFileSync(fullPath, pageTemplate);
+                fs.writeFileSync(fullPath, pageResult.content);
 
                 // Invalidate the specific template file in Vite's module graph
                 const templateModule =
