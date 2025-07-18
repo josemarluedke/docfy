@@ -16,7 +16,13 @@ const debug = debugFactory('@docfy/ember-vite-plugin');
 export default function docfyVitePlugin(
   options: DocfyVitePluginOptions = {}
 ): Plugin[] {
-  const { root = process.cwd(), hmr = true, ...docfyOptions } = options;
+  const {
+    root = process.cwd(),
+    hmr = true,
+    config: inlineConfig,
+    configFile,
+    ...docfyOptions
+  } = options;
 
   function shouldProcessFile(filePath: string): boolean {
     if (!docfyConfig?.sources) return false;
@@ -85,7 +91,11 @@ export default function docfyVitePlugin(
 
       async buildStart() {
         debug('Loading Docfy configuration...');
-        docfyConfig = await loadDocfyConfig(root, docfyOptions);
+        docfyConfig = await loadDocfyConfig(root, {
+          ...docfyOptions,
+          config: inlineConfig,
+          configFile
+        });
         debug('Docfy configuration loaded', {
           sources: docfyConfig.sources?.length,
           sourcesDetails: docfyConfig.sources?.map((s) => ({
