@@ -4,6 +4,7 @@ import u from 'unist-builder';
 import type { Context, PageContent } from '@docfy/core/lib/types';
 import type { Node, Parent } from 'unist';
 import type { PluginData, ImportStatement } from '../types.js';
+import { getComponentImport } from '../import-map.js';
 
 interface LinkNode extends Node {
   title: string | null;
@@ -90,14 +91,11 @@ export default plugin({
         }
 
         const existingImport = pluginData.imports.find(
-          (imp: ImportStatement) => imp.name === 'DocfyLink'
+          (imp) => imp.name === 'DocfyLink'
         );
 
         if (!existingImport) {
-          pluginData.imports.push({
-            name: 'DocfyLink',
-            path: 'test-app-vite/components/docfy-link'
-          });
+          pluginData.imports.push(getComponentImport('DocfyLink'));
         }
       }
     });

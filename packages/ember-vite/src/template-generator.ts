@@ -1,16 +1,11 @@
 import type { PluginContext } from 'rollup';
 import type { PageContent } from '@docfy/core/lib/types';
-import type {
-  ImportStatement,
-  DemoComponent,
-  FileToGenerate,
-  PluginData
-} from './types.js';
+import type { ImportStatement, FileToGenerate, PluginData } from './types.js';
 import { generateComponentFiles } from './component-generator.js';
+import { getComponentImport } from './import-map.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite:template-generator');
-
 
 /**
  * Generate the template path for a markdown page URL
@@ -54,12 +49,13 @@ function getComponentImportPath(
 
 /**
  * Process all imports for a page template
- * Combines component generation and import processing
+ * Combines component generation, plugin imports, and frontmatter imports
+ * Returns the complete imports string ready for template generation
  */
-function processPageImports(page: PageContent): ImportStatement[] {
+function processPageImports(page: PageContent): string {
   debug('Processing page imports', { url: page.meta.url });
 
-  const imports: ImportStatement[] = [];
+  const structuredImports: ImportStatement[] = [];
   const pluginData = page.pluginData as PluginData | undefined;
   const demoComponents = pluginData?.demoComponents;
 
@@ -82,8 +78,7 @@ function processPageImports(page: PageContent): ImportStatement[] {
         ext
       );
 
-      imports.push({
-        type: 'component',
+      structuredImports.push({
         name: demo.name.pascalCase,
         path: componentPath,
         isDefault: true
@@ -91,19 +86,13 @@ function processPageImports(page: PageContent): ImportStatement[] {
     });
 
     // Add DocfyDemo import if we have demo components
-    imports.push({
-      type: 'component',
-      name: 'DocfyDemo',
-      path: 'test-app-vite/components/docfy-demo',
-      isDefault: true
-    });
+    structuredImports.push(getComponentImport('DocfyDemo'));
   }
 
   // Process plugin imports (e.g., from replace-internal-links-with-docfy-link plugin)
   if (pluginData?.imports?.length) {
     pluginData.imports.forEach((imp: ImportStatement) => {
-      imports.push({
-        type: imp.type || 'component',
+      structuredImports.push({
         name: imp.name,
         path: imp.path,
         isDefault: imp.isDefault ?? true,
@@ -112,12 +101,43 @@ function processPageImports(page: PageContent): ImportStatement[] {
     });
   }
 
+  // Generate structured imports section
+  const structuredImportsSection =
+    structuredImports.length > 0
+      ? structuredImports.map((imp) => generateImportStatement(imp)).join('\n')
+      : '';
+
+  // Handle raw imports from frontmatter
+  const frontmatterImports = page.meta.frontmatter.imports;
+  let rawImportsSection = '';
+
+  if (frontmatterImports) {
+    if (typeof frontmatterImports === 'string') {
+      // Single import string
+      rawImportsSection = frontmatterImports;
+    } else if (Array.isArray(frontmatterImports)) {
+      // Array of import strings
+      rawImportsSection = frontmatterImports
+        .filter((imp): imp is string => typeof imp === 'string')
+        .join('\n');
+    }
+  }
+
+  // Combine all imports into final string
+  const allImportsSections = [
+    structuredImportsSection,
+    rawImportsSection
+  ].filter((section) => section.length > 0);
+
+  const finalImportsString =
+    allImportsSections.length > 0 ? allImportsSections.join('\n') + '\n\n' : '';
+
   debug('Processed page imports', {
     url: page.meta.url,
-    imports: imports.length
+    imports: finalImportsString
   });
 
-  return imports;
+  return finalImportsString;
 }
 
 /**
@@ -161,16 +181,10 @@ export function generatePage(
   // Generate component files for the page
   const componentFiles = generateComponentFiles(page);
 
-  // Process and generate import statements
-  const imports = processPageImports(page);
+  // Process and generate all import statements
+  const importsSection = processPageImports(page);
 
-  const importsSection =
-    imports.length > 0
-      ? imports.map((imp) => generateImportStatement(imp)).join('\n') + '\n\n'
-      : '';
-
-  const template = `${importsSection}
-<template>
+  const template = `${importsSection}<template>
   ${page.rendered}
 </template>`;
 
@@ -188,7 +202,7 @@ export function generatePage(
     totalFiles: filesToGenerate.length,
     templatePath,
     componentFilesCount: componentFiles.length,
-    importsCount: imports.length
+    importsStringLength: importsSection.length
   });
 
   return filesToGenerate;

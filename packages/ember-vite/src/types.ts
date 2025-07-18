@@ -9,7 +9,6 @@ export interface CodeNode extends Node, Literal {
   meta?: string;
 }
 export interface ImportStatement {
-  type?: 'component' | 'helper' | 'modifier' | 'service' | 'other';
   name: string;
   path: string;
   isDefault?: boolean;
