@@ -1,4 +1,4 @@
-import DocfyDemoPreviewDocs from './index_gen/docfy-demo-preview-docs.gjs';
+import DocfyDemoPreviewDocs from './index_gen/docfy-demo-preview-docs.gts';
 import DocfyDemo from 'test-app-vite/components/docfy-demo';
 
 
@@ -29,9 +29,9 @@ that can help you to extend and modify your markdown files.</p>
 <DocfyDemoPreviewDocs />
 </demo.Example>
 <demo.Snippet @name="preview">
-<pre><code class="language-gjs">&#x3C;template>COOL ?&#x3C;/template>
+<pre><code class="language-gts">&#x3C;template>COOL ?&#x3C;/template>
 </code></pre>
 </demo.Snippet>
 </DocfyDemo>
-<p>cool stuff</p>
+<p>cool stuff, right?</p>
 </template>

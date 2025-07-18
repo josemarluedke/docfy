@@ -83,16 +83,4 @@ of its usage throughout the documentation.</p>
 </tr>
 </tbody>
 </table>
-
-<h2>Examples</h2>
-
-<DocfyDemo @id="docfy-demo-components-docfy-link-simple" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyLinkSimple /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-components-docfy-link-anchor" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyLinkAnchor /></demo.Example>
-</DocfyDemo>
-
-
 </template>

@@ -247,28 +247,4 @@ returning value should be. Here is the arguments this component accepts.</p>
 </tr>
 </tbody>
 </table>
-
-<h2>Examples</h2>
-
-<DocfyDemo @id="docfy-demo-components-docfy-output-sidebar" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyOutputSidebar /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-components-docfy-output-on-this-page" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyOutputOnThisPage /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-components-docfy-output-edit-page" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyOutputEditPage /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-components-docfy-output-top-nav" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyOutputTopNav /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-components-docfy-output-flat" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyOutputFlat /></demo.Example>
-</DocfyDemo>
-
-
 </template>

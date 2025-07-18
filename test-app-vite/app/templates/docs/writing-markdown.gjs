@@ -151,12 +151,4 @@ export default class MyDemo extends Component {
 }
 ```
 </code></pre>
-
-<h2>Examples</h2>
-
-<DocfyDemo @id="docfy-demo-writing-markdown-demo1" as |demo|>
-<demo.Example><DocfyDemoWritingMarkdownDemo1 /></demo.Example>
-</DocfyDemo>
-
-
 </template>

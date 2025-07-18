@@ -123,16 +123,4 @@ Below is the equivalent if you had to mark all demos individually.
 </code></pre>
 <p>Updated file
 Trigger rebuild Thu Jul 17 13:44:48 PDT 2025</p>
-
-<h2>Examples</h2>
-
-<DocfyDemo @id="docfy-demo-preview-writing-demos" as |demo|>
-<demo.Example><DocfyDemoPreviewWritingDemos /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-writing-demos-demo1" as |demo|>
-<demo.Example><DocfyDemoWritingDemosDemo1 /></demo.Example>
-</DocfyDemo>
-
-
 </template>

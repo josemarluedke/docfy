@@ -95,16 +95,4 @@ would prevent linking to a page in tutorials from a documentation page.</p>
 </tr>
 </tbody>
 </table>
-
-<h2>Examples</h2>
-
-<DocfyDemo @id="docfy-demo-components-docfy-previous-and-next-page-simple" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyPreviousAndNextPageSimple /></demo.Example>
-</DocfyDemo>
-
-<DocfyDemo @id="docfy-demo-components-docfy-previous-and-next-page-scope" as |demo|>
-<demo.Example><DocfyDemoComponentsDocfyPreviousAndNextPageScope /></demo.Example>
-</DocfyDemo>
-
-
 </template>
