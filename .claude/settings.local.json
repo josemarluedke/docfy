@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find:*)",
+      "Bash(pkill:*)",
+      "Bash(true)",
+      "Bash(git checkout:*)",
+      "Bash(npm run build:*)",
+      "Bash(rm:*)",
+      "Bash(DEBUG=@docfy/ember-vite* npm start)",
+      "Bash(ls:*)",
+      "Bash(npm ls:*)",
+      "Bash(node:*)",
+      "Bash(npm run start:*)",
+      "Bash(npm run:*)",
+      "Bash(cp:*)",
+      "Bash(touch:*)",
+      "Bash(npx tsc:*)",
+      "Bash(yarn lint:*)",
+      "Bash(mkdir:*)",
+      "Bash(yarn build)",
+      "Bash(yarn build:*)",
+      "Bash(grep:*)",
+      "Bash(npm install:*)",
+      "Bash(yarn add:*)",
+      "Bash(DEBUG=@docfy/ember-vite*)",
+      "Bash(npm start)",
+      "Bash(pnpm build:*)",
+      "Bash(cat:*)",
+      "Bash(sed:*)",
+      "Bash(mv:*)",
+      "Bash(timeout 10 npm start:*)",
+      "Bash(npx tailwindcss:*)",
+      "mcp__puppeteer__puppeteer_navigate",
+      "mcp__puppeteer__puppeteer_evaluate",
+      "mcp__puppeteer__puppeteer_screenshot"
+    ],
+    "deny": []
+  }
+}

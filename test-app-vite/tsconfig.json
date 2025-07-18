@@ -1,0 +1,34 @@
+{
+  "extends": "@ember/app-tsconfig",
+  "include": [
+    "app", "tests", "types"
+  ],
+  "exclude": [
+    "app/templates/docs/*"
+  ],
+  "glint": {
+    "environment": [
+      "ember-loose",
+      "ember-template-imports"
+    ]
+  },
+  "compilerOptions": {
+    "allowJs": true,
+    "paths": {
+      "test-app-vite/tests/*": [
+        "./tests/*"
+      ],
+      "test-app-vite/*": [
+        "./app/*"
+      ],
+      "*": [
+        "./types/*"
+      ]
+    },
+    "types": [
+      "ember-source/types",
+      "@embroider/core/virtual",
+      "vite/client"
+    ]
+  },
+}
