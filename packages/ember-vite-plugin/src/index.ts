@@ -1,17 +1,17 @@
 import type { Plugin, ResolvedConfig } from 'vite';
 import type { PluginContext } from 'rollup';
-import Docfy from '@docfy/core';
 import type { DocfyConfig } from '@docfy/core/lib/types';
-import path from 'path';
 import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
-import { createVirtualModules } from './virtual-modules.js';
 import { processMarkdown } from './markdown-processor.js';
-import { generatePage } from './template-generator.js';
+import { shouldProcessFile, loadVirtualDocfyOutput } from './utils.js';
+import { DocfyProcessor } from './docfy-processor.js';
+import { FileManager } from './file-manager.js';
 import debugFactory from 'debug';
-import fs from 'fs';
-import fastGlob from 'fast-glob';
 
 const debug = debugFactory('@docfy/ember-vite-plugin');
+
+const VIRTUAL_MODULE_PREFIX = '\0virtual:';
+const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}docfy-output`;
 
 export default function docfyVitePlugin(
   options: DocfyVitePluginOptions = {}
@@ -24,58 +24,10 @@ export default function docfyVitePlugin(
     ...docfyOptions
   } = options;
 
-  function shouldProcessFile(filePath: string): boolean {
-    if (!docfyConfig?.sources) return false;
-
-    return docfyConfig.sources.some((source) => {
-      const sourceRoot = path.resolve(source.root || root);
-      const resolvedFilePath = path.resolve(filePath);
-
-      // Check if file is within source root
-      if (!resolvedFilePath.startsWith(sourceRoot)) {
-        return false;
-      }
-
-      // Simple pattern matching for .md files
-      return filePath.endsWith('.md');
-    });
-  }
-
-  async function getDocfySourceFiles(): Promise<string[]> {
-    if (!docfyConfig?.sources) return [];
-
-    const allFiles: string[] = [];
-
-    for (const source of docfyConfig.sources) {
-      const sourceRoot = path.resolve(source.root || root);
-      const pattern = source.pattern || '**/*.md';
-      const ignore = source.ignore || [];
-
-      try {
-        const files = await fastGlob(pattern, {
-          cwd: sourceRoot,
-          absolute: true,
-          ignore: ['node_modules/**', ...ignore]
-        });
-
-        allFiles.push(...files);
-        debug('Found source files for pattern', {
-          pattern,
-          sourceRoot,
-          fileCount: files.length
-        });
-      } catch (error) {
-        debug('Error globbing files', { pattern, sourceRoot, error });
-      }
-    }
-
-    return allFiles;
-  }
-
   let config: ResolvedConfig;
   let docfyConfig: DocfyConfig;
-  let docfyInstance: Docfy;
-  let virtualModules: ReturnType<typeof createVirtualModules>;
+  let processor: DocfyProcessor;
+  let fileManager: FileManager;
 
   return [
     {
@@ -105,209 +57,82 @@ export default function docfyVitePlugin(
           })),
           root
         });
-        docfyInstance = new Docfy(docfyConfig);
-        virtualModules = createVirtualModules();
+
+        // Initialize core components
+        fileManager = new FileManager(config, this);
+        processor = new DocfyProcessor(config, docfyConfig, fileManager);
 
         // Add all Docfy source files to Vite's watch list
         if (config.command === 'serve') {
-          const sourceFiles = await getDocfySourceFiles();
+          const sourceFiles = await processor.getSourceFiles();
           sourceFiles.forEach((file) => {
             debug('Adding file to watch list', { file });
             this.addWatchFile(file);
           });
         }
 
-        // Process markdown files immediately to populate virtual modules
+        // Process markdown files immediately
         try {
-          debug('Processing markdown files...');
-          const result = await docfyInstance.run(docfyConfig.sources as any);
-          virtualModules.updateResult(result);
-          debug('Markdown processing completed', {
-            contentCount: result.content.length,
-            staticAssetsCount: result.staticAssets.length
-          });
-
-          // Generate templates for both development and production using file system writes
-          debug('Writing templates to file system...');
-          result.content.forEach((page) => {
-            const filesToGenerate = generatePage(page, this);
-
-            debug('Writing files to file system', {
-              url: page.meta.url,
-              totalFiles: filesToGenerate.length,
-              command: config.command
-            });
-
-            // Write all files to file system
-            filesToGenerate.forEach((file) => {
-              const fullPath = path.join(process.cwd(), file.path);
-              const dir = path.dirname(fullPath);
-
-              debug('Writing file', {
-                filePath: file.path,
-                fullPath
-              });
-
-              // Ensure directory exists
-              if (!fs.existsSync(dir)) {
-                fs.mkdirSync(dir, { recursive: true });
-              }
-
-              // Write file
-              fs.writeFileSync(fullPath, file.content);
-            });
-          });
+          await processor.processAll();
         } catch (error) {
           debug('Error processing markdown files', { error });
         }
 
-        debug('Docfy instance created and virtual modules initialized');
+        debug('Docfy processor initialized');
       },
 
       resolveId(id) {
         debug('Attempting to resolve ID', { id });
-        const resolved = virtualModules.resolveId(id);
-        if (resolved) {
-          debug('Resolved virtual module', { id, resolved });
-        } else if (id.startsWith('virtual:')) {
-          debug('Failed to resolve virtual module', { id });
+        if (id === 'virtual:docfy-output') {
+          debug('Resolved virtual module', { id });
+          return VIRTUAL_DOCFY_OUTPUT;
         }
-        return resolved;
+        return null;
       },
 
       load(id) {
-        const loaded = virtualModules.load(id);
-        if (loaded) {
-          debug('Loaded virtual module', { id, contentLength: loaded.length });
+        if (id === VIRTUAL_DOCFY_OUTPUT) {
+          return loadVirtualDocfyOutput(processor?.getCurrentResult());
         }
-        return loaded;
+        return null;
       },
 
       async transform(code, id) {
-        if (!shouldProcessFile(id)) return null;
+        if (!shouldProcessFile(id, docfyConfig, root)) return null;
 
         debug('Processing markdown file', { id });
-        const result = await processMarkdown(code, id, docfyInstance, config);
-
-        // For development mode, templates are generated in buildStart
-        // For production, templates are generated in the second plugin's generateBundle hook
-        // No need to generate templates here to avoid conflicts
+        const result = await processMarkdown(code, id, processor, config);
 
         return result;
       },
 
       generateBundle() {
         debug('Generating bundle assets...');
-        virtualModules.generateAssets(this);
+        const result = processor?.getCurrentResult();
+        if (result) {
+          fileManager.emitStaticAssets(result.staticAssets);
+        }
       },
 
       ...(hmr && {
         async handleHotUpdate(ctx) {
-          if (config?.command === 'serve' && shouldProcessFile(ctx.file)) {
+          if (
+            config?.command === 'serve' &&
+            shouldProcessFile(ctx.file, docfyConfig, root)
+          ) {
             debug('HMR update for markdown file', { file: ctx.file });
 
-            // Regenerate templates when markdown files change
             try {
-              debug('Regenerating templates due to file change...');
-              const result = await docfyInstance.run(
-                docfyConfig.sources as any
-              );
-              virtualModules.updateResult(result);
-
-              // Find the specific page that corresponds to the changed file
-              const changedPage = result.content.find((page) => {
-                // Check if this page's source file matches the changed file
-                return page.vFile.path === ctx.file;
-              });
-
-              if (changedPage) {
-                // Only regenerate the template for the changed file
-                // Create a minimal context-like object for component generation
-                const contextForGeneration = {
-                  emitFile: () => {} // Not needed in HMR - we write directly to filesystem
-                } as unknown as PluginContext;
-
-                const filesToGenerate = generatePage(
-                  changedPage,
-                  contextForGeneration
-                );
-
-                debug('Regenerating files for changed page', {
-                  url: changedPage.meta.url,
-                  totalFiles: filesToGenerate.length,
-                  changedFile: ctx.file
-                });
-
-                // Write all files
-                filesToGenerate.forEach((file) => {
-                  const fullPath = path.join(process.cwd(), file.path);
-                  const dir = path.dirname(fullPath);
-
-                  // Ensure directory exists
-                  if (!fs.existsSync(dir)) {
-                    fs.mkdirSync(dir, { recursive: true });
-                  }
-
-                  // Write file
-                  fs.writeFileSync(fullPath, file.content);
-                });
-
-                // Find template file for module invalidation
-                const templateFile = filesToGenerate.find(
-                  (file) =>
-                    file.path.includes('/app/templates/') &&
-                    file.path.endsWith('.gjs')
-                );
-
-                if (templateFile) {
-                  const templateFullPath = path.join(
-                    process.cwd(),
-                    templateFile.path
-                  );
-
-                  // Invalidate the specific template file in Vite's module graph
-                  const templateModule =
-                    ctx.server.moduleGraph.getModuleById(templateFullPath);
-                  if (templateModule) {
-                    ctx.server.reloadModule(templateModule);
-                  } else {
-                    // If template module doesn't exist in graph, try to find it by looking at imports
-                    const modules =
-                      ctx.server.moduleGraph.getModulesByFile(templateFullPath);
-                    if (modules) {
-                      for (const mod of modules) {
-                        ctx.server.reloadModule(mod);
-                      }
-                    }
-                  }
-                }
-              } else {
-                debug('No matching page found for changed file', {
-                  file: ctx.file
-                });
-              }
-
+              await processor.processChangedFile(ctx.file);
               debug('Template regenerated successfully');
             } catch (error) {
               debug('Error regenerating templates', { error });
             }
 
-            // Return empty array to prevent default HMR behavior
             return [];
           }
         }
       })
-    },
-
-    {
-      name: 'docfy-ember-vite-plugin:generate',
-      enforce: 'pre', // Ensure this runs before other plugins
-
-      async generateBundle() {
-        debug('Generating bundle assets...');
-        // Generate virtual module assets, but not templates (already handled in first plugin)
-        virtualModules.generateAssets(this);
-      }
     }
   ];
 }

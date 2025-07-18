@@ -2,15 +2,16 @@ import Route from '@ember/routing/route';
 
 export default class DocsRoute extends Route {
   async model() {
-    // Import the virtual modules
-    const [docfyOutput, docfyUrls] = await Promise.all([
-      import('virtual:docfy-output'),
-      import('virtual:docfy-urls')
-    ]);
+    // Import the virtual module
+    const docfyOutput = await import('virtual:docfy-output');
+
+    // Load URLs from JSON asset
+    const response = await fetch('/docfy-urls.json');
+    const urls = await response.json();
 
     return {
       navigation: docfyOutput.default.nested,
-      urls: docfyUrls.default
+      urls: urls
     };
   }
 }

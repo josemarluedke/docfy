@@ -1,5 +1,5 @@
 import type { ResolvedConfig } from 'vite';
-import type Docfy from '@docfy/core';
+import type { DocfyProcessor } from './docfy-processor.js';
 import type { SourceConfig } from '@docfy/core/lib/types';
 import path from 'path';
 import debugFactory from 'debug';
@@ -14,42 +14,31 @@ export interface MarkdownProcessResult {
 export async function processMarkdown(
   code: string,
   id: string,
-  docfyInstance: Docfy,
+  processor: DocfyProcessor,
   config: ResolvedConfig
 ): Promise<MarkdownProcessResult | null> {
   debug('Processing markdown file', { id });
 
   try {
-    // Determine which source config this file belongs to
-    const sourceConfig = findSourceConfigForFile(id, docfyInstance);
-    if (!sourceConfig) {
-      debug('No source config found for file', { id });
+    const result = processor.getCurrentResult();
+    
+    if (!result?.content.length) {
+      debug('No content available from processor', { id });
       return null;
     }
 
-    // Run Docfy processing on the single file
-    const result = await docfyInstance.run([
-      {
-        ...sourceConfig,
-        pattern: path.basename(id),
-        root: path.dirname(id)
-      }
-    ]);
-
-    if (!result.content.length) {
-      debug('No content generated from markdown file', { id });
+    const page = result.content.find((p: any) => p.vFile.path === id);
+    if (!page) {
+      debug('No matching page found for file', { id });
       return null;
     }
 
-    const page = result.content[0];
-    debug('Generated page', {
+    debug('Found page for file', {
       url: page.meta.url,
       title: page.meta.title,
-      hasPluginData: Object.keys(page.pluginData).length > 0
+      hasPluginData: Object.keys(page.pluginData || {}).length > 0
     });
 
-    // Return page metadata for both development and production
-    // Template generation happens in both transform and generateBundle hooks
     return {
       code: `// Processed by Docfy - ${page.meta.title}
 export default ${JSON.stringify(page.meta)};`,
@@ -61,24 +50,6 @@ export default ${JSON.stringify(page.meta)};`,
   }
 }
 
-function findSourceConfigForFile(
-  filePath: string,
-  docfyInstance: Docfy
-): SourceConfig | null {
-  // Access the docfy config sources
-  const sources = (docfyInstance as any).context?.options?.sources || [];
-
-  for (const source of sources) {
-    const sourcePath = path.resolve(source.root);
-    const resolvedFilePath = path.resolve(filePath);
-
-    if (resolvedFilePath.startsWith(sourcePath)) {
-      return source;
-    }
-  }
-
-  return null;
-}
 
 export interface ProcessedMarkdownFile {
   id: string;

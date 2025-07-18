@@ -30,7 +30,8 @@
       "Bash(DEBUG=@docfy/ember-vite-plugin*)",
       "Bash(DEBUG=@docfy/ember-vite-plugin:*)",
       "Bash(npm start)",
-      "Bash(pnpm build:*)"
+      "Bash(pnpm build:*)",
+      "Bash(cat:*)"
     ],
     "deny": []
   }
