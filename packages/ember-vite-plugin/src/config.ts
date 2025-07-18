@@ -62,7 +62,7 @@ export async function loadDocfyConfig(
   // Merge with options and set defaults
   const mergedConfig = await mergeConfig(docfyConfig, options, pkg);
   debug('Final config', { sources: mergedConfig.sources?.length });
-  
+
   return mergedConfig;
 }
 
@@ -98,11 +98,13 @@ async function mergeConfig(
   }
 
   // Add Docfy core plugins for demo and preview template processing
-  const { demoComponents, previewTemplates } = await import('./docfy-plugins/index.js');
+  const { demoComponents, previewTemplates } = await import(
+    './docfy-plugins/index.js'
+  );
   // Debug: plugins loaded
   docfyConfig.plugins.unshift(
-    previewTemplates,  // Process preview templates first
-    demoComponents     // Then process demo components
+    previewTemplates, // Process preview templates first
+    demoComponents // Then process demo components
   );
 
   // Setup remark plugins
@@ -130,7 +132,7 @@ async function mergeConfig(
   }
 
   // Set root for sources
-  docfyConfig.sources.forEach(source => {
+  docfyConfig.sources.forEach((source) => {
     if (typeof source.root === 'undefined') {
       source.root = path.join(options.root || process.cwd(), 'docs');
     }

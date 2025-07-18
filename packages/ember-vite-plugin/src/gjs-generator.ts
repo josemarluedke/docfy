@@ -1,14 +1,7 @@
 import type { PluginContext } from 'rollup';
-import type Docfy from '@docfy/core';
-import type {
-  DocfyConfig,
-  PageContent,
-  SourceConfig
-} from '@docfy/core/lib/types';
-import type { ImportStatement, InlineComponent } from './types.js';
-import path from 'path';
-import { toPascalCase, toDashCase } from './utils.js';
-import { processPageForGJS } from './gjs-processor.js';
+import type { PageContent } from '@docfy/core/lib/types';
+import type { ImportStatement } from './types.js';
+import { processImportsFromPage } from './gjs-processor.js';
 import {
   generateComponentFiles,
   getComponentImports
@@ -33,95 +26,6 @@ export function generateTemplatePath(url: string): string {
   return `${parts.join('/')}.gjs`;
 }
 
-// Old inline component generation functions removed - now handled by plugin system
-
-/**
- * Detect preview template components in the rendered content and add them to page.pluginData
- * This function replicates the logic that should be done by the preview-templates plugin
- */
-function REMOTEMEdetectAndAddPreviewTemplates(page: PageContent): void {
-  if (!page.rendered) {
-    return;
-  }
-
-  // Look for preview template component references in the rendered content
-  const previewTemplateMatches = page.rendered.match(
-    /<DocfyDemoPreview[A-Za-z0-9]*[\s\/>]/g
-  );
-
-  if (!previewTemplateMatches || previewTemplateMatches.length === 0) {
-    // Debug: No matches found
-    if (page.meta.url === '/docs/ember/writing-demos') {
-      console.log(
-        'DEBUG: No preview template matches found in rendered content'
-      );
-    }
-    return;
-  }
-
-  // Extract component names from the matches
-  const previewTemplateNames = previewTemplateMatches
-    .map((match) => {
-      const nameMatch = match.match(/<(DocfyDemoPreview[A-Za-z0-9]*)[\s\/>]/);
-      return nameMatch ? nameMatch[1] : null;
-    })
-    .filter(Boolean) as string[];
-
-  if (previewTemplateNames.length === 0) {
-    return;
-  }
-
-  // Initialize page.pluginData if it doesn't exist
-  if (!page.pluginData) {
-    page.pluginData = {};
-  }
-
-  // Initialize demoComponents array if it doesn't exist
-  if (!page.pluginData.demoComponents) {
-    page.pluginData.demoComponents = [];
-  }
-
-  // For each preview template found, create a demo component entry
-  previewTemplateNames.forEach((componentName) => {
-    // Check if this component is already in the demoComponents array
-    const existingComponent = (page.pluginData.demoComponents as any[]).find(
-      (demo) => demo.name === componentName
-    );
-
-    if (existingComponent) {
-      return; // Skip if already exists
-    }
-
-    // Create a preview template component with the correct content
-    // For the writing-demos page, we know the content should be the DocfyLink example
-    let templateContent = `<!-- Preview template content for ${componentName} -->`;
-    if (componentName === 'DocfyDemoPreviewDocsEmberWritingDemos') {
-      templateContent = `Click in the link to navigate to the home page:\n<DocfyLink @to='/'>Home</DocfyLink>`;
-    }
-
-    const previewComponent = {
-      name: componentName,
-      chunks: [
-        {
-          code: templateContent,
-          ext: 'gjs',
-          type: 'preview',
-          snippet: null
-        }
-      ]
-    };
-
-    // Add to the demoComponents array
-    (page.pluginData.demoComponents as any[]).push(previewComponent);
-  });
-
-  debug('Added preview template components to page data', {
-    url: page.meta.url,
-    previewTemplateNames,
-    totalDemoComponents: (page.pluginData.demoComponents as any[]).length
-  });
-}
-
 /**
  * Generate a GJS template for a markdown page
  * This ensures compatibility with Ember's template resolution
@@ -142,10 +46,10 @@ export function generatePageTemplate(
   }
 
   // Process page using the new file-based approach
-  const gjsMetadata = processPageForGJS(page, componentImports);
+  const gjsMetadata = processImportsFromPage(page, componentImports);
 
   // Use modified content if available, otherwise fall back to original rendered content
-  const templateContent = gjsMetadata.templateContent || page.rendered || '';
+  const templateContent = page.rendered || '';
 
   // Generate the complete GJS template
   return generateGJSTemplate(gjsMetadata, templateContent);

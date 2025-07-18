@@ -6,31 +6,12 @@ import path from 'path';
 import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
 import { createVirtualModules } from './virtual-modules.js';
 import { processMarkdown } from './markdown-processor.js';
-import {
-  generateTemplatePath,
-  generatePageTemplate
-} from './gjs-generator.js';
+import { generateTemplatePath, generatePageTemplate } from './gjs-generator.js';
 import debugFactory from 'debug';
 import fs from 'fs';
 import fastGlob from 'fast-glob';
 
 const debug = debugFactory('@docfy/ember-vite-plugin');
-
-function findSourceConfigForFile(filePath: string, docfyInstance: Docfy): any {
-  // Access the docfy config sources
-  const sources = (docfyInstance as any).context?.options?.sources || [];
-
-  for (const source of sources) {
-    const sourcePath = path.resolve(source.root);
-    const resolvedFilePath = path.resolve(filePath);
-
-    if (resolvedFilePath.startsWith(sourcePath)) {
-      return source;
-    }
-  }
-
-  return null;
-}
 
 export default function docfyVitePlugin(
   options: DocfyVitePluginOptions = {}
@@ -229,9 +210,12 @@ export default function docfyVitePlugin(
                 const templatePath = generateTemplatePath(changedPage.meta.url);
                 // Create a minimal context-like object for component generation
                 const contextForGeneration = {
-                  emitFile: () => {}, // Not needed in HMR - we write directly to filesystem
+                  emitFile: () => {} // Not needed in HMR - we write directly to filesystem
                 } as unknown as PluginContext;
-                const pageTemplate = generatePageTemplate(changedPage, contextForGeneration);
+                const pageTemplate = generatePageTemplate(
+                  changedPage,
+                  contextForGeneration
+                );
 
                 const fullPath = path.join(process.cwd(), templatePath);
                 const dir = path.dirname(fullPath);

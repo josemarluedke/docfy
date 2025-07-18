@@ -16,34 +16,6 @@ export interface ImportStatement {
   namedImports?: string[];
 }
 
-export interface InlineComponent {
-  name: string;
-  type: 'template-only' | 'class-based' | 'const-template';
-  template: string;
-  script?: string;
-  imports?: ImportStatement[];
-}
-
-export interface GJSMetadata {
-  imports: ImportStatement[];
-  inlineComponents: InlineComponent[];
-  additionalContent: string;
-  templateContent: string; // The main HTML/HBS content
-}
-
-// Legacy demo component format from ember package
-export interface LegacyDemoComponent {
-  name: {
-    pascalCase: string;
-    dashCase: string;
-  };
-  chunks: Array<{
-    ext: string;
-    code: string;
-    type: string;
-  }>;
-}
-
 // New demo component format matching original ember implementation
 export interface DemoComponentName {
   dashCase: string;
