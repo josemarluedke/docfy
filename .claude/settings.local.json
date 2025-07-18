@@ -41,7 +41,8 @@
       "Bash(/dev/null)",
       "Bash(yarn test:ember:*)",
       "Bash(yarn test:*)",
-      "Bash(testem:*)"
+      "Bash(testem:*)",
+      "Bash(npm test:*)"
     ],
     "deny": []
   }

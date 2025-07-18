@@ -1,6 +1,5 @@
-
 <template>
-  <h1 id="introduction">Introduction</h1>
+  <h1 id="introduction"><a href="#introduction">Introduction</a></h1>
 <p>Documentation is an essential part of any software today. Without documentation,
 users are not able to take full advantage of projects. To allow developers and
 teams to build documentation sites, having a powerful tool under the hood to help

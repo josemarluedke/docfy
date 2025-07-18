@@ -5,9 +5,8 @@ import DocfyDemoComponentsDocfyOutputTopNav from './docfy-output_gen/docfy-demo-
 import DocfyDemoComponentsDocfyOutputFlat from './docfy-output_gen/docfy-demo-components-docfy-output-flat.js';
 import DocfyDemo from 'test-app-vite/components/docfy-demo';
 
-
 <template>
-  <h1 id="docfyoutput">{{"<DocfyOutput>"}}</h1>
+  <h1 id="docfyoutput"><a href="#docfyoutput">{{"<DocfyOutput>"}}</a></h1>
 <p>This component exposes some of the result data from the build that you can use
 to render, for example, a sidebar navigation, "on this page" section, and more.</p>
 <p>Depending on the arguments you pass to the component, the output could be one of
@@ -20,7 +19,7 @@ the following values:</p>
 </ul>
 <p>To learn more about each data type, please refer to the API docs.</p>
 <p>Below you can see several examples of what is possible to build using this component.</p>
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-components-docfy-output-sidebar" as |demo|>
 <demo.Description
           @title="Sidebar Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-output-demo/sidebar.md">
@@ -37,36 +36,35 @@ too deep into the tree to display all items.</p>
 <DocfyDemoComponentsDocfyOutputSidebar />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyOutput @scope="docs" as |node|>
-  &#x3C;ul class="list-disc list-inside space-y-2">
-    \{{#each node.pages as |page|}}
-      &#x3C;li>
-        &#x3C;DocfyLink @to=\{{page.url}}>
-          \{{page.title}}
-        &#x3C;/DocfyLink>
-      &#x3C;/li>
-    \{{/each}}
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">"docs"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
+          </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
 
-    \{{#each node.children as |child|}}
-      &#x3C;li class="block ml-4">
-        &#x3C;div class="py-2">
-          \{{child.label}}
-        &#x3C;/div>
+    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.children <span class="hljs-keyword">as</span> |child|}}</span><span class="xml">
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block ml-4"</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"py-2"</span>></span>
+          </span><span class="hljs-template-variable">\{{<span class="hljs-name">child.label</span>}}</span><span class="xml">
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
 
-        &#x3C;ul class="list-disc list-inside space-y-2">
-          \{{#each child.pages as |page|}}
-            &#x3C;li>
-              &#x3C;DocfyLink @to=\{{page.url}}>
-                \{{page.title}}
-              &#x3C;/DocfyLink>
-            &#x3C;/li>
-          \{{/each}}
-        &#x3C;/ul>
-      &#x3C;/li>
-    \{{/each}}
-  &#x3C;/ul>
-&#x3C;/DocfyOutput>
-</code></pre>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+          </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> child.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
+            <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+              <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
+                </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
+              <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
+            <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+          </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-on-this-page" as |demo|>
@@ -84,21 +82,20 @@ option <code>tocMaxDepth</code>.</p>
 <DocfyDemoComponentsDocfyOutputOnThisPage />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyOutput @fromCurrentURL=\{{true}} as |page|>
-  &#x3C;div class="mb-4 font-medium">
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-4 font-medium"</span>></span>
     On this page:
-  &#x3C;/div>
-  &#x3C;ul class="list-disc list-inside space-y-2">
-    \{{#each page.headings as |heading|}}
-      &#x3C;li>
-        &#x3C;a href="#\{{heading.id}}">
-          \{{heading.title}}
-        &#x3C;/a>
-      &#x3C;/li>
-    \{{/each}}
-  &#x3C;/ul>
-&#x3C;/DocfyOutput>
-</code></pre>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> page.headings <span class="hljs-keyword">as</span> |heading|}}</span><span class="xml">
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#</span></span></span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.id</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>></span>
+          </span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.title</span>}}</span><span class="xml">
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-edit-page" as |demo|>
@@ -110,40 +107,37 @@ page" link.</p>
 Ember apps, we extract that from the <code>package.json</code>, but you can configure the
 repository URL as well as the branch to edit.</p>
 <p>For this to work, you need to include <code>repository</code> in your docfy-config:</p>
-<pre><code class="language-js">// in your docfy-config.js
-module.exports = {
-  repository: {
-    url: 'https://github.com/@username/repo-name',
-    editBranch: 'main',
+<pre><code class="hljs language-js"><span class="hljs-comment">// in your docfy-config.js</span>
+<span class="hljs-built_in">module</span>.exports = {
+  <span class="hljs-attr">repository</span>: {
+    <span class="hljs-attr">url</span>: <span class="hljs-string">'https://github.com/@username/repo-name'</span>,
+    <span class="hljs-attr">editBranch</span>: <span class="hljs-string">'main'</span>,
   },
-  ...// rest of your config
-}
-</code></pre>
-<h2 id="enterprise-aka-on-premise-git-services">Enterprise (aka on premise) git services</h2>
+  ...<span class="hljs-comment">// rest of your config</span>
+}</code></pre>
+<h2 id="enterprise-aka-on-premise-git-services"><a href="#enterprise-aka-on-premise-git-services">Enterprise (aka on premise) git services</a></h2>
 <p><code>page.editUrl</code> works for Github, Bitbucket, Gitlab and Sourcehut.</p>
 <p>For on-premise instances git solutions (i.e. on-premise Gitlab, or on-premise Bitbucket), we expose the <code>page.relativePath</code> so that you might construct your own custom editUrl:</p>
-<pre><code class="language-hbs">&#x3C;DocfyOutput @fromCurrentURL=\{{true}} as |page|>
-  \{{#if page.relativePath}}
-    &#x3C;a href=(concat "http://some-enterpise.com/browse/" page.relativePath)
-      Click here to edit this page
-    &#x3C;/a>
-  \{{/if}}
-&#x3C;/DocfyOutput>
-</code></pre>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
+  </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> page.relativePath}}</span><span class="xml">
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">(concat</span> "<span class="hljs-attr">http:</span>//<span class="hljs-attr">some-enterpise.com</span>/<span class="hljs-attr">browse</span>/" <span class="hljs-attr">page.relativePath</span>)
+      <span class="hljs-attr">Click</span> <span class="hljs-attr">here</span> <span class="hljs-attr">to</span> <span class="hljs-attr">edit</span> <span class="hljs-attr">this</span> <span class="hljs-attr">page</span>
+    &#x3C;/<span class="hljs-attr">a</span>></span>
+  </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 <p>Note: the edit url for your on-premise instance might be more complex than the example above. But the <code>page.relativePath</code> will give you the relative path to that file in your repo.</p>
 </demo.Description>
 <demo.Example>
 <DocfyDemoComponentsDocfyOutputEditPage />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyOutput @fromCurrentURL=\{{true}} as |page|>
-  \{{#if page.editUrl}}
-    &#x3C;a href=\{{page.editUrl}}>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
+  </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> page.editUrl}}</span><span class="xml">
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.editUrl</span>}}</span><span class="xml"><span class="hljs-tag">></span>
       Click here to edit this page
-    &#x3C;/a>
-  \{{/if}}
-&#x3C;/DocfyOutput>
-</code></pre>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
+  </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-top-nav" as |demo|>
@@ -157,30 +151,29 @@ every child.</p>
 <DocfyDemoComponentsDocfyOutputTopNav />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyOutput @type="nested" as |node|>
-  &#x3C;ul>
-    \{{#each node.pages as |page|}}
-      &#x3C;li>
-        &#x3C;DocfyLink @to=\{{page.url}}>
-          \{{page.title}}
-        &#x3C;/DocfyLink>
-     &#x3C;/li>
-    \{{/each}}
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">"nested"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
+          </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
+     <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
 
-    \{{#each node.children as |child|}}
-      \{{#let (get child.pages 0) as |page|}}
-        \{{#if page}}
-          &#x3C;li>
-            &#x3C;DocfyLink @to=\{{page.url}}>
-              \{{child.label}}
-            &#x3C;/DocfyLink>
-          &#x3C;/li>
-        \{{/if}}
-      \{{/let}}
-    \{{/each}}
-  &#x3C;/ul>
-&#x3C;/DocfyOutput>
-</code></pre>
+    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.children <span class="hljs-keyword">as</span> |child|}}</span><span class="xml">
+      </span><span class="hljs-template-tag">\{{#<span class="hljs-name">let</span> (<span class="hljs-name"><span class="hljs-builtin-name">get</span></span> child.pages <span class="hljs-number">0</span>) <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
+        </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> page}}</span><span class="xml">
+          <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+            <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
+              </span><span class="hljs-template-variable">\{{<span class="hljs-name">child.label</span>}}</span><span class="xml">
+            <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
+          <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+        </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
+      </span><span class="hljs-template-tag">\{{/<span class="hljs-name">let</span>}}</span><span class="xml">
+    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-flat" as |demo|>
@@ -194,21 +187,20 @@ about the scope.</p>
 <DocfyDemoComponentsDocfyOutputFlat />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyOutput @type="flat" as |pages|>
-  &#x3C;ul class="list-disc list-inside space-y-2">
-    \{{#each pages as |page|}}
-      &#x3C;li>
-        &#x3C;DocfyLink @to=\{{page.url}}>
-          \{{page.title}}
-        &#x3C;/DocfyLink>
-     &#x3C;/li>
-    \{{/each}}
-  &#x3C;/ul>
-&#x3C;/DocfyOutput>
-</code></pre>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">"flat"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">pages</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
+          </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
+        <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
+     <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
-<h2 id="api">API</h2>
+<h2 id="api"><a href="#api">API</a></h2>
 <p>This component has a few different options that are used to filter what the
 returning value should be. Here is the arguments this component accepts.</p>
 <table>

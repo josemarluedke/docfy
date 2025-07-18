@@ -2,9 +2,8 @@ import DocfyDemoComponentsDocfyLinkSimple from './docfy-link_gen/docfy-demo-comp
 import DocfyDemoComponentsDocfyLinkAnchor from './docfy-link_gen/docfy-demo-components-docfy-link-anchor.js';
 import DocfyDemo from 'test-app-vite/components/docfy-demo';
 
-
 <template>
-  <h1 id="docfylink">{{"<DocfyLink>"}}</h1>
+  <h1 id="docfylink"><a href="#docfylink">{{"<DocfyLink>"}}</a></h1>
 <p>This component is useful for linking to pages created by Docfy. It understands
 how the routing in Ember was designed and can correctly link to a given page URL.
 If the component is not able to figure out the correct Ember route, it will fall
@@ -19,7 +18,7 @@ Ember Routing to make the page transition, removing the need for a full-page rel
 </blockquote>
 <p>Below you can see a simple example of this component; however, you can see more
 of its usage throughout the documentation.</p>
-<h2 id="examples">Examples</h2>
+<h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-components-docfy-link-simple" as |demo|>
 <demo.Description
           @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-link-demo/simple.md">
@@ -29,10 +28,9 @@ of its usage throughout the documentation.</p>
 <DocfyDemoComponentsDocfyLinkSimple />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyLink @to="/docs">
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">"/docs"</span>></span>
   Link to Docs
-&#x3C;/DocfyLink>
-</code></pre>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-link-anchor" as |demo|>
@@ -44,15 +42,14 @@ of its usage throughout the documentation.</p>
 <DocfyDemoComponentsDocfyLinkAnchor />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="language-hbs">&#x3C;DocfyOutput @fromCurrentURL=\{{true}} as |page|>
-  &#x3C;DocfyLink @to=\{{page.url}} @anchor="examples">
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag"> @<span class="hljs-attr">anchor</span>=<span class="hljs-string">"examples"</span>></span>
     Link to a anchor
-  &#x3C;/DocfyLink>
-&#x3C;/DocfyOutput>
-</code></pre>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
-<h2 id="api">API</h2>
+<h2 id="api"><a href="#api">API</a></h2>
 <table>
 <thead>
 <tr>

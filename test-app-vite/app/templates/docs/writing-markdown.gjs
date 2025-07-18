@@ -1,8 +1,7 @@
 import DocfyLink from 'test-app-vite/components/docfy-link';
 
-
 <template>
-  <h1 id="writing-markdown">Writing Markdown</h1>
+  <h1 id="writing-markdown"><a href="#writing-markdown">Writing Markdown</a></h1>
 <p>For most developers writing markdown is something they are used to; therefore,
 they can use their previous knowledge for writing markdowns in the context of Docfy.
 In case you are not familiar with markdown, <a href="https://www.markdownguide.org/basic-syntax/">check this guide out</a>.</p>
@@ -14,7 +13,7 @@ format that it uses. Everything is possible with plugins, such as
 <a href="https://github.com/remarkjs/remark-lint">checking Markdown code style (remark-lint)</a>,
 <a href="https://github.com/mapbox/remark-react">transforming safely to React (remark-react)</a>,
 or <a href="https://github.com/remarkjs/remark-toc">adding a table of contents (remark-toc)</a>.</p>
-<h2 id="front-matter">Front Matter</h2>
+<h2 id="front-matter"><a href="#front-matter">Front Matter</a></h2>
 <p>Front Matter allows you to customize the result of Docfy by the built-in properties
 and exposes any additional values to its consumer. Docfy uses YAML format with <code>---</code> as the marker.</p>
 <pre><code>---
@@ -23,7 +22,7 @@ title: Front Matter is awesome
 category: core
 ---
 </code></pre>
-<h3 id="built-in-properties">Built-in Properties</h3>
+<h3 id="built-in-properties"><a href="#built-in-properties">Built-in Properties</a></h3>
 <ul>
 <li><strong>order</strong>? : <em>number</em> - The order of the page to other pages. This option is
 useful for defining the order of elements when displaying on a navigation sidebar.</li>
@@ -39,7 +38,7 @@ set to <code>manual</code>. Refer to <DocfyLink @to="/docs/configuration" @ancho
 <p>All buil-in properties are optional, and some might not make sense to include if another is included.
 For example, <code>url</code> and <code>category/subcategory</code> doesn't make sense to be defined in the same document.</p>
 </blockquote>
-<h3 id="custom-properties">Custom Properties</h3>
+<h3 id="custom-properties"><a href="#custom-properties">Custom Properties</a></h3>
 <p>Any properties you pass in the Front Matter will be available to Docfy consumers.
 These properties can are useful for extending or modifying behavior in the
 final result.</p>
@@ -50,20 +49,19 @@ order: 2
 hideTitle: true
 ---
 </code></pre>
-<h2 id="linking-to-other-documents">Linking to other Documents</h2>
+<h2 id="linking-to-other-documents"><a href="#linking-to-other-documents">Linking to other Documents</a></h2>
 <p>Writing documentation usually require links to other documents to give more
 information to users. You can use relative URLs to the actual file on disk to
 create a link to that document. This feature is essential to allow markdown files
 to customize its URL and not to manually change all references in your documentation to the new URL.</p>
 <p>Example:</p>
-<pre><code class="language-md">[Link to another document](./other-document.md)
-</code></pre>
+<pre><code class="hljs language-md">[<span class="hljs-string">Link to another document</span>](<span class="hljs-link">./other-document.md</span>)</code></pre>
 <p>The markdown will be modified to the URL of that document. By the simplest case,
 it would be something like <code>/docs/other-document</code>. The actual URL depends on the configuration of the source.</p>
 <blockquote>
 <p>If Docfy is not able to find the document it is referring to, the URL will not be modified.</p>
 </blockquote>
-<h2 id="static-assets">Static Assets</h2>
+<h2 id="static-assets"><a href="#static-assets">Static Assets</a></h2>
 <p>You can also link to static files such as images. Docfy will collect any
 reference to images and make them available to consumers so that they can move
 these assets to a public folder. Docfy will modify the URL of these assets using
@@ -71,9 +69,8 @@ the <DocfyLink @to="/docs/configuration" @anchor="staticassetspath" >base config
 <p>These static assets can be placed next to documents; there is no need to put them
 in a particular folder, although you can if you would like so.</p>
 <p>Example:</p>
-<pre><code class="language-md">![GitHub](./github-icon.png)
-</code></pre>
-<h2 id="demos">Demos</h2>
+<pre><code class="hljs language-md">![<span class="hljs-string">GitHub</span>](<span class="hljs-link">./github-icon.png</span>)</code></pre>
+<h2 id="demos"><a href="#demos">Demos</a></h2>
 <p>Docfy has a default plugin that combines "demo" markdown files into the data
 structure that represents a page. This feature is useful for consumers to extract
 components to create executable code out of markdown files. By default, Docfy will
@@ -107,22 +104,21 @@ the demos is <code>forms/index.md</code>.</li>
 </blockquote>
 <p>An example of a demo file can be seen below. This demo is actually how the
 Ember demo integration looks like.</p>
-<pre><code class="language-md"># Demo of DocfyLink component
+<pre><code class="hljs language-md"><span class="hljs-section"># Demo of DocfyLink component</span>
 
 This is a cool feature
 
-```hbs template
+<span class="hljs-code">```hbs template
 This is my Demo:
 
 &#x3C;DocfyLink @to=\{{this.url}}>My Link&#x3C;/DocfyLink>
-```
+```</span>
 
-```js component
+<span class="hljs-code">```js component
 import Component from '@glimmer/component';
 
 export default class MyDemo extends Component {
   url = '/docs/ember/';
 }
-```
-</code></pre>
+```</span></code></pre>
 </template>
