@@ -3,7 +3,6 @@ import type { PageContent } from '@docfy/core/lib/types';
 import type { DemoComponent, DemoComponentChunk } from './types.js';
 import path from 'path';
 import fs from 'fs';
-import { generateTemplatePath } from './gjs-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:component-generator');
@@ -13,7 +12,7 @@ const debug = debugFactory('@docfy/ember-vite-plugin:component-generator');
  * Creates a folder structure: app/components/[page-path]/[component-name].gjs
  */
 export function generateComponentFiles(
-  ctx: PluginContext,
+  pluginCtx: PluginContext,
   page: PageContent
 ): string[] {
   const generatedFiles: string[] = [];
@@ -22,9 +21,6 @@ export function generateComponentFiles(
   const demoComponents = page.pluginData?.demoComponents as
     | DemoComponent[]
     | undefined;
-
-  // Debug: Check demo components
-  // console.log('COMPONENT-GENERATOR DEBUG:', { url: page.meta.url, count: demoComponents?.length || 0 });
 
   if (!demoComponents?.length) {
     return generatedFiles;
@@ -92,6 +88,8 @@ function hasBackingJS(chunks: DemoComponentChunk[]): boolean {
 /**
  * Generate component files for a demo component (matching original ember implementation)
  * This creates separate files for each chunk type (e.g., component.js, component.hbs)
+ *
+ * TODO: we are using fs directly here, which is not ideal for a Rollup plugin. Investigate how to get away from this and use the Rollup API / Vite APIs instead.
  */
 function generateDemoComponentFiles(
   demo: DemoComponent,
@@ -134,67 +132,4 @@ export default class extends Component {}
   }
 
   return generatedFiles;
-}
-
-/**
- * Get import statements for generated components
- */
-export function getComponentImports(
-  page: PageContent,
-  generatedFiles: string[]
-): string[] {
-  const imports: string[] = [];
-
-  const demoComponents = page.pluginData?.demoComponents as
-    | DemoComponent[]
-    | undefined;
-
-  // Generate imports for demo components (including preview templates)
-  if (demoComponents?.length) {
-    demoComponents.forEach((demo) => {
-      // For GJS/GTS files, import directly; otherwise import the JS file
-      const hasJS = hasBackingJS(demo.chunks);
-      const gtsGjsChunk = demo.chunks.find((c) =>
-        ['gjs', 'gts'].includes(c.ext)
-      );
-
-      let ext = 'js'; // default to JS import
-      if (gtsGjsChunk) {
-        ext = gtsGjsChunk.ext; // Use GJS/GTS file directly
-      }
-
-      const componentPath = getComponentImportPath(
-        page.meta.url,
-        demo.name.dashCase,
-        ext
-      );
-      imports.push(`import ${demo.name.pascalCase} from '${componentPath}';`);
-    });
-  }
-
-  return imports;
-}
-
-/**
- * Get the import path for a component relative to the page template
- */
-function getComponentImportPath(
-  pageUrl: string,
-  componentName: string,
-  ext: string = 'gjs'
-): string {
-  // Convert page URL to component path
-  const cleanUrl = pageUrl.replace(/^\/+|\/+$/g, '');
-  const parts = cleanUrl.split('/').filter(Boolean);
-
-  if (pageUrl.endsWith('/')) {
-    parts.push('index');
-  }
-
-  // Add _gen suffix to the last part (page name)
-  const lastPart = parts.pop() || 'index';
-
-  // Create relative path from template to component
-  // templates/docs/ember/writing-demos.gjs -> ./writing-demos_gen/componentname.ext
-  return `./${lastPart}_gen/${componentName.toLowerCase()}.${ext}`;
 }

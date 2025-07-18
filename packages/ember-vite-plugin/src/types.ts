@@ -26,7 +26,7 @@ export interface DemoComponentChunk {
   type: string;
   code: string;
   ext: string;
-  snippet: any; // AST node reference
+  snippet: Node; // AST node reference
 }
 
 export interface DemoComponent {
@@ -34,14 +34,8 @@ export interface DemoComponent {
   chunks: DemoComponentChunk[];
   description?: {
     title?: string;
-    ast: any; // AST node reference
+    ast: Node; // AST node reference
     editUrl?: string;
   };
 }
 
-export interface PreviewTemplateComponent {
-  name: string;
-  template: string;
-  ext: string; // File extension (hbs, gjs, gts, etc.)
-  originalNode?: any; // Reference to AST node for replacement
-}

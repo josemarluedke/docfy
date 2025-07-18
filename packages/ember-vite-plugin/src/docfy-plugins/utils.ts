@@ -1,27 +1,6 @@
 import u from 'unist-builder';
 import { Node } from 'unist';
-
-export interface DemoComponentName {
-  dashCase: string;
-  pascalCase: string;
-}
-
-export interface DemoComponentChunk {
-  type: string;
-  code: string;
-  ext: string;
-  snippet: Node;
-}
-
-export interface DemoComponent {
-  name: DemoComponentName;
-  chunks: DemoComponentChunk[];
-  description?: {
-    title?: string;
-    ast: Node;
-    editUrl?: string;
-  };
-}
+import type { DemoComponent, DemoComponentName } from '../types.js';
 
 // Map language names to file extensions (same as original ember implementation)
 const MAP_LANG_TO_EXT = {

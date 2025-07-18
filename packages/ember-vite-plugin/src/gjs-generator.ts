@@ -1,11 +1,8 @@
 import type { PluginContext } from 'rollup';
 import type { PageContent } from '@docfy/core/lib/types';
 import type { ImportStatement } from './types.js';
-import { processImportsFromPage } from './gjs-processor.js';
-import {
-  generateComponentFiles,
-  getComponentImports
-} from './component-generator.js';
+import { processPageImports } from './gjs-processor.js';
+import { generateComponentFiles } from './component-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:gjs-generator');
@@ -32,51 +29,26 @@ export function generateTemplatePath(url: string): string {
  */
 export function generatePageTemplate(
   page: PageContent,
-  ctx?: PluginContext
+  pluginCtx: PluginContext
 ): string {
   debug('Generating GJS page template for route', { url: page.meta.url });
 
-  // detectAndAddPreviewTemplates(page);
+  generateComponentFiles(pluginCtx, page);
 
-  // Generate separate component files if needed
-  let componentImports: string[] = [];
-  if (ctx) {
-    const generatedFiles = generateComponentFiles(ctx, page);
-    componentImports = getComponentImports(page, generatedFiles);
-  }
+  const imports = processPageImports(page);
 
-  // Process page using the new file-based approach
-  const gjsMetadata = processImportsFromPage(page, componentImports);
-
-  // Use modified content if available, otherwise fall back to original rendered content
-  const templateContent = page.rendered || '';
-
-  // Generate the complete GJS template
-  return generateGJSTemplate(gjsMetadata, templateContent);
-}
-
-/**
- * Generate a complete GJS template with proper structure
- */
-function generateGJSTemplate(
-  gjsMetadata: { imports: ImportStatement[] },
-  templateContent: string
-): string {
   const importsSection =
-    gjsMetadata.imports.length > 0
-      ? gjsMetadata.imports
-          .map((imp) => generateImportStatement(imp))
-          .join('\n') + '\n\n'
+    imports.length > 0
+      ? imports.map((imp) => generateImportStatement(imp)).join('\n') + '\n\n'
       : '';
 
   const template = `${importsSection}
 <template>
-  ${templateContent}
+  ${page.rendered}
 </template>`;
 
   return template;
 }
-
 /**
  * Generate an import statement from ImportStatement metadata
  */
