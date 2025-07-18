@@ -120,26 +120,32 @@ export default function docfyVitePlugin(
           // Generate templates for both development and production using file system writes
           debug('Writing templates to file system...');
           result.content.forEach((page) => {
-            const pageResult = generatePage(page, this);
+            const filesToGenerate = generatePage(page, this);
 
-            // Write template to file system
-            const fullPath = path.join(process.cwd(), pageResult.path);
-            const dir = path.dirname(fullPath);
-
-            debug('Writing template to file system', {
+            debug('Writing files to file system', {
               url: page.meta.url,
-              templatePath: pageResult.path,
-              fullPath,
+              totalFiles: filesToGenerate.length,
               command: config.command
             });
 
-            // Ensure directory exists
-            if (!fs.existsSync(dir)) {
-              fs.mkdirSync(dir, { recursive: true });
-            }
+            // Write all files to file system
+            filesToGenerate.forEach((file) => {
+              const fullPath = path.join(process.cwd(), file.path);
+              const dir = path.dirname(fullPath);
 
-            // Write template file
-            fs.writeFileSync(fullPath, pageResult.content);
+              debug('Writing file', {
+                filePath: file.path,
+                fullPath
+              });
+
+              // Ensure directory exists
+              if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+              }
+
+              // Write file
+              fs.writeFileSync(fullPath, file.content);
+            });
           });
         } catch (error) {
           debug('Error processing markdown files', { error });
@@ -211,40 +217,57 @@ export default function docfyVitePlugin(
                   emitFile: () => {} // Not needed in HMR - we write directly to filesystem
                 } as unknown as PluginContext;
 
-                const pageResult = generatePage(
+                const filesToGenerate = generatePage(
                   changedPage,
                   contextForGeneration
                 );
-                const fullPath = path.join(process.cwd(), pageResult.path);
-                const dir = path.dirname(fullPath);
 
-                debug('Regenerating template file for changed page', {
+                debug('Regenerating files for changed page', {
                   url: changedPage.meta.url,
-                  templatePath: pageResult.path,
-                  fullPath,
+                  totalFiles: filesToGenerate.length,
                   changedFile: ctx.file
                 });
 
-                // Ensure directory exists
-                if (!fs.existsSync(dir)) {
-                  fs.mkdirSync(dir, { recursive: true });
-                }
+                // Write all files
+                filesToGenerate.forEach((file) => {
+                  const fullPath = path.join(process.cwd(), file.path);
+                  const dir = path.dirname(fullPath);
 
-                // Write template file
-                fs.writeFileSync(fullPath, pageResult.content);
+                  // Ensure directory exists
+                  if (!fs.existsSync(dir)) {
+                    fs.mkdirSync(dir, { recursive: true });
+                  }
 
-                // Invalidate the specific template file in Vite's module graph
-                const templateModule =
-                  ctx.server.moduleGraph.getModuleById(fullPath);
-                if (templateModule) {
-                  ctx.server.reloadModule(templateModule);
-                } else {
-                  // If template module doesn't exist in graph, try to find it by looking at imports
-                  const modules =
-                    ctx.server.moduleGraph.getModulesByFile(fullPath);
-                  if (modules) {
-                    for (const mod of modules) {
-                      ctx.server.reloadModule(mod);
+                  // Write file
+                  fs.writeFileSync(fullPath, file.content);
+                });
+
+                // Find template file for module invalidation
+                const templateFile = filesToGenerate.find(
+                  (file) =>
+                    file.path.includes('/app/templates/') &&
+                    file.path.endsWith('.gjs')
+                );
+
+                if (templateFile) {
+                  const templateFullPath = path.join(
+                    process.cwd(),
+                    templateFile.path
+                  );
+
+                  // Invalidate the specific template file in Vite's module graph
+                  const templateModule =
+                    ctx.server.moduleGraph.getModuleById(templateFullPath);
+                  if (templateModule) {
+                    ctx.server.reloadModule(templateModule);
+                  } else {
+                    // If template module doesn't exist in graph, try to find it by looking at imports
+                    const modules =
+                      ctx.server.moduleGraph.getModulesByFile(templateFullPath);
+                    if (modules) {
+                      for (const mod of modules) {
+                        ctx.server.reloadModule(mod);
+                      }
                     }
                   }
                 }

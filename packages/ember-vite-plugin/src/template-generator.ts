@@ -1,15 +1,15 @@
 import type { PluginContext } from 'rollup';
 import type { PageContent } from '@docfy/core/lib/types';
-import type { ImportStatement, DemoComponent } from './types.js';
+import type {
+  ImportStatement,
+  DemoComponent,
+  FileToGenerate
+} from './types.js';
 import { generateComponentFiles } from './component-generator.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite-plugin:template-generator');
 
-export interface PageResult {
-  path: string;
-  content: string;
-}
 
 /**
  * Generate the template path for a markdown page URL
@@ -137,14 +137,16 @@ function generateImportStatement(importStmt: ImportStatement): string {
 export function generatePage(
   page: PageContent,
   pluginCtx: PluginContext
-): PageResult {
-  debug('Generating page template and path', { url: page.meta.url });
+): FileToGenerate[] {
+  debug('Generating page files', { url: page.meta.url });
+
+  const filesToGenerate: FileToGenerate[] = [];
 
   // Generate the template path
   const templatePath = generateTemplatePath(page.meta.url);
 
   // Generate component files for the page
-  generateComponentFiles(pluginCtx, page);
+  const componentFiles = generateComponentFiles(page);
 
   // Process and generate import statements
   const imports = processPageImports(page);
@@ -159,15 +161,22 @@ export function generatePage(
   ${page.rendered}
 </template>`;
 
-  debug('Generated page', {
-    url: page.meta.url,
+  // Add template file to the list
+  filesToGenerate.push({
     path: templatePath,
+    content: template
+  });
+
+  // Add all component files to the list
+  filesToGenerate.push(...componentFiles);
+
+  debug('Generated page files', {
+    url: page.meta.url,
+    totalFiles: filesToGenerate.length,
+    templatePath,
+    componentFilesCount: componentFiles.length,
     importsCount: imports.length
   });
 
-  return {
-    path: templatePath,
-    content: template
-  };
+  return filesToGenerate;
 }
-

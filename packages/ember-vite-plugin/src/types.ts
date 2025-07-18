@@ -39,3 +39,7 @@ export interface DemoComponent {
   };
 }
 
+export interface FileToGenerate {
+  path: string;
+  content: string;
+}
