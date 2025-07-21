@@ -42,7 +42,12 @@
       "Bash(yarn test:ember:*)",
       "Bash(yarn test:*)",
       "Bash(testem:*)",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Bash(yarn workspaces:*)",
+      "Bash(yarn compile)",
+      "Bash(timeout 10 yarn start)",
+      "mcp__puppeteer__puppeteer_click",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

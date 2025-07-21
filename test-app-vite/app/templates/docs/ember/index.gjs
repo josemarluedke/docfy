@@ -9,18 +9,18 @@ to existing apps, jump to the step after creating the app.</p>
 cd docfy-example
 </code></pre>
 <h2 id="add-docfy-dependency"><a href="#add-docfy-dependency">Add Docfy dependency</a></h2>
-<pre><code>yarn add -D @docfy/ember
+<pre><code>yarn add -D @docfy/ember-cli
 // or
-npm install --dev @docfy/ember
+npm install --dev @docfy/ember-cli
 </code></pre>
 <h2 id="add-docfy-routes"><a href="#add-docfy-routes">Add Docfy Routes</a></h2>
 <p>Docfy has a function that adds all the routes to your Ember app. It understands
 the output of Docfy Core and process all the page URLs to add their paths to the Ember app.</p>
-<p>In your <code>app/router.js</code> import <code>import { addDocfyRoutes } from '@docfy/ember';</code>
+<p>In your <code>app/router.js</code> import <code>import { addDocfyRoutes } from '@docfy/ember-cli';</code>
 then add <code>addDocfyRoutes(this)</code> to the Router Map. The final result looks like the following:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> EmberRouter <span class="hljs-keyword">from</span> <span class="hljs-string">'@ember/routing/router'</span>;
 <span class="hljs-keyword">import</span> config <span class="hljs-keyword">from</span> <span class="hljs-string">'./config/environment'</span>;
-<span class="hljs-keyword">import</span> { addDocfyRoutes } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember'</span>;
+<span class="hljs-keyword">import</span> { addDocfyRoutes } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-cli'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Router</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">EmberRouter</span> </span>{
   location = config.locationType;
