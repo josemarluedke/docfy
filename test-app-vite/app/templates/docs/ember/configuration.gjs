@@ -39,7 +39,7 @@ root of your app to set the config.</p>
   <span class="hljs-attr">labels</span>: {
     <span class="hljs-attr">components</span>: <span class="hljs-string">'Components'</span>,
     <span class="hljs-attr">core</span>: <span class="hljs-string">'@docfy/core'</span>,
-    <span class="hljs-attr">ember</span>: <span class="hljs-string">'@docfy/ember'</span>,
+    <span class="hljs-attr">ember</span>: <span class="hljs-string">'@docfy/ember-cli'</span>,
     <span class="hljs-attr">docs</span>: <span class="hljs-string">'Documentation'</span>
   }
 };</code></pre>

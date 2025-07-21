@@ -1,5 +1,5 @@
 import EmberRouter from '@ember/routing/router';
-import config from 'site/config/environment';
+import config from 'dummy/config/environment';
 import { addDocfyRoutes } from '@docfy/ember-cli';
 
 export default class Router extends EmberRouter {
