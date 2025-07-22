@@ -18,7 +18,7 @@ export default class DocsRoute extends Route {
     return {
       navigation: this.docfy.nested,
       headings: currentPage?.headings || [],
-      editUrl: currentPage?.editUrl
+      editUrl: currentPage?.editUrl,
     };
   }
 }

@@ -12,7 +12,7 @@ module('Acceptance | extracted preview templates', function (hooks) {
     assert
       .dom('[data-test-id="preview-1"]')
       .hasTextContaining(
-        'I can have any hbs here and I can use any component avaliable in the host app.'
+        'I can have any hbs here and I can use any component avaliable in the host app.',
       );
     assert
       .dom('[data-test-id="preview-2"]')

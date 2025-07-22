@@ -40,10 +40,10 @@ new Docfy()
     {
       root: path.join(__dirname, 'docs'),
       urlPrefix: 'docs',
-      pattern: '**/*.md'
-    }
+      pattern: '**/*.md',
+    },
   ])
-  .then((result) => {
+  .then(result => {
     console.log(result);
   });
 ```

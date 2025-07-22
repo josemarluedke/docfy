@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["packages/*/src/**/*.ts", "packages/*/tests/**/*.ts", "*.ts", "*.mts", "*.cts"],
+  "exclude": ["node_modules", "dist", "lib", "declarations", "site", "test-app-*"]
+}

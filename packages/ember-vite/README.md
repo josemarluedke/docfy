@@ -35,8 +35,8 @@ export default defineConfig({
     docfyVitePlugin({
       root: resolve(__dirname),
       // Additional Docfy configuration options
-    })
-  ]
+    }),
+  ],
 });
 ```
 
@@ -54,8 +54,8 @@ export default defineConfig({
     }),
     buildOnce({
       // Embroider configuration
-    })
-  ]
+    }),
+  ],
 });
 ```
 

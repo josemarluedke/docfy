@@ -13,8 +13,6 @@
       "test-app-classic/*": ["app/*"],
       "*": ["types/*"]
     },
-    "types": [
-      "ember-source/types"
-    ]
+    "types": ["ember-source/types"]
   }
 }

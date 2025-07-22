@@ -15,16 +15,16 @@ module.exports = function (defaults) {
           {
             module: require('postcss-import'),
             options: {
-              path: [path.join(__dirname, '../node_modules')]
-            }
+              path: [path.join(__dirname, '../node_modules')],
+            },
           },
           require('tailwindcss')(
-            path.join('app', 'styles', 'tailwind.config.js')
+            path.join('app', 'styles', 'tailwind.config.js'),
           ),
           require('postcss-nested'),
-          require('autoprefixer')
-        ]
-      }
+          require('autoprefixer'),
+        ],
+      },
     },
 
     // Add options here

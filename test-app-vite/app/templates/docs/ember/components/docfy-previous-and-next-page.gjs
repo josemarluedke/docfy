@@ -23,18 +23,18 @@ would prevent linking to a page in tutorials from a documentation page.</p>
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyPreviousAndNextPage</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">previous</span> <span class="hljs-attr">next</span>|></span>
   <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> previous}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-sm"</span>></span>Previous<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-sm'</span>></span>Previous<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
 
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-xl text-blue-500"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-xl text-blue-500'</span>></span>
         </span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.title</span>}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
   <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
   <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> next}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-sm"</span>></span>Next<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-sm'</span>></span>Next<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
 
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">next.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-xl text-blue-500"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">next.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-xl text-blue-500'</span>></span>
         </span><span class="hljs-template-variable">\{{<span class="hljs-name">next.title</span>}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
@@ -51,21 +51,21 @@ would prevent linking to a page in tutorials from a documentation page.</p>
 <DocfyDemoComponentsDocfyPreviousAndNextPageScope />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyPreviousAndNextPage</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">"docs"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">previous</span> <span class="hljs-attr">next</span>|></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyPreviousAndNextPage</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">'docs'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">previous</span> <span class="hljs-attr">next</span>|></span>
   <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> previous}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-sm"</span>></span>Previous<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-sm'</span>></span>Previous<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
 
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-xl text-blue-500"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-xl text-blue-500'</span>></span>
         </span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.title</span>}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
   <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
   <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> next}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-sm"</span>></span>Next<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-sm'</span>></span>Next<span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
 
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">next.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"text-xl text-blue-500"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">next.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'text-xl text-blue-500'</span>></span>
         </span><span class="hljs-template-variable">\{{<span class="hljs-name">next.title</span>}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">

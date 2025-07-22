@@ -42,7 +42,8 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
         let parentElement = target;
 
         if (target.tagName === 'path') {
-          parentElement = target.parentElement?.closest('svg')?.parentElement as HTMLElement;
+          parentElement = target.parentElement?.closest('svg')
+            ?.parentElement as HTMLElement;
         } else if (target.tagName === 'svg') {
           parentElement = target.parentElement as HTMLElement;
         }
@@ -60,7 +61,6 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
   }
 
   <template>
-
     <button
       type="button"
       class="flex items-center px-4 py-2 border rounded lg:hidden dark:border-gray-800

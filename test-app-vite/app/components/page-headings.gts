@@ -52,7 +52,11 @@ export default class PageHeadings extends Component<PageHeadingsSignature> {
                   }}"
                 data-test-id="heading-link"
                 data-test-heading-id="{{heading.id}}"
-                data-test-is-active="{{if (isEqual heading.id this.currentHeading.currentHeadingId) 'true' 'false'}}"
+                data-test-is-active="{{if
+                  (isEqual heading.id this.currentHeading.currentHeadingId)
+                  'true'
+                  'false'
+                }}"
                 {{on "click" this.onClick}}
               >
                 {{heading.title}}
@@ -74,7 +78,13 @@ export default class PageHeadings extends Component<PageHeadingsSignature> {
                           }}"
                         data-test-id="subheading-link"
                         data-test-heading-id="{{subHeading.id}}"
-                        data-test-is-active="{{if (isEqual subHeading.id this.currentHeading.currentHeadingId) 'true' 'false'}}"
+                        data-test-is-active="{{if
+                          (isEqual
+                            subHeading.id this.currentHeading.currentHeadingId
+                          )
+                          'true'
+                          'false'
+                        }}"
                         {{on "click" this.onClick}}
                       >
                         {{subHeading.title}}

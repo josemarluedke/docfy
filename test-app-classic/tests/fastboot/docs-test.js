@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import {
   setup,
-  visit /* mockServer */
+  visit /* mockServer */,
 } from 'ember-cli-fastboot-testing/test-support';
 
 module('FastBoot | docs', function (hooks) {
@@ -25,7 +25,7 @@ module('FastBoot | docs', function (hooks) {
     assert
       .dom('[data-test-id="docs-nav"]')
       .hasText(
-        'Welcome to Docfy Introduction Installation Overview @docfy/core Overview Helpers genereateFlatOutput genereateNestedOutput @docfy/ember-cli Working with Ember Installation Components Docfy Link Component Docfy Output Component Docfy With Hyphenated Number 2 Plugins Manual Demo Insertion'
+        'Welcome to Docfy Introduction Installation Overview @docfy/core Overview Helpers genereateFlatOutput genereateNestedOutput @docfy/ember-cli Working with Ember Installation Components Docfy Link Component Docfy Output Component Docfy With Hyphenated Number 2 Plugins Manual Demo Insertion',
       );
   });
 
@@ -44,7 +44,7 @@ module('FastBoot | docs', function (hooks) {
       .dom('[data-test-id="docs-edit-url"]')
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/ember-cli/dummy-docs/introduction.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/ember-cli/dummy-docs/introduction.md',
       );
   });
 });

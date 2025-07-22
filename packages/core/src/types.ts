@@ -1,11 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { Node as MarkdownAST } from 'unist';
-import {
-  Processor,
-  Plugin as UnifiedPlugin,
-  Settings as UnifiedSettings
-} from 'unified';
+import { Processor, Plugin as UnifiedPlugin, Settings as UnifiedSettings } from 'unified';
 import { VFile } from 'vfile';
 
 export interface Heading {
@@ -40,10 +36,7 @@ export interface PageContent {
 }
 
 interface ContextOptions
-  extends Omit<
-    Options,
-    'plugins' | 'remarkPlugins' | 'rehypePlugins' | 'tocMaxDepth'
-  > {
+  extends Omit<Options, 'plugins' | 'remarkPlugins' | 'rehypePlugins' | 'tocMaxDepth'> {
   tocMaxDepth: number;
 }
 
@@ -177,15 +170,9 @@ export interface PluginWithOptions<T = PluginOptions> extends Plugin<T> {
   __options?: T;
 }
 
-export type PluginWithOptionsFunction<T = PluginOptions> = (
-  options?: T
-) => PluginWithOptions<T>;
+export type PluginWithOptionsFunction<T = PluginOptions> = (options?: T) => PluginWithOptions<T>;
 
-export type PluginList = (
-  | Plugin
-  | PluginWithOptions<any>
-  | PluginWithOptionsFunction<any>
-)[];
+export type PluginList = (Plugin | PluginWithOptions<any> | PluginWithOptionsFunction<any>)[];
 
 export interface Options {
   /**

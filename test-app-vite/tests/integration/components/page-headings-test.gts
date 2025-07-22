@@ -122,7 +122,6 @@ module('Integration | Component | @docfy/page-headings', function (hooks) {
     currentHeadingService.setCurrentHeadingId('examples');
 
     await render(<template><PageHeadings /></template>);
-    await settled();
 
     // Should highlight the current heading
     assert
@@ -216,7 +215,6 @@ module('Integration | Component | @docfy/page-headings', function (hooks) {
     currentHeadingService.setCurrentHeadingId('simple-usage');
 
     await render(<template><PageHeadings /></template>);
-    await settled();
 
     // Should highlight the nested heading
     assert

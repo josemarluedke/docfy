@@ -19,16 +19,12 @@ export default class SidebarNav extends Component<SidebarNavArgs> {
         let parentElement: Element | undefined = target;
 
         if (target.tagName == 'path') {
-          parentElement = target.parentElement?.closest('svg')
-            ?.parentElement as Element;
+          parentElement = target.parentElement?.closest('svg')?.parentElement as Element;
         } else if (target.tagName == 'svg') {
           parentElement = target.parentElement as Element;
         }
 
-        if (
-          parentElement &&
-          parentElement.hasAttribute('data-ignore-auto-close')
-        ) {
+        if (parentElement && parentElement.hasAttribute('data-ignore-auto-close')) {
           return;
         }
 

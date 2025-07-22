@@ -24,31 +24,27 @@ const highlight = require('remark-highlight.js');
 const codeImport = require('remark-code-import');
 
 module.exports = {
-  remarkPlugins: [
-    [autolinkHeadings, { behavior: 'wrap' }],
-    codeImport,
-    highlight
-  ],
+  remarkPlugins: [[autolinkHeadings, { behavior: 'wrap' }], codeImport, highlight],
   sources: [
     {
       root: path.resolve(__dirname, '../../../docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs'
+      urlPrefix: 'docs',
     },
     {
       root: path.join(__dirname, 'docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs/ember'
-    }
+      urlPrefix: 'docs/ember',
+    },
   ],
   labels: {
     components: 'Components',
     core: '@docfy/core',
     ember: '@docfy/ember-cli',
-    docs: 'Documentation'
-  }
+    docs: 'Documentation',
+  },
 };
 ```
 

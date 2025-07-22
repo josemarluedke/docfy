@@ -13,8 +13,8 @@ more deep into the tree or more shadow.
 > too deep into the tree to display all items.
 
 ```hbs template
-<DocfyOutput @scope="docs" as |node|>
-  <ul class="list-disc list-inside space-y-2">
+<DocfyOutput @scope='docs' as |node|>
+  <ul class='list-disc list-inside space-y-2'>
     {{#each node.pages as |page|}}
       <li>
         <DocfyLink @to={{page.url}}>
@@ -24,12 +24,12 @@ more deep into the tree or more shadow.
     {{/each}}
 
     {{#each node.children as |child|}}
-      <li class="block ml-4">
-        <div class="py-2">
+      <li class='block ml-4'>
+        <div class='py-2'>
           {{child.label}}
         </div>
 
-        <ul class="list-disc list-inside space-y-2">
+        <ul class='list-disc list-inside space-y-2'>
           {{#each child.pages as |page|}}
             <li>
               <DocfyLink @to={{page.url}}>

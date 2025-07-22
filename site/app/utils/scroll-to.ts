@@ -8,14 +8,8 @@ const easeInOutQuad = (t: number, b: number, c: number, d: number): number => {
   return (-c / 2) * (t * (t - 2) - 1) + b;
 };
 
-function scrollTo(
-  toPosition: number,
-  callback?: () => void,
-  duration = 500
-): void {
-  const scrollingElement = document.scrollingElement
-    ? document.scrollingElement
-    : document.body;
+function scrollTo(toPosition: number, callback?: () => void, duration = 500): void {
+  const scrollingElement = document.scrollingElement ? document.scrollingElement : document.body;
   const startPosition = scrollingElement.scrollTop;
   const change = toPosition - startPosition;
   let currentTime = 0;
@@ -23,12 +17,7 @@ function scrollTo(
 
   const animateScroll = (): void => {
     currentTime += increment;
-    scrollingElement.scrollTop = easeInOutQuad(
-      currentTime,
-      startPosition,
-      change,
-      duration
-    );
+    scrollingElement.scrollTop = easeInOutQuad(currentTime, startPosition, change, duration);
 
     if (currentTime < duration) {
       requestAnimationFrame(animateScroll);
@@ -41,11 +30,7 @@ function scrollTo(
   animateScroll();
 }
 
-function scrollToElement(
-  element: HTMLElement,
-  callback?: () => void,
-  duration = 500
-): void {
+function scrollToElement(element: HTMLElement, callback?: () => void, duration = 500): void {
   const toPosition = element.offsetTop;
   scrollTo(toPosition, callback, duration);
 }

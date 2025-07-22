@@ -26,11 +26,7 @@ interface DefinitionNode extends Node, Resource, Association {
   type: 'definition';
 }
 
-function replaceURL(
-  ctx: Context,
-  page: PageContent,
-  node: LinkNode | DefinitionNode
-): void {
+function replaceURL(ctx: Context, page: PageContent, node: LinkNode | DefinitionNode): void {
   if (isValidUrl(node.url) || isAnchorUrl(node.url)) {
     return;
   }
@@ -43,7 +39,7 @@ function replaceURL(
       urlParts[0]
     );
   }
-  const found = ctx.pages.find((p) => {
+  const found = ctx.pages.find(p => {
     return path.join(p.sourceConfig.root, p.source) === absolutePath;
   });
 
@@ -55,9 +51,7 @@ function replaceURL(
   }
 }
 
-function isReferenceLink(
-  node: LinkNode | LinkReferenceNode
-): node is LinkReferenceNode {
+function isReferenceLink(node: LinkNode | LinkReferenceNode): node is LinkReferenceNode {
   return node.type === 'linkReference';
 }
 
@@ -68,19 +62,15 @@ function visitor(ctx: Context, page: PageContent): void {
     definitions[node.identifier] = node;
   });
 
-  visit(
-    page.ast,
-    ['link', 'linkReference'],
-    (node: LinkNode | LinkReferenceNode) => {
-      if (isReferenceLink(node)) {
-        if (definitions[node.identifier]) {
-          replaceURL(ctx, page, definitions[node.identifier]);
-        }
-      } else {
-        replaceURL(ctx, page, node);
+  visit(page.ast, ['link', 'linkReference'], (node: LinkNode | LinkReferenceNode) => {
+    if (isReferenceLink(node)) {
+      if (definitions[node.identifier]) {
+        replaceURL(ctx, page, definitions[node.identifier]);
       }
+    } else {
+      replaceURL(ctx, page, node);
     }
-  );
+  });
 }
 
 /**
@@ -94,14 +84,14 @@ function visitor(ctx: Context, page: PageContent): void {
  */
 export default plugin({
   runWithMdast(ctx): void {
-    ctx.pages.forEach((page) => {
+    ctx.pages.forEach(page => {
       visitor(ctx, page);
 
       if (Array.isArray(page.demos)) {
-        page.demos.forEach((demo) => {
+        page.demos.forEach(demo => {
           visitor(ctx, demo);
         });
       }
     });
-  }
+  },
 });

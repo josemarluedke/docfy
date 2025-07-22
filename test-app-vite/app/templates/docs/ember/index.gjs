@@ -63,7 +63,7 @@ for building design systems that use the styles from your design in your docs.</
 <p>We can add a <code>docs</code> template that will be used when rendering any documentation
 page because of Ember's routing and templating patterns.</p>
 <p>In your <code>app/templates/docs.hbs</code> add the following:</p>
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">"docs"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">'docs'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
   <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>

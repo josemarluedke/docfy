@@ -8,10 +8,7 @@
         {
           "name": "@ember/app-blueprint",
           "isBaseBlueprint": true,
-          "options": [
-            "--yarn",
-            "--ci-provider=github"
-          ]
+          "options": ["--yarn", "--ci-provider=github"]
         }
       ]
     }

@@ -6,7 +6,7 @@ import SidebarNav from './sidebar-nav';
 import PageHeadings from './page-headings';
 import { DocfyPreviousAndNextPage, DocfyLink } from '@docfy/ember';
 import intersectHeadings from '../modifiers/intersect-headings';
-import type DocfyService from '../services/docfy';
+import { type DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from '../services/current-heading';
 
 interface DocsLayoutArgs {
@@ -35,13 +35,19 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
   <template>
     {{pageTitle "Documentation"}}
 
-    <div class="px-4 mx-auto lg:px-6 max-w-(--breakpoint-2xl)" data-test-id="docs-layout">
+    <div
+      class="px-4 mx-auto lg:px-6 max-w-(--breakpoint-2xl)"
+      data-test-id="docs-layout"
+    >
       <div class="relative lg:flex">
         <div class="flex-none pt-12 pr-4 lg:w-64" data-test-id="sidebar-nav">
           <SidebarNav @node={{@model.navigation}} />
         </div>
 
-        <div class="flex-1 w-full min-w-0 px-0 pt-12 lg:px-4" data-test-id="main-content">
+        <div
+          class="flex-1 w-full min-w-0 px-0 pt-12 lg:px-4"
+          data-test-id="main-content"
+        >
           <div
             class="markdown"
             data-test-id="markdown-content"
@@ -117,7 +123,10 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
           </div>
         </div>
 
-        <div class="flex-none hidden w-56 pl-4 lg:block" data-test-id="right-sidebar">
+        <div
+          class="flex-none hidden w-56 pl-4 lg:block"
+          data-test-id="right-sidebar"
+        >
           <PageHeadings />
         </div>
       </div>

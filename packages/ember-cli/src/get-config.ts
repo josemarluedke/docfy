@@ -11,9 +11,9 @@ const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
     {
       pattern: '**/*.md',
-      urlPrefix: 'docs'
-    }
-  ]
+      urlPrefix: 'docs',
+    },
+  ],
 };
 
 interface EmberDocfyConfig extends DocfyConfig {
@@ -24,7 +24,7 @@ function getDocfyConfigSync(root: string): EmberDocfyConfig {
   const configPath = path.join(root, '.docfy-config.js');
   let docfyConfig: Partial<EmberDocfyConfig> = {};
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const pkg = require(path.join(root, 'package.json'));
 
   try {
@@ -39,9 +39,7 @@ function getDocfyConfigSync(root: string): EmberDocfyConfig {
       e.message?.includes('must use import to load ES Module') ||
       e.message?.includes('Cannot use import statement outside a module');
 
-    const notFound =
-      e.code === 'ERR_MODULE_NOT_FOUND' ||
-      e.message?.includes('Cannot find module');
+    const notFound = e.code === 'ERR_MODULE_NOT_FOUND' || e.message?.includes('Cannot find module');
 
     if (isESMError) {
       console.warn(
@@ -78,24 +76,17 @@ function getDocfyConfigSync(root: string): EmberDocfyConfig {
     docfyConfig.remarkPlugins = [];
   }
 
-  docfyConfig.remarkPlugins.push([
-    remarkHbs,
-    docfyConfig.remarkHbsOptions || {}
-  ]);
+  docfyConfig.remarkPlugins.push([remarkHbs, docfyConfig.remarkHbsOptions || {}]);
 
   const repoUrl = pkg.repository?.url || pkg.repository;
 
-  if (
-    !docfyConfig.repository &&
-    typeof repoUrl === 'string' &&
-    repoUrl !== ''
-  ) {
+  if (!docfyConfig.repository && typeof repoUrl === 'string' && repoUrl !== '') {
     docfyConfig.repository = {
-      url: repoUrl
+      url: repoUrl,
     };
   }
 
-  docfyConfig.sources.forEach((source) => {
+  docfyConfig.sources.forEach(source => {
     if (typeof source.root === 'undefined') {
       source.root = path.join(root, 'docs');
     }
@@ -104,13 +95,11 @@ function getDocfyConfigSync(root: string): EmberDocfyConfig {
   return docfyConfig as EmberDocfyConfig;
 }
 
-export default async function getDocfyConfig(
-  root: string
-): Promise<EmberDocfyConfig> {
+export default async function getDocfyConfig(root: string): Promise<EmberDocfyConfig> {
   const configPath = path.join(root, '.docfy-config.js');
   let docfyConfig: Partial<EmberDocfyConfig> = {};
 
-  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const pkg = require(path.join(root, 'package.json'));
 
   try {
@@ -132,8 +121,7 @@ export default async function getDocfyConfig(
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (esmErr: any) {
         const notFound =
-          esmErr.code === 'ERR_MODULE_NOT_FOUND' ||
-          esmErr.message?.includes('Cannot find module');
+          esmErr.code === 'ERR_MODULE_NOT_FOUND' || esmErr.message?.includes('Cannot find module');
         if (!notFound) {
           throw esmErr;
         }
@@ -166,24 +154,17 @@ export default async function getDocfyConfig(
     docfyConfig.remarkPlugins = [];
   }
 
-  docfyConfig.remarkPlugins.push([
-    remarkHbs,
-    docfyConfig.remarkHbsOptions || {}
-  ]);
+  docfyConfig.remarkPlugins.push([remarkHbs, docfyConfig.remarkHbsOptions || {}]);
 
   const repoUrl = pkg.repository?.url || pkg.repository;
 
-  if (
-    !docfyConfig.repository &&
-    typeof repoUrl === 'string' &&
-    repoUrl !== ''
-  ) {
+  if (!docfyConfig.repository && typeof repoUrl === 'string' && repoUrl !== '') {
     docfyConfig.repository = {
-      url: repoUrl
+      url: repoUrl,
     };
   }
 
-  docfyConfig.sources.forEach((source) => {
+  docfyConfig.sources.forEach(source => {
     if (typeof source.root === 'undefined') {
       source.root = path.join(root, 'docs');
     }

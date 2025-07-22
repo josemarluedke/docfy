@@ -34,8 +34,7 @@ function findDemoOwner(contents: PageContent[], demoSource: string): number {
     const file = path.parse(path.basename(item.source));
     return (
       file.name === parentName ||
-      (file.name === 'index' &&
-        path.basename(path.dirname(item.source)) === parentName)
+      (file.name === 'index' && path.basename(path.dirname(item.source)) === parentName)
     );
   });
 }
@@ -43,13 +42,9 @@ function findDemoOwner(contents: PageContent[], demoSource: string): number {
 function sortByOrder(pages: PageContent[]): PageContent[] {
   return pages.sort((a, b) => {
     const aOrder =
-      typeof a.meta.frontmatter.order !== 'undefined'
-        ? Number(a.meta.frontmatter.order)
-        : 998;
+      typeof a.meta.frontmatter.order !== 'undefined' ? Number(a.meta.frontmatter.order) : 998;
     const bOrder =
-      typeof b.meta.frontmatter.order !== 'undefined'
-        ? Number(b.meta.frontmatter.order)
-        : 999;
+      typeof b.meta.frontmatter.order !== 'undefined' ? Number(b.meta.frontmatter.order) : 999;
     return aOrder - bOrder;
   });
 }
@@ -78,11 +73,11 @@ export default plugin({
     });
 
     // Delete demos from context pages
-    allDemos.forEach((demo) => {
-      const index = context.pages.findIndex((i) => i === demo);
+    allDemos.forEach(demo => {
+      const index = context.pages.findIndex(i => i === demo);
       if (index !== -1) {
         context.pages.splice(index, 1);
       }
     });
-  }
+  },
 });

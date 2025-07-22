@@ -82,7 +82,7 @@ can be used within the demonstration. It will also add the code snippet so
 users can see the code.</p>
 <p>Below is an example of how it works:</p>
 <pre><code class="hljs language-md"><span class="hljs-code">```hbs preview-template
-Click in the link to navigate to the home page: &#x3C;DocfyLink @to="/">Home&#x3C;/DocfyLink>
+Click in the link to navigate to the home page: &#x3C;DocfyLink @to='/'>Home&#x3C;/DocfyLink>
 ```</span></code></pre>
 <p>And here you can see how it looks like when rendered:</p>
 <DocfyDemo @id="docfy-demo-preview-writing-demos" as |demo|>
@@ -90,7 +90,7 @@ Click in the link to navigate to the home page: &#x3C;DocfyLink @to="/">Home&#x3
 <DocfyDemoPreviewWritingDemos />
 </demo.Example>
 <demo.Snippet @name="preview-template">
-<pre><code class="hljs language-hbs"><span class="xml">Click in the link to navigate to the home page: <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">"/"</span>></span>Home<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
+<pre><code class="hljs language-hbs"><span class="xml">Click in the link to navigate to the home page: <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">'/'</span>></span>Home<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <h2 id="manual-insertion"><a href="#manual-insertion">Manual Insertion</a></h2>

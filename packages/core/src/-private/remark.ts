@@ -10,9 +10,7 @@ import { Options } from '../types';
 import YAML from 'yaml';
 import remark2rehype from 'remark-rehype';
 
-export function createRemark(
-  remarkPlugins?: Options['remarkPlugins']
-): Processor {
+export function createRemark(remarkPlugins?: Options['remarkPlugins']): Processor {
   const stack = unified()
     .use(parse)
     .use(frontmatter)
@@ -22,7 +20,7 @@ export function createRemark(
     .use(gfm);
 
   if (remarkPlugins && remarkPlugins.length > 0) {
-    remarkPlugins.forEach((fn) => {
+    remarkPlugins.forEach(fn => {
       if (Array.isArray(fn)) {
         stack.use(...fn);
       } else {
@@ -34,15 +32,13 @@ export function createRemark(
   return stack;
 }
 
-export function createRehype(
-  rehypePlugins?: Options['rehypePlugins']
-): Processor {
+export function createRehype(rehypePlugins?: Options['rehypePlugins']): Processor {
   const stack = unified().use(remark2rehype, {
-    allowDangerousHtml: true
+    allowDangerousHtml: true,
   });
 
   if (rehypePlugins && rehypePlugins.length > 0) {
-    rehypePlugins.forEach((fn) => {
+    rehypePlugins.forEach(fn => {
       if (Array.isArray(fn)) {
         stack.use(...fn);
       } else {

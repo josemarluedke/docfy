@@ -1,57 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Generates runtime output it should have generated the nestedPageMetadata 1`] = `
-Object {
-  "children": Array [
-    Object {
-      "children": Array [
-        Object {
-          "children": Array [
-            Object {
-              "children": Array [],
+{
+  "children": [
+    {
+      "children": [
+        {
+          "children": [
+            {
+              "children": [],
               "label": "components",
               "name": "components",
-              "pages": Array [
-                Object {
+              "pages": [
+                {
                   "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/button.md",
-                  "frontmatter": Object {
+                  "frontmatter": {
                     "category": "category1",
                     "order": 0,
                     "subcategory": "components",
                   },
-                  "headings": Array [],
+                  "headings": [],
                   "parentLabel": "components",
-                  "pluginData": Object {},
+                  "pluginData": {},
                   "relativePath": "packages/package1/components/button.md",
                   "relativeUrl": "button",
                   "title": "Button Component",
                   "url": "/docs/category1/components/button",
                 },
-                Object {
+                {
                   "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/index.md",
-                  "frontmatter": Object {
+                  "frontmatter": {
                     "category": "category1",
                     "order": 1,
                     "subcategory": "components",
                   },
-                  "headings": Array [],
+                  "headings": [],
                   "parentLabel": "components",
-                  "pluginData": Object {},
+                  "pluginData": {},
                   "relativePath": "packages/package1/components/form/index.md",
                   "relativeUrl": "form",
                   "title": "Form Component",
                   "url": "/docs/category1/components/form",
                 },
-                Object {
+                {
                   "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/components/form/something-else.md",
-                  "frontmatter": Object {
+                  "frontmatter": {
                     "category": "category1",
                     "order": 2,
                     "subcategory": "components",
                   },
-                  "headings": Array [],
+                  "headings": [],
                   "parentLabel": "components",
-                  "pluginData": Object {},
+                  "pluginData": {},
                   "relativePath": "packages/package1/components/form/something-else.md",
                   "relativeUrl": "something-else",
                   "title": "something-else",
@@ -62,15 +62,15 @@ Object {
           ],
           "label": "category1",
           "name": "category1",
-          "pages": Array [
-            Object {
+          "pages": [
+            {
               "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package1/docs/intro.md",
-              "frontmatter": Object {
+              "frontmatter": {
                 "category": "category1",
               },
-              "headings": Array [],
+              "headings": [],
               "parentLabel": "category1",
-              "pluginData": Object {},
+              "pluginData": {},
               "relativePath": "packages/package1/docs/intro.md",
               "relativeUrl": "intro",
               "title": "Docs Intro",
@@ -78,35 +78,35 @@ Object {
             },
           ],
         },
-        Object {
-          "children": Array [],
+        {
+          "children": [],
           "label": "category2",
           "name": "category2",
-          "pages": Array [
-            Object {
+          "pages": [
+            {
               "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/overview.md",
-              "frontmatter": Object {
+              "frontmatter": {
                 "category": "category2",
                 "order": 0,
                 "title": "Overview",
               },
-              "headings": Array [],
+              "headings": [],
               "parentLabel": "category2",
-              "pluginData": Object {},
+              "pluginData": {},
               "relativePath": "packages/package2/docs/overview.md",
               "relativeUrl": "overview",
               "title": "Overview",
               "url": "/docs/category2/overview",
             },
-            Object {
+            {
               "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/packages/package2/docs/styles.md",
-              "frontmatter": Object {
+              "frontmatter": {
                 "category": "category2",
                 "order": 1,
               },
-              "headings": Array [],
+              "headings": [],
               "parentLabel": "category2",
-              "pluginData": Object {},
+              "pluginData": {},
               "relativePath": "packages/package2/docs/styles.md",
               "relativeUrl": "styles",
               "title": "How styles work",
@@ -114,19 +114,19 @@ Object {
             },
           ],
         },
-        Object {
-          "children": Array [],
+        {
+          "children": [],
           "label": "test-custom",
           "name": "test-custom",
-          "pages": Array [
-            Object {
+          "pages": [
+            {
               "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/custom-url.md",
-              "frontmatter": Object {
+              "frontmatter": {
                 "url": "/test-custom/url",
               },
-              "headings": Array [],
+              "headings": [],
               "parentLabel": "test-custom",
-              "pluginData": Object {},
+              "pluginData": {},
               "relativePath": "docs/custom-url.md",
               "relativeUrl": "url",
               "title": "This a test for the ability to change the url using frontmatter",
@@ -137,106 +137,106 @@ Object {
       ],
       "label": "docs",
       "name": "docs",
-      "pages": Array [
-        Object {
+      "pages": [
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/README.md",
-          "frontmatter": Object {
+          "frontmatter": {
             "order": -1,
           },
-          "headings": Array [],
+          "headings": [],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "README.md",
           "relativeUrl": "",
           "title": "The index",
           "url": "/docs/",
         },
-        Object {
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/how-it-works.md",
-          "frontmatter": Object {
+          "frontmatter": {
             "order": 0,
           },
-          "headings": Array [],
+          "headings": [],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "docs/how-it-works.md",
           "relativeUrl": "how-it-works",
           "title": "How it works?",
           "url": "/docs/how-it-works",
         },
-        Object {
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/about.md",
-          "frontmatter": Object {
+          "frontmatter": {
             "order": 1,
           },
-          "headings": Array [
-            Object {
+          "headings": [
+            {
               "depth": 2,
               "id": "history",
               "title": "History",
             },
-            Object {
+            {
               "depth": 2,
               "id": "where-it-came-from",
               "title": "Where it came from",
             },
-            Object {
+            {
               "depth": 2,
               "id": "another-topic",
               "title": "Another topic",
             },
-            Object {
+            {
               "depth": 2,
               "id": "2-level",
               "title": "2 level",
             },
           ],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "docs/about.md",
           "relativeUrl": "about",
           "title": "About the project",
           "url": "/docs/about",
         },
-        Object {
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/html.md",
-          "frontmatter": Object {},
-          "headings": Array [],
+          "frontmatter": {},
+          "headings": [],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "docs/html.md",
           "relativeUrl": "html",
           "title": "HTML should work",
           "url": "/docs/html",
         },
-        Object {
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/math.md",
-          "frontmatter": Object {},
-          "headings": Array [],
+          "frontmatter": {},
+          "headings": [],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "docs/math.md",
           "relativeUrl": "math",
           "title": "Testing math remark and rehype plugins",
           "url": "/docs/math",
         },
-        Object {
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/static-asset.md",
-          "frontmatter": Object {},
-          "headings": Array [],
+          "frontmatter": {},
+          "headings": [],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "docs/static-asset.md",
           "relativeUrl": "static-asset",
           "title": "This is a markdown that has a image",
           "url": "/docs/static-asset",
         },
-        Object {
+        {
           "editUrl": "https://github.com/user/repo/edit/master/packages/core/tests/__fixtures__/monorepo/docs/table.md",
-          "frontmatter": Object {},
-          "headings": Array [],
+          "frontmatter": {},
+          "headings": [],
           "parentLabel": "docs",
-          "pluginData": Object {},
+          "pluginData": {},
           "relativePath": "docs/table.md",
           "relativeUrl": "table",
           "title": "Table example",
@@ -247,6 +247,6 @@ Object {
   ],
   "label": "/",
   "name": "/",
-  "pages": Array [],
+  "pages": [],
 }
 `;

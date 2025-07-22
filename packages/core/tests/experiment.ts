@@ -7,12 +7,12 @@ const projectRoot = '../tests/__fixtures__/monorepo/';
 // const projectRoot = '../../../../../frontile/';
 const root = path.resolve(__dirname, projectRoot);
 
-(async function (): Promise<void> {
+void (async function (): Promise<void> {
   const docfy = new Docfy({
     remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs],
     repository: {
-      url: 'https://github.com/josemarluedke/docfy'
-    }
+      url: 'https://github.com/josemarluedke/docfy',
+    },
   });
 
   const { content } = await docfy.run([
@@ -21,7 +21,7 @@ const root = path.resolve(__dirname, projectRoot);
       urlPrefix: 'docs',
       urlSchema: 'manual',
       pattern: '**/*.md',
-      ignore: ['**/package1/**/*.md']
+      ignore: ['**/package1/**/*.md'],
     },
     {
       root,
@@ -29,9 +29,9 @@ const root = path.resolve(__dirname, projectRoot);
       urlSchema: 'manual',
       pattern: '**/**/package1/**/*.md',
       repository: {
-        url: 'https://github.com/user/repo'
-      }
-    }
+        url: 'https://github.com/user/repo',
+      },
+    },
   ]);
 
   console.log(content);

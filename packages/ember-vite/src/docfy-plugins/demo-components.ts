@@ -8,7 +8,7 @@ import {
   getExt,
   createDemoNodes,
   deleteNode,
-  isDemoComponents
+  isDemoComponents,
 } from './utils.js';
 
 import type { Context, PageContent } from '@docfy/core/lib/types';
@@ -24,17 +24,13 @@ import type { Node, Parent } from 'unist';
  * This is necessary for apps using remark-autolink-headings, for example.
  */
 function createHeading(ctx: Context): Node {
-  const heading = (
-    ctx.remark.runSync(ctx.remark.parse('## Examples')).children as Node[]
-  )[0];
+  const heading = (ctx.remark.runSync(ctx.remark.parse('## Examples')).children as Node[])[0];
   heading.depth = 2;
   return heading;
 }
 
 const isTextMarker = (node: Parent): boolean =>
-  node.type === 'paragraph' &&
-  node.children.length === 1 &&
-  node.children[0].type === 'text';
+  node.type === 'paragraph' && node.children.length === 1 && node.children[0].type === 'text';
 
 const demoMarkerRegex = /^\[\[demo:(.+?)\]\]$/;
 const demoMarker = (node: Parent): boolean =>
@@ -42,8 +38,7 @@ const demoMarker = (node: Parent): boolean =>
 
 const demosAllMarkerRegex = /^\[\[demos-all\]\]$/;
 const demosAllMarker = (node: Parent): boolean =>
-  isTextMarker(node) &&
-  demosAllMarkerRegex.test(node.children[0].value as string);
+  isTextMarker(node) && demosAllMarkerRegex.test(node.children[0].value as string);
 
 /*
  * Insert Demo nodes into the page.
@@ -56,7 +51,7 @@ function insertDemoNodesIntoPage(page: PageContent, toInsert: Node[]): void {
     );
 
     if (secondHeading) {
-      const index = page.ast.children.findIndex((el) => el === secondHeading);
+      const index = page.ast.children.findIndex(el => el === secondHeading);
       page.ast.children.splice(index, 0, ...toInsert);
     } else {
       page.ast.children.push(...toInsert);
@@ -74,7 +69,7 @@ function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
       if (demosAllMarker(node)) allMarkers.push(node);
     });
 
-    markers.forEach((marker) => {
+    markers.forEach(marker => {
       const child = marker.children[0];
       const matches = (child.value as string).match(demoMarkerRegex);
       if (!matches) return;
@@ -83,7 +78,7 @@ function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
       // out there has many demos on a single page. It would be better to
       // create a demo component hash that can be looked up by demo name.
       const demoName = matches[1];
-      const demo = demos.find((d) => d.name.dashCase.endsWith(demoName));
+      const demo = demos.find(d => d.name.dashCase.endsWith(demoName));
 
       if (!demo) {
         console.warn(
@@ -96,10 +91,8 @@ function replaceDemoMarkers(page: PageContent, demos: DemoComponent[]): void {
       marker.children.splice(0, 1, ...createDemoNodes(demo));
     });
 
-    allMarkers.forEach((marker) => {
-      const demoNodes = demos
-        .map((component) => createDemoNodes(component))
-        .flat();
+    allMarkers.forEach(marker => {
+      const demoNodes = demos.map(component => createDemoNodes(component)).flat();
 
       marker.type = 'div';
       marker.children.splice(0, 1, ...demoNodes);
@@ -111,11 +104,11 @@ export default plugin({
   runWithMdast(ctx: Context): void {
     const seenNames: Set<string> = new Set();
 
-    ctx.pages.forEach((page) => {
+    ctx.pages.forEach(page => {
       if (page.demos) {
         const demoComponents: DemoComponent[] = [];
 
-        page.demos.forEach((demo) => {
+        page.demos.forEach(demo => {
           const chunks: DemoComponentChunk[] = [];
 
           visit(demo.ast, 'code', (node: CodeNode) => {
@@ -123,10 +116,8 @@ export default plugin({
               chunks.push({
                 snippet: node,
                 code: node.value.replace(/\\{{/g, '{{'), // un-escape hbs
-                ext: getExt(
-                  node.lang || (node.meta === 'template' ? 'hbs' : 'js')
-                ),
-                type: node.meta as string
+                ext: getExt(node.lang || (node.meta === 'template' ? 'hbs' : 'js')),
+                type: node.meta as string,
               });
             }
           });
@@ -136,9 +127,7 @@ export default plugin({
           const baseName = page.source.replace('/index.md', '').split('.')[0];
 
           const componentName = generateDemoComponentName(
-            `docfy-demo-${baseName}-${
-              path.basename(demo.source).split('.')[0]
-            }`,
+            `docfy-demo-${baseName}-${path.basename(demo.source).split('.')[0]}`,
             seenNames
           );
 
@@ -152,7 +141,7 @@ export default plugin({
             demoTitle.data = {
               ...(demoTitle.data || {}),
               id: componentName.dashCase,
-              docfyDelete: true // mark the heading to be deleted by @docfy/core TOC plugin
+              docfyDelete: true, // mark the heading to be deleted by @docfy/core TOC plugin
             };
           }
 
@@ -162,8 +151,8 @@ export default plugin({
             description: {
               title: demoTitle ? toString(demoTitle) : undefined,
               ast: demo.ast,
-              editUrl: demo.meta.editUrl
-            }
+              editUrl: demo.meta.editUrl,
+            },
           });
 
           // Delete used code blocks
@@ -180,7 +169,7 @@ export default plugin({
           // Automatic demo insertion creates an Example block after
           // the first heading.
           const toInsert: Node[] = [createHeading(ctx)];
-          demoComponents.forEach((component) => {
+          demoComponents.forEach(component => {
             toInsert.push(...createDemoNodes(component));
           });
           insertDemoNodesIntoPage(page, toInsert);
@@ -188,11 +177,11 @@ export default plugin({
 
         const pluginData = page.pluginData as PluginData;
         if (isDemoComponents(pluginData.demoComponents)) {
-          pluginData.demoComponents!.push(...demoComponents);
+          pluginData.demoComponents.push(...demoComponents);
         } else {
           pluginData.demoComponents = demoComponents;
         }
       }
     });
-  }
+  },
 });

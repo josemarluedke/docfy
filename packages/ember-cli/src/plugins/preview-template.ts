@@ -6,7 +6,7 @@ import {
   getExt,
   createDemoNodes,
   isDemoComponents,
-  replaceNode
+  replaceNode,
 } from './utils';
 import path from 'path';
 
@@ -14,7 +14,7 @@ export default plugin({
   runWithMdast(ctx): void {
     const seenNames: Set<string> = new Set();
 
-    ctx.pages.forEach((page) => {
+    ctx.pages.forEach(page => {
       const demoComponents: DemoComponent[] = [];
 
       visit(page.ast, 'code', (node: CodeNode) => {
@@ -29,14 +29,14 @@ export default plugin({
                 snippet: node,
                 code: node.value.replace(/\\{{/g, '{{'), // un-escape hbs
                 ext: getExt(node.lang || 'hbs'),
-                type: node.meta as string
-              }
-            ]
+                type: node.meta as string,
+              },
+            ],
           });
         }
       });
 
-      demoComponents.forEach((demoComponent) => {
+      demoComponents.forEach(demoComponent => {
         replaceNode(
           page.ast.children,
           demoComponent.chunks[0].snippet,
@@ -50,5 +50,5 @@ export default plugin({
         page.pluginData.demoComponents = demoComponents;
       }
     });
-  }
+  },
 });

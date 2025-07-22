@@ -82,6 +82,14 @@ const config = [
       parserOptions: tsParserOptions,
     },
     extends: [...ts.configs.recommendedTypeChecked, ember.configs.gts],
+    rules: {
+      // Allow any types in component code for flexibility
+      '@typescript-eslint/no-explicit-any': 'off',
+      // Allow runloop usage in addon code
+      'ember/no-runloop': 'off',
+      // Allow empty component classes for template-only components
+      'ember/no-empty-glimmer-component-classes': 'off',
+    },
   },
   {
     files: ['src/**/*'],

@@ -14,8 +14,8 @@ Below you can see an example of how to pass these options to Docfy.</p>
   <span class="hljs-attr">staticAssetsPath</span>: <span class="hljs-string">'/assets/docfy'</span>,
   <span class="hljs-attr">tocMaxDepth</span>: <span class="hljs-number">6</span>,
   <span class="hljs-attr">repository</span>: {
-    <span class="hljs-attr">url</span>: <span class="hljs-string">'https://github.com/josemarluedke/docfy'</span>
-  }
+    <span class="hljs-attr">url</span>: <span class="hljs-string">'https://github.com/josemarluedke/docfy'</span>,
+  },
 });</code></pre>
 <h3 id="plugins"><a href="#plugins"><code>plugins</code></a></h3>
 <p>• <strong>plugins</strong>? : <em>Plugin[]</em> - A list of Docfy plugins.</p>
@@ -34,9 +34,9 @@ Below you can see an example of how to pass these options to Docfy.</p>
   [
     autolinkHeadings,
     {
-      <span class="hljs-attr">behavior</span>: <span class="hljs-string">'wrap'</span>
-    }
-  ]
+      <span class="hljs-attr">behavior</span>: <span class="hljs-string">'wrap'</span>,
+    },
+  ],
 ];</code></pre>
 <h3 id="rehypeplugins"><a href="#rehypeplugins"><code>rehypePlugins</code></a></h3>
 <p>• <strong>rehypePlugins</strong>? : <em>function | [function, RehypePluginOptions][]</em> - Additional rehype plugins</p>
@@ -55,8 +55,8 @@ Below you can see an example of how to pass these options to Docfy.</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> config = {
   <span class="hljs-attr">repository</span>: {
     <span class="hljs-attr">url</span>: <span class="hljs-string">'https://github.com/josemarluedke/docfy'</span>,
-    <span class="hljs-attr">editBranch</span>: <span class="hljs-string">'main'</span>
-  }
+    <span class="hljs-attr">editBranch</span>: <span class="hljs-string">'main'</span>,
+  },
 };</code></pre>
 <h4 id="repositoryconfig"><a href="#repositoryconfig"><code>RepositoryConfig</code></a></h4>
 <ul>
@@ -75,10 +75,10 @@ docfy
       <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
       <span class="hljs-attr">ignore</span>: [<span class="hljs-string">'private/**'</span>],
       <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
-      <span class="hljs-attr">urlSchema</span>: <span class="hljs-string">'manual'</span>
-    }
+      <span class="hljs-attr">urlSchema</span>: <span class="hljs-string">'manual'</span>,
+    },
   ])
-  .then(<span class="hljs-function">(<span class="hljs-params">result</span>) =></span> {
+  .then(<span class="hljs-function"><span class="hljs-params">result</span> =></span> {
     <span class="hljs-built_in">console</span>.log(result);
   });</code></pre>
 <h3 id="root"><a href="#root">root</a></h3>

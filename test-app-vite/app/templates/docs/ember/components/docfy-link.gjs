@@ -28,7 +28,7 @@ of its usage throughout the documentation.</p>
 <DocfyDemoComponentsDocfyLinkSimple />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">"/docs"</span>></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">'/docs'</span>></span>
   Link to Docs
 <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
 </demo.Snippet>
@@ -43,7 +43,7 @@ of its usage throughout the documentation.</p>
 </demo.Example>
 <demo.Snippet @name="template">
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag"> @<span class="hljs-attr">anchor</span>=<span class="hljs-string">"examples"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag"> @<span class="hljs-attr">anchor</span>=<span class="hljs-string">'examples'</span>></span>
     Link to a anchor
   <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
 <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>

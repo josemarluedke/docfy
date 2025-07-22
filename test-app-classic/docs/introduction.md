@@ -26,5 +26,5 @@ parilique quosque victor contingere urbem monendo. Meae est precor moenibus.
 2. Recipit precor in opus quam Philyreia potest
 
 ```js
-import Docfy from '@docfy/core';
+import Docfy from "@docfy/core";
 ```

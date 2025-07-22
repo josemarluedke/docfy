@@ -36,8 +36,8 @@ too deep into the tree to display all items.</p>
 <DocfyDemoComponentsDocfyOutputSidebar />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">"docs"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">'docs'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
         <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
@@ -47,12 +47,12 @@ too deep into the tree to display all items.</p>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
 
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.children <span class="hljs-keyword">as</span> |child|}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"block ml-4"</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"py-2"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'block ml-4'</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'py-2'</span>></span>
           </span><span class="hljs-template-variable">\{{<span class="hljs-name">child.label</span>}}</span><span class="xml">
         <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
 
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
           </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> child.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
             <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
               <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
@@ -83,13 +83,13 @@ option <code>tocMaxDepth</code>.</p>
 </demo.Example>
 <demo.Snippet @name="template">
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"mb-4 font-medium"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'mb-4 font-medium'</span>></span>
     On this page:
   <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> page.headings <span class="hljs-keyword">as</span> |heading|}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#</span></span></span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.id</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">"</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">'#</span></span></span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.id</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span>></span>
           </span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.title</span>}}</span><span class="xml">
         <span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
       <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
@@ -151,14 +151,14 @@ every child.</p>
 <DocfyDemoComponentsDocfyOutputTopNav />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">"nested"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">'nested'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
   <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
         <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
           </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
         <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-     <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
 
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.children <span class="hljs-keyword">as</span> |child|}}</span><span class="xml">
@@ -187,14 +187,14 @@ about the scope.</p>
 <DocfyDemoComponentsDocfyOutputFlat />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">"flat"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">pages</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"list-disc list-inside space-y-2"</span>></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">'flat'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">pages</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
     </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
         <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
           </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
         <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-     <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
     </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
   <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
 <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
