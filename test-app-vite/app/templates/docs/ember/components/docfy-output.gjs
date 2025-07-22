@@ -3,7 +3,7 @@ import DocfyDemoComponentsDocfyOutputOnThisPage from './docfy-output_gen/docfy-d
 import DocfyDemoComponentsDocfyOutputEditPage from './docfy-output_gen/docfy-demo-components-docfy-output-edit-page.js';
 import DocfyDemoComponentsDocfyOutputTopNav from './docfy-output_gen/docfy-demo-components-docfy-output-top-nav.js';
 import DocfyDemoComponentsDocfyOutputFlat from './docfy-output_gen/docfy-demo-components-docfy-output-flat.js';
-import DocfyDemo from 'test-app-vite/components/docfy-demo';
+import { DocfyDemo } from '@docfy/ember';
 
 <template>
   <h1 id="docfyoutput"><a href="#docfyoutput">{{"<DocfyOutput>"}}</a></h1>

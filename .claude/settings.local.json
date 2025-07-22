@@ -47,7 +47,8 @@
       "Bash(yarn compile)",
       "Bash(timeout 10 yarn start)",
       "mcp__puppeteer__puppeteer_click",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(timeout:*)"
     ],
     "deny": []
   }

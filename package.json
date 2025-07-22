@@ -4,7 +4,8 @@
   "workspaces": [
     "packages/*",
     "site",
-    "test-app-vite"
+    "test-app-vite",
+    "test-app-classic"
   ],
   "scripts": {
     "lint:js": "eslint . --ext .js,.ts",

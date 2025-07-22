@@ -17,29 +17,27 @@ import type { ImportStatement } from './types.js';
  * - Update import configuration here when components are moved or renamed
  */
 export const IMPORT_MAP = {
-  // Core Docfy components
+  // Core Docfy components from @docfy/ember addon
   DocfyDemo: {
     name: 'DocfyDemo',
-    path: 'test-app-vite/components/docfy-demo',
-    isDefault: true
+    path: '@docfy/ember',
+    isDefault: false
   },
   DocfyLink: {
     name: 'DocfyLink',
-    path: 'test-app-vite/components/docfy-link',
-    isDefault: true
+    path: '@docfy/ember',
+    isDefault: false
+  },
+  DocfyOutput: {
+    name: 'DocfyOutput',
+    path: '@docfy/ember',
+    isDefault: false
+  },
+  DocfyPreviousAndNextPage: {
+    name: 'DocfyPreviousAndNextPage',
+    path: '@docfy/ember',
+    isDefault: false
   }
-
-  // Add other components as needed
-  // DocfyOutput: {
-  //   name: 'DocfyOutput',
-  //   path: 'test-app-vite/components/docfy-output',
-  //   isDefault: true
-  // },
-  // DocfyPreviousAndNextPage: {
-  //   name: 'DocfyPreviousAndNextPage',
-  //   path: 'test-app-vite/components/docfy-previous-and-next-page',
-  //   isDefault: true
-  // },
 } as const satisfies Record<string, ImportStatement>;
 
 /**

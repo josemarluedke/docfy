@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click } from '@ember/test-helpers';
-import DocfyDemo from 'test-app-vite/components/docfy-demo';
+import { DocfyDemo } from '@docfy/ember';
 
 module('Integration | Component | @docfy/docfy-demo', function (hooks) {
   setupRenderingTest(hooks);

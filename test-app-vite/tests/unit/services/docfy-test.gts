@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import DocfyService from 'test-app-vite/services/docfy';
+import { DocfyService } from '@docfy/ember';
 import sinon from 'sinon';
 import type RouterService from '@ember/routing/router-service';
 

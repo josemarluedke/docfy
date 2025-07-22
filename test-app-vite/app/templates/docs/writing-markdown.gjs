@@ -1,4 +1,4 @@
-import DocfyLink from 'test-app-vite/components/docfy-link';
+import { DocfyLink } from '@docfy/ember';
 
 <template>
   <h1 id="writing-markdown"><a href="#writing-markdown">Writing Markdown</a></h1>

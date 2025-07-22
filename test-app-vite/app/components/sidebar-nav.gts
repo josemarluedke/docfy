@@ -2,7 +2,7 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
-import DocfyLink from './docfy-link';
+import { DocfyLink } from '@docfy/ember';
 
 interface Page {
   url: string;
