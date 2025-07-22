@@ -1,7 +1,7 @@
 import DocfyDemoPreviewWritingDemos from './writing-demos_gen/docfy-demo-preview-writing-demos.js';
 import DocfyDemoWritingDemosDemo1 from './writing-demos_gen/docfy-demo-writing-demos-demo1.js';
-import DocfyDemo from 'test-app-vite/components/docfy-demo';
-import DocfyLink from 'test-app-vite/components/docfy-link';
+import { DocfyDemo } from '@docfy/ember';
+import { DocfyLink } from '@docfy/ember';
 
 <template>
   <h1 id="writing-demos"><a href="#writing-demos">Writing Demos</a></h1>

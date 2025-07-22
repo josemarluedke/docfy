@@ -3,7 +3,7 @@ import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
 import { tracked } from '@glimmer/tracking';
 import sinon from 'sinon';
-import type DocfyService from 'test-app-vite/services/docfy';
+import type { DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from 'test-app-vite/services/current-heading';
 import DocsLayout from 'test-app-vite/components/docs-layout';
 

@@ -1,6 +1,6 @@
 import EmberRouter from '@ember/routing/router';
 import config from 'test-app-vite/config/environment';
-import { addDocfyRoutes } from './utils/docfy-routes';
+import { addDocfyRoutes } from '@docfy/ember';
 
 export default class Router extends EmberRouter {
   location = config.locationType;

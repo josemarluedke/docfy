@@ -22,33 +22,7 @@ module.exports = function (defaults) {
     });
   }
 
-  const app = new EmberAddon(defaults, {
-    postcssOptions: {
-      compile: {
-        enabled: true,
-        cacheInclude: [/.*\.css$/, /.tailwind\.config\.js$/],
-        plugins: [
-          {
-            module: require('postcss-import'),
-            options: {
-              path: [path.join(__dirname, '../../../node_modules')]
-            }
-          },
-          require('tailwindcss')(
-            path.join('tests', 'dummy', 'app', 'styles', 'tailwind.config.js')
-          ),
-          require('postcss-nested'),
-          require('autoprefixer')
-        ]
-      }
-    },
-    trees,
-    addons: {
-      blacklist: process.env.FASTBOOT_DISABLED
-        ? ['ember-cli-fastboot-testing']
-        : []
-    }
-  });
+  const app = new EmberAddon(defaults, {});
 
   /*
     This build file specifies the options for the dummy test app of this

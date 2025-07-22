@@ -29,7 +29,11 @@
   },
   "dependencies": {
     "@embroider/addon-shim": "^1.8.9",
+    "@embroider/macros": "^1.18.0",
     "decorator-transforms": "^2.2.2"
+  },
+  "peerDependencies": {
+    "ember-source": ">= 4.12.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -68,7 +72,14 @@
   "ember-addon": {
     "version": 2,
     "type": "addon",
-    "main": "addon-main.cjs"
+    "main": "addon-main.cjs",
+    "app-js": {
+      "./components/docfy-demo.js": "./dist/_app_/components/docfy-demo.js",
+      "./components/docfy-link.js": "./dist/_app_/components/docfy-link.js",
+      "./components/docfy-output.js": "./dist/_app_/components/docfy-output.js",
+      "./components/docfy-previous-and-next-page.js": "./dist/_app_/components/docfy-previous-and-next-page.js",
+      "./services/docfy.js": "./dist/_app_/services/docfy.js"
+    }
   },
   "imports": {
     "#src/*": "./src/*"

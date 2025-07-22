@@ -1,5 +1,5 @@
 import { pageTitle } from 'ember-page-title';
-import DocfyLink from '../components/docfy-link';
+import { DocfyLink } from '@docfy/ember';
 import FeatureCard from '../components/feature-card';
 
 <template>

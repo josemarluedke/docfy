@@ -3,7 +3,7 @@ import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import { scrollToElement } from '../utils/scroll-to';
 import { service } from '@ember/service';
-import type DocfyService from '../services/docfy';
+import type { DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from '../services/current-heading';
 
 interface PageHeadingsArgs {}

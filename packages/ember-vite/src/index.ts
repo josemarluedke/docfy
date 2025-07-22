@@ -9,8 +9,9 @@ import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite');
 
-const VIRTUAL_MODULE_PREFIX = '\0virtual:';
-const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}docfy-output`;
+const VIRTUAL_MODULE_PREFIX = '\0';
+const DOCFY_OUTPUT_MODULE = '@docfy/ember-output';
+const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}${DOCFY_OUTPUT_MODULE}`;
 
 export default function docfyVitePlugin(
   options: DocfyVitePluginOptions = {}
@@ -82,7 +83,7 @@ export default function docfyVitePlugin(
 
       resolveId(id) {
         debug('Attempting to resolve ID', { id });
-        if (id === 'virtual:docfy-output') {
+        if (id === DOCFY_OUTPUT_MODULE) {
           debug('Resolved virtual module', { id });
           return VIRTUAL_DOCFY_OUTPUT;
         }

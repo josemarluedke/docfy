@@ -1,6 +1,6 @@
 import DocfyDemoComponentsDocfyPreviousAndNextPageSimple from './docfy-previous-and-next-page_gen/docfy-demo-components-docfy-previous-and-next-page-simple.js';
 import DocfyDemoComponentsDocfyPreviousAndNextPageScope from './docfy-previous-and-next-page_gen/docfy-demo-components-docfy-previous-and-next-page-scope.js';
-import DocfyDemo from 'test-app-vite/components/docfy-demo';
+import { DocfyDemo } from '@docfy/ember';
 
 <template>
   <h1 id="docfypreviousandnextpage"><a href="#docfypreviousandnextpage">{{"<DocfyPreviousAndNextPage>"}}</a></h1>

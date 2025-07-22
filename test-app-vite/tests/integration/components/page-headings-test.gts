@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click, settled } from '@ember/test-helpers';
 import sinon from 'sinon';
-import type DocfyService from 'test-app-vite/services/docfy';
+import type { DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from 'test-app-vite/services/current-heading';
 import PageHeadings from 'test-app-vite/components/page-headings';
 

@@ -169,9 +169,13 @@ module.exports = {
   },
 
   treeForApp(tree: Node): Node {
-    const trees: Node[] = [this._super.treeForApp.call(this, tree)];
+    const baseTree = this._super.treeForApp.call(this, tree);
+    const trees: Node[] = [];
+    if (baseTree) {
+      trees.push(baseTree);
+    }
     if (isDeepAddonInstance(this)) {
-      return trees[0];
+      return baseTree || tree;
     }
 
     const inputs: InputNode[] = [new UnwatchedDir(this.project.root)];
@@ -187,13 +191,17 @@ module.exports = {
 
     (this.bridge as BroccoliBridge).fulfill('docfy-tree', docfyTree);
 
-    return new MergeTrees(trees, { overwrite: true });
+    return trees.length > 1 ? new MergeTrees(trees, { overwrite: true }) : trees[0];
   },
 
   treeForAddon(tree: Node): Node {
-    const trees: Node[] = [this._super.treeForAddon.call(this, tree)];
+    const baseTree = this._super.treeForAddon.call(this, tree);
+    const trees: Node[] = [];
+    if (baseTree) {
+      trees.push(baseTree);
+    }
     if (isDeepAddonInstance(this)) {
-      return trees[0];
+      return baseTree || tree;
     }
 
     const EmberApp = require('ember-cli/lib/broccoli/ember-app'); // eslint-disable-line
@@ -201,7 +209,7 @@ module.exports = {
 
     trees.push(new WriteFile('output.js', docfyOutputTemplate(modulePrefix)));
 
-    return new MergeTrees(trees);
+    return trees.length > 1 ? new MergeTrees(trees) : trees[0];
   },
 
   treeForPublic(): Node | undefined {
