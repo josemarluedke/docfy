@@ -14,13 +14,13 @@ option `tocMaxDepth`.
 
 ```hbs template
 <DocfyOutput @fromCurrentURL={{true}} as |page|>
-  <div class="mb-4 font-medium">
+  <div class='mb-4 font-medium'>
     On this page:
   </div>
-  <ul class="list-disc list-inside space-y-2">
+  <ul class='list-disc list-inside space-y-2'>
     {{#each page.headings as |heading|}}
       <li>
-        <a href="#{{heading.id}}">
+        <a href='#{{heading.id}}'>
           {{heading.title}}
         </a>
       </li>

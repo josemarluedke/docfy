@@ -15,14 +15,14 @@ describe('Extracts TOC', () => {
           root,
           urlPrefix: 'docs',
           urlSchema: 'manual',
-          pattern: '**/*.md'
-        }
+          pattern: '**/*.md',
+        },
       ]);
     });
 
-    test('it should have extracted TOC correctly', async () => {
+    test('it should have extracted TOC correctly', () => {
       const TOCs = [];
-      result.content.forEach((page) => {
+      result.content.forEach(page => {
         TOCs.push([page.source, page.meta.headings]);
       });
 
@@ -40,14 +40,14 @@ describe('Extracts TOC', () => {
           root,
           urlPrefix: 'docs',
           urlSchema: 'manual',
-          pattern: '**/*.md'
-        }
+          pattern: '**/*.md',
+        },
       ]);
     });
 
-    test('it should have extracted TOC correctly', async () => {
+    test('it should have extracted TOC correctly', () => {
       const TOCs = [];
-      result.content.forEach((page) => {
+      result.content.forEach(page => {
         TOCs.push([page.source, page.meta.headings]);
       });
 

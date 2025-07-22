@@ -9,7 +9,7 @@ const path = require('path');
 
 module.exports = {
   remarkHbsOptions: {
-    escapeCurliesCode: false
+    escapeCurliesCode: false,
   },
   // remarkPlugins: [
   //   [
@@ -26,8 +26,8 @@ module.exports = {
       root: path.join(__dirname, 'docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs'
-    }
+      urlPrefix: 'docs',
+    },
   ],
   labels: {
     components: 'Components',
@@ -35,6 +35,6 @@ module.exports = {
     helpers: 'Helpers',
     core: '@docfy/core',
     ember: '@docfy/ember-cli',
-    docs: 'Documentation'
-  }
+    docs: 'Documentation',
+  },
 };

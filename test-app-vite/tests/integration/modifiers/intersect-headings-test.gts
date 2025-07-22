@@ -218,7 +218,7 @@ module('Integration | Modifier | @docfy/intersect-headings', function (hooks) {
 
   test('it handles updates to headings', async function (assert) {
     const callback = sinon.stub();
-    let headings = [
+    const headings = [
       {
         id: 'initial-heading',
         title: 'Initial Heading',

@@ -22,10 +22,10 @@ yarn add @docfy/core</code></pre>
     {
       <span class="hljs-attr">root</span>: path.join(__dirname, <span class="hljs-string">'docs'</span>),
       <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
-      <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>
-    }
+      <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
+    },
   ])
-  .then(<span class="hljs-function">(<span class="hljs-params">result</span>) =></span> {
+  .then(<span class="hljs-function"><span class="hljs-params">result</span> =></span> {
     <span class="hljs-built_in">console</span>.log(result);
   });</code></pre>
 <h2 id="create-a-markdown-file"><a href="#create-a-markdown-file">Create a markdown file</a></h2>

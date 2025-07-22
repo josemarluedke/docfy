@@ -18,9 +18,9 @@ This is a cool feature.
 ```
 
 ```js component
-import Component from '@glimmer/component';
+import Component from "@glimmer/component";
 
 export default class MyDemo extends Component {
-  url = '/docs/ember/';
+  url = "/docs/ember/";
 }
 ```

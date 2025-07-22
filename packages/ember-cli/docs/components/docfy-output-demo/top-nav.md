@@ -9,14 +9,14 @@ application. It will link to any top-level pages as well as to the first page of
 every child.
 
 ```hbs template
-<DocfyOutput @type="nested" as |node|>
+<DocfyOutput @type='nested' as |node|>
   <ul>
     {{#each node.pages as |page|}}
       <li>
         <DocfyLink @to={{page.url}}>
           {{page.title}}
         </DocfyLink>
-     </li>
+      </li>
     {{/each}}
 
     {{#each node.children as |child|}}

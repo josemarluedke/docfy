@@ -111,7 +111,9 @@ export default ts.config(
       '.prettierrc.js',
       '.stylelintrc.js',
       '.template-lintrc.js',
+      '.docfy-config.js',
       'ember-cli-build.js',
+      'app/styles/tailwind.config.js',
     ],
     plugins: {
       n,

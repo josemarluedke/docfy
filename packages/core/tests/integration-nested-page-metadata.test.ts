@@ -11,20 +11,20 @@ describe('Generates runtime output', () => {
     const docfy = new Docfy({
       tocMaxDepth: 2,
       repository: {
-        url: 'https://github.com/user/repo'
-      }
+        url: 'https://github.com/user/repo',
+      },
     });
     result = await docfy.run([
       {
         root,
         urlPrefix: 'docs',
         urlSchema: 'manual',
-        pattern: '**/*.md'
-      }
+        pattern: '**/*.md',
+      },
     ]);
   });
 
-  test('it should have generated the nestedPageMetadata', async () => {
+  test('it should have generated the nestedPageMetadata', () => {
     expect(result.nestedPageMetadata).toMatchSnapshot();
   });
 });

@@ -1,5 +1,5 @@
-<DocfyOutput @scope="docs" as |node|>
-  <ul class="list-disc list-inside space-y-2">
+<DocfyOutput @scope='docs' as |node|>
+  <ul class='list-disc list-inside space-y-2'>
     {{#each node.pages as |page|}}
       <li>
         <DocfyLink @to={{page.url}}>
@@ -9,12 +9,12 @@
     {{/each}}
 
     {{#each node.children as |child|}}
-      <li class="block ml-4">
-        <div class="py-2">
+      <li class='block ml-4'>
+        <div class='py-2'>
           {{child.label}}
         </div>
 
-        <ul class="list-disc list-inside space-y-2">
+        <ul class='list-disc list-inside space-y-2'>
           {{#each child.pages as |page|}}
             <li>
               <DocfyLink @to={{page.url}}>

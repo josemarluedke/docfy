@@ -2,11 +2,7 @@ import path from 'path';
 import getRepoInfo from 'git-repo-info';
 import GitHost, { fromUrl } from 'hosted-git-info';
 
-function getTreePath(
-  repo: GitHost | undefined,
-  branch: string,
-  relative: string
-): string {
+function getTreePath(repo: GitHost | undefined, branch: string, relative: string): string {
   if (repo && repo.type === 'bitbucket') {
     const querystring = `?mode=edit&spa=0&at=${branch}&fileviewer=file-view-default`;
     const filepath = path.join('/', 'src', branch, relative, `{filepath}`);
@@ -18,15 +14,11 @@ function getTreePath(
 
 const repoEditUrlMap = new Map();
 
-export function getRepoEditUrl(
-  root: string,
-  repoURL: string,
-  branch = 'master'
-): string | null {
+export function getRepoEditUrl(root: string, repoURL: string, branch = 'master'): string | null {
   const key = [root, repoURL, branch].join('');
 
   if (repoEditUrlMap.has(key)) {
-    return repoEditUrlMap.get(key);
+    return repoEditUrlMap.get(key) as string;
   }
 
   let result: string | null = null;

@@ -36,20 +36,20 @@ module('Acceptance | extracted demos', function (hooks) {
       .dom(editUrls[0])
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/ember-cli/dummy-docs/packages/ember-cli/components/docfy-link-demo/demo2.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/ember-cli/dummy-docs/packages/ember-cli/components/docfy-link-demo/demo2.md',
       );
 
     assert
       .dom(editUrls[1])
       .hasAttribute(
         'href',
-        'https://github.com/josemarluedke/docfy/edit/master/packages/ember-cli/dummy-docs/packages/ember-cli/components/docfy-link-demo/demo1.md'
+        'https://github.com/josemarluedke/docfy/edit/master/packages/ember-cli/dummy-docs/packages/ember-cli/components/docfy-link-demo/demo1.md',
       );
 
     assert
       .dom(contents[0])
       .hasTextContaining(
-        'I can use markdown here. Item 1 Item 2 Super Cool This is a cool feature.'
+        'I can use markdown here. Item 1 Item 2 Super Cool This is a cool feature.',
       );
     assert.dom(contents[1]).hasTextContaining('This is a cool feature');
   });
@@ -67,11 +67,11 @@ module('Acceptance | extracted demos', function (hooks) {
     assert
       .dom(snippets[0])
       .hasTextContaining(
-        '<DocfyLink @to="/" class="font-bold" data-test-id="demo-2">'
+        '<DocfyLink @to="/" class="font-bold" data-test-id="demo-2">',
       );
     assert.dom(snippets[1]).hasTextContaining('<div data-test-id="demo-1">');
 
-    await click(findAll('.docfy-demo__snippets__tabs__button')[1]);
+    await click(findAll('.docfy-demo__snippets__tabs__button')[1]!);
     const snippet1 = findAll('.docfy-demo__snippet')[1];
     assert
       .dom(snippet1)
@@ -83,23 +83,23 @@ module('Acceptance | extracted demos', function (hooks) {
 
     // The element before the demo is marked for insertion
     const tomsterDemoPretext = findAll('p').find(
-      (el) => el.innerText.trim() === 'Here is the tomster demo'
+      (el) => el.innerText.trim() === 'Here is the tomster demo',
     );
 
     // An element from within the demo
     const tomsterDemoNode =
       tomsterDemoPretext?.nextElementSibling?.querySelector(
-        '[data-test-id="tomster"]'
+        '[data-test-id="tomster"]',
       );
 
     assert.dom(tomsterDemoNode).exists();
 
     const zoeyDemoPretext = findAll('p').find(
-      (el) => el.innerText.trim() === 'And here is the zoey demo'
+      (el) => el.innerText.trim() === 'And here is the zoey demo',
     );
 
     const zoeyDemoNode = zoeyDemoPretext?.nextElementSibling?.querySelector(
-      '[data-test-id="zoey"]'
+      '[data-test-id="zoey"]',
     );
 
     assert.dom(zoeyDemoNode).exists();
@@ -109,7 +109,7 @@ module('Acceptance | extracted demos', function (hooks) {
     await visit('/docs/ember-cli/plugins/manual-demo-insertion');
 
     const demosAllHeading = findAll('h2').find(
-      (el) => el.innerText.trim() === 'Or you can add all demos'
+      (el) => el.innerText.trim() === 'Or you can add all demos',
     );
 
     const demosAll =

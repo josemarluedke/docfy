@@ -8,7 +8,7 @@
       "*": ["types/*"]
     },
     "typeRoots": ["../../node_modules/@types", "types"],
-    "types": ["jest", "node"]
+    "types": ["node"]
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["tests/**/*"]

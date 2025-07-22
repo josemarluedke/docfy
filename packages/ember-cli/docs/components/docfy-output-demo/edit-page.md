@@ -34,14 +34,13 @@ module.exports = {
 }
 ```
 
-
 ## Enterprise (aka on premise) git services
 
 `page.editUrl` works for Github, Bitbucket, Gitlab and Sourcehut.
 
 For on-premise instances git solutions (i.e. on-premise Gitlab, or on-premise Bitbucket), we expose the `page.relativePath` so that you might construct your own custom editUrl:
 
-```hbs 
+```hbs
 <DocfyOutput @fromCurrentURL={{true}} as |page|>
   {{#if page.relativePath}}
     <a href=(concat "http://some-enterpise.com/browse/" page.relativePath)
@@ -51,4 +50,4 @@ For on-premise instances git solutions (i.e. on-premise Gitlab, or on-premise Bi
 </DocfyOutput>
 ```
 
-Note: the edit url for your on-premise instance might be more complex than the example above. But the `page.relativePath` will give you the relative path to that file in your repo. 
+Note: the edit url for your on-premise instance might be more complex than the example above. But the `page.relativePath` will give you the relative path to that file in your repo.

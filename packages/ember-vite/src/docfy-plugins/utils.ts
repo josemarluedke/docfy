@@ -8,7 +8,7 @@ const MAP_LANG_TO_EXT = {
   typescript: 'ts',
   handlebars: 'hbs',
   'html.hbs': 'hbs',
-  'html.handlebars': 'hbs'
+  'html.handlebars': 'hbs',
 };
 
 export function getExt(lang: string): string {
@@ -19,9 +19,7 @@ export function getExt(lang: string): string {
 /**
  * Checks if a property is of type DemoComponent[]
  */
-export function isDemoComponents(
-  components: unknown
-): components is DemoComponent[] {
+export function isDemoComponents(components: unknown): components is DemoComponent[] {
   if (
     Array.isArray(components) &&
     typeof components[0] == 'object' &&
@@ -34,13 +32,9 @@ export function isDemoComponents(
 }
 
 // Utility functions (same as original ember implementation)
-export function replaceNode(
-  nodes: unknown,
-  nodeToDelete: any,
-  ...newNodes: any[]
-): void {
+export function replaceNode(nodes: unknown, nodeToDelete: any, ...newNodes: any[]): void {
   if (Array.isArray(nodes)) {
-    const index = nodes.findIndex((item) => item === nodeToDelete);
+    const index = nodes.findIndex(item => item === nodeToDelete);
     if (index !== -1) {
       nodes.splice(index, 1, ...newNodes);
     }
@@ -48,24 +42,16 @@ export function replaceNode(
 }
 
 export function createDemoNodes(component: DemoComponent): Node[] {
-  const nodes: Node[] = [
-    u('html', `<DocfyDemo @id="${component.name.dashCase}" as |demo|>`)
-  ];
+  const nodes: Node[] = [u('html', `<DocfyDemo @id="${component.name.dashCase}" as |demo|>`)];
 
   if (component.description) {
     nodes.push(
       u(
         'html',
         `<demo.Description
-          ${
-            component.description.title
-              ? `@title="${component.description.title}" `
-              : ''
-          }${
-          component.description.editUrl
-            ? `@editUrl="${component.description.editUrl}"`
-            : ''
-        }>`
+          ${component.description.title ? `@title="${component.description.title}" ` : ''}${
+            component.description.editUrl ? `@editUrl="${component.description.editUrl}"` : ''
+          }>`
       ),
       component.description.ast,
       u('html', '</demo.Description>')
@@ -80,7 +66,7 @@ export function createDemoNodes(component: DemoComponent): Node[] {
 
   if (component.chunks.length > 1) {
     nodes.push(u('html', '<demo.Snippets as |Snippet|>'));
-    component.chunks.forEach((chunk) => {
+    component.chunks.forEach(chunk => {
       nodes.push(
         u('html', `<Snippet @name="${chunk.type}">`),
         chunk.snippet,
@@ -89,7 +75,7 @@ export function createDemoNodes(component: DemoComponent): Node[] {
     });
     nodes.push(u('html', '</demo.Snippets>'));
   } else {
-    component.chunks.forEach((chunk) => {
+    component.chunks.forEach(chunk => {
       nodes.push(
         u('html', `<demo.Snippet @name="${chunk.type}">`),
         chunk.snippet,
@@ -105,16 +91,13 @@ export function createDemoNodes(component: DemoComponent): Node[] {
 /*
  * Delete a node from a list of nodes
  */
-export function deleteNode(
-  nodes: unknown,
-  nodeToDelete: Node | undefined
-): void {
+export function deleteNode(nodes: unknown, nodeToDelete: Node | undefined): void {
   if (!nodeToDelete) {
     return;
   }
 
   if (Array.isArray(nodes)) {
-    const index = nodes.findIndex((item) => item === nodeToDelete);
+    const index = nodes.findIndex(item => item === nodeToDelete);
 
     if (index !== -1) {
       nodes.splice(index, 1);
@@ -150,16 +133,12 @@ export function generateDemoComponentName(
     .replace(/-/g, '');
 
   if (seenNames.has(dashCase)) {
-    return generateDemoComponentName(
-      `${dashCase}${tentativeCount}`,
-      seenNames,
-      tentativeCount + 1
-    );
+    return generateDemoComponentName(`${dashCase}${tentativeCount}`, seenNames, tentativeCount + 1);
   }
 
   seenNames.add(dashCase);
   return {
     dashCase,
-    pascalCase
+    pascalCase,
   };
 }

@@ -12,25 +12,29 @@ import { get } from '@ember/object';
       </h1>
       <DocfyOutput @type="nested" as |node|>
         <ul>
-          {{#each node.pages as |page|}}
-            <li>
-              <DocfyLink @to={{page.url}}>
-                {{page.title}}
-              </DocfyLink>
-            </li>
-          {{/each}}
+          {{#if node}}
+            {{! @glint-expect-error: We know this is NestedPageMetadata when @type="nested" }}
+            {{#each node.pages as |page|}}
+              <li>
+                <DocfyLink @to={{page.url}}>
+                  {{page.title}}
+                </DocfyLink>
+              </li>
+            {{/each}}
 
-          {{#each node.children as |child|}}
-            {{#let (get child.pages 0) as |page|}}
-              {{#if page}}
-                <li>
-                  <DocfyLink @to={{page.url}} class="pb-4">
-                    {{child.label}}
-                  </DocfyLink>
-                </li>
-              {{/if}}
-            {{/let}}
-          {{/each}}
+            {{! @glint-expect-error: We know this is NestedPageMetadata when @type="nested" }}
+            {{#each node.children as |child|}}
+              {{#let (get child.pages 0) as |page|}}
+                {{#if page}}
+                  <li>
+                    <DocfyLink @to={{page.url}} class="pb-4">
+                      {{child.label}}
+                    </DocfyLink>
+                  </li>
+                {{/if}}
+              {{/let}}
+            {{/each}}
+          {{/if}}
         </ul>
       </DocfyOutput>
     </div>

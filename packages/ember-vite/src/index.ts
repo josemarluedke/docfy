@@ -13,9 +13,7 @@ const VIRTUAL_MODULE_PREFIX = '\0';
 const DOCFY_OUTPUT_MODULE = '@docfy/ember-output';
 const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}${DOCFY_OUTPUT_MODULE}`;
 
-export default function docfyVitePlugin(
-  options: DocfyVitePluginOptions = {}
-): Plugin[] {
+export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): Plugin[] {
   const {
     root = process.cwd(),
     hmr = true,
@@ -37,7 +35,7 @@ export default function docfyVitePlugin(
         config = resolvedConfig;
         debug('Vite config resolved', {
           command: config.command,
-          mode: config.mode
+          mode: config.mode,
         });
       },
 
@@ -46,16 +44,16 @@ export default function docfyVitePlugin(
         docfyConfig = await loadDocfyConfig(root, {
           ...docfyOptions,
           config: inlineConfig,
-          configFile
+          configFile,
         });
         debug('Docfy configuration loaded', {
           sources: docfyConfig.sources?.length,
-          sourcesDetails: docfyConfig.sources?.map((s) => ({
+          sourcesDetails: docfyConfig.sources?.map(s => ({
             root: s.root,
             pattern: s.pattern,
-            urlPrefix: s.urlPrefix
+            urlPrefix: s.urlPrefix,
           })),
-          root
+          root,
         });
 
         // Initialize core components
@@ -65,7 +63,7 @@ export default function docfyVitePlugin(
         // Add all Docfy source files to Vite's watch list
         if (config.command === 'serve') {
           const sourceFiles = await processor.getSourceFiles();
-          sourceFiles.forEach((file) => {
+          sourceFiles.forEach(file => {
             debug('Adding file to watch list', { file });
             this.addWatchFile(file);
           });
@@ -97,11 +95,11 @@ export default function docfyVitePlugin(
         return null;
       },
 
-      async transform(code, id) {
+      transform(code, id) {
         if (!shouldProcessFile(id, docfyConfig, root)) return null;
 
         debug('Processing markdown file', { id });
-        const result = await processMarkdown(code, id, processor, config);
+        const result = processMarkdown(code, id, processor);
 
         return result;
       },
@@ -116,10 +114,7 @@ export default function docfyVitePlugin(
 
       ...(hmr && {
         async handleHotUpdate(ctx) {
-          if (
-            config?.command === 'serve' &&
-            shouldProcessFile(ctx.file, docfyConfig, root)
-          ) {
+          if (config?.command === 'serve' && shouldProcessFile(ctx.file, docfyConfig, root)) {
             debug('HMR update for markdown file', { file: ctx.file });
 
             try {
@@ -131,9 +126,9 @@ export default function docfyVitePlugin(
 
             return [];
           }
-        }
-      })
-    }
+        },
+      }),
+    },
   ];
 }
 

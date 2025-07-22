@@ -5,19 +5,19 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',
-    project: join(__dirname, './tsconfig.eslint.json')
+    project: join(__dirname, './tsconfig.eslint.json'),
   },
   extends: [
     '@underline/eslint-config-typescript',
     '@underline/eslint-config-node',
-    'plugin:jest/recommended'
+    'plugin:jest/recommended',
   ],
   plugins: ['jest'],
 
   settings: {
     node: {
-      tryExtensions: ['.js', '.json', '.node', '.ts']
-    }
+      tryExtensions: ['.js', '.json', '.node', '.ts'],
+    },
   },
   rules: {
     'no-unused-vars': 'off',
@@ -25,10 +25,10 @@ module.exports = {
     'node/no-missing-import': [
       'error',
       {
-        allowModules: ['unist'] // this package is only TS types @types/unist
-      }
+        allowModules: ['unist'], // this package is only TS types @types/unist
+      },
     ],
-    '@typescript-eslint/no-empty-interface': 'off'
+    '@typescript-eslint/no-empty-interface': 'off',
   },
   overrides: [
     {
@@ -36,8 +36,8 @@ module.exports = {
       rules: {
         'node/no-unpublished-import': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
-        '@typescript-eslint/no-non-null-assertion': 'off'
-      }
-    }
-  ]
+        '@typescript-eslint/no-non-null-assertion': 'off',
+      },
+    },
+  ],
 };

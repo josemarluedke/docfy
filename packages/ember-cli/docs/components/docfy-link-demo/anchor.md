@@ -2,7 +2,7 @@
 
 ```hbs template
 <DocfyOutput @fromCurrentURL={{true}} as |page|>
-  <DocfyLink @to={{page.url}} @anchor="examples">
+  <DocfyLink @to={{page.url}} @anchor='examples'>
     Link to a anchor
   </DocfyLink>
 </DocfyOutput>

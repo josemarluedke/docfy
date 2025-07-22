@@ -48,7 +48,14 @@
       "Bash(timeout 10 yarn start)",
       "mcp__puppeteer__puppeteer_click",
       "Bash(git add:*)",
-      "Bash(timeout:*)"
+      "Bash(timeout:*)",
+      "Bash(yarn install)",
+      "Bash(yarn format)",
+      "Bash(yarn:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx concurrently:*)",
+      "Bash(./node_modules/.bin/concurrently:*)",
+      "Bash(lerna run:*)"
     ],
     "deny": []
   }

@@ -9,15 +9,15 @@ refractor.alias('shell', 'sh');
 
 module.exports = {
   remarkHbsOptions: {
-    escapeCurliesCode: false
+    escapeCurliesCode: false,
   },
   remarkPlugins: [
     [
       autolinkHeadings,
       {
-        behavior: 'wrap'
-      }
-    ]
+        behavior: 'wrap',
+      },
+    ],
   ],
   plugins: [docfyWithProse],
   rehypePlugins: [() => [prism, { alias: { gts: 'ts', gjs: 'js' } }]],
@@ -26,8 +26,8 @@ module.exports = {
       root: path.join(__dirname, 'dummy-docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs'
-    }
+      urlPrefix: 'docs',
+    },
   ],
   labels: {
     components: 'Components',
@@ -35,6 +35,6 @@ module.exports = {
     helpers: 'Helpers',
     core: '@docfy/core',
     ember: '@docfy/ember-cli',
-    docs: 'Documentation'
-  }
+    docs: 'Documentation',
+  },
 };

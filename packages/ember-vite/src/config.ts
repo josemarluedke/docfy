@@ -37,9 +37,9 @@ const DEFAULT_CONFIG: DocfyConfig = {
   sources: [
     {
       pattern: '**/*.md',
-      urlPrefix: 'docs'
-    }
-  ]
+      urlPrefix: 'docs',
+    },
+  ],
 };
 
 export async function loadDocfyConfig(
@@ -91,8 +91,7 @@ export async function loadDocfyConfig(
       debug('Loaded config', { configPath });
     } catch (e: any) {
       const notFound =
-        e.code === 'ERR_MODULE_NOT_FOUND' ||
-        e.message?.includes('Cannot find module');
+        e.code === 'ERR_MODULE_NOT_FOUND' || e.message?.includes('Cannot find module');
       if (!notFound) {
         throw e;
       }
@@ -102,12 +101,7 @@ export async function loadDocfyConfig(
   }
 
   // Merge with options and set defaults
-  const mergedConfig = await mergeConfig(
-    docfyConfig,
-    options,
-    pkg,
-    !!options.config
-  );
+  const mergedConfig = await mergeConfig(docfyConfig, options, pkg, !!options.config);
   debug('Final config', { sources: mergedConfig.sources?.length });
 
   return mergedConfig;
@@ -146,8 +140,9 @@ async function mergeConfig(
   }
 
   // Add Docfy core plugins for demo and preview template processing
-  const { demoComponents, previewTemplates, docfyLinkConversion } =
-    await import('./docfy-plugins/index.js');
+  const { demoComponents, previewTemplates, docfyLinkConversion } = await import(
+    './docfy-plugins/index.js'
+  );
   // Debug: plugins loaded
   docfyConfig.plugins.unshift(
     previewTemplates, // Process preview templates first
@@ -162,25 +157,18 @@ async function mergeConfig(
 
   // Add remark-hbs plugin
   const remarkHbs = (await import('remark-hbs')).default;
-  docfyConfig.remarkPlugins.push([
-    remarkHbs,
-    docfyConfig.remarkHbsOptions || {}
-  ]);
+  docfyConfig.remarkPlugins.push([remarkHbs, docfyConfig.remarkHbsOptions || {}]);
 
   // Setup repository info
   const repoUrl = pkg.repository?.url || pkg.repository;
-  if (
-    !docfyConfig.repository &&
-    typeof repoUrl === 'string' &&
-    repoUrl !== ''
-  ) {
+  if (!docfyConfig.repository && typeof repoUrl === 'string' && repoUrl !== '') {
     docfyConfig.repository = {
-      url: repoUrl
+      url: repoUrl,
     };
   }
 
   // Set root for sources
-  docfyConfig.sources.forEach((source) => {
+  docfyConfig.sources.forEach(source => {
     if (typeof source.root === 'undefined') {
       source.root = path.join(options.root || process.cwd(), 'docs');
     }
@@ -188,10 +176,14 @@ async function mergeConfig(
 
   // Merge with runtime options, excluding plugin-specific options
   const {
-    root: _root,
-    hmr: _hmr,
-    config: _config,
-    configFile: _configFile,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    root,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    hmr,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    config,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    configFile,
     ...docfyOptions
   } = options;
 
@@ -200,7 +192,7 @@ async function mergeConfig(
     const result = { ...docfyConfig } as EmberDocfyConfig;
 
     // Only merge docfyOptions that don't already exist in the inline config
-    Object.keys(docfyOptions).forEach((key) => {
+    Object.keys(docfyOptions).forEach(key => {
       if (!(key in docfyConfig)) {
         (result as any)[key] = (docfyOptions as any)[key];
       }
@@ -212,6 +204,6 @@ async function mergeConfig(
   // For file-based config, merge normally
   return {
     ...docfyConfig,
-    ...docfyOptions
+    ...docfyOptions,
   } as EmberDocfyConfig;
 }

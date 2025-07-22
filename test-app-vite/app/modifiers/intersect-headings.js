@@ -31,7 +31,7 @@ export default modifier((element, [callback], { headings = [] }) => {
     },
     {
       rootMargin: '-80px 0px -80% 0px',
-      threshold: 0
+      threshold: 0,
     }
   );
 

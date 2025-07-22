@@ -1,4 +1,3 @@
-import type { PluginContext } from 'rollup';
 import type { PageContent } from '@docfy/core/lib/types';
 import type { ImportStatement, FileToGenerate, PluginData } from './types.js';
 import { generateComponentFiles } from './component-generator.js';
@@ -61,27 +60,21 @@ function processPageImports(page: PageContent): string {
 
   // Generate imports for demo components
   if (demoComponents?.length) {
-    demoComponents.forEach((demo) => {
+    demoComponents.forEach(demo => {
       // For GJS/GTS files, import directly; otherwise import the JS file
-      const gtsGjsChunk = demo.chunks.find((c) =>
-        ['gjs', 'gts'].includes(c.ext)
-      );
+      const gtsGjsChunk = demo.chunks.find(c => ['gjs', 'gts'].includes(c.ext));
 
       let ext = 'js'; // default to JS import
       if (gtsGjsChunk) {
         ext = gtsGjsChunk.ext; // Use GJS/GTS file directly
       }
 
-      const componentPath = getComponentImportPath(
-        page.meta.url,
-        demo.name.dashCase,
-        ext
-      );
+      const componentPath = getComponentImportPath(page.meta.url, demo.name.dashCase, ext);
 
       structuredImports.push({
         name: demo.name.pascalCase,
         path: componentPath,
-        isDefault: true
+        isDefault: true,
       });
     });
 
@@ -96,7 +89,7 @@ function processPageImports(page: PageContent): string {
         name: imp.name,
         path: imp.path,
         isDefault: imp.isDefault ?? true,
-        namedImports: imp.namedImports
+        namedImports: imp.namedImports,
       });
     });
   }
@@ -104,7 +97,7 @@ function processPageImports(page: PageContent): string {
   // Generate structured imports section
   const structuredImportsSection =
     structuredImports.length > 0
-      ? structuredImports.map((imp) => generateImportStatement(imp)).join('\n')
+      ? structuredImports.map(imp => generateImportStatement(imp)).join('\n')
       : '';
 
   // Handle raw imports from frontmatter
@@ -124,17 +117,16 @@ function processPageImports(page: PageContent): string {
   }
 
   // Combine all imports into final string
-  const allImportsSections = [
-    structuredImportsSection,
-    rawImportsSection
-  ].filter((section) => section.length > 0);
+  const allImportsSections = [structuredImportsSection, rawImportsSection].filter(
+    section => section.length > 0
+  );
 
   const finalImportsString =
     allImportsSections.length > 0 ? allImportsSections.join('\n') + '\n\n' : '';
 
   debug('Processed page imports', {
     url: page.meta.url,
-    imports: finalImportsString
+    imports: finalImportsString,
   });
 
   return finalImportsString;
@@ -154,9 +146,7 @@ function generateImportStatement(importStmt: ImportStatement): string {
     return `import ${importStmt.name} from '${importStmt.path}';`;
   } else if (importStmt.namedImports) {
     // Named imports: import { named1, named2 } from 'path'
-    return `import { ${importStmt.namedImports.join(', ')} } from '${
-      importStmt.path
-    }';`;
+    return `import { ${importStmt.namedImports.join(', ')} } from '${importStmt.path}';`;
   } else {
     // Single named import: import { name } from 'path'
     return `import { ${importStmt.name} } from '${importStmt.path}';`;
@@ -167,10 +157,7 @@ function generateImportStatement(importStmt: ImportStatement): string {
  * Generate a complete page template with path and content
  * This is the main entry point for template generation
  */
-export function generatePage(
-  page: PageContent,
-  pluginCtx: PluginContext
-): FileToGenerate[] {
+export function generatePage(page: PageContent): FileToGenerate[] {
   debug('Generating page files', { url: page.meta.url });
 
   const filesToGenerate: FileToGenerate[] = [];
@@ -191,7 +178,7 @@ export function generatePage(
   // Add template file to the list
   filesToGenerate.push({
     path: templatePath,
-    content: template
+    content: template,
   });
 
   // Add all component files to the list
@@ -202,7 +189,7 @@ export function generatePage(
     totalFiles: filesToGenerate.length,
     templatePath,
     componentFilesCount: componentFiles.length,
-    importsStringLength: importsSection.length
+    importsStringLength: importsSection.length,
   });
 
   return filesToGenerate;

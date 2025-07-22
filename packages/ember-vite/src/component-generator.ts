@@ -1,9 +1,5 @@
 import type { PageContent } from '@docfy/core/lib/types';
-import type {
-  DemoComponent,
-  DemoComponentChunk,
-  FileToGenerate
-} from './types.js';
+import type { DemoComponent, DemoComponentChunk, FileToGenerate } from './types.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite:component-generator');
@@ -16,9 +12,7 @@ export function generateComponentFiles(page: PageContent): FileToGenerate[] {
   const filesToGenerate: FileToGenerate[] = [];
 
   // Get demo components from pluginData (preview templates are now included in demoComponents)
-  const demoComponents = page.pluginData?.demoComponents as
-    | DemoComponent[]
-    | undefined;
+  const demoComponents = page.pluginData?.demoComponents as DemoComponent[] | undefined;
 
   if (!demoComponents?.length) {
     return filesToGenerate;
@@ -28,19 +22,19 @@ export function generateComponentFiles(page: PageContent): FileToGenerate[] {
   const componentFolderPath = getComponentFolderPath(page.meta.url);
 
   // Generate demo component files (matching original ember implementation)
-  demoComponents.forEach((demo) => {
+  demoComponents.forEach(demo => {
     const demoFiles = generateDemoComponentFiles(demo, componentFolderPath);
     filesToGenerate.push(...demoFiles);
     debug('Generated demo component files', {
       name: demo.name,
       files: demoFiles.length,
-      extensions: demo.chunks.map((c) => c.ext)
+      extensions: demo.chunks.map(c => c.ext),
     });
   });
 
   debug('Generated component files for page', {
     url: page.meta.url,
-    fileCount: filesToGenerate.length
+    fileCount: filesToGenerate.length,
   });
 
   return filesToGenerate;
@@ -91,12 +85,12 @@ function generateDemoComponentFiles(
   const filesToGenerate: FileToGenerate[] = [];
 
   // Generate a file for each chunk
-  demo.chunks.forEach((chunk) => {
+  demo.chunks.forEach(chunk => {
     const componentPath = `${componentFolderPath}/${demo.name.dashCase}.${chunk.ext}`;
 
     filesToGenerate.push({
       path: componentPath,
-      content: chunk.code
+      content: chunk.code,
     });
   });
 
@@ -109,7 +103,7 @@ export default class extends Component {}
 
     filesToGenerate.push({
       path: componentPath,
-      content: templateOnlyComponent
+      content: templateOnlyComponent,
     });
   }
 

@@ -48,14 +48,14 @@ Below is an example of how it works:
 
 ````md
 ```hbs preview-template
-Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
+Click in the link to navigate to the home page: <DocfyLink @to='/'>Home</DocfyLink>
 ```
 ````
 
 And here you can see how it looks like when rendered:
 
 ```hbs preview-template
-Click in the link to navigate to the home page: <DocfyLink @to="/">Home</DocfyLink>
+Click in the link to navigate to the home page: <DocfyLink @to='/'>Home</DocfyLink>
 ```
 
 ## Manual Insertion

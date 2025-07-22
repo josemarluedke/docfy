@@ -150,16 +150,29 @@ module('Acceptance | heading highlighting', function (hooks) {
 
     if (sidebarHeadingLinks.length > 0) {
       // Should have heading links with proper classes in the sidebar
-      assert.dom('[data-test-id="page-headings"] a[href="#examples"]').hasClass('block');
-      assert.dom('[data-test-id="page-headings"] a[href="#examples"]').hasClass('px-2');
-      assert.dom('[data-test-id="page-headings"] a[href="#examples"]').hasClass('py-1');
-      assert.dom('[data-test-id="page-headings"] a[href="#examples"]').hasClass('border-l-2');
-      assert.dom('[data-test-id="page-headings"] a[href="#examples"]').hasClass('hover:text-green-700');
+      assert
+        .dom('[data-test-id="page-headings"] a[href="#examples"]')
+        .hasClass('block');
+      assert
+        .dom('[data-test-id="page-headings"] a[href="#examples"]')
+        .hasClass('px-2');
+      assert
+        .dom('[data-test-id="page-headings"] a[href="#examples"]')
+        .hasClass('py-1');
+      assert
+        .dom('[data-test-id="page-headings"] a[href="#examples"]')
+        .hasClass('border-l-2');
+      assert
+        .dom('[data-test-id="page-headings"] a[href="#examples"]')
+        .hasClass('hover:text-green-700');
 
       // Should have either highlighted or transparent border
-      const examplesLink = document.querySelector('[data-test-id="page-headings"] a[href="#examples"]');
+      const examplesLink = document.querySelector(
+        '[data-test-id="page-headings"] a[href="#examples"]'
+      );
       if (examplesLink) {
-        const hasHighlight = examplesLink.classList.contains('border-green-700');
+        const hasHighlight =
+          examplesLink.classList.contains('border-green-700');
         const hasTransparent =
           examplesLink.classList.contains('border-transparent');
         assert.ok(

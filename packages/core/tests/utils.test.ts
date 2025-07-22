@@ -3,7 +3,7 @@ import {
   generateAutoUrl,
   isAnchorUrl,
   isValidUrl,
-  inferTitle
+  inferTitle,
 } from '../src/-private/utils';
 import { createRemark } from '../src/-private/remark';
 
@@ -13,22 +13,22 @@ describe('#generateManualUrl', () => {
   });
 
   test('it uses subcategory from metadata', () => {
-    expect(
-      generateManualUrl('cool/markdown.md', { subcategory: 'components' })
-    ).toBe('/components/markdown');
+    expect(generateManualUrl('cool/markdown.md', { subcategory: 'components' })).toBe(
+      '/components/markdown'
+    );
   });
 
   test('it uses category from metadata', () => {
-    expect(
-      generateManualUrl('cool/markdown.md', { category: 'awesome-lib' })
-    ).toBe('/awesome-lib/markdown');
+    expect(generateManualUrl('cool/markdown.md', { category: 'awesome-lib' })).toBe(
+      '/awesome-lib/markdown'
+    );
   });
 
   test('it uses category and subcategory from metadata', () => {
     expect(
       generateManualUrl('cool/markdown.md', {
         category: 'awesome-lib',
-        subcategory: 'helpers'
+        subcategory: 'helpers',
       })
     ).toBe('/awesome-lib/helpers/markdown');
   });
@@ -37,7 +37,7 @@ describe('#generateManualUrl', () => {
     expect(
       generateManualUrl('cool/markdown.md', {
         category: '@org/awesome-lib',
-        subcategory: 'helpers and modifiers'
+        subcategory: 'helpers and modifiers',
       })
     ).toBe('/orgawesome-lib/helpers-and-modifiers/markdown');
   });
@@ -55,81 +55,65 @@ describe('#generateManualUrl', () => {
   });
 
   test('it does not add suffix if file name is index', () => {
-    expect(generateManualUrl('cool/button/index.md', {}, 'docs', '.html')).toBe(
-      '/docs/button/'
-    );
+    expect(generateManualUrl('cool/button/index.md', {}, 'docs', '.html')).toBe('/docs/button/');
   });
 
   test('it does not add suffix if file name is readme', () => {
-    expect(
-      generateManualUrl('cool/button/readme.md', {}, 'docs', '.html')
-    ).toBe('/docs/button/');
+    expect(generateManualUrl('cool/button/readme.md', {}, 'docs', '.html')).toBe('/docs/button/');
   });
 
   test('it adds the prefix', () => {
-    expect(generateManualUrl('cool/button.md', {}, 'docs')).toBe(
-      '/docs/button'
-    );
+    expect(generateManualUrl('cool/button.md', {}, 'docs')).toBe('/docs/button');
   });
 
   test('it adds the sufifx', () => {
-    expect(generateManualUrl('cool/button.md', {}, 'docs', '.html')).toBe(
-      '/docs/button.html'
-    );
+    expect(generateManualUrl('cool/button.md', {}, 'docs', '.html')).toBe('/docs/button.html');
   });
 
   test('it lower cases the url', () => {
-    expect(generateManualUrl('cool/Button/COOL.md', {}, 'Docs')).toBe(
-      '/docs/cool'
-    );
+    expect(generateManualUrl('cool/Button/COOL.md', {}, 'Docs')).toBe('/docs/cool');
   });
 
   test('it removes any dot from file names', () => {
-    expect(
-      generateManualUrl('docs/test.this/something.test.md', {}, 'docs')
-    ).toBe('/docs/something-test');
+    expect(generateManualUrl('docs/test.this/something.test.md', {}, 'docs')).toBe(
+      '/docs/something-test'
+    );
   });
 
   test('it removes dot and underscore from file names', () => {
-    expect(
-      generateManualUrl('docs/test.this/something._test_.md', {}, 'docs')
-    ).toBe('/docs/something-test');
+    expect(generateManualUrl('docs/test.this/something._test_.md', {}, 'docs')).toBe(
+      '/docs/something-test'
+    );
   });
 });
 
 describe('#generateAutolUrl', () => {
   test('base case', () => {
     expect(generateAutoUrl('my-folder/file.md')).toBe('/my-folder/file');
-    expect(generateAutoUrl('my-folder/subfolder/file.md')).toBe(
-      '/my-folder/subfolder/file'
-    );
+    expect(generateAutoUrl('my-folder/subfolder/file.md')).toBe('/my-folder/subfolder/file');
     expect(generateAutoUrl('my-folder/subfolder/another-folder/file.md')).toBe(
       '/my-folder/subfolder/another-folder/file'
     );
   });
 
   test('it adds a trailing slash if file name is index', () => {
-    expect(generateAutoUrl('my-folder/components/index.md')).toBe(
-      '/my-folder/components/'
-    );
+    expect(generateAutoUrl('my-folder/components/index.md')).toBe('/my-folder/components/');
   });
 
   test('it adds a trailing slash if file name is readme', () => {
-    expect(generateAutoUrl('my-folder/components/README.md')).toBe(
-      '/my-folder/components/'
-    );
+    expect(generateAutoUrl('my-folder/components/README.md')).toBe('/my-folder/components/');
   });
 
   test('it does not add suffx if file name is index', () => {
-    expect(
-      generateAutoUrl('my-folder/components/index.md', 'docs', '.html')
-    ).toBe('/docs/my-folder/components/');
+    expect(generateAutoUrl('my-folder/components/index.md', 'docs', '.html')).toBe(
+      '/docs/my-folder/components/'
+    );
   });
 
   test('it does not add suffx if file name is readme', () => {
-    expect(
-      generateAutoUrl('my-folder/components/README.md', 'docs', '.html')
-    ).toBe('/docs/my-folder/components/');
+    expect(generateAutoUrl('my-folder/components/README.md', 'docs', '.html')).toBe(
+      '/docs/my-folder/components/'
+    );
   });
 
   test('it returns a slash if file in index on root', () => {
@@ -137,15 +121,11 @@ describe('#generateAutolUrl', () => {
   });
 
   test('it adds the prefix', () => {
-    expect(generateAutoUrl('my-folder/file.md', 'docs')).toBe(
-      '/docs/my-folder/file'
-    );
+    expect(generateAutoUrl('my-folder/file.md', 'docs')).toBe('/docs/my-folder/file');
   });
 
   test('it adds the sufifx', () => {
-    expect(generateAutoUrl('my-folder/file.md', 'docs', '.html')).toBe(
-      '/docs/my-folder/file.html'
-    );
+    expect(generateAutoUrl('my-folder/file.md', 'docs', '.html')).toBe('/docs/my-folder/file.html');
   });
 
   test('it lower cases the url', () => {
@@ -179,8 +159,7 @@ test('#isValidUrl', () => {
 
 describe('#inferTitle', () => {
   test('it returns heading depth 1 as title', () => {
-    const markdown =
-      '# this is the title\n Something else \n## Another heading';
+    const markdown = '# this is the title\n Something else \n## Another heading';
 
     const ast = createRemark().parse(markdown);
     expect(inferTitle(ast)).toBe('this is the title');

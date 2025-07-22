@@ -21,23 +21,23 @@ export const IMPORT_MAP = {
   DocfyDemo: {
     name: 'DocfyDemo',
     path: '@docfy/ember',
-    isDefault: false
+    isDefault: false,
   },
   DocfyLink: {
     name: 'DocfyLink',
     path: '@docfy/ember',
-    isDefault: false
+    isDefault: false,
   },
   DocfyOutput: {
     name: 'DocfyOutput',
     path: '@docfy/ember',
-    isDefault: false
+    isDefault: false,
   },
   DocfyPreviousAndNextPage: {
     name: 'DocfyPreviousAndNextPage',
     path: '@docfy/ember',
-    isDefault: false
-  }
+    isDefault: false,
+  },
 } as const satisfies Record<string, ImportStatement>;
 
 /**
@@ -45,8 +45,6 @@ export const IMPORT_MAP = {
  * @param componentName - The name of the component
  * @returns The complete ImportStatement object for the component
  */
-export function getComponentImport(
-  componentName: keyof typeof IMPORT_MAP
-): ImportStatement {
+export function getComponentImport(componentName: keyof typeof IMPORT_MAP): ImportStatement {
   return IMPORT_MAP[componentName];
 }

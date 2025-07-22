@@ -7,22 +7,22 @@ describe('it changes the url if duplicatd', () => {
       pages: [
         {
           meta: {
-            url: '/something/cool'
-          }
+            url: '/something/cool',
+          },
         },
         {
           meta: {
-            url: '/something/cool'
-          }
-        }
-      ]
+            url: '/something/cool',
+          },
+        },
+      ],
     };
 
     uniquefyUrls.runAfter(content as Context, undefined);
 
-    expect(content.pages.map((page) => page.meta.url)).toEqual([
+    expect(content.pages.map(page => page.meta.url)).toEqual([
       '/something/cool',
-      '/something/cool-1'
+      '/something/cool-1',
     ]);
   });
 
@@ -31,28 +31,28 @@ describe('it changes the url if duplicatd', () => {
       pages: [
         {
           meta: {
-            url: '/something/cool'
-          }
+            url: '/something/cool',
+          },
         },
         {
           meta: {
-            url: '/something/cool'
-          }
+            url: '/something/cool',
+          },
         },
         {
           meta: {
-            url: '/something/cool'
-          }
-        }
-      ]
+            url: '/something/cool',
+          },
+        },
+      ],
     };
 
     uniquefyUrls.runAfter(content as Context, undefined);
 
-    expect(content.pages.map((page) => page.meta.url)).toEqual([
+    expect(content.pages.map(page => page.meta.url)).toEqual([
       '/something/cool',
       '/something/cool-1',
-      '/something/cool-2'
+      '/something/cool-2',
     ]);
   });
 
@@ -61,22 +61,22 @@ describe('it changes the url if duplicatd', () => {
       pages: [
         {
           meta: {
-            url: '/something/blog/'
-          }
+            url: '/something/blog/',
+          },
         },
         {
           meta: {
-            url: '/something/blog/'
-          }
-        }
-      ]
+            url: '/something/blog/',
+          },
+        },
+      ],
     };
 
     uniquefyUrls.runAfter(content as Context, undefined);
 
-    expect(content.pages.map((page) => page.meta.url)).toEqual([
+    expect(content.pages.map(page => page.meta.url)).toEqual([
       '/something/blog/',
-      '/something/blog/index-1'
+      '/something/blog/index-1',
     ]);
   });
 });

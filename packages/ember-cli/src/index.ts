@@ -61,9 +61,9 @@ class DocfyBroccoli extends Plugin {
     const docfy = new Docfy(this.config);
     const result = await docfy.run(this.config.sources as SourceConfig[]);
     const snippets = {
-      components: {}
+      components: {},
     };
-    result.content.forEach((page) => {
+    result.content.forEach(page => {
       const parts = [this.outputPath, 'templates', page.meta.url];
 
       if (page.meta.url[page.meta.url.length - 1] === '/') {
@@ -78,8 +78,8 @@ class DocfyBroccoli extends Plugin {
 
       const demoComponents = page.pluginData.demoComponents;
       if (isDemoComponents(demoComponents)) {
-        demoComponents.forEach((component) => {
-          component.chunks.forEach((chunk) => {
+        demoComponents.forEach(component => {
+          component.chunks.forEach(chunk => {
             const chunkPath = path.join(
               this.outputPath,
               'components',
@@ -89,7 +89,7 @@ class DocfyBroccoli extends Plugin {
 
             snippets.components[`${component.name.dashCase}`] = {
               ...(snippets.components[`${component.name.dashCase}`] || {}),
-              [chunk.ext]: chunk.code
+              [chunk.ext]: chunk.code,
             };
             fs.writeFileSync(chunkPath, chunk.code);
           });
@@ -103,7 +103,7 @@ class DocfyBroccoli extends Plugin {
             ensureDirectoryExistence(chunkPath);
             snippets.components[`${component.name.dashCase}`] = {
               ...(snippets.components[`${component.name.dashCase}`] || {}),
-              js: templateOnlyComponent
+              js: templateOnlyComponent,
             };
             fs.writeFileSync(chunkPath, templateOnlyComponent);
           }
@@ -116,25 +116,14 @@ class DocfyBroccoli extends Plugin {
       `export default ${JSON.stringify({ nested: result.nestedPageMetadata })};`
     );
 
-    const urlsJsonFile = path.join(
-      this.outputPath,
-      'public',
-      'docfy-urls.json'
-    );
+    const urlsJsonFile = path.join(this.outputPath, 'public', 'docfy-urls.json');
 
     ensureDirectoryExistence(urlsJsonFile);
-    fs.writeFileSync(
-      urlsJsonFile,
-      JSON.stringify(result.content.map((page) => page.meta.url))
-    );
-    const snippetsJsonFile = path.join(
-      this.outputPath,
-      'public',
-      'docfy-snippets.json'
-    );
+    fs.writeFileSync(urlsJsonFile, JSON.stringify(result.content.map(page => page.meta.url)));
+    const snippetsJsonFile = path.join(this.outputPath, 'public', 'docfy-snippets.json');
     ensureDirectoryExistence(snippetsJsonFile);
     fs.writeFileSync(snippetsJsonFile, JSON.stringify(snippets));
-    result.staticAssets.forEach((asset) => {
+    result.staticAssets.forEach(asset => {
       const dest = path.join(this.outputPath, 'public', asset.toPath);
       ensureDirectoryExistence(dest);
       fs.copyFileSync(asset.fromPath, dest);
@@ -180,7 +169,7 @@ module.exports = {
 
     const inputs: InputNode[] = [new UnwatchedDir(this.project.root)];
 
-    (this.docfyConfig as DocfyConfig).sources.forEach((item) => {
+    (this.docfyConfig as DocfyConfig).sources.forEach(item => {
       if (item.root && item.root !== this.project.root) {
         inputs.push(item.root);
       }
@@ -217,13 +206,10 @@ module.exports = {
       return;
     }
 
-    return new Funnel(
-      (this.bridge as BroccoliBridge).placeholderFor('docfy-tree'),
-      {
-        srcDir: 'public',
-        destDir: './'
-      }
-    );
+    return new Funnel((this.bridge as BroccoliBridge).placeholderFor('docfy-tree'), {
+      srcDir: 'public',
+      destDir: './',
+    });
   },
 
   urlsForPrember(distDir: string): string[] {
@@ -233,5 +219,5 @@ module.exports = {
       // empty
     }
     return [];
-  }
+  },
 };

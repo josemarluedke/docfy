@@ -15,11 +15,7 @@ export class DocfyProcessor {
   private fileManager: FileManager;
   private currentResult: any = null;
 
-  constructor(
-    config: ResolvedConfig,
-    docfyConfig: DocfyConfig,
-    fileManager: FileManager
-  ) {
+  constructor(config: ResolvedConfig, docfyConfig: DocfyConfig, fileManager: FileManager) {
     this.config = config;
     this.docfyConfig = docfyConfig;
     this.docfyInstance = new Docfy(docfyConfig);
@@ -30,14 +26,12 @@ export class DocfyProcessor {
     debug('Processing all markdown files...');
 
     try {
-      const result = await this.docfyInstance.run(
-        this.docfyConfig.sources as any
-      );
+      const result = await this.docfyInstance.run(this.docfyConfig.sources as any);
       this.currentResult = result;
 
       debug('Markdown processing completed', {
         contentCount: result.content.length,
-        staticAssetsCount: result.staticAssets.length
+        staticAssetsCount: result.staticAssets.length,
       });
 
       this.generateTemplates(result);
@@ -54,9 +48,7 @@ export class DocfyProcessor {
     debug('Processing changed file', { filePath });
 
     try {
-      const result = await this.docfyInstance.run(
-        this.docfyConfig.sources as any
-      );
+      const result = await this.docfyInstance.run(this.docfyConfig.sources as any);
       this.currentResult = result;
 
       const changedPage = result.content.find((page: any) => {
@@ -93,11 +85,11 @@ export class DocfyProcessor {
   }
 
   private generateTemplateForPage(page: any): void {
-    const filesToGenerate = generatePage(page, {} as any);
+    const filesToGenerate = generatePage(page);
 
     debug('Generated files for page', {
       url: page.meta.url,
-      fileCount: filesToGenerate.length
+      fileCount: filesToGenerate.length,
     });
 
     this.fileManager.writeFiles(filesToGenerate);

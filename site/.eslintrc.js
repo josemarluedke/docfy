@@ -1,11 +1,11 @@
 module.exports = {
   parserOptions: {
-    project: require.resolve('../tsconfig.eslint.json')
+    project: require.resolve('../tsconfig.eslint.json'),
   },
   plugins: [],
   extends: ['@underline/eslint-config-ember-typescript'],
   rules: {
-    'prefer-rest-params': 'off'
+    'prefer-rest-params': 'off',
   },
   overrides: [
     // node files
@@ -18,17 +18,14 @@ module.exports = {
         'ember-cli-build.js',
         'testem.js',
         'config/**/*.js',
-        'app/styles/*.js'
+        'app/styles/*.js',
       ],
-      extends: [
-        '@underline/eslint-config-node',
-        '@underline/eslint-config-ember-typescript'
-      ],
+      extends: ['@underline/eslint-config-node', '@underline/eslint-config-ember-typescript'],
       rules: {
         'no-unused-vars': 'off',
         'node/no-unsupported-features/es-syntax': 'off',
-        'node/no-missing-import': 'off'
-      }
-    }
-  ]
+        'node/no-missing-import': 'off',
+      },
+    },
+  ],
 };

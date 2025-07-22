@@ -9,36 +9,36 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export default {
   repository: {
     url: 'https://github.com/josemarluedke/docfy',
-    editBranch: 'main'
+    editBranch: 'main',
   },
   tocMaxDepth: 3,
   remarkPlugins: [
     [
       autolinkHeadings,
       {
-        behavior: 'wrap'
-      }
+        behavior: 'wrap',
+      },
     ],
     codeImport,
-    highlight
+    highlight,
   ],
   sources: [
     {
       root: path.join(__dirname, '../docs'),
       pattern: '**/*.md',
-      urlPrefix: 'docs'
+      urlPrefix: 'docs',
     },
     {
       root: path.resolve(__dirname, '../packages/ember-cli/docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
-      urlPrefix: 'docs/ember'
-    }
+      urlPrefix: 'docs/ember',
+    },
   ],
   labels: {
     components: 'Components',
     core: '@docfy/core',
     ember: '@docfy/ember-cli',
-    docs: 'Documentation'
-  }
+    docs: 'Documentation',
+  },
 };

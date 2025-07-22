@@ -4,7 +4,6 @@
 process.env.EXPERIMENTAL_RENDER_MODE_SERIALIZE = true;
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
-const path = require('path');
 
 if (process.env.EMBROIDER) {
   process.env.FASTBOOT_DISABLED = true;
@@ -18,7 +17,7 @@ module.exports = function (defaults) {
   if (process.env.FASTBOOT_DISABLED) {
     const Funnel = require('broccoli-funnel');
     trees.tests = new Funnel('tests', {
-      exclude: ['fastboot/**']
+      exclude: ['fastboot/**'],
     });
   }
 
@@ -37,7 +36,7 @@ module.exports = function (defaults) {
       staticAddonTestSupportTrees: true,
       staticAddonTrees: true,
       staticHelpers: true,
-      staticComponents: true
+      staticComponents: true,
     });
 
     return require('prember').prerender(app, compiledApp);

@@ -13,7 +13,9 @@ interface DocfyOutputSignature {
     scope?: string;
   };
   Blocks: {
-    default: [output: NestedPageMetadata | PageMetadata[] | PageMetadata | undefined];
+    default: [
+      output: NestedPageMetadata | PageMetadata[] | PageMetadata | undefined,
+    ];
   };
 }
 

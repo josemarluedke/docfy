@@ -15,7 +15,7 @@ export function shouldProcessFile(
 ): boolean {
   if (!docfyConfig?.sources) return false;
 
-  return docfyConfig.sources.some((source) => {
+  return docfyConfig.sources.some(source => {
     const sourceRoot = path.resolve(source.root || root);
     const resolvedFilePath = path.resolve(filePath);
 
@@ -49,7 +49,7 @@ export async function getDocfySourceFiles(
       const files = await fastGlob(pattern, {
         cwd: sourceRoot,
         absolute: true,
-        ignore: ['node_modules/**', ...ignore]
+        ignore: ['node_modules/**', ...ignore],
       });
 
       allFiles.push(...files);
@@ -57,7 +57,7 @@ export async function getDocfySourceFiles(
       debug('Found source files for pattern', {
         pattern,
         sourceRoot,
-        fileCount: files.length
+        fileCount: files.length,
       });
     } catch (error) {
       debug('Error globbing files', { pattern, sourceRoot, error });
@@ -76,11 +76,11 @@ export function loadVirtualDocfyOutput(docfyResult: any): string {
   if (!docfyResult) {
     // Return empty structure when no result is available yet
     return `export default ${JSON.stringify({
-      nested: { name: '/', pages: [], children: [] }
+      nested: { name: '/', pages: [], children: [] },
     })};`;
   }
 
   return `export default ${JSON.stringify({
-    nested: docfyResult.nestedPageMetadata
+    nested: docfyResult.nestedPageMetadata,
   })};`;
 }

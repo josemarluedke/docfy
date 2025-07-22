@@ -105,7 +105,7 @@ page because of Ember's routing and templating patterns.
 In your `app/templates/docs.hbs` add the following:
 
 ```hbs
-<DocfyOutput @scope="docs" as |node|>
+<DocfyOutput @scope='docs' as |node|>
   <ul>
     {{#each node.pages as |page|}}
       <li>

@@ -1,24 +1,15 @@
 import { PageMetadata, NestedPageMetadata } from '../types';
 
-function findChild(
-  node: NestedPageMetadata,
-  name: string
-): NestedPageMetadata | undefined {
-  return node.children.find((item) => {
+function findChild(node: NestedPageMetadata, name: string): NestedPageMetadata | undefined {
+  return node.children.find(item => {
     return item.name === name;
   });
 }
 
 function sortByOrder(pages: PageMetadata[]): PageMetadata[] {
   return pages.sort((a, b) => {
-    const aOrder =
-      typeof a.frontmatter.order !== 'undefined'
-        ? Number(a.frontmatter.order)
-        : 998;
-    const bOrder =
-      typeof b.frontmatter.order !== 'undefined'
-        ? Number(b.frontmatter.order)
-        : 999;
+    const aOrder = typeof a.frontmatter.order !== 'undefined' ? Number(a.frontmatter.order) : 998;
+    const bOrder = typeof b.frontmatter.order !== 'undefined' ? Number(b.frontmatter.order) : 999;
     return aOrder - bOrder;
   });
 }
@@ -32,12 +23,11 @@ export function transformToNestedPageMetadata(
     name: '/',
     label: labels['/'] || '/',
     pages: [],
-    children: []
+    children: [],
   };
 
   pages.forEach((item): void => {
-    let url =
-      typeof item.relativeUrl === 'string' ? item.relativeUrl : item.url;
+    let url = typeof item.relativeUrl === 'string' ? item.relativeUrl : item.url;
 
     url = url[0] === '/' ? url.substring(1) : url;
     const urlParts = url.split('/');
@@ -58,7 +48,7 @@ export function transformToNestedPageMetadata(
             name: name,
             label: labels[name] || name,
             pages: [],
-            children: []
+            children: [],
           };
           node.children.push(child);
 

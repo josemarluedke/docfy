@@ -13,9 +13,9 @@ const purgecssOptions = {
     './app/**/*.hbs',
     '../**/*.md',
     './node_modules/**/*.hbs',
-    '../node_modules/**/*.hbs'
+    '../node_modules/**/*.hbs',
   ],
-  defaultExtractor: (content) => {
+  defaultExtractor: content => {
     // Capture as liberally as possible, including things like `h-(screen-1.5)`
     const broadMatches = content.match(/[^<>"'`\s]*[^<>"'`\s:]/g) || [];
 
@@ -24,19 +24,19 @@ const purgecssOptions = {
 
     return broadMatches.concat(innerMatches);
   },
-  whitelistPatterns: [/js-/, /mode-dark/]
+  whitelistPatterns: [/js-/, /mode-dark/],
 };
 
 const postcssPlugins = [
   {
     module: require('postcss-import'),
     options: {
-      path: [path.join(__dirname, '../node_modules')]
-    }
+      path: [path.join(__dirname, '../node_modules')],
+    },
   },
   require('tailwindcss')(path.join('app', 'styles', 'tailwind.config.js')),
   require('postcss-nested'),
-  require('autoprefixer')
+  require('autoprefixer'),
 ];
 if (env !== 'development' || process.env.PURGE_CSS === 'true') {
   const purgecss = require('@fullhuman/postcss-purgecss')(purgecssOptions);
@@ -46,19 +46,18 @@ if (env !== 'development' || process.env.PURGE_CSS === 'true') {
 module.exports = function (defaults) {
   const app = new EmberApp(defaults, {
     'ember-inline-css': {
-      filter:
-        env === 'development' ? [] : ['/assets/vendor.css', '/assets/site.css']
+      filter: env === 'development' ? [] : ['/assets/vendor.css', '/assets/site.css'],
     },
     prember: {
-      urls: ['/']
+      urls: ['/'],
     },
     postcssOptions: {
       compile: {
         enabled: true,
         cacheInclude: [/.*\.css$/, /.tailwind\.config\.js$/],
-        plugins: postcssPlugins
-      }
-    }
+        plugins: postcssPlugins,
+      },
+    },
   });
 
   return app.toTree();

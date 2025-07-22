@@ -1,4 +1,3 @@
-import type { ResolvedConfig } from 'vite';
 import type { DocfyProcessor } from './docfy-processor.js';
 import debugFactory from 'debug';
 
@@ -9,12 +8,11 @@ export interface MarkdownProcessResult {
   map?: any;
 }
 
-export async function processMarkdown(
+export function processMarkdown(
   code: string,
   id: string,
-  processor: DocfyProcessor,
-  config: ResolvedConfig
-): Promise<MarkdownProcessResult | null> {
+  processor: DocfyProcessor
+): MarkdownProcessResult | null {
   debug('Processing markdown file', { id });
 
   try {
@@ -34,13 +32,13 @@ export async function processMarkdown(
     debug('Found page for file', {
       url: page.meta.url,
       title: page.meta.title,
-      hasPluginData: Object.keys(page.pluginData || {}).length > 0
+      hasPluginData: Object.keys(page.pluginData || {}).length > 0,
     });
 
     return {
       code: `// Processed by Docfy - ${page.meta.title}
 export default ${JSON.stringify(page.meta)};`,
-      map: null
+      map: null,
     };
   } catch (error) {
     debug('Error processing markdown file', { id, error });

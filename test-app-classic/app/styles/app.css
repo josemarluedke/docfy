@@ -1,8 +1,7 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
-
-@import './highlight.css';
+@import url("tailwindcss/base");
+@import url("tailwindcss/components");
+@import url("tailwindcss/utilities");
+@import url("./highlight.css");
 
 .docfy-demo__example {
   @apply p-4 border-l border-r;
@@ -23,6 +22,7 @@
     }
   }
 }
+
 .docfy-demo__snippets {
   &__tabs {
     @apply px-2 border-l border-r;
@@ -47,8 +47,10 @@
     @apply text-sm leading-normal;
     @apply font-mono;
     @apply rounded-b;
+
     font-weight: 400;
     scrollbar-width: none;
+
     &::-webkit-scrollbar {
       display: none;
     }

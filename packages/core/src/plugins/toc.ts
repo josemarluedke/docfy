@@ -17,7 +17,7 @@ function getHeading(node: HeadingNode): Heading {
   return {
     title: toString(node),
     id: node.data.id,
-    depth: node.depth
+    depth: node.depth,
   };
 }
 
@@ -68,5 +68,5 @@ export default plugin({
 
       page.meta.headings = headings;
     });
-  }
+  },
 });

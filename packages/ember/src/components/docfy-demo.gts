@@ -38,10 +38,17 @@ interface DocfyDemoDescriptionSignature {
 
 class DocfyDemoDescription extends Component<DocfyDemoDescriptionSignature> {
   <template>
-    <div class="docfy-demo__description" data-test-id="demo-description" ...attributes>
+    <div
+      class="docfy-demo__description"
+      data-test-id="demo-description"
+      ...attributes
+    >
       <div class="docfy-demo__description__header" data-test-id="demo-header">
         {{#if @title}}
-          <h3 class="docfy-demo__description__header__title" data-test-id="demo-title">
+          <h3
+            class="docfy-demo__description__header__title"
+            data-test-id="demo-title"
+          >
             <a href="#{{@id}}">
               <span class="icon icon-link"></span>
             </a>
@@ -77,7 +84,11 @@ interface DocfyDemoExampleSignature {
 }
 
 const DocfyDemoExample: TOC<DocfyDemoExampleSignature> = <template>
-  <div class="docfy-demo__example not-prose" data-test-id="demo-example" ...attributes>
+  <div
+    class="docfy-demo__example not-prose"
+    data-test-id="demo-example"
+    ...attributes
+  >
     {{yield}}
   </div>
 </template>;
@@ -109,7 +120,7 @@ class DocfyDemoSnippet extends Component<DocfyDemoSnippetSignature> {
 
       this.args.registerSnippet({
         id: this.id,
-        name
+        name,
       });
     }
   }
@@ -124,7 +135,12 @@ class DocfyDemoSnippet extends Component<DocfyDemoSnippetSignature> {
 
   <template>
     {{#if this.isActive}}
-      <div class="docfy-demo__snippet" data-test-id="demo-snippet" data-test-snippet-name="{{@name}}" ...attributes>
+      <div
+        class="docfy-demo__snippet"
+        data-test-id="demo-snippet"
+        data-test-snippet-name="{{@name}}"
+        ...attributes
+      >
         {{yield}}
       </div>
     {{/if}}
@@ -161,14 +177,18 @@ class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignature> {
         {{#each this.snippets as |snippet|}}
           <button
             type="button"
-            class="docfy-demo__snippets__tabs__button {{
-              if
-              (docfyEq this.active snippet.id)
-              "docfy-demo__snippets__tabs__button--active"
-            }}"
+            class="docfy-demo__snippets__tabs__button
+              {{if
+                (docfyEq this.active snippet.id)
+                'docfy-demo__snippets__tabs__button--active'
+              }}"
             data-test-id="demo-tab-button"
             data-test-snippet-name="{{snippet.name}}"
-            data-test-is-active="{{if (docfyEq this.active snippet.id) 'true' 'false'}}"
+            data-test-is-active="{{if
+              (docfyEq this.active snippet.id)
+              'true'
+              'false'
+            }}"
             {{on "click" (fn this.setActiveSnippet snippet.id)}}
           >
             {{snippet.name}}
@@ -176,7 +196,13 @@ class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignature> {
         {{/each}}
       </div>
 
-      {{yield (component DocfyDemoSnippet registerSnippet=this.registerSnippet active=this.active)}}
+      {{yield
+        (component
+          DocfyDemoSnippet
+          registerSnippet=this.registerSnippet
+          active=this.active
+        )
+      }}
     </div>
   </template>
 }
@@ -196,14 +222,20 @@ interface DocfyDemoSignature {
         Description: any;
         Snippet: any;
         Snippets: typeof DocfyDemoSnippets;
-      }
+      },
     ];
   };
 }
 
 export default class DocfyDemo extends Component<DocfyDemoSignature> {
   <template>
-    <div id={{@id}} class="docfy-demo" data-test-id="docfy-demo" data-test-demo-id="{{@id}}" ...attributes>
+    <div
+      id={{@id}}
+      class="docfy-demo"
+      data-test-id="docfy-demo"
+      data-test-demo-id="{{@id}}"
+      ...attributes
+    >
       {{yield
         (hash
           Example=DocfyDemoExample

@@ -6,21 +6,21 @@ const root = path.resolve(__dirname, './__fixtures__');
 
 test('it should work', async () => {
   const docfy = new Docfy({
-    plugins: [withProse]
+    plugins: [withProse],
   });
   const result = await docfy.run([
     {
       root,
       urlPrefix: 'docs',
-      pattern: '**/*.md'
-    }
+      pattern: '**/*.md',
+    },
   ]);
 
   const htmls = [];
-  result.content.forEach((page) => {
+  result.content.forEach(page => {
     htmls.push([page.source, page.rendered]);
 
-    page.demos?.forEach((demo) => {
+    page.demos?.forEach(demo => {
       htmls.push([demo.source, demo.rendered]);
     });
   });
@@ -30,21 +30,21 @@ test('it should work', async () => {
 
 test('it should use custom class', async () => {
   const docfy = new Docfy({
-    plugins: [withProse({ className: 'prose dark:prose-invert' })]
+    plugins: [withProse({ className: 'prose dark:prose-invert' })],
   });
   const result = await docfy.run([
     {
       root,
       urlPrefix: 'docs',
-      pattern: '**/*.md'
-    }
+      pattern: '**/*.md',
+    },
   ]);
 
   const htmls = [];
-  result.content.forEach((page) => {
+  result.content.forEach(page => {
     htmls.push([page.source, page.rendered]);
 
-    page.demos?.forEach((demo) => {
+    page.demos?.forEach(demo => {
       htmls.push([demo.source, demo.rendered]);
     });
   });

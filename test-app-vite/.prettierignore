@@ -1,13 +1,13 @@
-# unconventional js
-/blueprints/*/files/
+# Generated files
+app/templates/docs/
+public/docfy-urls.json
 
-# compiled output
-/dist/
+# Build output
+dist/
+tmp/
 
-# misc
-/coverage/
-!.*
-.*/
-/pnpm-lock.yaml
-ember-cli-update.json
-*.html
+# Dependencies
+node_modules/
+
+# Misc
+coverage/

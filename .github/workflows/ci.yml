@@ -26,7 +26,7 @@ jobs:
         run: yarn install
       - name: Compile TypeScript
         run: yarn compile
-      - name: Lint JS
-        run: yarn lint:js
+      - name: Lint
+        run: yarn lint
       - name: Test
-        run: yarn test
+        run: cd packages/core && yarn test

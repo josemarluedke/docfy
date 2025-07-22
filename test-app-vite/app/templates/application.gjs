@@ -80,4 +80,3 @@ import ThemeSwitcher from '../components/theme-switcher';
     </main>
   </div>
 </template>
-

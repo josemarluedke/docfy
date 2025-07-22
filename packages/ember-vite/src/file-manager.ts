@@ -42,14 +42,14 @@ export class FileManager {
       this.context?.emitFile({
         type: 'asset',
         fileName,
-        source: content
+        source: content,
       });
       debug('Emitted JSON asset (build)', { fileName });
     }
   }
 
   private writeFilesToDisk(files: FileToGenerate[]): void {
-    files.forEach((file) => {
+    files.forEach(file => {
       const fullPath = path.join(process.cwd(), file.path);
       const dir = path.dirname(fullPath);
 
@@ -68,11 +68,11 @@ export class FileManager {
       return;
     }
 
-    files.forEach((file) => {
+    files.forEach(file => {
       this.context!.emitFile({
         type: 'asset',
         fileName: file.path,
-        source: file.content
+        source: file.content,
       });
       debug('Emitted file asset', { path: file.path });
     });
@@ -83,11 +83,11 @@ export class FileManager {
       return;
     }
 
-    staticAssets.forEach((asset) => {
+    staticAssets.forEach(asset => {
       this.context!.emitFile({
         type: 'asset',
         fileName: asset.toPath,
-        source: fs.readFileSync(asset.fromPath)
+        source: fs.readFileSync(asset.fromPath),
       });
     });
 

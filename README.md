@@ -29,7 +29,7 @@ const root = path.resolve(__dirname, projectRoot);
 
 (async function (): Promise<void> {
   const docfy = new Docfy({
-    remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs]
+    remarkPlugins: [[autolinkHeadings, { behavior: 'append' }], hbs],
   });
 
   const docs = await docfy.run([
@@ -37,8 +37,8 @@ const root = path.resolve(__dirname, projectRoot);
       root,
       urlPrefix: 'docs',
       urlSchema: 'manual',
-      pattern: '**/*.md'
-    }
+      pattern: '**/*.md',
+    },
   ]);
 
   console.log(docs);

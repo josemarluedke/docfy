@@ -9,7 +9,7 @@ const slug = Slugger.slug;
 
 function clearURL(parts: string[], suffix: string): string {
   const url = parts
-    .map((item) => {
+    .map(item => {
       return item
         .toLowerCase()
         .replace(/(\._)|(\.)/g, '-')
@@ -54,11 +54,7 @@ export function generateManualUrl(
   return clearURL(parts, ignoreSuffix ? '' : suffix || '');
 }
 
-export function generateAutoUrl(
-  source: string,
-  prefix?: string,
-  suffix?: string
-): string {
+export function generateAutoUrl(source: string, prefix?: string, suffix?: string): string {
   let ignoreSuffix = false;
   source = source.replace(/^\//, '');
   const parts: string[] = [''];
@@ -81,7 +77,7 @@ export function generateAutoUrl(
 
 export function inferTitle(ast: Node): string | undefined {
   let docTitle: string | undefined;
-  visit(ast, 'heading', (node) => {
+  visit(ast, 'heading', node => {
     const { depth } = node as never;
     if (depth !== 1) return;
     docTitle = toString(node);
@@ -105,16 +101,13 @@ export function isAnchorUrl(s: string): boolean {
 /*
  * Delete a node from a list of nodes
  */
-export function deleteNode(
-  nodes: unknown,
-  nodeToDelete: Node | undefined
-): void {
+export function deleteNode(nodes: unknown, nodeToDelete: Node | undefined): void {
   if (!nodeToDelete) {
     return;
   }
 
   if (Array.isArray(nodes)) {
-    const index = nodes.findIndex((item) => item === nodeToDelete);
+    const index = nodes.findIndex(item => item === nodeToDelete);
 
     if (index !== -1) {
       nodes.splice(index, 1);
@@ -128,5 +121,5 @@ export const DEFAULT_IGNORE = [
   '/**/dist/**',
   'node_modules/**',
   '.git/**',
-  'dist/**'
+  'dist/**',
 ];
