@@ -21,14 +21,16 @@ Remove the `<WelcomePage />` from `app/templates/application.hbs` if present.
 Choose your build integration and install both packages:
 
 **For Classic Ember CLI:**
+
 ```bash
 npm install --save-dev @docfy/ember-cli
 npm install @docfy/ember
 ```
 
 **For Vite Builds:**
+
 ```bash
-npm install --save-dev @docfy/ember-vite  
+npm install --save-dev @docfy/ember-vite
 npm install @docfy/ember
 ```
 
@@ -58,20 +60,24 @@ Add the plugin to your `vite.config.mjs`:
 
 ```js
 import { defineConfig } from 'vite';
-import { docfyVite } from '@docfy/ember-vite';
+import docfy from '@docfy/ember-vite';
 
 export default defineConfig({
   plugins: [
+    docfy(
+      /** @type {import('@docfy/ember-vite').DocfyViteOptions} */
+      {
+        root: process.cwd(),
+        hmr: true,
+        sources: [
+          {
+            pattern: 'docs/**/*.md',
+            urlPrefix: 'docs',
+          },
+        ],
+      }
+    ),
     // ... other plugins
-    docfyVite({
-      sources: [
-        {
-          root: path.resolve(__dirname, 'docs'),
-          pattern: '**/*.md',
-          urlPrefix: 'docs',
-        },
-      ],
-    }),
   ],
 });
 ```
@@ -106,7 +112,7 @@ title: Welcome
 
 # Welcome to My Documentation
 
-This is my first Docfy documentation site! 
+This is my first Docfy documentation site!
 
 ## Getting Started
 
@@ -117,7 +123,7 @@ Add another page at `docs/installation.md`:
 
 ```md
 ---
-title: Installation  
+title: Installation
 ---
 
 # Installation
@@ -134,12 +140,12 @@ Follow these steps to install the project:
 Create `app/templates/docs.hbs` to add a sidebar:
 
 ```hbs
-<div class="docs-layout">
-  <aside class="sidebar">
-    <DocfyOutput @scope="docs" as |node|>
+<div class='docs-layout'>
+  <aside class='sidebar'>
+    <DocfyOutput @scope='docs' as |node|>
       <nav>
         {{#each node.pages as |page|}}
-          <DocfyLink @to={{page.url}} class="nav-link">
+          <DocfyLink @to={{page.url}} class='nav-link'>
             {{page.title}}
           </DocfyLink>
         {{/each}}
@@ -147,19 +153,21 @@ Create `app/templates/docs.hbs` to add a sidebar:
     </DocfyOutput>
   </aside>
 
-  <main class="content">
+  <main class='content'>
     {{outlet}}
-    
+
     <DocfyPreviousAndNextPage as |previous next|>
-      <div class="page-nav">
+      <div class='page-nav'>
         {{#if previous}}
-          <DocfyLink @to={{previous.url}} class="prev-link">
-            ← {{previous.title}}
+          <DocfyLink @to={{previous.url}} class='prev-link'>
+            ←
+            {{previous.title}}
           </DocfyLink>
         {{/if}}
         {{#if next}}
-          <DocfyLink @to={{next.url}} class="next-link">
-            {{next.title}} →
+          <DocfyLink @to={{next.url}} class='next-link'>
+            {{next.title}}
+            →
           </DocfyLink>
         {{/if}}
       </div>
@@ -185,3 +193,4 @@ Now that you have a basic documentation site running:
 - Check out specific build integration guides for [Ember CLI](./ember-cli.md) or [Vite](./ember-vite.md)
 
 Your documentation site will grow as you add more markdown files to the `docs` folder. Each file becomes a page with automatic routing and navigation.
+

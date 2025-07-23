@@ -25,20 +25,18 @@ Add the Docfy plugin directly to your `vite.config.mjs`:
 
 ```js
 import { defineConfig } from 'vite';
-import { docfyVite } from '@docfy/ember-vite';
+import docfy from '@docfy/ember-vite';
 
 export default defineConfig({
   plugins: [
+    docfy(
+      /** @type {import('@docfy/ember-vite').DocfyViteOptions} */
+      {
+        root: process.cwd(),
+        hmr: true,
+      }
+    ),
     // ... other Embroider plugins
-    docfyVite({
-      sources: [
-        {
-          root: path.resolve(__dirname, 'docs'),
-          pattern: '**/*.md',
-          urlPrefix: 'docs',
-        },
-      ],
-    }),
   ],
 });
 ```
