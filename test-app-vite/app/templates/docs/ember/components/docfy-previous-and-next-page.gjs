@@ -13,7 +13,7 @@ would prevent linking to a page in tutorials from a documentation page.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-components-docfy-previous-and-next-page-simple" as |demo|>
 <demo.Description
-          @title="Simple usage" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-previous-and-next-page-demo/simple.md">
+          @title="Simple usage" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-previous-and-next-page-demo/simple.md">
 
 </demo.Description>
 <demo.Example>
@@ -44,7 +44,7 @@ would prevent linking to a page in tutorials from a documentation page.</p>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-previous-and-next-page-scope" as |demo|>
 <demo.Description
-          @title="Scoping" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-previous-and-next-page-demo/scope.md">
+          @title="Scoping" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-previous-and-next-page-demo/scope.md">
 <p>This example passes the argument <code>@scope</code> to the component.</p>
 </demo.Description>
 <demo.Example>

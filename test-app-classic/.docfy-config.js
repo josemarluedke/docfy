@@ -34,7 +34,7 @@ module.exports = {
     plugins: 'Plugins',
     helpers: 'Helpers',
     core: '@docfy/core',
-    ember: '@docfy/ember-cli',
+    ember: '@docfy/ember',
     docs: 'Documentation',
   },
 };

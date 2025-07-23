@@ -22,7 +22,7 @@ the following values:</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-components-docfy-output-sidebar" as |demo|>
 <demo.Description
-          @title="Sidebar Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-output-demo/sidebar.md">
+          @title="Sidebar Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-output-demo/sidebar.md">
 <p>In this example, we are filtering the <code>NestedPageMetadata</code> by the scope name <code>docs</code>.
 Then we use the yielded data to render pages, their children, and their children's
 pages. Depending on how your documentation is structured, you might need to render
@@ -69,7 +69,7 @@ too deep into the tree to display all items.</p>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-on-this-page" as |demo|>
 <demo.Description
-          @title="On this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-output-demo/on-this-page.md">
+          @title="On this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-output-demo/on-this-page.md">
 <p>In this example, we are using the option <code>@fromCurrentURL</code>. It tells the component
 to search for the definition of the page that corresponds to the current URL.
 We are then using the <code>headings</code> property, a data structure that represents a
@@ -100,7 +100,7 @@ option <code>tocMaxDepth</code>.</p>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-edit-page" as |demo|>
 <demo.Description
-          @title="Edit this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-output-demo/edit-page.md">
+          @title="Edit this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-output-demo/edit-page.md">
 <p>This is another example using <code>@fromCurrentURL</code>, but here we build a "edit this
 page" link.</p>
 <p>For this feature to work, Docfy must be able to find the repository URL. In
@@ -142,7 +142,7 @@ repository URL as well as the branch to edit.</p>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-top-nav" as |demo|>
 <demo.Description
-          @title="Top Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-output-demo/top-nav.md">
+          @title="Top Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-output-demo/top-nav.md">
 <p>Here is another example that builds a top nav that could be used for the entire
 application. It will link to any top-level pages as well as to the first page of
 every child.</p>
@@ -178,7 +178,7 @@ every child.</p>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-output-flat" as |demo|>
 <demo.Description
-          @title="Flat output" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-output-demo/flat.md">
+          @title="Flat output" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-output-demo/flat.md">
 <p>This option will return an array of <code>PageMetadata</code>. It will contain all the
 pages in a flat array, one could render a list of all the pages without worrying
 about the scope.</p>

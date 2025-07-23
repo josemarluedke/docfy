@@ -21,7 +21,7 @@ of its usage throughout the documentation.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-components-docfy-link-simple" as |demo|>
 <demo.Description
-          @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-link-demo/simple.md">
+          @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-link-demo/simple.md">
 
 </demo.Description>
 <demo.Example>
@@ -35,7 +35,7 @@ of its usage throughout the documentation.</p>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-components-docfy-link-anchor" as |demo|>
 <demo.Description
-          @title="Example with Anchor" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember-cli/docs/components/docfy-link-demo/anchor.md">
+          @title="Example with Anchor" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-link-demo/anchor.md">
 
 </demo.Description>
 <demo.Example>

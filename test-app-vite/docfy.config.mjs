@@ -29,7 +29,7 @@ export default {
       urlPrefix: 'docs',
     },
     {
-      root: path.resolve(__dirname, '../packages/ember-cli/docs'),
+      root: path.resolve(__dirname, '../packages/ember/docs'),
       pattern: '**/*.md',
       urlSchema: 'manual',
       urlPrefix: 'docs/ember',
@@ -38,7 +38,7 @@ export default {
   labels: {
     components: 'Components',
     core: '@docfy/core',
-    ember: '@docfy/ember-cli',
+    ember: '@docfy/ember',
     docs: 'Documentation',
   },
 };
