@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember-vite",
-  "version": "0.9.0",
+  "version": "0.10.0-alpha.0",
   "description": "Vite plugin for Docfy Ember integration with @embroider/vite",
   "keywords": [
     "vite-plugin",
@@ -39,7 +39,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@docfy/core": "^0.9.0",
+    "@docfy/core": "^0.10.0-alpha.0",
     "@rollup/pluginutils": "^5.0.0",
     "debug": "^4.3.3",
     "fast-glob": "^3.2.0",
@@ -57,9 +57,9 @@
     "eslint-plugin-n": "^17.18.0",
     "globals": "^16.1.0",
     "prettier": "^3.5.3",
-    "typescript-eslint": "^8.32.1",
     "rollup": "^4.0.0",
     "typescript": "^4.9.0",
+    "typescript-eslint": "^8.32.1",
     "vitest": "^0.34.0"
   },
   "peerDependencies": {
