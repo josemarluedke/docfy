@@ -76,9 +76,12 @@ export default ts.config(
         requireConfigFile: false,
         babelOptions: {
           plugins: [
-            ['babel-plugin-ember-template-compilation', {
-              enableLegacyModules: ['ember-cli-htmlbars']
-            }],
+            [
+              'babel-plugin-ember-template-compilation',
+              {
+                enableLegacyModules: ['ember-cli-htmlbars'],
+              },
+            ],
           ],
         },
       },
@@ -92,7 +95,13 @@ export default ts.config(
     },
   },
   {
-    files: ['config/**/*.js', 'app/config/**/*.js', 'ember-cli-build.js', 'postcss.config.js', 'tests/helpers/**/*.js'],
+    files: [
+      'config/**/*.js',
+      'app/config/**/*.js',
+      'ember-cli-build.js',
+      'postcss.config.js',
+      'tests/helpers/**/*.js',
+    ],
     languageOptions: {
       ecmaVersion: 'latest',
       sourceType: 'module',
@@ -200,9 +209,12 @@ export default ts.config(
         requireConfigFile: false,
         babelOptions: {
           plugins: [
-            ['babel-plugin-ember-template-compilation', {
-              enableLegacyModules: ['ember-cli-htmlbars']
-            }],
+            [
+              'babel-plugin-ember-template-compilation',
+              {
+                enableLegacyModules: ['ember-cli-htmlbars'],
+              },
+            ],
           ],
         },
       },

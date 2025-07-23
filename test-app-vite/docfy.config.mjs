@@ -27,7 +27,7 @@ export default {
       root: path.join(__dirname, '../docs'),
       pattern: '**/*.md',
       urlPrefix: 'docs',
-    }
+    },
   ],
   labels: {
     components: 'Components',
