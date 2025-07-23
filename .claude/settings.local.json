@@ -58,7 +58,12 @@
       "Bash(lerna run:*)",
       "Bash(curl:*)",
       "Bash(npx serve:*)",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(for pkg in packages/ember-cli packages/ember-vite packages/ember packages/plugin-with-prose test-app-classic test-app-vite)",
+      "Bash(do echo \"=== $pkg ===\")",
+      "Bash(done)",
+      "Bash(for pkg in packages/core packages/ember-cli packages/ember-vite packages/ember packages/plugin-with-prose test-app-classic test-app-vite site)",
+      "Bash(for pkg in packages/* test-app-* site)"
     ],
     "deny": []
   }

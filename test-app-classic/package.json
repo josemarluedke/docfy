@@ -13,6 +13,7 @@
   "scripts": {
     "build": "ember build --environment=production",
     "format": "prettier . --cache --write",
+    "format:check": "prettier . --cache --check",
     "lint": "concurrently \"yarn:lint:*(!fix)\" --names \"lint:\" --prefixColors auto",
     "lint:fix": "concurrently \"yarn:lint:*:fix\" --names \"fix:\" --prefixColors auto && yarn format",
     "lint:format": "prettier . --cache --check",

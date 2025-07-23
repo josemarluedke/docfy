@@ -14,7 +14,6 @@
     "build": "ember build --environment=production",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:hbs": "ember-template-lint .",
-    "lint:js": "cd ../ && yarn lint:js",
     "start": "ember serve",
     "test": "npm-run-all lint:hbs test:*",
     "test:ember": "ember test --test-port="

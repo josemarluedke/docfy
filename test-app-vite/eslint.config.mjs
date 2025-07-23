@@ -66,15 +66,22 @@ export default ts.config(
     },
   },
   {
-    files: ['**/*.js'],
+    files: ['app/**/*.js', 'addon/**/*.js'],
+    ignores: ['app/config/**/*.js', 'app/modifiers/**/*.js'],
     languageOptions: {
       parser: babelParser,
-    },
-  },
-  {
-    files: ['**/*.{js,gjs}'],
-    languageOptions: {
-      parserOptions: parserOptions.esm.js,
+      parserOptions: {
+        ecmaFeatures: { modules: true },
+        ecmaVersion: 'latest',
+        requireConfigFile: false,
+        babelOptions: {
+          plugins: [
+            ['babel-plugin-ember-template-compilation', {
+              enableLegacyModules: ['ember-cli-htmlbars']
+            }],
+          ],
+        },
+      },
       globals: {
         ...globals.browser,
       },
@@ -82,6 +89,26 @@ export default ts.config(
     rules: {
       // Allow empty component classes for template-only components
       'ember/no-empty-glimmer-component-classes': 'off',
+    },
+  },
+  {
+    files: ['config/**/*.js', 'app/config/**/*.js', 'ember-cli-build.js', 'postcss.config.js', 'tests/helpers/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.node,
+      },
+    },
+  },
+  {
+    files: ['app/modifiers/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        ...globals.browser,
+      },
     },
   },
   {
@@ -160,6 +187,32 @@ export default ts.config(
       globals: {
         ...globals.node,
       },
+    },
+  },
+  // GJS files - must come after ember configs to override rules
+  {
+    files: ['**/*.{gjs}'],
+    languageOptions: {
+      parser: babelParser,
+      parserOptions: {
+        ecmaFeatures: { modules: true },
+        ecmaVersion: 'latest',
+        requireConfigFile: false,
+        babelOptions: {
+          plugins: [
+            ['babel-plugin-ember-template-compilation', {
+              enableLegacyModules: ['ember-cli-htmlbars']
+            }],
+          ],
+        },
+      },
+      globals: {
+        ...globals.browser,
+      },
+    },
+    rules: {
+      // Allow empty component classes for template-only components
+      'ember/no-empty-glimmer-component-classes': 'off',
     },
   },
 );
