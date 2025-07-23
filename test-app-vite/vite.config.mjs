@@ -12,7 +12,8 @@ export default defineConfig({
       {
         root: process.cwd(),
         hmr: true,
-      }),
+      },
+    ),
     tailwindcss(),
     classicEmberSupport(),
     ember(),

@@ -81,13 +81,15 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
       class="lg:mt-0 lg:overflow-y-auto lg:sticky top-16 lg:max-h-(screen-16) pt-4 lg:pt-12 pb-4 lg:-mt-12 lg:block
         {{if this.isOpen 'block' 'hidden'}}"
     >
-      <ul class="font-light space-y-3" {{on "click" this.handleSidebarClick}}>
+      <nav class="font-light space-y-3">
+        <ul class="space-y-3">
         {{#each @node.pages as |page|}}
           <li>
             <DocfyLink
               @to={{page.url}}
               class="hover:text-green-800 dark-hover:text-green-500"
               @activeClass="font-semibold text-green-800 dark:text-green-500"
+              {{on "click" this.handleSidebarClick}}
             >
               {{page.title}}
             </DocfyLink>
@@ -109,6 +111,7 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
                     @to={{page.url}}
                     class="hover:text-green-800 dark-hover:text-green-500"
                     @activeClass="font-semibold text-green-800 dark:text-green-500"
+                    {{on "click" this.handleSidebarClick}}
                   >
                     {{page.title}}
                   </DocfyLink>
@@ -130,6 +133,7 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
                           @to={{page.url}}
                           class="hover:text-green-800 dark-hover:text-green-500"
                           @activeClass="font-semibold text-green-800 dark:text-green-500"
+                          {{on "click" this.handleSidebarClick}}
                         >
                           {{page.title}}
                         </DocfyLink>
@@ -151,6 +155,7 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
                                 @to={{page.url}}
                                 class="hover:text-green-800 dark-hover:text-green-500"
                                 @activeClass="font-semibold text-green-800 dark:text-green-500"
+                                {{on "click" this.handleSidebarClick}}
                               >
                                 {{page.title}}
                               </DocfyLink>
@@ -165,7 +170,8 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
             </ul>
           </li>
         {{/each}}
-      </ul>
+        </ul>
+      </nav>
     </div>
   </template>
 }

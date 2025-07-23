@@ -63,7 +63,8 @@
       "Bash(do echo \"=== $pkg ===\")",
       "Bash(done)",
       "Bash(for pkg in packages/core packages/ember-cli packages/ember-vite packages/ember packages/plugin-with-prose test-app-classic test-app-vite site)",
-      "Bash(for pkg in packages/* test-app-* site)"
+      "Bash(for pkg in packages/* test-app-* site)",
+      "Bash(git mv:*)",
     ],
     "deny": []
   }

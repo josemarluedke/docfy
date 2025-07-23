@@ -1,7 +1,7 @@
 {
   "extends": "@ember/app-tsconfig",
   "include": ["app", "tests", "types"],
-  "exclude": ["app/templates/docs/*"],
+  "exclude": ["app/templates/docs/*", "app/templates/index.gjs"],
   "glint": {
     "environment": ["ember-template-imports"]
   },

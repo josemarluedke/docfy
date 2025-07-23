@@ -5,10 +5,22 @@ import loadInitializers from 'ember-load-initializers';
 import config from 'test-app-vite/config/environment';
 import './styles/tw.css';
 
+interface Config {
+  modulePrefix: string;
+  podModulePrefix?: string;
+  environment: string;
+  rootURL: string;
+  locationType: string;
+  EmberENV: Record<string, unknown>;
+  APP: Record<string, unknown>;
+}
+
+const typedConfig = config as Config;
+
 export default class App extends Application {
-  modulePrefix = config.modulePrefix;
-  podModulePrefix = config.podModulePrefix;
+  modulePrefix = typedConfig.modulePrefix;
+  podModulePrefix = typedConfig.podModulePrefix;
   Resolver = Resolver.withModules(compatModules);
 }
 
-loadInitializers(App, config.modulePrefix, compatModules);
+loadInitializers(App, typedConfig.modulePrefix, compatModules);

@@ -28,7 +28,7 @@ module('Integration | Modifier | @docfy/intersect-headings', function (hooks) {
 
   test('it handles empty headings array', async function (assert) {
     const callback = sinon.stub();
-    const headings: any[] = [];
+    const headings: HTMLElement[] = [];
 
     await render(
       <template>

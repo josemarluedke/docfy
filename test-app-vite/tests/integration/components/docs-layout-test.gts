@@ -258,7 +258,7 @@ module('Integration | Component | @docfy/docs-layout', function (hooks) {
       assert.dom('div.markdown').exists();
 
       // Verify the service exists and can be called
-      assert.ok(currentHeadingService.setCurrentHeadingId);
+      assert.ok(typeof currentHeadingService.setCurrentHeadingId === 'function');
     } finally {
       document.body.removeChild(mockHeading);
     }
