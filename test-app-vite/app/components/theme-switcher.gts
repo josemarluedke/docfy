@@ -6,11 +6,8 @@ import { on } from '@ember/modifier';
 import type Owner from '@ember/owner';
 
 interface ThemeSwitcherSignature {
-  Args: {};
+  Args: Record<string, unknown>;
   Element: HTMLButtonElement;
-  Blocks: {
-    default: [];
-  };
 }
 
 export default class ThemeSwitcher extends Component<ThemeSwitcherSignature> {
@@ -57,6 +54,7 @@ export default class ThemeSwitcher extends Component<ThemeSwitcherSignature> {
       document.documentElement.classList.remove('dark');
     }
 
+    // eslint-disable-next-line ember/no-runloop
     later(
       this,
       () => {

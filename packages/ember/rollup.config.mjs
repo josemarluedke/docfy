@@ -17,7 +17,7 @@ export default {
   // You can augment this if you need to.
   output: addon.output(),
 
-  external: ['@docfy/ember-output'],
+  external: ['@embroider/virtual/docfy/output'],
 
   plugins: [
     // These are the modules that users should be able to import from your

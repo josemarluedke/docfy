@@ -68,11 +68,9 @@ export async function getDocfySourceFiles(
 }
 
 /**
- * Load virtual docfy-output module
+ * virtual docfy-output module template
  */
-export function loadVirtualDocfyOutput(docfyResult: any): string {
-  debug('Loading virtual:docfy-output', { hasResult: !!docfyResult });
-
+export function virtualDocfyOutputTemplate(docfyResult: any): string {
   if (!docfyResult) {
     // Return empty structure when no result is available yet
     return `export default ${JSON.stringify({

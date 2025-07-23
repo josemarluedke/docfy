@@ -1,25 +1,9 @@
 import Service from '@ember/service';
-import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 import { service } from '@ember/service';
+import { cached } from '@glimmer/tracking';
+import output from '@embroider/virtual/docfy/output';
 import type RouterService from '@ember/routing/router-service';
-import { importSync } from '@embroider/macros';
-
-// Cache the output to avoid running imports on every getter access
-let cachedOutput: NestedPageMetadata | null = null;
-
-function getDocfyOutput(): NestedPageMetadata {
-  if (cachedOutput) {
-    return cachedOutput;
-  }
-
-  // Both build systems now provide the same module path
-  const output = importSync('@docfy/ember-output') as {
-    default: { nested: NestedPageMetadata };
-  };
-  cachedOutput = output?.default?.nested;
-
-  return cachedOutput;
-}
+import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 
 function flatNested(
   output?: NestedPageMetadata,
@@ -39,20 +23,20 @@ function flatNested(
 }
 
 export default class DocfyService extends Service {
-  @service declare router: RouterService;
+  @service('router') declare router: RouterService;
+
+  @cached
+  get currentPage() {
+    const currentURL = this.router.currentURL;
+    return currentURL ? this.findByUrl(currentURL) : undefined;
+  }
 
   get flat(): PageMetadata[] {
     return flatNested(this.nested);
   }
 
   get nested(): NestedPageMetadata {
-    return getDocfyOutput();
-  }
-
-  get currentPage(): PageMetadata | undefined {
-    const currentURL = this.router.currentURL;
-    if (!currentURL) return undefined;
-    return this.findByUrl(currentURL);
+    return output.nested;
   }
 
   findNestedChildrenByName(
@@ -103,6 +87,7 @@ export default class DocfyService extends Service {
     isPrevious: boolean,
     scopeByNestedName?: string,
   ): PageMetadata | undefined {
+    const currentPage = this.currentPage;
     let pages = this.flat;
 
     if (typeof scopeByNestedName === 'string') {
@@ -110,14 +95,14 @@ export default class DocfyService extends Service {
     }
 
     const index = pages.findIndex((page) => {
-      return page === this.currentPage;
+      return page === currentPage;
     });
 
     if (index > -1) {
       if (isPrevious) {
-        return this.flat[index - 1];
+        return pages[index - 1];
       } else {
-        return this.flat[index + 1];
+        return pages[index + 1];
       }
     }
     return undefined;

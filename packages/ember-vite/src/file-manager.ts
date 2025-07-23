@@ -21,11 +21,9 @@ export class FileManager {
   }
 
   writeFiles(files: FileToGenerate[]): void {
-    if (this.isDevMode()) {
-      this.writeFilesToDisk(files);
-    } else {
-      this.emitFiles(files);
-    }
+    // Always write to disk so Embroider can process the files
+    // Never emit as final assets - these are intermediate files
+    this.writeFilesToDisk(files);
   }
 
   writeJsonToPublic(data: any, fileName: string = 'docfy-urls.json'): void {
@@ -59,22 +57,6 @@ export class FileManager {
 
       fs.writeFileSync(fullPath, file.content);
       debug('Wrote file to disk', { path: file.path });
-    });
-  }
-
-  private emitFiles(files: FileToGenerate[]): void {
-    if (!this.context) {
-      debug('No context available for emitting files');
-      return;
-    }
-
-    files.forEach(file => {
-      this.context!.emitFile({
-        type: 'asset',
-        fileName: file.path,
-        source: file.content,
-      });
-      debug('Emitted file asset', { path: file.path });
     });
   }
 

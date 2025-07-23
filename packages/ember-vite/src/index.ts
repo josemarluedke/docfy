@@ -2,7 +2,7 @@ import type { Plugin, ResolvedConfig } from 'vite';
 import type { DocfyConfig } from '@docfy/core/lib/types';
 import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
 import { processMarkdown } from './markdown-processor.js';
-import { shouldProcessFile, loadVirtualDocfyOutput } from './utils.js';
+import { shouldProcessFile, virtualDocfyOutputTemplate } from './utils.js';
 import { DocfyProcessor } from './docfy-processor.js';
 import { FileManager } from './file-manager.js';
 import debugFactory from 'debug';
@@ -10,7 +10,7 @@ import debugFactory from 'debug';
 const debug = debugFactory('@docfy/ember-vite');
 
 const VIRTUAL_MODULE_PREFIX = '\0';
-const DOCFY_OUTPUT_MODULE = '@docfy/ember-output';
+const DOCFY_OUTPUT_MODULE = '@embroider/virtual/docfy/output';
 const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}${DOCFY_OUTPUT_MODULE}`;
 
 export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): Plugin[] {
@@ -29,7 +29,7 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
 
   return [
     {
-      name: 'docfy-ember-vite:config',
+      name: 'docfy-ember-vite',
       enforce: 'pre', // Ensure this runs before other plugins
       configResolved(resolvedConfig) {
         config = resolvedConfig;
@@ -90,7 +90,7 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
 
       load(id) {
         if (id === VIRTUAL_DOCFY_OUTPUT) {
-          return loadVirtualDocfyOutput(processor?.getCurrentResult());
+          return virtualDocfyOutputTemplate(processor?.getCurrentResult());
         }
         return null;
       },
@@ -106,10 +106,6 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
 
       generateBundle() {
         debug('Generating bundle assets...');
-        const result = processor?.getCurrentResult();
-        if (result) {
-          fileManager.emitStaticAssets(result.staticAssets);
-        }
       },
 
       ...(hmr && {
