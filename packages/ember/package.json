@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember",
-  "version": "0.9.1-beta.0",
+  "version": "0.10.0",
   "description": "The default blueprint for Embroider v2 addons.",
   "keywords": [
     "ember-addon"
