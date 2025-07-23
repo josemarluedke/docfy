@@ -26,8 +26,6 @@
     "format": "prettier . --cache --write",
     "format:check": "prettier . --cache --check",
     "prepare": "npm-run-all compile",
-    "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean",
     "prestart": "npm-run-all compile",
     "start": "ember serve",
     "test": "npm-run-all lint:hbs test:*",
