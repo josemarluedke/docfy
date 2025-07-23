@@ -1,4 +1,4 @@
-import { importSync } from '@embroider/macros';
+import output from '@embroider/virtual/docfy/output';
 import type RouterDSL from '@ember/routing/-private/router-dsl';
 import type { NestedPageMetadata } from '@docfy/core/lib/types';
 
@@ -26,8 +26,5 @@ function addFromNested(context: RouterDSL, nested: NestedPageMetadata): void {
 }
 
 export function addDocfyRoutes(context: RouterDSL): void {
-  const output = importSync('@docfy/ember-output') as {
-    default: { nested: NestedPageMetadata };
-  };
-  addFromNested(context, output.default.nested);
+  addFromNested(context, output.nested);
 }

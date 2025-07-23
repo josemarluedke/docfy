@@ -2,22 +2,19 @@ import Component from '@glimmer/component';
 import { pageTitle } from 'ember-page-title';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
+import { cached } from '@glimmer/tracking';
 import SidebarNav from './sidebar-nav';
 import PageHeadings from './page-headings';
 import { DocfyPreviousAndNextPage, DocfyLink } from '@docfy/ember';
 import intersectHeadings from '../modifiers/intersect-headings';
 import { type DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from '../services/current-heading';
-
-interface DocsLayoutArgs {
-  model: {
-    navigation: any;
-    editUrl?: string;
-  };
-}
+import type RouterService from '@ember/routing/router-service';
 
 interface DocsLayoutSignature {
-  Args: DocsLayoutArgs;
+  Args: {
+    model?: unknown;
+  };
   Element: HTMLDivElement;
   Blocks: {
     default: [];
@@ -26,7 +23,14 @@ interface DocsLayoutSignature {
 
 export default class DocsLayout extends Component<DocsLayoutSignature> {
   @service declare docfy: DocfyService;
+  @service declare router: RouterService;
   @service('current-heading') declare currentHeading: CurrentHeadingService;
+
+  @cached
+  get currentPage() {
+    const currentURL = this.router.currentURL;
+    return currentURL ? this.docfy.findByUrl(currentURL) : undefined;
+  }
 
   @action setCurrentHeadingId(id: string): void {
     this.currentHeading.setCurrentHeadingId(id);
@@ -41,7 +45,7 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
     >
       <div class="relative lg:flex">
         <div class="flex-none pt-12 pr-4 lg:w-64" data-test-id="sidebar-nav">
-          <SidebarNav @node={{@model.navigation}} />
+          <SidebarNav @node={{this.docfy.nested}} />
         </div>
 
         <div
@@ -53,16 +57,16 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
             data-test-id="markdown-content"
             {{intersectHeadings
               this.setCurrentHeadingId
-              headings=this.docfy.currentPage.headings
+              headings=this.currentPage.headings
             }}
           >
             {{yield}}
           </div>
 
           <div class="flex justify-between mt-10">
-            {{#if @model.editUrl}}
+            {{#if this.currentPage.editUrl}}
               <a
-                href={{@model.editUrl}}
+                href={{this.currentPage.editUrl}}
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center"

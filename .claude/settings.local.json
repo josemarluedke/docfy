@@ -55,7 +55,10 @@
       "Bash(npx eslint:*)",
       "Bash(npx concurrently:*)",
       "Bash(./node_modules/.bin/concurrently:*)",
-      "Bash(lerna run:*)"
+      "Bash(lerna run:*)",
+      "Bash(curl:*)",
+      "Bash(npx serve:*)",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }

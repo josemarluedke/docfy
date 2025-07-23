@@ -6,14 +6,8 @@ import { service } from '@ember/service';
 import type { DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from '../services/current-heading';
 
-interface PageHeadingsArgs {}
-
 interface PageHeadingsSignature {
-  Args: PageHeadingsArgs;
   Element: HTMLDivElement;
-  Blocks: {
-    default: [];
-  };
 }
 
 const isEqual = (a: string, b?: string): boolean => a === b;
