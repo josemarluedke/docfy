@@ -20,8 +20,9 @@ libraries as your design system is essential for delivering a pleasant experienc
 to its users.
 
 Docfy is modular such that it exposes its core functionality for building
-documentation interfaces on top of it. Docfy also has some official libraries for
-building documentation interfaces using [Ember.js](https://emberjs.com).
+documentation interfaces on top of it. Docfy provides multiple integration options for
+building documentation interfaces using [Ember.js](https://emberjs.com), supporting both
+classic Ember CLI builds and modern Vite builds.
 
 Docfy allows extending its core functionality by exposing a plugin system. It also
 allows extending the markdown processor by using [remark](https://remark.js.org/)

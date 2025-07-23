@@ -1,13 +1,12 @@
 import DocfyDemoPreviewWritingDemos from './writing-demos_gen/docfy-demo-preview-writing-demos.js';
-import DocfyDemoWritingDemosDemo1 from './writing-demos_gen/docfy-demo-writing-demos-demo1.js';
+import DocfyDemoEmberWritingDemosDemo1 from './writing-demos_gen/docfy-demo-ember-writing-demos-demo1.js';
 import { DocfyDemo } from '@docfy/ember';
-import { DocfyLink } from '@docfy/ember';
 
 <template>
   <h1 id="writing-demos"><a href="#writing-demos">Writing Demos</a></h1>
 <p>Docfy has a concept of "demo" markdown files. It allows you to write code in
 markdown and have them be extracted as executable code in the host app. You can
-learn more about the file location rules in <DocfyLink @to="/docs/writing-markdown" @anchor="demos" >Writing Markdown - Demos</DocfyLink>.</p>
+learn more about the file location rules in <a href="../../../docs/writing-markdown.md#demos">Writing Markdown - Demos</a>.</p>
 <p>In the context of Ember, all demos are extracted as components. These components
 can have a template, component, and style code block. Components can also be
 template only components by only specifying the HBS template.</p>
@@ -45,9 +44,9 @@ of the code block. The possible values are <code>component</code>, <code>templat
 configured to support it.</p>
 </blockquote>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
-<DocfyDemo @id="docfy-demo-writing-demos-demo1" as |demo|>
+<DocfyDemo @id="docfy-demo-ember-writing-demos-demo1" as |demo|>
 <demo.Description
-          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/writing-demos-demo/demo1.md">
+          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/writing-demos-demo/demo1.md">
 <p>This is a cool feature of Docfy. It is perfect for documenting design systems and
 component libraries.</p>
 <blockquote>
@@ -55,7 +54,7 @@ component libraries.</p>
 </blockquote>
 </demo.Description>
 <demo.Example>
-<DocfyDemoWritingDemosDemo1 />
+<DocfyDemoEmberWritingDemosDemo1 />
 </demo.Example>
 <demo.Snippets as |Snippet|>
 <Snippet @name="template">

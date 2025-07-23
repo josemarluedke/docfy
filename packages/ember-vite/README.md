@@ -64,7 +64,7 @@ export default defineConfig({
 The plugin accepts the same configuration options as `@docfy/core`, plus some additional options:
 
 ```typescript
-interface DocfyVitePluginOptions {
+interface DocfyViteOptions {
   /**
    * Root directory for the Ember app
    */

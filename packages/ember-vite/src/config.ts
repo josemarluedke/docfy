@@ -9,7 +9,7 @@ interface EmberDocfyConfig extends DocfyConfig {
   remarkHbsOptions?: any;
 }
 
-export interface DocfyVitePluginOptions extends Partial<DocfyConfig> {
+export interface DocfyViteOptions extends Partial<DocfyConfig> {
   /**
    * Root directory for the Ember app
    */
@@ -44,7 +44,7 @@ const DEFAULT_CONFIG: DocfyConfig = {
 
 export async function loadDocfyConfig(
   root: string,
-  options: DocfyVitePluginOptions = {}
+  options: DocfyViteOptions = {}
 ): Promise<EmberDocfyConfig> {
   let docfyConfig: Partial<EmberDocfyConfig> = {};
 
@@ -121,7 +121,7 @@ async function loadPackageJson(root: string): Promise<any> {
 
 async function mergeConfig(
   docfyConfig: Partial<EmberDocfyConfig>,
-  options: DocfyVitePluginOptions,
+  options: DocfyViteOptions,
   pkg: any,
   isInlineConfig: boolean = false
 ): Promise<EmberDocfyConfig> {

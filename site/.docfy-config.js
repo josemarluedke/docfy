@@ -27,18 +27,12 @@ module.exports = {
       root: path.resolve(__dirname, '../docs'),
       pattern: '**/*.md',
       urlPrefix: 'docs',
-    },
-    {
-      root: path.resolve(__dirname, '../packages/ember/docs'),
-      pattern: '**/*.md',
-      urlSchema: 'manual',
-      urlPrefix: 'docs/ember',
-    },
+    }
   ],
   labels: {
     components: 'Components',
     core: '@docfy/core',
-    ember: '@docfy/ember',
+    ember: 'Ember',
     docs: 'Documentation',
   },
 };

@@ -7,10 +7,12 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
   plugins: [
     // Docfy plugin must run BEFORE ember plugin so templates are available
-    docfy({
-      root: process.cwd(),
-      hmr: true,
-    }),
+    docfy(
+      /** @type {import('@docfy/ember-vite').DocfyViteOptions} */
+      {
+        root: process.cwd(),
+        hmr: true,
+      }),
     tailwindcss(),
     classicEmberSupport(),
     ember(),
