@@ -22,8 +22,8 @@ const docfy = new Docfy({
   staticAssetsPath: '/assets/docfy',
   tocMaxDepth: 6,
   repository: {
-    url: 'https://github.com/josemarluedke/docfy'
-  }
+    url: 'https://github.com/josemarluedke/docfy',
+  },
 });
 ```
 
@@ -54,9 +54,9 @@ const remarkPlugins = [
   [
     autolinkHeadings,
     {
-      behavior: 'wrap'
-    }
-  ]
+      behavior: 'wrap',
+    },
+  ],
 ];
 ```
 
@@ -92,8 +92,8 @@ Example:
 const config = {
   repository: {
     url: 'https://github.com/josemarluedke/docfy',
-    editBranch: 'main'
-  }
+    editBranch: 'main',
+  },
 };
 ```
 
@@ -117,10 +117,10 @@ docfy
       pattern: '**/*.md',
       ignore: ['private/**'],
       urlPrefix: 'docs',
-      urlSchema: 'manual'
-    }
+      urlSchema: 'manual',
+    },
   ])
-  .then((result) => {
+  .then(result => {
     console.log(result);
   });
 ```

@@ -1,7 +1,6 @@
 declare module 'to-vfile' {
-  import { VFile } from 'vfile'; // eslint-disable-line
+  import { VFile } from 'vfile';
 
-  // eslint-disable-next-line
   class ToVFile {
     static readSync(filepath: string): VFile;
   }

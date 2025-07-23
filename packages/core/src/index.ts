@@ -12,14 +12,9 @@ import {
   Plugin,
   PluginList,
   PluginWithOptions,
-  PluginWithOptionsFunction
+  PluginWithOptionsFunction,
 } from './types';
-import {
-  DEFAULT_IGNORE,
-  generateAutoUrl,
-  generateManualUrl,
-  inferTitle
-} from './-private/utils';
+import { DEFAULT_IGNORE, generateAutoUrl, generateManualUrl, inferTitle } from './-private/utils';
 import { createRehype, createRemark } from './-private/remark';
 import {
   combineDemos,
@@ -28,7 +23,7 @@ import {
   staticAssets,
   toc,
   uniquefyUrls,
-  removeUnnecessaryIndex
+  removeUnnecessaryIndex,
 } from './plugins';
 import { getRepoEditUrl } from './-private/repo-info';
 import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
@@ -50,8 +45,8 @@ class Docfy {
       staticAssets: [],
       options: {
         ...rest,
-        tocMaxDepth: rest.tocMaxDepth || 6
-      }
+        tocMaxDepth: rest.tocMaxDepth || 6,
+      },
     };
 
     const plugins: PluginList = [
@@ -59,7 +54,7 @@ class Docfy {
       removeUnnecessaryIndex,
       uniquefyUrls,
       replaceInternalLinks,
-      staticAssets
+      staticAssets,
     ];
 
     if (Array.isArray(options.plugins)) {
@@ -89,9 +84,9 @@ class Docfy {
             content: ctx.pages,
             staticAssets: ctx.staticAssets,
             nestedPageMetadata: transformToNestedPageMetadata(
-              ctx.pages.map((p) => p.meta),
+              ctx.pages.map(p => p.meta),
               ctx.options.labels
-            )
+            ),
           });
         }
       });
@@ -99,11 +94,11 @@ class Docfy {
   }
 
   private transformerMdastToHast(ctx: Context): void {
-    ctx.pages.forEach((page) => {
+    ctx.pages.forEach(page => {
       const hast = ctx.rehype.runSync(page.ast, page.vFile);
       page.ast = hast;
 
-      page.demos?.forEach((demo) => {
+      page.demos?.forEach(demo => {
         const hast = ctx.rehype.runSync(demo.ast, demo.vFile);
         demo.ast = hast;
       });
@@ -128,7 +123,7 @@ class Docfy {
     const plugins = this.plugins;
 
     return function (ctx: Context): void {
-      plugins.forEach((plugin) => {
+      plugins.forEach(plugin => {
         let options: unknown;
 
         if (isPluginWithOptionsFunction(plugin)) {
@@ -150,7 +145,11 @@ class Docfy {
   private initializePipeline(sources: SourceConfig[]): Context {
     const ctx = this.context;
 
-    sources.forEach((item) => {
+    // Clear previous results to ensure fresh content on each run
+    ctx.pages = [];
+    ctx.staticAssets = [];
+
+    sources.forEach(item => {
       let repoEditUrl: string | null;
 
       if (item.repository || ctx.options.repository) {
@@ -164,12 +163,12 @@ class Docfy {
         cwd: item.root,
 
         ignore: [...DEFAULT_IGNORE, ...(item.ignore || [])],
-        absolute: true
+        absolute: true,
       });
 
       debug('Source Files', files);
 
-      files.forEach((file) => {
+      files.forEach(file => {
         ctx.pages.push(this.createPage(item, file, repoEditUrl));
       });
     });
@@ -182,10 +181,7 @@ class Docfy {
     fullPath: string,
     repoEditUrl?: string | null
   ): PageContent {
-    const relativePath = fullPath.replace(
-      path.join(sourceConfig.root, '/'),
-      ''
-    );
+    const relativePath = fullPath.replace(path.join(sourceConfig.root, '/'), '');
 
     const vFile = toVfile.readSync(fullPath);
     const markdown = vFile.contents.toString();
@@ -193,8 +189,7 @@ class Docfy {
     const ast = this.context.remark.runSync(parsed, vFile);
 
     const frontmatter: Record<string, unknown> =
-      (vFile.data as { frontmatter?: Record<string, unknown> }).frontmatter ||
-      {};
+      (vFile.data as { frontmatter?: Record<string, unknown> }).frontmatter || {};
 
     let url: string;
     let title = inferTitle(ast);
@@ -207,11 +202,7 @@ class Docfy {
     }
 
     if (typeof frontmatter.url === 'string') {
-      url = generateAutoUrl(
-        frontmatter.url,
-        sourceConfig.urlPrefix,
-        sourceConfig.urlSuffix
-      );
+      url = generateAutoUrl(frontmatter.url, sourceConfig.urlPrefix, sourceConfig.urlSuffix);
     } else if (sourceConfig.urlSchema === 'manual') {
       url = generateManualUrl(
         relativePath,
@@ -220,19 +211,11 @@ class Docfy {
         sourceConfig.urlSuffix
       );
     } else {
-      url = generateAutoUrl(
-        relativePath,
-        sourceConfig.urlPrefix,
-        sourceConfig.urlSuffix
-      );
+      url = generateAutoUrl(relativePath, sourceConfig.urlPrefix, sourceConfig.urlSuffix);
     }
 
     // Add fallback order for index pages
-    if (
-      url.length > 0 &&
-      url[url.length - 1] === '/' &&
-      typeof frontmatter.order === 'undefined'
-    ) {
+    if (url.length > 0 && url[url.length - 1] === '/' && typeof frontmatter.order === 'undefined') {
       (frontmatter.order as undefined | number) = -1;
     }
 
@@ -251,7 +234,7 @@ class Docfy {
       headings: [],
       frontmatter: frontmatter,
       pluginData: {},
-      parentLabel: undefined
+      parentLabel: undefined,
     };
 
     return {
@@ -262,7 +245,7 @@ class Docfy {
       ast,
       markdown,
       rendered: '',
-      pluginData: {}
+      pluginData: {},
     };
   }
 }

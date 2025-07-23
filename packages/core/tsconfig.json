@@ -4,11 +4,13 @@
     "baseUrl": ".",
     "outDir": "./lib",
     "skipLibCheck": true,
+    "noResolve": false,
     "paths": {
       "*": ["types/*"]
     },
-    "typeRoots": ["../../node_modules/@types", "types"],
-    "types": ["jest", "node"]
+    "typeRoots": ["types"],
+    "types": [],
+    "skipDefaultLibCheck": true
   },
   "include": ["src/**/*", "types/**/*"],
   "exclude": ["tests/**/*"]

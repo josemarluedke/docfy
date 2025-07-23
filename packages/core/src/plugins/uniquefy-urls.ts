@@ -1,10 +1,6 @@
 import plugin from '../plugin';
 
-function generateUniqueUrl(
-  seenUrls: string[],
-  url: string,
-  count?: number
-): string {
+function generateUniqueUrl(seenUrls: string[], url: string, count?: number): string {
   let candidate = url;
   if (!count) {
     count = 1;
@@ -29,11 +25,11 @@ function generateUniqueUrl(
 export default plugin({
   runAfter(ctx): void {
     const seenUrls: string[] = [];
-    ctx.pages.forEach((page) => {
+    ctx.pages.forEach(page => {
       if (seenUrls.indexOf(page.meta.url) > -1) {
         page.meta.url = generateUniqueUrl(seenUrls, page.meta.url);
       }
       seenUrls.push(page.meta.url);
     });
-  }
+  },
 });

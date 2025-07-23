@@ -1,0 +1,58 @@
+@import url("tailwindcss/base");
+@import url("tailwindcss/components");
+@import url("tailwindcss/utilities");
+@import url("./highlight.css");
+
+.docfy-demo__example {
+  @apply p-4 border-l border-r;
+}
+
+.docfy-demo__description {
+  @apply mt-8 p-4 border rounded-t;
+
+  &__header {
+    @apply flex justify-between;
+
+    &__title {
+      @apply mb-4 font-medium leading-tight text-gray-900;
+    }
+
+    &__edit-url {
+      @apply text-sm;
+    }
+  }
+}
+
+.docfy-demo__snippets {
+  &__tabs {
+    @apply px-2 border-l border-r;
+
+    &__button {
+      @apply p-2 mr-2 border-b-4;
+
+      &--active,
+      &:hover {
+        @apply border-blue-500;
+      }
+    }
+  }
+}
+
+.docfy-demo__snippet {
+  @apply mb-8;
+
+  pre {
+    @apply p-4;
+    @apply flex text-gray-200 bg-gray-800;
+    @apply text-sm leading-normal;
+    @apply font-mono;
+    @apply rounded-b;
+
+    font-weight: 400;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

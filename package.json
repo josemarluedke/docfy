@@ -3,23 +3,21 @@
   "private": true,
   "workspaces": [
     "packages/*",
-    "site"
+    "site",
+    "test-app-vite",
+    "test-app-classic"
   ],
   "scripts": {
-    "lint:js": "eslint . --ext .js,.ts",
+    "lint": "lerna run lint --parallel",
+    "lint:fix": "lerna run lint:fix --parallel",
+    "lint:format": "lerna run format:check --parallel",
+    "lint:format:fix": "lerna run format --parallel",
     "start": "echo 'TODO'",
     "compile": "lerna run compile",
     "test": "lerna run --parallel test"
   },
   "devDependencies": {
-    "@types/jest": "^27.4.0",
-    "@underline/eslint-config-ember-typescript": "^0.12.0",
-    "@underline/eslint-config-node": "^0.12.0",
-    "@underline/eslint-config-typescript": "^0.12.0",
-    "eslint": "^8.7.0",
-    "eslint-plugin-jest": "^26.0.0",
-    "lerna": "^4.0.0",
-    "typescript": "^4.5.5"
+    "lerna": "^8.1.9"
   },
   "resolutions": {
     "@types/unist": "2.0.3"

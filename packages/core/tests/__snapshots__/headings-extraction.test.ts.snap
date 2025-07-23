@@ -1,23 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Extracts TOC When maxDepth is not set it should have extracted TOC correctly 1`] = `
-Array [
-  Array [
+[
+  [
     "README.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/about.md",
-    Array [
-      Object {
+    [
+      {
         "depth": 2,
         "id": "history",
         "title": "History",
       },
-      Object {
+      {
         "depth": 2,
-        "headings": Array [
-          Object {
+        "headings": [
+          {
             "depth": 3,
             "id": "but-why",
             "title": "But why?",
@@ -26,29 +26,29 @@ Array [
         "id": "where-it-came-from",
         "title": "Where it came from",
       },
-      Object {
+      {
         "depth": 2,
         "id": "another-topic",
         "title": "Another topic",
       },
-      Object {
+      {
         "depth": 2,
-        "headings": Array [
-          Object {
+        "headings": [
+          {
             "depth": 3,
             "id": "3-level",
             "title": "3 level",
           },
-          Object {
+          {
             "depth": 3,
-            "headings": Array [
-              Object {
+            "headings": [
+              {
                 "depth": 4,
-                "headings": Array [
-                  Object {
+                "headings": [
+                  {
                     "depth": 5,
-                    "headings": Array [
-                      Object {
+                    "headings": [
+                      {
                         "depth": 6,
                         "id": "6-level",
                         "title": "6 level",
@@ -61,7 +61,7 @@ Array [
                 "id": "4-level",
                 "title": "4 level",
               },
-              Object {
+              {
                 "depth": 4,
                 "id": "4-level-2nd",
                 "title": "4 level 2nd",
@@ -76,75 +76,75 @@ Array [
       },
     ],
   ],
-  Array [
+  [
     "docs/custom-url.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/how-it-works.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/html.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/math.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/static-asset.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/table.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/components/button.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/docs/intro.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package2/docs/overview.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package2/docs/styles.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/components/form/index.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/components/form/something-else.md",
-    Array [],
+    [],
   ],
 ]
 `;
 
 exports[`Extracts TOC When maxDepth is set it should have extracted TOC correctly 1`] = `
-Array [
-  Array [
+[
+  [
     "README.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/about.md",
-    Array [
-      Object {
+    [
+      {
         "depth": 2,
         "id": "history",
         "title": "History",
       },
-      Object {
+      {
         "depth": 2,
-        "headings": Array [
-          Object {
+        "headings": [
+          {
             "depth": 3,
             "id": "but-why",
             "title": "But why?",
@@ -153,28 +153,28 @@ Array [
         "id": "where-it-came-from",
         "title": "Where it came from",
       },
-      Object {
+      {
         "depth": 2,
         "id": "another-topic",
         "title": "Another topic",
       },
-      Object {
+      {
         "depth": 2,
-        "headings": Array [
-          Object {
+        "headings": [
+          {
             "depth": 3,
             "id": "3-level",
             "title": "3 level",
           },
-          Object {
+          {
             "depth": 3,
-            "headings": Array [
-              Object {
+            "headings": [
+              {
                 "depth": 4,
                 "id": "4-level",
                 "title": "4 level",
               },
-              Object {
+              {
                 "depth": 4,
                 "id": "4-level-2nd",
                 "title": "4 level 2nd",
@@ -189,53 +189,53 @@ Array [
       },
     ],
   ],
-  Array [
+  [
     "docs/custom-url.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/how-it-works.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/html.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/math.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/static-asset.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "docs/table.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/components/button.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/docs/intro.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package2/docs/overview.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package2/docs/styles.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/components/form/index.md",
-    Array [],
+    [],
   ],
-  Array [
+  [
     "packages/package1/components/form/something-else.md",
-    Array [],
+    [],
   ],
 ]
 `;

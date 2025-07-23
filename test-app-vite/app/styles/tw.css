@@ -1,0 +1,57 @@
+@import 'tailwindcss' source('../../');
+
+@font-face Inter {
+  src: url(/assets/fonts/inter-var-latin-ext.woff2) format('woff2');
+  unicode-range:
+    U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113,
+    U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face Inter {
+  src: url(/assets/fonts/inter-var-latin.woff2) format('woff2');
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF,
+    U+FFFD;
+}
+
+@theme {
+  --font-family-sans: Inter, system-ui, sans-serif;
+
+  --spacing-128: 32rem;
+  --spacing-144: 36rem;
+
+  --max-width-screen-2xl: 1400px;
+  --max-width-256: 64rem;
+  --max-width-200: 50rem;
+
+  --max-height-\(screen-16\): calc(100vh - 4rem);
+
+  --color-gray-1000: #12161f;
+}
+
+@custom-variant dark (&:is(.dark *));
+@custom-variant focus-visible (&[data-focus-visible-added]);
+
+/* purgecss start ignore */
+@import './markdown/structure.css';
+@import './markdown/light.css';
+@import './markdown/dark.css';
+@import './highlight.css';
+@import './docfy-demo.css';
+/* purgecss end ignore */
+
+@layer utilities {
+  @media (min-width: 768px) {
+    .angled {
+      clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8rem), 0 100%);
+    }
+  }
+}
+
+.bg-dot-lg {
+  background: url(/assets/images/dot-large.svg);
+}
+.bg-dot-brighter-lg {
+  background: url(/assets/images/dot-large-brighter.svg);
+}

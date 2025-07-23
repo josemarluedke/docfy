@@ -5,11 +5,7 @@ import config from 'site/config/environment';
 export default class Application extends Route {
   @action
   didTransition(): void {
-    if (
-      config.environment !== 'test' &&
-      window &&
-      typeof window.scrollTo === 'function'
-    ) {
+    if (config.environment !== 'test' && window && typeof window.scrollTo === 'function') {
       window.scrollTo(0, 0);
     }
   }

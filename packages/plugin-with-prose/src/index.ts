@@ -13,37 +13,31 @@ function shouldUnproseNode(node: NodeWithMeta): boolean {
   return Boolean(
     node.type === 'code' &&
       node.meta &&
-      ['component', 'template', 'preview-template', 'preview'].includes(
-        node.meta
-      )
+      ['component', 'template', 'preview-template', 'preview'].includes(node.meta)
   );
 }
 
-function withProse(
-  tree: Parent,
-  className = 'prose',
-  notClassName = 'not-prose'
-): void {
+function withProse(tree: Parent, className = 'prose', notClassName = 'not-prose'): void {
   const openProse = () => ({
     type: 'html',
-    value: `<div class="${className}">`
+    value: `<div class="${className}">`,
   });
   const openNotProse = () => ({
     type: 'html',
-    value: `<div class="${notClassName}">`
+    value: `<div class="${notClassName}">`,
   });
   const close = () => ({ type: 'html', value: '</div>' });
 
   tree.children = [
     openProse(),
-    tree.children.flatMap((node) => {
+    tree.children.flatMap(node => {
       if (shouldUnproseNode(node)) {
         return [openNotProse(), node, close()];
       }
 
       return [node];
     }),
-    close()
+    close(),
   ].flat();
 }
 
@@ -68,11 +62,11 @@ const DocfyPluginWithProse = plugin.withOptions<WithProseOptions | undefined>({
       const page = pageContent as unknown as Page;
       withProse(page.ast, options?.className);
 
-      page.demos?.forEach((demo) => {
+      page.demos?.forEach(demo => {
         withProse(demo.ast, options?.className);
       });
     });
-  }
+  },
 });
 
 export default DocfyPluginWithProse;

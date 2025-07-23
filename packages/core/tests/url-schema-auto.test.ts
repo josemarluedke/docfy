@@ -10,12 +10,12 @@ describe('URLs should be correctly generated when urlSchema is set to auto', () 
       {
         root,
         urlSchema: 'auto',
-        pattern: '**/*.md'
-      }
+        pattern: '**/*.md',
+      },
     ]);
 
     const urls = [];
-    result.content.forEach((page) => {
+    result.content.forEach(page => {
       urls.push([page.source, page.meta.url]);
     });
     expect(urls).toMatchSnapshot();
@@ -29,12 +29,12 @@ describe('URLs should be correctly generated when urlSchema is set to auto', () 
         urlSchema: 'auto',
         urlPrefix: 'docs',
         urlSuffix: '.html',
-        pattern: '**/*.md'
-      }
+        pattern: '**/*.md',
+      },
     ]);
 
     const urls = [];
-    result.content.forEach((page) => {
+    result.content.forEach(page => {
       urls.push([page.source, page.meta.url]);
     });
 

@@ -13,21 +13,21 @@ describe('When proving remark plugins', () => {
 
     beforeAll(async () => {
       const docfy = new Docfy({
-        remarkPlugins: [autolinkHeadings]
+        remarkPlugins: [autolinkHeadings],
       });
       result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
           urlSchema: 'manual',
-          pattern: '**/*.md'
-        }
+          pattern: '**/*.md',
+        },
       ]);
     });
 
-    test('it should have rendered the content with the plugin with no options', async () => {
+    test('it should have rendered the content with the plugin with no options', () => {
       const htmls = [];
-      result.content.forEach((page) => {
+      result.content.forEach(page => {
         htmls.push([page.source, page.rendered]);
       });
 
@@ -40,21 +40,21 @@ describe('When proving remark plugins', () => {
 
     beforeAll(async () => {
       const docfy = new Docfy({
-        remarkPlugins: [[autolinkHeadings, { behavior: 'append' }]]
+        remarkPlugins: [[autolinkHeadings, { behavior: 'append' }]],
       });
       result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
           urlSchema: 'manual',
-          pattern: '**/*.md'
-        }
+          pattern: '**/*.md',
+        },
       ]);
     });
 
-    test('it should have rendered the content with the plugin and their options', async () => {
+    test('it should have rendered the content with the plugin and their options', () => {
       const htmls = [];
-      result.content.forEach((page) => {
+      result.content.forEach(page => {
         htmls.push([page.source, page.rendered]);
       });
 
@@ -67,20 +67,20 @@ describe('When proving remark plugins', () => {
 
     beforeAll(async () => {
       const docfy = new Docfy({
-        remarkPlugins: [math]
+        remarkPlugins: [math],
       });
       result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
-          pattern: '**/math.md'
-        }
+          pattern: '**/math.md',
+        },
       ]);
     });
 
-    test('it should have used the remark math plugin', async () => {
+    test('it should have used the remark math plugin', () => {
       const htmls = [];
-      result.content.forEach((page) => {
+      result.content.forEach(page => {
         htmls.push([page.source, page.rendered]);
       });
 
@@ -96,20 +96,20 @@ describe('When proving rehype plugins', () => {
     beforeAll(async () => {
       const docfy = new Docfy({
         remarkPlugins: [math],
-        rehypePlugins: [katex]
+        rehypePlugins: [katex],
       });
       result = await docfy.run([
         {
           root,
           urlPrefix: 'docs',
-          pattern: '**/math.md'
-        }
+          pattern: '**/math.md',
+        },
       ]);
     });
 
-    test('it should have used remark and rehype plugins', async () => {
+    test('it should have used remark and rehype plugins', () => {
       const htmls = [];
-      result.content.forEach((page) => {
+      result.content.forEach(page => {
         htmls.push([page.source, page.rendered]);
       });
 

@@ -21,20 +21,10 @@
     "module": "es6",
     "experimentalDecorators": true,
     "paths": {
-      "site/tests/*": [
-        "tests/*"
-      ],
-      "site/*": [
-        "app/*"
-      ],
-      "*": [
-        "types/*"
-      ]
+      "site/tests/*": ["tests/*"],
+      "site/*": ["app/*"],
+      "*": ["types/*"]
     }
   },
-  "include": [
-    "app/**/*",
-    "tests/**/*",
-    "types/**/*"
-  ]
+  "include": ["app/**/*", "tests/**/*", "types/**/*"]
 }

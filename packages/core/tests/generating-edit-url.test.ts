@@ -7,8 +7,8 @@ test('it should correctly generate edit urls', async () => {
   const docfy = new Docfy({
     repository: {
       url: 'https://github.com/user/repo',
-      editBranch: 'dev'
-    }
+      editBranch: 'dev',
+    },
   });
   const result = await docfy.run([
     {
@@ -16,7 +16,7 @@ test('it should correctly generate edit urls', async () => {
       urlPrefix: 'docs',
       urlSchema: 'manual',
       pattern: '**/*.md',
-      ignore: ['**/package2/**/*.md']
+      ignore: ['**/package2/**/*.md'],
     },
     {
       root,
@@ -24,13 +24,13 @@ test('it should correctly generate edit urls', async () => {
       urlSchema: 'manual',
       pattern: '**/package2/**/*.md',
       repository: {
-        url: 'https://bitbucket.org/user/repo'
-      }
-    }
+        url: 'https://bitbucket.org/user/repo',
+      },
+    },
   ]);
 
   const urls = [];
-  result.content.forEach((page) => {
+  result.content.forEach(page => {
     urls.push([page.source, page.meta.editUrl]);
   });
 

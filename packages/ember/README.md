@@ -1,12 +1,11 @@
 # @docfy/ember
 
-Ember integration with Docfy.
+[Short description of the addon.]
 
 ## Compatibility
 
-- Ember.js v3.16 or above
-- Ember CLI v2.13 or above
-- Node.js v10 or above
+- Ember.js v4.12 or above
+- Embroider or ember-auto-import v2
 
 ## Installation
 
@@ -16,7 +15,11 @@ ember install @docfy/ember
 
 ## Usage
 
-Refer to the [documentation site](https://docfy.dev/docs/ember).
+[Longer description of how to use the addon in apps.]
+
+## Contributing
+
+See the [Contributing](CONTRIBUTING.md) guide for details.
 
 ## License
 

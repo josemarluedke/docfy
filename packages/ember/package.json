@@ -1,140 +1,107 @@
 {
   "name": "@docfy/ember",
-  "version": "0.9.0",
-  "description": "Ember integration with Docfy",
+  "version": "0.9.1-beta.0",
+  "description": "The default blueprint for Embroider v2 addons.",
   "keywords": [
-    "ember-addon",
-    "prember-plugin"
+    "ember-addon"
   ],
-  "repository": "https://github.com/josemarluedke/docfy",
+  "repository": "",
   "license": "MIT",
-  "author": "Josemar Luedke <josemarluedke@gmail.com>",
-  "directories": {
-    "doc": "docs",
-    "test": "tests"
-  },
+  "author": "",
+  "files": [
+    "addon-main.cjs",
+    "declarations",
+    "dist"
+  ],
   "scripts": {
-    "prebuild": "npm-run-all compile",
-    "build": "ember build --environment=production",
-    "compile": "tsc --project src/tsconfig.json",
-    "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
-    "lint:hbs": "ember-template-lint .",
-    "lint:js": "cd ../../../ && yarn lint:js",
-    "prepare": "npm-run-all compile",
-    "prepublishOnly": "ember ts:precompile",
-    "postpublish": "ember ts:clean",
-    "prestart": "npm-run-all compile",
-    "start": "ember serve",
-    "test": "npm-run-all lint:hbs test:*",
-    "test:ember": "ember test --test-port=",
-    "test:ember-compatibility": "echo 'ember try:each TODO'"
+    "build": "rollup --config",
+    "compile": "rollup --config",
+    "format": "prettier . --cache --write",
+    "format:check": "prettier . --cache --check",
+    "lint": "concurrently \"yarn:lint:js\" \"yarn:lint:hbs\" \"yarn:lint:types\" \"yarn:lint:format\" --names \"lint:\" --prefixColors auto",
+    "lint:fix": "concurrently \"yarn:lint:*:fix\" --names \"fix:\" --prefixColors auto && yarn format",
+    "lint:format": "prettier . --cache --check",
+    "lint:hbs": "ember-template-lint . --no-error-on-unmatched-pattern",
+    "lint:js": "eslint . --cache",
+    "lint:hbs:fix": "ember-template-lint . --fix --no-error-on-unmatched-pattern",
+    "lint:js:fix": "eslint . --fix",
+    "lint:types": "glint",
+    "prepack": "rollup --config"
   },
   "dependencies": {
-    "@docfy/core": "^0.9.0",
-    "broccoli-bridge": "^1.0.0",
-    "broccoli-file-creator": "^2.1.1",
-    "broccoli-funnel": "^3.0.8",
-    "broccoli-merge-trees": "^4.2.0",
-    "broccoli-node-api": "^1.7.0",
-    "broccoli-plugin": "^4.0.7",
-    "broccoli-source": "^3.0.1",
-    "calculate-cache-key-for-tree": "2.0.0",
-    "debug": "^4.3.3",
-    "ember-cli-babel": "^8.2.0",
-    "ember-cli-htmlbars": "^6.3.0",
-    "ember-cli-typescript": "^4.2.1",
-    "ember-get-config": "^1.0.2",
-    "mdast-util-to-string": "^2.0.0",
-    "remark-hbs": "^0.4.1",
-    "unist-builder": "^2.0.3",
-    "unist-util-find": "^1.0.2",
-    "unist-util-visit": "^2.0.2"
+    "@embroider/addon-shim": "^1.8.9",
+    "@embroider/macros": "^1.18.0",
+    "decorator-transforms": "^2.3.0"
+  },
+  "peerDependencies": {
+    "ember-source": ">= 4.12.0"
   },
   "devDependencies": {
-    "@babel/helper-define-map": "^7.16.7",
-    "@docfy/plugin-with-prose": "^0.9.0",
-    "@ember/optional-features": "^2.0.0",
-    "@ember/test-helpers": "^2.6.0",
-    "@embroider/compat": "^1.0.0",
-    "@embroider/core": "^1.0.0",
-    "@embroider/webpack": "^1.0.0",
-    "@glimmer/component": "^1.0.4",
-    "@glimmer/tracking": "^1.0.4",
-    "@mapbox/rehype-prism": "^0.5.0",
-    "@tailwindcss/typography": "^0.4.0",
-    "@types/ember-qunit": "^5.0.0",
-    "@types/ember-resolver": "^5.0.11",
-    "@types/ember__application": "^4.0.0",
-    "@types/ember__array": "^4.0.1",
-    "@types/ember__component": "^4.0.1",
-    "@types/ember__debug": "^4.0.0",
-    "@types/ember__error": "^4.0.0",
-    "@types/ember__object": "^4.0.0",
-    "@types/ember__routing": "^4.0.2",
-    "@types/ember__runloop": "^4.0.0",
-    "@types/ember__service": "^4.0.0",
-    "@types/ember__string": "^3.0.9",
-    "@types/ember__template": "^4.0.0",
-    "@types/ember__test": "^4.0.0",
-    "@types/ember__test-helpers": "^2.6.1",
-    "@types/htmlbars-inline-precompile": "^3.0.0",
-    "@types/qunit": "^2.11.3",
-    "@types/rsvp": "^4.0.4",
-    "@types/sinon": "^9.0.10",
-    "autoprefixer": "^10.4.2",
-    "broccoli-asset-rev": "^3.0.0",
-    "ember-auto-import": "^2.4.0",
-    "ember-cli": "~4.1.1",
-    "ember-cli-babel": "8.2.0",
-    "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-fastboot": "^3.2.0-beta.5",
-    "ember-cli-fastboot-testing": "^0.6.0",
-    "ember-cli-inject-live-reload": "^2.1.0",
-    "ember-cli-postcss": "^8.0.0",
-    "ember-cli-sri": "^2.1.1",
-    "ember-cli-typescript-blueprints": "^3.0.0",
-    "ember-cli-uglify": "^3.0.0",
-    "ember-disable-prototype-extensions": "^1.1.3",
-    "ember-export-application-global": "^2.0.1",
-    "ember-load-initializers": "^2.1.2",
-    "ember-maybe-import-regenerator": "^1.0.0",
-    "ember-qunit": "^5.1.5",
-    "ember-resolver": "^8.0.3",
-    "ember-router-helpers": "^0.4.0",
-    "ember-sinon": "^5.0.0",
-    "ember-source": "~4.1.0",
-    "ember-source-channel-url": "^3.0.0",
-    "ember-template-imports": "^4.0.0",
-    "ember-template-lint": "^2.18.0",
-    "ember-try": "^2.0.0",
-    "loader.js": "^4.7.0",
-    "npm-run-all": "^4.1.5",
-    "postcss-import": "^14.0.2",
-    "postcss-nested": "^5.0.6",
-    "prember": "^1.1.0",
-    "qunit": "^2.17.2",
-    "qunit-dom": "^2.0.0",
-    "refractor": "^3.0.0",
-    "remark-autolink-headings": "^6.0.0",
-    "remark-code-import": "^0.2.0",
-    "tailwindcss": "^2.0.2",
-    "typescript": "^4.1.3",
-    "webpack": "^5.67.0"
-  },
-  "engines": {
-    "node": ">= 12"
-  },
-  "publishConfig": {
-    "access": "public"
+    "@babel/core": "^7.25.2",
+    "@babel/eslint-parser": "^7.25.1",
+    "@babel/plugin-transform-typescript": "^7.25.2",
+    "@babel/runtime": "^7.25.6",
+    "@ember/library-tsconfig": "^1.0.0",
+    "@embroider/addon-dev": "^8.1.0",
+    "@eslint/js": "^9.17.0",
+    "@glimmer/component": "^2.0.0",
+    "@glint/core": "1.5.2",
+    "@glint/environment-ember-loose": "1.5.2",
+    "@glint/environment-ember-template-imports": "1.5.2",
+    "@glint/template": "1.5.2",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@types/qunit": "^2.19.12",
+    "babel-plugin-ember-template-compilation": "^3.0.0",
+    "concurrently": "^9.0.1",
+    "ember-source": "^6.3.0",
+    "ember-template-lint": "^7.9.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-ember": "^12.3.3",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-n": "^17.15.1",
+    "globals": "^16.1.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-ember-template-tag": "^2.0.4",
+    "rollup": "^4.22.5",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.19.1"
   },
   "ember": {
     "edition": "octane"
   },
   "ember-addon": {
-    "configPath": "tests/dummy/config",
-    "main": "ember-cli-addon.js",
-    "before": [
-      "prember"
-    ]
+    "version": 2,
+    "type": "addon",
+    "main": "addon-main.cjs",
+    "app-js": {
+      "./components/docfy-demo.js": "./dist/_app_/components/docfy-demo.js",
+      "./components/docfy-link.js": "./dist/_app_/components/docfy-link.js",
+      "./components/docfy-output.js": "./dist/_app_/components/docfy-output.js",
+      "./components/docfy-previous-and-next-page.js": "./dist/_app_/components/docfy-previous-and-next-page.js",
+      "./services/docfy.js": "./dist/_app_/services/docfy.js"
+    }
+  },
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "exports": {
+    ".": {
+      "types": "./declarations/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./*.css": "./dist/*.css",
+    "./*": {
+      "types": "./declarations/*.d.ts",
+      "default": "./dist/*.js"
+    },
+    "./addon-main.js": "./addon-main.cjs"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "declarations/*"
+      ]
+    }
   }
 }

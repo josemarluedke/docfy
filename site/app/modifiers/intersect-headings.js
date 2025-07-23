@@ -5,7 +5,7 @@ function getHeadingIds(headings, output = []) {
   if (typeof headings === 'undefined') {
     return [];
   }
-  headings.forEach((heading) => {
+  headings.forEach(heading => {
     output.push(heading.id);
     getHeadingIds(heading.headings, output);
   });
@@ -31,20 +31,18 @@ export default class IntersectHeadingsModifier extends Modifier {
 
     // loop through each intersection element
     //  due to the asychronous nature of observers, callbacks must be designed to handle 1 or many intersecting elements
-    elements.forEach((element) => {
+    elements.forEach(element => {
       // detect if intersecting element is above the browser viewport; include cross browser logic
       const boundingClientRectY =
         typeof element.boundingClientRect.y !== 'undefined'
           ? element.boundingClientRect.y
           : element.boundingClientRect.top;
       const rootBoundsY =
-        typeof element.rootBounds.y !== 'undefined'
-          ? element.rootBounds.y
-          : element.rootBounds.top;
+        typeof element.rootBounds.y !== 'undefined' ? element.rootBounds.y : element.rootBounds.top;
       const isAbove = boundingClientRectY < rootBoundsY;
 
       const id = element.target.getAttribute('id');
-      const intersectingElemIdx = this.headings.findIndex((item) => item == id);
+      const intersectingElemIdx = this.headings.findIndex(item => item == id);
 
       // record index as either above or below current index
       if (isAbove) aboveIndeces.push(intersectingElemIdx);
@@ -76,10 +74,10 @@ export default class IntersectHeadingsModifier extends Modifier {
     if ('IntersectionObserver' in window) {
       this.observer = new IntersectionObserver(this.handleObserver, {
         rootMargin: '-96px', // Distance from top to heading id
-        threshold: 1.0
+        threshold: 1.0,
       });
 
-      this.headings.forEach((id) => {
+      this.headings.forEach(id => {
         const el = document.getElementById(id);
         if (el) {
           this.observer.observe(el);

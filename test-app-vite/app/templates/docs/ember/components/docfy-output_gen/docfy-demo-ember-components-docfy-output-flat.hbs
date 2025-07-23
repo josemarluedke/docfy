@@ -1,0 +1,11 @@
+<DocfyOutput @type='flat' as |pages|>
+  <ul class='list-disc list-inside space-y-2'>
+    {{#each pages as |page|}}
+      <li>
+        <DocfyLink @to={{page.url}}>
+          {{page.title}}
+        </DocfyLink>
+      </li>
+    {{/each}}
+  </ul>
+</DocfyOutput>
