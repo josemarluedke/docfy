@@ -116,6 +116,13 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
             try {
               await processor.processChangedFile(ctx.file);
               debug('Template regenerated successfully');
+
+              // Invalidate the virtual docfy output module so it gets reloaded
+              const virtualModule = ctx.server.moduleGraph.getModuleById(VIRTUAL_DOCFY_OUTPUT);
+              if (virtualModule) {
+                debug('Invalidating virtual docfy output module for HMR');
+                ctx.server.reloadModule(virtualModule);
+              }
             } catch (error) {
               debug('Error regenerating templates', { error });
             }
