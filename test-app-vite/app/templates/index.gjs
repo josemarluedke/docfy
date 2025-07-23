@@ -183,6 +183,54 @@ import FeatureCard from '../components/feature-card';
           will inform prember about all the URLs it has.
         </FeatureCard>
       </div>
+    </div>
+  </div>
+
+  <div class="px-4 py-16 overflow-hidden bg-blue-900 md:py-24">
+    <div class="relative mx-auto max-w-screen-lg">
+      <div
+        class="absolute w-2/3 h-20 mt-2 ml-1 -left-32 -top-24 bg-dot-lg"
+      ></div>
+
+      <h3 class="pb-6 text-3xl font-semibold text-blue-100 md:text-center">
+        <span class="text-blue-300">⚡</span>
+        Powered by Vite
+      </h3>
+      <p
+        class="pb-16 text-xl font-semibold leading-snug text-blue-300 md:text-center max-w-200 md:mx-auto"
+      >
+        This documentation site showcases @docfy/ember-vite - enjoy
+        lightning-fast development with modern tooling and instant live reload.
+      </p>
+
+      <div
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 md:gap-16"
+      >
+        <FeatureCard @title="Lightning Fast Live Reload" @icon="#646CFF">
+          Changes to your markdown files are instantly reflected in the browser
+          with automatic page refresh.
+        </FeatureCard>
+        <FeatureCard @title="ESM-Native Development" @icon="#646CFF">
+          No bundling during development means faster startup times and instant
+          file serving.
+        </FeatureCard>
+        <FeatureCard @title="Modern Build Pipeline" @icon="#646CFF">
+          Optimized production builds with tree-shaking, code splitting, and
+          advanced compression.
+        </FeatureCard>
+        <FeatureCard @title="TypeScript Ready" @icon="#646CFF">
+          First-class TypeScript support with instant compilation and type
+          checking.
+        </FeatureCard>
+        <FeatureCard @title="Flexible Configuration" @icon="#646CFF">
+          Configure Docfy through vite.config.js or dedicated config files with
+          full IntelliSense support.
+        </FeatureCard>
+        <FeatureCard @title="Embroider Compatible" @icon="#646CFF">
+          Seamlessly integrates with @embroider/vite for modern Ember
+          development workflows.
+        </FeatureCard>
+      </div>
 
       <div
         class="absolute w-2/3 h-20 mt-2 -right-32 -bottom-24 bg-dot-lg"
@@ -198,12 +246,22 @@ import FeatureCard from '../components/feature-card';
           your next docs site with Ember and Docfy.</span>
       </h3>
 
-      <DocfyLink
-        @to="/docs/ember"
-        class="inline-flex items-center px-6 py-3 mb-4 font-semibold text-black bg-green-500 rounded hover:bg-green-400"
-      >
-        Get Started with Ember
-      </DocfyLink>
+      <div class="flex flex-col gap-3 sm:flex-row sm:gap-4">
+        <DocfyLink
+          @to="/docs/ember"
+          class="inline-flex items-center px-6 py-3 font-semibold text-black bg-green-500 rounded hover:bg-green-400"
+        >
+          Get Started with Ember
+        </DocfyLink>
+
+        <DocfyLink
+          @to="/docs/ember/ember-vite"
+          class="inline-flex items-center px-6 py-3 font-semibold text-white bg-blue-600 rounded hover:bg-blue-500 border-2 border-blue-400"
+        >
+          <span class="mr-2">⚡</span>
+          Try Vite Integration
+        </DocfyLink>
+      </div>
 
       <div class="absolute top-0 hidden md:block right-10">
         <div class="w-20 h-20 bg-dot-brighter-lg"></div>
