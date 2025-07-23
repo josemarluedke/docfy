@@ -19,7 +19,7 @@ interface DocfyLinkSignature {
 }
 
 export default class DocfyLink extends Component<DocfyLinkSignature> {
-  @service declare router: RouterService;
+  @service('router') declare router: RouterService;
 
   get routeName(): string | undefined {
     const { to } = this.args;

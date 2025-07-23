@@ -19,13 +19,9 @@ module.exports = {
       },
     ],
     [
-      'module:decorator-transforms',
-      {
-        runtime: {
-          import: 'decorator-transforms/runtime-esm',
-        },
-      },
-    ],
+      "module:decorator-transforms",
+      { "runtime": { "import": "decorator-transforms/runtime" } }
+    ]
   ],
 
   generatorOpts: {
