@@ -10,10 +10,8 @@
   "scripts": {
     "lint": "lerna run lint --parallel",
     "lint:fix": "lerna run lint:fix --parallel",
-    "lint:format": "prettier . --cache --check",
-    "lint:format:fix": "prettier . --cache --write",
-    "lint:js": "eslint . --cache",
-    "lint:js:fix": "eslint . --fix",
+    "lint:format": "lerna run format:check --parallel",
+    "lint:format:fix": "lerna run format --parallel",
     "start": "echo 'TODO'",
     "compile": "lerna run compile",
     "test": "lerna run --parallel test"
@@ -23,21 +21,12 @@
     "@babel/eslint-parser": "^7.27.1",
     "@babel/plugin-transform-runtime": "^7.27.1",
     "@babel/runtime": "^7.27.1",
-    "@eslint/js": "^9.27.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.5",
     "concurrently": "^9.1.2",
-    "eslint": "^9.27.0",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jest": "^28.10.0",
-    "eslint-plugin-n": "^17.18.0",
-    "globals": "^16.1.0",
     "jest": "^29.7.0",
     "lerna": "^8.1.9",
-    "prettier": "^3.5.3",
-    "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1"
+    "typescript": "^5.8.3"
   },
   "resolutions": {
     "@types/unist": "2.0.3"

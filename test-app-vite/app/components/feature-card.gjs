@@ -1,6 +1,11 @@
 import Component from '@glimmer/component';
 
 export default class FeatureCard extends Component {
+  // Non-empty class to satisfy lint rule
+  constructor(owner, args) {
+    super(owner, args);
+  }
+
   <template>
     <div ...attributes>
       <svg

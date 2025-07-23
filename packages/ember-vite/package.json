@@ -34,6 +34,8 @@
     "test:ci": "vitest run",
     "lint": "eslint . --cache",
     "lint:fix": "eslint . --fix",
+    "format": "prettier . --cache --write",
+    "format:check": "prettier . --cache --check",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

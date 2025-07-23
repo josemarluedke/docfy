@@ -16,10 +16,10 @@
   },
   "scripts": {
     "build": "vite build",
-    "lint:format:fix": "prettier . --cache --write",
+    "format": "prettier . --cache --write",
     "lint": "concurrently \"yarn:lint:*(!fix)\" --names \"lint:\" --prefixColors auto",
     "lint:fix": "concurrently \"yarn:lint:*:fix\" --names \"fix:\" --prefixColors auto && yarn format",
-    "lint:format": "prettier . --cache --check",
+    "format:check": "prettier . --cache --check",
     "lint:hbs": "ember-template-lint .",
     "lint:hbs:fix": "ember-template-lint . --fix",
     "lint:js": "eslint . --cache",
