@@ -34,6 +34,15 @@ export default defineConfig({
       {
         root: process.cwd(),
         hmr: true,
+        config: {
+          sources: [
+            {
+              root: '.',
+              pattern: '**/*.md',
+              urlPrefix: 'docs',
+            },
+          ],
+        },
       }
     ),
     // ... other Embroider plugins

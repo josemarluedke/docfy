@@ -13,7 +13,7 @@ import { DocfyLink } from '@docfy/ember';
 <pre><code class="hljs language-bash">npm install --save-dev @docfy/ember-cli
 npm install @docfy/ember</code></pre>
 <p><strong>For Vite Builds:</strong></p>
-<pre><code class="hljs language-bash">npm install --save-dev @docfy/ember-vite  
+<pre><code class="hljs language-bash">npm install --save-dev @docfy/ember-vite
 npm install @docfy/ember</code></pre>
 <h2 id="configure-your-build"><a href="#configure-your-build">Configure Your Build</a></h2>
 <h3 id="ember-cli-configuration"><a href="#ember-cli-configuration">Ember CLI Configuration</a></h3>
@@ -32,20 +32,27 @@ npm install @docfy/ember</code></pre>
 <h3 id="vite-configuration"><a href="#vite-configuration">Vite Configuration</a></h3>
 <p>Add the plugin to your <code>vite.config.mjs</code>:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
-<span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
+<span class="hljs-keyword">import</span> docfy <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
   <span class="hljs-attr">plugins</span>: [
-    <span class="hljs-comment">// ... other plugins</span>
-    docfyVite({
-      <span class="hljs-attr">sources</span>: [
-        {
-          <span class="hljs-attr">root</span>: path.resolve(__dirname, <span class="hljs-string">'docs'</span>),
-          <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
-          <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
+    docfy(
+      <span class="hljs-comment">/** <span class="hljs-doctag">@type <span class="hljs-type">{import('@docfy/ember-vite').DocfyViteOptions}</span> </span>*/</span>
+      {
+        <span class="hljs-attr">root</span>: process.cwd(),
+        <span class="hljs-attr">hmr</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">config</span>: {
+          <span class="hljs-attr">sources</span>: [
+            {
+              <span class="hljs-attr">root</span>: <span class="hljs-string">'.'</span>,
+              <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
+              <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
+            },
+          ],
         },
-      ],
-    }),
+      }
+    ),
+    <span class="hljs-comment">// ... other plugins</span>
   ],
 });</code></pre>
 <h2 id="add-routes"><a href="#add-routes">Add Routes</a></h2>
@@ -70,14 +77,14 @@ Router.map(<span class="hljs-function"><span class="hljs-keyword">function</span
 
 <span class="hljs-section"># Welcome to My Documentation</span>
 
-This is my first Docfy documentation site! 
+This is my first Docfy documentation site!
 
 <span class="hljs-section">## Getting Started</span>
 
 You can create more pages by adding markdown files to the <span class="hljs-code">`docs`</span> folder.</code></pre>
 <p>Add another page at <code>docs/installation.md</code>:</p>
 <pre><code class="hljs language-md">---
-<span class="hljs-section">title: Installation  
+<span class="hljs-section">title: Installation
 ---</span>
 
 <span class="hljs-section"># Installation</span>
@@ -89,12 +96,12 @@ Follow these steps to install the project:
 <span class="hljs-bullet">3.</span> Start the development server with <span class="hljs-code">`npm start`</span></code></pre>
 <h2 id="build-navigation"><a href="#build-navigation">Build Navigation</a></h2>
 <p>Create <code>app/templates/docs.hbs</code> to add a sidebar:</p>
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"docs-layout"</span>></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">aside</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"sidebar"</span>></span>
-    <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">"docs"</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
+<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'docs-layout'</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">aside</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'sidebar'</span>></span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">'docs'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
       <span class="hljs-tag">&#x3C;<span class="hljs-name">nav</span>></span>
         </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
-          <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"nav-link"</span>></span>
+          <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'nav-link'</span>></span>
             </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
           <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
         </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
@@ -102,19 +109,21 @@ Follow these steps to install the project:
     <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span>
   <span class="hljs-tag">&#x3C;/<span class="hljs-name">aside</span>></span>
 
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">main</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"content"</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-name">main</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'content'</span>></span>
     </span><span class="hljs-template-variable">\{{<span class="hljs-name"><span class="hljs-builtin-name">outlet</span></span>}}</span><span class="xml">
-    
+
     <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyPreviousAndNextPage</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">previous</span> <span class="hljs-attr">next</span>|></span>
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"page-nav"</span>></span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'page-nav'</span>></span>
         </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> previous}}</span><span class="xml">
-          <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"prev-link"</span>></span>
-            ← </span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.title</span>}}</span><span class="xml">
+          <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'prev-link'</span>></span>
+            ←
+            </span><span class="hljs-template-variable">\{{<span class="hljs-name">previous.title</span>}}</span><span class="xml">
           <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
         </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
         </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> next}}</span><span class="xml">
-          <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">next.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">"next-link"</span>></span>
-            </span><span class="hljs-template-variable">\{{<span class="hljs-name">next.title</span>}}</span><span class="xml"> →
+          <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">next.url</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">class</span>=<span class="hljs-string">'next-link'</span>></span>
+            </span><span class="hljs-template-variable">\{{<span class="hljs-name">next.title</span>}}</span><span class="xml">
+            →
           <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
         </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
       <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>

@@ -69,12 +69,15 @@ export default defineConfig({
       {
         root: process.cwd(),
         hmr: true,
-        sources: [
-          {
-            pattern: 'docs/**/*.md',
-            urlPrefix: 'docs',
-          },
-        ],
+        config: {
+          sources: [
+            {
+              root: '.',
+              pattern: '**/*.md',
+              urlPrefix: 'docs',
+            },
+          ],
+        },
       }
     ),
     // ... other plugins
@@ -193,4 +196,3 @@ Now that you have a basic documentation site running:
 - Check out specific build integration guides for [Ember CLI](./ember-cli.md) or [Vite](./ember-vite.md)
 
 Your documentation site will grow as you add more markdown files to the `docs` folder. Each file becomes a page with automatic routing and navigation.
-

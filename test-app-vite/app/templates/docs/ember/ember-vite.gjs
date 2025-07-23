@@ -14,20 +14,27 @@ import { DocfyLink } from '@docfy/ember';
 <h3 id="inline-configuration"><a href="#inline-configuration">Inline Configuration</a></h3>
 <p>Add the Docfy plugin directly to your <code>vite.config.mjs</code>:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
-<span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
+<span class="hljs-keyword">import</span> docfy <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
 <span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
   <span class="hljs-attr">plugins</span>: [
-    <span class="hljs-comment">// ... other Embroider plugins</span>
-    docfyVite({
-      <span class="hljs-attr">sources</span>: [
-        {
-          <span class="hljs-attr">root</span>: path.resolve(__dirname, <span class="hljs-string">'docs'</span>),
-          <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
-          <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
+    docfy(
+      <span class="hljs-comment">/** <span class="hljs-doctag">@type <span class="hljs-type">{import('@docfy/ember-vite').DocfyViteOptions}</span> </span>*/</span>
+      {
+        <span class="hljs-attr">root</span>: process.cwd(),
+        <span class="hljs-attr">hmr</span>: <span class="hljs-literal">true</span>,
+        <span class="hljs-attr">config</span>: {
+          <span class="hljs-attr">sources</span>: [
+            {
+              <span class="hljs-attr">root</span>: <span class="hljs-string">'.'</span>,
+              <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
+              <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
+            },
+          ],
         },
-      ],
-    }),
+      }
+    ),
+    <span class="hljs-comment">// ... other Embroider plugins</span>
   ],
 });</code></pre>
 <h3 id="configuration-file"><a href="#configuration-file">Configuration File</a></h3>
