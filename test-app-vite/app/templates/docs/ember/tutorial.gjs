@@ -17,7 +17,7 @@ npm install @docfy/ember</code></pre>
 npm install @docfy/ember</code></pre>
 <h2 id="configure-your-build"><a href="#configure-your-build">Configure Your Build</a></h2>
 <h3 id="ember-cli-configuration"><a href="#ember-cli-configuration">Ember CLI Configuration</a></h3>
-<p>Create <code>docfy.config.js</code> in your project root:</p>
+<p>Create <code>.docfy-config.js</code> in your project root:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
 
 <span class="hljs-built_in">module</span>.exports = {

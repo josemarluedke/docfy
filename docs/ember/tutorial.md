@@ -36,7 +36,7 @@ npm install @docfy/ember
 
 ### Ember CLI Configuration
 
-Create `docfy.config.js` in your project root:
+Create `.docfy-config.js` in your project root:
 
 ```js
 const path = require('path');

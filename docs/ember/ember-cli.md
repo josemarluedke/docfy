@@ -19,7 +19,7 @@ npm install --save-dev @docfy/ember-cli
 
 ## Configuration File
 
-Create `docfy.config.js` in your project root:
+Create `.docfy-config.js` in your project root (note the dot prefix):
 
 ```js
 const path = require('path');
@@ -34,6 +34,8 @@ module.exports = {
   ],
 };
 ```
+
+> **Note**: Ember CLI integration only supports CommonJS format (`.js` files with `module.exports`). ESM configuration files (`.mjs`) are not supported due to Ember CLI's synchronous build process. For ESM config support, consider using [@docfy/ember-vite](./ember-vite.md) instead.
 
 ## Ember CLI-Specific Features
 
@@ -99,7 +101,7 @@ The addon automatically integrates with your Ember CLI build process. No additio
 Add custom Docfy plugins for specialized processing:
 
 ```js
-// docfy.config.js
+// .docfy-config.js
 module.exports = {
   plugins: [
     // Custom processing plugins
@@ -120,6 +122,7 @@ module.exports = {
 Perfect for monorepos where you want to collect docs from multiple packages:
 
 ```js
+// .docfy-config.js
 module.exports = {
   sources: [
     // Main documentation

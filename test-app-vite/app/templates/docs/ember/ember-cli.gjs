@@ -11,7 +11,7 @@ import { DocfyLink } from '@docfy/ember';
 <h2 id="installation"><a href="#installation">Installation</a></h2>
 <pre><code class="hljs language-bash">npm install --save-dev @docfy/ember-cli</code></pre>
 <h2 id="configuration-file"><a href="#configuration-file">Configuration File</a></h2>
-<p>Create <code>docfy.config.js</code> in your project root:</p>
+<p>Create <code>.docfy-config.js</code> in your project root (note the dot prefix):</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
 
 <span class="hljs-built_in">module</span>.exports = {
@@ -23,6 +23,9 @@ import { DocfyLink } from '@docfy/ember';
     },
   ],
 };</code></pre>
+<blockquote>
+<p><strong>Note</strong>: Ember CLI integration only supports CommonJS format (<code>.js</code> files with <code>module.exports</code>). ESM configuration files (<code>.mjs</code>) are not supported due to Ember CLI's synchronous build process. For ESM config support, consider using <DocfyLink @to="/docs/ember/ember-vite"  >@docfy/ember-vite</DocfyLink> instead.</p>
+</blockquote>
 <h2 id="ember-cli-specific-features"><a href="#ember-cli-specific-features">Ember CLI-Specific Features</a></h2>
 <h3 id="build-time-processing"><a href="#build-time-processing">Build-time Processing</a></h3>
 <p>All markdown processing happens during the Ember CLI build phase. This means:</p>
@@ -67,7 +70,7 @@ import { DocfyLink } from '@docfy/ember';
 <p>The addon automatically integrates with your Ember CLI build process. No additional configuration needed for basic usage.</p>
 <h3 id="custom-processing"><a href="#custom-processing">Custom Processing</a></h3>
 <p>Add custom Docfy plugins for specialized processing:</p>
-<pre><code class="hljs language-js"><span class="hljs-comment">// docfy.config.js</span>
+<pre><code class="hljs language-js"><span class="hljs-comment">// .docfy-config.js</span>
 <span class="hljs-built_in">module</span>.exports = {
   <span class="hljs-attr">plugins</span>: [
     <span class="hljs-comment">// Custom processing plugins</span>
@@ -83,7 +86,8 @@ import { DocfyLink } from '@docfy/ember';
 };</code></pre>
 <h3 id="monorepo-support"><a href="#monorepo-support">Monorepo Support</a></h3>
 <p>Perfect for monorepos where you want to collect docs from multiple packages:</p>
-<pre><code class="hljs language-js"><span class="hljs-built_in">module</span>.exports = {
+<pre><code class="hljs language-js"><span class="hljs-comment">// .docfy-config.js</span>
+<span class="hljs-built_in">module</span>.exports = {
   <span class="hljs-attr">sources</span>: [
     <span class="hljs-comment">// Main documentation</span>
     {
