@@ -1,6 +1,6 @@
 export default function docfyOutputTemplate(modulePrefix: string): string {
   return `;
-define('@embroider/virtual/docfy/output', [
+define('@docfy/virtual/output', [
   'exports',
   '${modulePrefix}/docfy-output'
 ], function (_exports, _docfyOutput) {

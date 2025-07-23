@@ -1,4 +1,4 @@
-declare module '@embroider/virtual/docfy/output' {
+declare module '@docfy/virtual/output' {
   /*
    * The actual output.js file is generated at build time. This is only to
    * provide typing.

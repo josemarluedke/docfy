@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 import { service } from '@ember/service';
 import { cached } from '@glimmer/tracking';
-import output from '@embroider/virtual/docfy/output';
+import output from '@docfy/virtual/output';
 import type RouterService from '@ember/routing/router-service';
 import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
 
