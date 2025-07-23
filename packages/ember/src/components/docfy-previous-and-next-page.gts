@@ -19,7 +19,7 @@ interface DocfyPreviousAndNextPageSignature {
 }
 
 export default class DocfyPreviousAndNextPage extends Component<DocfyPreviousAndNextPageSignature> {
-  @service declare docfy: DocfyService;
+  @service('docfy') declare docfy: DocfyService;
 
   get previous(): PageMetadata | undefined {
     return this.docfy.previousPage(this.args.scope);

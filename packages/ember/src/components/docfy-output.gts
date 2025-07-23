@@ -20,8 +20,8 @@ interface DocfyOutputSignature {
 }
 
 export default class DocfyOutput extends Component<DocfyOutputSignature> {
-  @service declare router: RouterService;
-  @service declare docfy: DocfyService;
+  @service('router') declare router: RouterService;
+  @service('docfy') declare docfy: DocfyService;
 
   get output(): NestedPageMetadata | PageMetadata[] | PageMetadata | undefined {
     if (this.args.url) {

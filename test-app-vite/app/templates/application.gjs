@@ -1,5 +1,6 @@
 import { pageTitle } from 'ember-page-title';
 import ThemeSwitcher from '../components/theme-switcher';
+import { LinkTo } from '@ember/routing';
 
 <template>
   {{pageTitle "Docfy"}}
@@ -7,7 +8,7 @@ import ThemeSwitcher from '../components/theme-switcher';
   <div class="sticky top-0 z-10 h-16 bg-gray-1000">
     <div class="flex h-full px-4 mx-auto sm:px-6 max-w-(--breakpoint-2xl)">
       <div class="flex items-center mr-4">
-        <a href="/" class="flex items-center text-green-500">
+        <LinkTo @route="index" class="flex items-center text-green-500">
           <svg
             aria-hidden="true"
             class="w-6 h-6 fill-current"
@@ -34,17 +35,17 @@ import ThemeSwitcher from '../components/theme-switcher';
           <span class="pt-1 ml-2 text-2xl font-semibold leading-none">
             Docfy
           </span>
-        </a>
+        </LinkTo>
       </div>
       <div class="flex items-center justify-between grow px-2 md:px-6">
         <ul>
           <li>
-            <a
-              href="/docs"
+            <LinkTo
+              @route="docs"
               class="pb-1 text-gray-200 border-b-2 border-transparent hover:border-green-500 focus:outline-none focus-visible:shadow-outline"
             >
               Documentation
-            </a>
+            </LinkTo>
           </li>
         </ul>
 
