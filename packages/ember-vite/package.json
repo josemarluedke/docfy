@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember-vite",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Vite plugin for Docfy Ember integration with @embroider/vite",
   "keywords": [
     "vite-plugin",

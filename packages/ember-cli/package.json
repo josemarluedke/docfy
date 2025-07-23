@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember-cli",
-  "version": "0.10.0",
+  "version": "0.10.1",
   "description": "Ember CLI classic integration with Docfy",
   "keywords": [
     "ember-addon",
@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@docfy/core": "^0.10.0",
-    "@docfy/ember": "^0.10.0",
+    "@docfy/ember": "^0.10.1",
     "broccoli-bridge": "^1.0.0",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-funnel": "^3.0.8",
