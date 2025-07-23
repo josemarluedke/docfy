@@ -1,5 +1,5 @@
-import DocfyDemoComponentsDocfyPreviousAndNextPageSimple from './docfy-previous-and-next-page_gen/docfy-demo-components-docfy-previous-and-next-page-simple.js';
-import DocfyDemoComponentsDocfyPreviousAndNextPageScope from './docfy-previous-and-next-page_gen/docfy-demo-components-docfy-previous-and-next-page-scope.js';
+import DocfyDemoEmberComponentsDocfyPreviousAndNextPageSimple from './docfy-previous-and-next-page_gen/docfy-demo-ember-components-docfy-previous-and-next-page-simple.js';
+import DocfyDemoEmberComponentsDocfyPreviousAndNextPageScope from './docfy-previous-and-next-page_gen/docfy-demo-ember-components-docfy-previous-and-next-page-scope.js';
 import { DocfyDemo } from '@docfy/ember';
 
 <template>
@@ -11,13 +11,13 @@ pages that it can link as previous and next.</p>
 for example, one section is "Documentation", and another is "Tutorials". This feature
 would prevent linking to a page in tutorials from a documentation page.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
-<DocfyDemo @id="docfy-demo-components-docfy-previous-and-next-page-simple" as |demo|>
+<DocfyDemo @id="docfy-demo-ember-components-docfy-previous-and-next-page-simple" as |demo|>
 <demo.Description
-          @title="Simple usage" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-previous-and-next-page-demo/simple.md">
+          @title="Simple usage" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-previous-and-next-page-demo/simple.md">
 
 </demo.Description>
 <demo.Example>
-<DocfyDemoComponentsDocfyPreviousAndNextPageSimple />
+<DocfyDemoEmberComponentsDocfyPreviousAndNextPageSimple />
 </demo.Example>
 <demo.Snippet @name="template">
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyPreviousAndNextPage</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">previous</span> <span class="hljs-attr">next</span>|></span>
@@ -42,13 +42,13 @@ would prevent linking to a page in tutorials from a documentation page.</p>
 <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyPreviousAndNextPage</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
-<DocfyDemo @id="docfy-demo-components-docfy-previous-and-next-page-scope" as |demo|>
+<DocfyDemo @id="docfy-demo-ember-components-docfy-previous-and-next-page-scope" as |demo|>
 <demo.Description
-          @title="Scoping" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-previous-and-next-page-demo/scope.md">
+          @title="Scoping" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-previous-and-next-page-demo/scope.md">
 <p>This example passes the argument <code>@scope</code> to the component.</p>
 </demo.Description>
 <demo.Example>
-<DocfyDemoComponentsDocfyPreviousAndNextPageScope />
+<DocfyDemoEmberComponentsDocfyPreviousAndNextPageScope />
 </demo.Example>
 <demo.Snippet @name="template">
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyPreviousAndNextPage</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">'docs'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">previous</span> <span class="hljs-attr">next</span>|></span>

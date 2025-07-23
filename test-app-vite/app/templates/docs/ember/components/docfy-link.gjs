@@ -1,5 +1,5 @@
-import DocfyDemoComponentsDocfyLinkSimple from './docfy-link_gen/docfy-demo-components-docfy-link-simple.js';
-import DocfyDemoComponentsDocfyLinkAnchor from './docfy-link_gen/docfy-demo-components-docfy-link-anchor.js';
+import DocfyDemoEmberComponentsDocfyLinkSimple from './docfy-link_gen/docfy-demo-ember-components-docfy-link-simple.js';
+import DocfyDemoEmberComponentsDocfyLinkAnchor from './docfy-link_gen/docfy-demo-ember-components-docfy-link-anchor.js';
 import { DocfyDemo } from '@docfy/ember';
 
 <template>
@@ -19,13 +19,13 @@ Ember Routing to make the page transition, removing the need for a full-page rel
 <p>Below you can see a simple example of this component; however, you can see more
 of its usage throughout the documentation.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
-<DocfyDemo @id="docfy-demo-components-docfy-link-simple" as |demo|>
+<DocfyDemo @id="docfy-demo-ember-components-docfy-link-simple" as |demo|>
 <demo.Description
-          @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-link-demo/simple.md">
+          @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-link-demo/simple.md">
 
 </demo.Description>
 <demo.Example>
-<DocfyDemoComponentsDocfyLinkSimple />
+<DocfyDemoEmberComponentsDocfyLinkSimple />
 </demo.Example>
 <demo.Snippet @name="template">
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">'/docs'</span>></span>
@@ -33,13 +33,13 @@ of its usage throughout the documentation.</p>
 <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
 </demo.Snippet>
 </DocfyDemo>
-<DocfyDemo @id="docfy-demo-components-docfy-link-anchor" as |demo|>
+<DocfyDemo @id="docfy-demo-ember-components-docfy-link-anchor" as |demo|>
 <demo.Description
-          @title="Example with Anchor" @editUrl="https://github.com/josemarluedke/docfy/edit/main/packages/ember/docs/components/docfy-link-demo/anchor.md">
+          @title="Example with Anchor" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-link-demo/anchor.md">
 
 </demo.Description>
 <demo.Example>
-<DocfyDemoComponentsDocfyLinkAnchor />
+<DocfyDemoEmberComponentsDocfyLinkAnchor />
 </demo.Example>
 <demo.Snippet @name="template">
 <pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>

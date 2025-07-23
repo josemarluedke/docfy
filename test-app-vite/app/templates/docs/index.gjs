@@ -13,8 +13,9 @@ content. Therefore, having the documentation site use the same framework or
 libraries as your design system is essential for delivering a pleasant experience
 to its users.</p>
 <p>Docfy is modular such that it exposes its core functionality for building
-documentation interfaces on top of it. Docfy also has some official libraries for
-building documentation interfaces using <a href="https://emberjs.com">Ember.js</a>.</p>
+documentation interfaces on top of it. Docfy provides multiple integration options for
+building documentation interfaces using <a href="https://emberjs.com">Ember.js</a>, supporting both
+classic Ember CLI builds and modern Vite builds.</p>
 <p>Docfy allows extending its core functionality by exposing a plugin system. It also
 allows extending the markdown processor by using <a href="https://remark.js.org/">remark</a>
 under the hood. Remark has

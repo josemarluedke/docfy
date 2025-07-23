@@ -1,6 +1,6 @@
 import type { Plugin, ResolvedConfig } from 'vite';
 import type { DocfyConfig } from '@docfy/core/lib/types';
-import { loadDocfyConfig, DocfyVitePluginOptions } from './config.js';
+import { loadDocfyConfig, DocfyViteOptions } from './config.js';
 import { processMarkdown } from './markdown-processor.js';
 import { shouldProcessFile, virtualDocfyOutputTemplate } from './utils.js';
 import { DocfyProcessor } from './docfy-processor.js';
@@ -13,7 +13,7 @@ const VIRTUAL_MODULE_PREFIX = '\0';
 const DOCFY_OUTPUT_MODULE = '@embroider/virtual/docfy/output';
 const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}${DOCFY_OUTPUT_MODULE}`;
 
-export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): Plugin[] {
+export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[] {
   const {
     root = process.cwd(),
     hmr = true,
@@ -130,4 +130,4 @@ export default function docfyVitePlugin(options: DocfyVitePluginOptions = {}): P
 
 // Export types for consumers
 export type { DocfyConfig } from '@docfy/core/lib/types';
-export type { DocfyVitePluginOptions } from './config.js';
+export type { DocfyViteOptions } from './config.js';
