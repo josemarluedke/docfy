@@ -1,4 +1,4 @@
-import output from '@docfy/virtual/output';
+import output from 'virtual:docfy/output';
 import type RouterDSL from '@ember/routing/-private/router-dsl';
 import type { NestedPageMetadata } from '@docfy/core/lib/types';
 

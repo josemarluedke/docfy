@@ -163,7 +163,7 @@ The killer feature of the Vite integration is instant updates. Edit any markdown
 Access processed data through Embroider's virtual module system:
 
 ```js
-import { getDocfyOutput } from '@docfy/virtual/output';
+import { getDocfyOutput } from 'virtual:docfy/output';
 
 const docfyData = getDocfyOutput();
 ```

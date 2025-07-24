@@ -1,4 +1,4 @@
-declare module '@docfy/virtual/output' {
+declare module 'virtual:docfy/output' {
   /*
    * The actual output.js file is generated at build time. This is only to
    * provide typing.
