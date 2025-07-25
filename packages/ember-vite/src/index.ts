@@ -31,6 +31,27 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
     {
       name: 'ember-vite-docfy',
       enforce: 'pre', // Ensure this runs before other plugins
+
+      config(config) {
+        // Configure esbuild to handle virtual modules
+        config.optimizeDeps = config.optimizeDeps || {};
+        config.optimizeDeps.esbuildOptions = config.optimizeDeps.esbuildOptions || {};
+        config.optimizeDeps.esbuildOptions.plugins =
+          config.optimizeDeps.esbuildOptions.plugins || [];
+
+        // Add plugin to handle virtual docfy modules
+        config.optimizeDeps.esbuildOptions.plugins.push({
+          name: 'docfy-virtual-modules',
+          setup(build) {
+            // Handle virtual docfy modules in esbuild
+            build.onResolve({ filter: /^@docfy\/ember\/.*:virtual$/ }, args => ({
+              path: args.path,
+              external: true,
+            }));
+          },
+        });
+      },
+
       configResolved(resolvedConfig) {
         config = resolvedConfig;
         debug('Vite config resolved', {
