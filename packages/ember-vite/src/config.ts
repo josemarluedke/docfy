@@ -77,24 +77,17 @@ export async function loadDocfyConfig(
           // Continue to next file
         }
       }
-
-      // Fallback to first default if none found
-      if (!configPath) {
-        configPath = path.join(root, defaultConfigFiles[0]);
-      }
     }
-
-    try {
-      // Use dynamic import for both CJS and ESM
-      const imported = await import(pathToFileURL(configPath).href);
-      docfyConfig = imported?.default ?? imported;
-      debug('Loaded config', { configPath });
-    } catch (e: any) {
-      const notFound =
-        e.code === 'ERR_MODULE_NOT_FOUND' || e.message?.includes('Cannot find module');
-      if (!notFound) {
-        throw e;
+    if (configPath !== '') {
+      try {
+        // Use dynamic import for both CJS and ESM
+        const imported = await import(pathToFileURL(configPath).href);
+        docfyConfig = imported?.default ?? imported;
+        debug('Loaded config', { configPath });
+      } catch (e) {
+        throw new Error(`Failed to load Docfy config from ${configPath}. Got error:\n\n ${e}`);
       }
+    } else {
       debug('No config file found, using defaults', { configPath });
       docfyConfig = {};
     }
