@@ -17,7 +17,7 @@ export default {
   // You can augment this if you need to.
   output: addon.output(),
 
-  external: ['virtual:docfy/output'],
+  external: ['@docfy/ember/output:virtual'],
 
   plugins: [
     // These are the modules that users should be able to import from your

@@ -1,6 +1,6 @@
 export default function docfyOutputTemplate(modulePrefix: string): string {
   return `;
-define('virtual:docfy/output', [
+define('@docfy/ember/output:virtual', [
   'exports',
   '${modulePrefix}/docfy-output'
 ], function (_exports, _docfyOutput) {

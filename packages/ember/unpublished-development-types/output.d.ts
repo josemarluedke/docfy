@@ -1,4 +1,4 @@
-declare module 'virtual:docfy/output' {
+declare module '@docfy/ember/output:virtual' {
   /*
    * The actual output.js file is generated at build time. This is only to
    * provide typing.

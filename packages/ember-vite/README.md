@@ -103,13 +103,7 @@ The plugin provides several virtual modules that you can import in your Ember ap
 
 ```javascript
 // Get the nested page metadata
-import docfyOutput from 'virtual:docfy-output';
-
-// Get all page URLs
-import docfyUrls from 'virtual:docfy-urls';
-
-// Get component snippets
-import docfySnippets from 'virtual:docfy-snippets';
+import docfyOutput from '@docfy/ember/output:virtual';
 ```
 
 ## GJS Component Generation

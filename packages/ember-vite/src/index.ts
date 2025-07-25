@@ -10,7 +10,7 @@ import debugFactory from 'debug';
 const debug = debugFactory('@docfy/ember-vite');
 
 const VIRTUAL_MODULE_PREFIX = '\0';
-const DOCFY_OUTPUT_MODULE = 'virtual:docfy/output';
+const DOCFY_OUTPUT_MODULE = '@docfy/ember/output:virtual';
 const VIRTUAL_DOCFY_OUTPUT = `${VIRTUAL_MODULE_PREFIX}${DOCFY_OUTPUT_MODULE}`;
 
 export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[] {

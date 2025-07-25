@@ -122,7 +122,7 @@ import { DocfyLink } from '@docfy/ember';
 </ul>
 <h3 id="virtual-module-integration"><a href="#virtual-module-integration">Virtual Module Integration</a></h3>
 <p>Access processed data through Embroider's virtual module system:</p>
-<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { getDocfyOutput } <span class="hljs-keyword">from</span> <span class="hljs-string">'virtual:docfy/output'</span>;
+<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { getDocfyOutput } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember/output:virtual'</span>;
 
 <span class="hljs-keyword">const</span> docfyData = getDocfyOutput();</code></pre>
 <h2 id="advanced-configuration"><a href="#advanced-configuration">Advanced Configuration</a></h2>
