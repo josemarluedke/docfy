@@ -1,6 +1,6 @@
 {
   "name": "test-app-classic",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "private": true,
   "description": "Small description for test-app-classic goes here",
   "repository": "",
@@ -30,8 +30,8 @@
     "@babel/core": "^7.27.4",
     "@babel/eslint-parser": "^7.27.5",
     "@babel/plugin-proposal-decorators": "^7.27.1",
-    "@docfy/ember": "^0.10.3",
-    "@docfy/ember-cli": "^0.10.3",
+    "@docfy/ember": "^0.10.4",
+    "@docfy/ember-cli": "^0.10.4",
     "@ember/optional-features": "^2.2.0",
     "@ember/test-helpers": "^5.2.2",
     "@embroider/macros": "^1.18.1",

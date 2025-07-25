@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember-vite",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "Vite plugin for Docfy Ember integration with @embroider/vite",
   "keywords": [
     "vite-plugin",
@@ -39,7 +39,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@docfy/core": "^0.10.0",
+    "@docfy/core": "^0.10.4",
     "@rollup/pluginutils": "^5.0.0",
     "debug": "^4.4.1",
     "fast-glob": "^3.2.0",

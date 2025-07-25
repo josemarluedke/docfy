@@ -1,6 +1,6 @@
 {
   "name": "@docfy/ember-cli",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "Ember CLI classic integration with Docfy",
   "keywords": [
     "ember-addon",
@@ -33,8 +33,8 @@
     "test:ember-compatibility": "echo 'ember try:each TODO'"
   },
   "dependencies": {
-    "@docfy/core": "^0.10.0",
-    "@docfy/ember": "^0.10.3",
+    "@docfy/core": "^0.10.4",
+    "@docfy/ember": "^0.10.4",
     "broccoli-bridge": "^1.0.0",
     "broccoli-file-creator": "^2.1.1",
     "broccoli-funnel": "^3.0.8",
@@ -55,7 +55,7 @@
   },
   "devDependencies": {
     "@babel/helper-define-map": "^7.18.6",
-    "@docfy/plugin-with-prose": "^0.10.0",
+    "@docfy/plugin-with-prose": "^0.10.4",
     "@ember/optional-features": "^2.2.0",
     "@ember/test-helpers": "^5.2.2",
     "@glimmer/component": "^2.0.0",
