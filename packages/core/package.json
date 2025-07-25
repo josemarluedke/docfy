@@ -21,8 +21,8 @@
     "format:check": "prettier . --cache --check"
   },
   "dependencies": {
-    "debug": "^4.3.3",
-    "fast-glob": "^3.2.11",
+    "debug": "^4.4.1",
+    "fast-glob": "^3.3.3",
     "git-repo-info": "^2.1.1",
     "github-slugger": "^1.4.0",
     "hosted-git-info": "^3.0.8",
@@ -40,18 +40,18 @@
     "trough": "^1.0.5",
     "unified": "^9.0.0",
     "unist-util-visit": "^2.0.2",
-    "yaml": "^2.2.2"
+    "yaml": "^2.8.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.27.0",
-    "@types/debug": "^4.1.7",
+    "@eslint/js": "^9.32.0",
+    "@types/debug": "^4.1.12",
     "@types/hast": "^2.3.1",
-    "@types/hosted-git-info": "^3.0.1",
+    "@types/hosted-git-info": "^3.0.5",
     "@types/jest": "^29.5.14",
     "@types/unist": "^2.0.0",
     "@types/yaml": "^1.9.7",
-    "eslint": "^9.27.0",
-    "eslint-config-prettier": "^10.1.5",
+    "eslint": "^9.32.0",
+    "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-jest": "^28.10.0",
     "eslint-plugin-n": "^17.18.0",
     "globals": "^16.1.0",
@@ -62,9 +62,9 @@
     "remark-hbs": "^0.4.0",
     "remark-math": "^4.0.0",
     "ts-jest": "^29.1.0",
-    "ts-node": "^10.4.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.32.1",
+    "typescript-eslint": "^8.38.0",
     "vfile": "^4.2.1"
   },
   "engines": {

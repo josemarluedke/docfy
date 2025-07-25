@@ -1,6 +1,9 @@
 import output from '@docfy/ember/output:virtual';
-import type RouterDSL from '@ember/routing/-private/router-dsl';
 import type { NestedPageMetadata } from '@docfy/core/lib/types';
+
+interface RouterDSL {
+  route(name: string, callback?: () => void): void;
+}
 
 function addFromNested(context: RouterDSL, nested: NestedPageMetadata): void {
   function add(this: RouterDSL): void {
