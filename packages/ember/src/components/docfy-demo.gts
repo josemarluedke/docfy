@@ -85,11 +85,17 @@ interface DocfyDemoExampleSignature {
 
 const DocfyDemoExample: TOC<DocfyDemoExampleSignature> = <template>
   <div
-    class="docfy-demo__example not-prose"
-    data-test-id="demo-example"
+    class="docfy-demo__example__container"
+    data-test-id="demo-example__container"
     ...attributes
   >
-    {{yield}}
+    <div
+      class="docfy-demo__example not-prose"
+      data-test-id="demo-example"
+      ...attributes
+    >
+      {{yield}}
+    </div>
   </div>
 </template>;
 
