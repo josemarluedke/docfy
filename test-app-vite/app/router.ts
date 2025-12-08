@@ -15,6 +15,6 @@ export default class Router extends EmberRouter {
 }
 
 Router.map(function () {
-  // Automatically add routes based on Docfy output
+  // Automatically add all Docfy routes
   addDocfyRoutes(this);
 });

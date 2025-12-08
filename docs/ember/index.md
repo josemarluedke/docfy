@@ -60,4 +60,8 @@ Both integrations use the same runtime components from `@docfy/ember`, ensuring 
 
 Ready to add Docfy to your Ember app? Follow our [Tutorial](./tutorial.md) to create your first documentation site.
 
+Once you have the basics down, explore:
+- [Routing](./routing.md) - Learn about scoped routes and advanced routing patterns
+- [Writing Demos](./writing-demos.md) - Create interactive component examples
+
 If you're upgrading from a previous version, check the [Upgrade Guide](./upgrade-guide.md) for detailed instructions.

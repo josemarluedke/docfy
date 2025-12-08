@@ -2,7 +2,8 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
-import { DocfyLink } from '@docfy/ember';
+import { service } from '@ember/service';
+import { DocfyLink, type DocfyService } from '@docfy/ember';
 
 interface Page {
   url: string;
@@ -17,6 +18,7 @@ interface NestedNode {
 
 interface SidebarNavArgs {
   node: NestedNode;
+  section?: string;
 }
 
 interface SidebarNavSignature {
@@ -28,7 +30,19 @@ interface SidebarNavSignature {
 }
 
 export default class SidebarNav extends Component<SidebarNavSignature> {
+  @service declare docfy: DocfyService;
   @tracked isOpen = false;
+
+  get filteredNode(): NestedNode {
+    // If a section is provided, filter to that section
+    if (this.args.section) {
+      const sectionNode = this.docfy.findNestedChildrenByName(
+        `docs/${this.args.section}`
+      );
+      return sectionNode || this.args.node;
+    }
+    return this.args.node;
+  }
 
   @action toggle(): void {
     this.isOpen = !this.isOpen;
@@ -83,7 +97,7 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
     >
       <nav class="font-light space-y-3">
         <ul class="space-y-3">
-        {{#each @node.pages as |page|}}
+        {{#each this.filteredNode.pages as |page|}}
           <li>
             <DocfyLink
               @to={{page.url}}
@@ -96,7 +110,7 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
           </li>
         {{/each}}
 
-        {{#each @node.children as |child|}}
+        {{#each this.filteredNode.children as |child|}}
           <li>
             <div class="pb-2">
               {{child.label}}

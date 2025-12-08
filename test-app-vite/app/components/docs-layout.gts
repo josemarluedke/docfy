@@ -5,15 +5,30 @@ import { action } from '@ember/object';
 import { cached } from '@glimmer/tracking';
 import SidebarNav from './sidebar-nav';
 import PageHeadings from './page-headings';
+import DocsSectionNav from './docs-section-nav';
 import { DocfyPreviousAndNextPage, DocfyLink } from '@docfy/ember';
 import intersectHeadings from '../modifiers/intersect-headings';
 import { type DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from '../services/current-heading';
 import type RouterService from '@ember/routing/router-service';
+import { extractSectionFromUrl } from '../utils/extract-section';
 
 interface DocsLayoutSignature {
   Args: {
     model?: unknown;
+    /**
+     * Optional section name to filter sidebar content.
+     * If not provided, will be auto-extracted from the current URL.
+     */
+    section?: string;
+    /**
+     * Base path for section extraction (default: '/docs')
+     */
+    sectionBasePath?: string;
+    /**
+     * Segment index for section extraction (default: 0)
+     */
+    sectionSegmentIndex?: number;
   };
   Element: HTMLDivElement;
   Blocks: {
@@ -32,6 +47,29 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
     return currentURL ? this.docfy.findByUrl(currentURL) : undefined;
   }
 
+  /**
+   * Automatically extracts the section from the current URL if not explicitly provided.
+   * Uses the configured base path and segment index, or defaults to '/docs' and index 0.
+   */
+  @cached
+  get currentSection(): string | undefined {
+    // Use explicitly provided section if available
+    if (this.args.section) {
+      return this.args.section;
+    }
+
+    // Auto-extract from URL
+    const currentURL = this.router.currentURL;
+    if (!currentURL) {
+      return undefined;
+    }
+
+    return extractSectionFromUrl(currentURL, {
+      basePath: this.args.sectionBasePath || '/docs',
+      segmentIndex: this.args.sectionSegmentIndex ?? 0,
+    });
+  }
+
   @action setCurrentHeadingId(id: string): void {
     this.currentHeading.setCurrentHeadingId(id);
   }
@@ -45,13 +83,15 @@ export default class DocsLayout extends Component<DocsLayoutSignature> {
     >
       <div class="relative lg:flex">
         <div class="flex-none pt-12 pr-4 lg:w-64" data-test-id="sidebar-nav">
-          <SidebarNav @node={{this.docfy.nested}} />
+          <SidebarNav @node={{this.docfy.nested}} @section={{this.currentSection}} />
         </div>
 
         <div
           class="flex-1 w-full min-w-0 px-0 pt-12 lg:px-4"
           data-test-id="main-content"
         >
+          <DocsSectionNav />
+
           <div
             class="markdown"
             data-test-id="markdown-content"

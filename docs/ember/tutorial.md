@@ -104,6 +104,8 @@ Router.map(function () {
 });
 ```
 
+This automatically generates routes for all your markdown files. For more advanced routing patterns like scoped routes and multi-section documentation, see the [Routing guide](./routing.md).
+
 ## Create Your First Docs
 
 Create a `docs` folder in your project root and add `docs/index.md`:

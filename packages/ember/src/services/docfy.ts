@@ -4,6 +4,7 @@ import { cached } from '@glimmer/tracking';
 import output from '@docfy/ember/output:virtual';
 import type RouterService from '@ember/routing/router-service';
 import type { NestedPageMetadata, PageMetadata } from '@docfy/core/lib/types';
+import { findNestedByScope } from '../utils/nested.ts';
 
 function flatNested(
   output?: NestedPageMetadata,
@@ -43,21 +44,8 @@ export default class DocfyService extends Service {
     scope: string,
     previousNested: NestedPageMetadata | undefined | null = null,
   ): NestedPageMetadata | undefined {
-    if (previousNested === null) {
-      previousNested = this.nested;
-    }
-    const parts = scope.split('/');
-    const name = parts.shift();
-
-    const foundScope = previousNested?.children.find((item) => {
-      return item.name === name;
-    });
-
-    if (parts.length > 0) {
-      return this.findNestedChildrenByName(parts.join('/'), foundScope);
-    }
-
-    return foundScope;
+    const nested = previousNested === null ? this.nested : previousNested;
+    return nested ? findNestedByScope(scope, nested) : undefined;
   }
 
   findByUrl(url: string, scopeByNestedName?: string): PageMetadata | undefined {

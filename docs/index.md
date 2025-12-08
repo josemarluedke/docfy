@@ -1,31 +1,39 @@
 ---
+title: Documentation
 order: 1
 ---
 
-# Introduction
+# Docfy Documentation
 
-Documentation is an essential part of any software today. Without documentation,
-users are not able to take full advantage of projects. To allow developers and
-teams to build documentation sites, having a powerful tool under the hood to help
-them to deliver well-crafted documentation sites is the reason Docfy exists.
+Welcome to Docfy! A powerful, modular documentation tool for building interactive documentation sites.
 
-There are a lot of amazing tools out there for writing documentation sites; however,
-most of them are specific to a framework without exposing any core functionality
-for writing documentation sites for other frameworks or libraries.
+## Documentation Sections
 
-A common use case for documentation sites is for demoing a component library or a
-design system where you want to render your components in-place next to your markdown
-content. Therefore, having the documentation site use the same framework or
-libraries as your design system is essential for delivering a pleasant experience
-to its users.
+### Core Documentation
 
-Docfy is modular such that it exposes its core functionality for building
-documentation interfaces on top of it. Docfy provides multiple integration options for
-building documentation interfaces using [Ember.js](https://emberjs.com), supporting both
-classic Ember CLI builds and modern Vite builds.
+Learn about Docfy's core functionality that works across all frameworks:
 
-Docfy allows extending its core functionality by exposing a plugin system. It also
-allows extending the markdown processor by using [remark](https://remark.js.org/)
-under the hood. Remark has
-[many plugins](https://github.com/remarkjs/remark/blob/master/doc/plugins.md)
-that can help you to extend and modify your markdown files.
+- [Introduction](/docs/core/) - What Docfy is and why it exists
+- [Getting Started](/docs/core/getting-started) - Set up your first documentation site
+- [Configuration](/docs/core/configuration) - Configure Docfy for your needs
+- [Writing Markdown](/docs/core/writing-markdown) - Markdown features and syntax
+- [Writing Plugins](/docs/core/writing-plugins) - Extend Docfy with plugins
+
+### Ember Integration
+
+Documentation specific to using Docfy with Ember.js:
+
+- [Getting Started](/docs/ember/) - Introduction to Docfy for Ember
+- [Tutorial](/docs/ember/tutorial) - Build your first Ember documentation site
+- [Routing](/docs/ember/routing) - Configure routes and scoped routing
+- [Ember CLI](/docs/ember/ember-cli) - Using Docfy with classic Ember CLI
+- [Vite](/docs/ember/ember-vite) - Using Docfy with Embroider and Vite
+- [Writing Demos](/docs/ember/writing-demos) - Create interactive component examples
+
+## Getting Started
+
+Choose your path based on what you're building:
+
+- **New to Docfy?** Start with the [Core Introduction](/docs/core/)
+- **Building with Ember?** Jump to the [Ember Tutorial](/docs/ember/tutorial)
+- **Upgrading?** Check the [Upgrade Guide](/docs/ember/upgrade-guide)

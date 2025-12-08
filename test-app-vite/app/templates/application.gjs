@@ -41,7 +41,7 @@ import { LinkTo } from '@ember/routing';
         <ul>
           <li>
             <LinkTo
-              @route="docs"
+              @route="docs.core"
               class="pb-1 text-gray-200 border-b-2 border-transparent hover:border-green-500 focus:outline-none focus-visible:shadow-outline"
             >
               Documentation
