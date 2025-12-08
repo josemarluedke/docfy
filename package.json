@@ -16,7 +16,7 @@
     "test": "lerna run --parallel test"
   },
   "devDependencies": {
-    "lerna": "^8.1.9"
+    "lerna": "^9.0.3"
   },
   "resolutions": {
     "@types/unist": "2.0.3"
