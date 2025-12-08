@@ -83,93 +83,93 @@ export default class SidebarNav extends Component<SidebarNavSignature> {
     >
       <nav class="font-light space-y-3">
         <ul class="space-y-3">
-        {{#each @node.pages as |page|}}
-          <li>
-            <DocfyLink
-              @to={{page.url}}
-              class="hover:text-green-800 dark-hover:text-green-500"
-              @activeClass="font-semibold text-green-800 dark:text-green-500"
-              {{on "click" this.handleSidebarClick}}
-            >
-              {{page.title}}
-            </DocfyLink>
-          </li>
-        {{/each}}
+          {{#each @node.pages as |page|}}
+            <li>
+              <DocfyLink
+                @to={{page.url}}
+                class="hover:text-green-800 dark-hover:text-green-500"
+                @activeClass="font-semibold text-green-800 dark:text-green-500"
+                {{on "click" this.handleSidebarClick}}
+              >
+                {{page.title}}
+              </DocfyLink>
+            </li>
+          {{/each}}
 
-        {{#each @node.children as |child|}}
-          <li>
-            <div class="pb-2">
-              {{child.label}}
-            </div>
+          {{#each @node.children as |child|}}
+            <li>
+              <div class="pb-2">
+                {{child.label}}
+              </div>
 
-            <ul
-              class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
-            >
-              {{#each child.pages as |page|}}
-                <li class="truncate">
-                  <DocfyLink
-                    @to={{page.url}}
-                    class="hover:text-green-800 dark-hover:text-green-500"
-                    @activeClass="font-semibold text-green-800 dark:text-green-500"
-                    {{on "click" this.handleSidebarClick}}
-                  >
-                    {{page.title}}
-                  </DocfyLink>
-                </li>
-              {{/each}}
+              <ul
+                class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
+              >
+                {{#each child.pages as |page|}}
+                  <li class="truncate">
+                    <DocfyLink
+                      @to={{page.url}}
+                      class="hover:text-green-800 dark-hover:text-green-500"
+                      @activeClass="font-semibold text-green-800 dark:text-green-500"
+                      {{on "click" this.handleSidebarClick}}
+                    >
+                      {{page.title}}
+                    </DocfyLink>
+                  </li>
+                {{/each}}
 
-              {{#each child.children as |subChild|}}
-                <li>
-                  <div class="pb-2">
-                    {{subChild.label}}
-                  </div>
+                {{#each child.children as |subChild|}}
+                  <li>
+                    <div class="pb-2">
+                      {{subChild.label}}
+                    </div>
 
-                  <ul
-                    class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
-                  >
-                    {{#each subChild.pages as |page|}}
-                      <li class="truncate">
-                        <DocfyLink
-                          @to={{page.url}}
-                          class="hover:text-green-800 dark-hover:text-green-500"
-                          @activeClass="font-semibold text-green-800 dark:text-green-500"
-                          {{on "click" this.handleSidebarClick}}
-                        >
-                          {{page.title}}
-                        </DocfyLink>
-                      </li>
-                    {{/each}}
+                    <ul
+                      class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
+                    >
+                      {{#each subChild.pages as |page|}}
+                        <li class="truncate">
+                          <DocfyLink
+                            @to={{page.url}}
+                            class="hover:text-green-800 dark-hover:text-green-500"
+                            @activeClass="font-semibold text-green-800 dark:text-green-500"
+                            {{on "click" this.handleSidebarClick}}
+                          >
+                            {{page.title}}
+                          </DocfyLink>
+                        </li>
+                      {{/each}}
 
-                    {{#each subChild.children as |subSubChild|}}
-                      <li>
-                        <div class="pb-2">
-                          {{subSubChild.label}}
-                        </div>
+                      {{#each subChild.children as |subSubChild|}}
+                        <li>
+                          <div class="pb-2">
+                            {{subSubChild.label}}
+                          </div>
 
-                        <ul
-                          class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
-                        >
-                          {{#each subSubChild.pages as |page|}}
-                            <li class="truncate">
-                              <DocfyLink
-                                @to={{page.url}}
-                                class="hover:text-green-800 dark-hover:text-green-500"
-                                @activeClass="font-semibold text-green-800 dark:text-green-500"
-                                {{on "click" this.handleSidebarClick}}
-                              >
-                                {{page.title}}
-                              </DocfyLink>
-                            </li>
-                          {{/each}}
-                        </ul>
-                      </li>
-                    {{/each}}
-                  </ul>
-                </li>
-              {{/each}}
-            </ul>
-          </li>
-        {{/each}}
+                          <ul
+                            class="pl-6 border-l border-gray-400 dark:border-gray-700 space-y-3"
+                          >
+                            {{#each subSubChild.pages as |page|}}
+                              <li class="truncate">
+                                <DocfyLink
+                                  @to={{page.url}}
+                                  class="hover:text-green-800 dark-hover:text-green-500"
+                                  @activeClass="font-semibold text-green-800 dark:text-green-500"
+                                  {{on "click" this.handleSidebarClick}}
+                                >
+                                  {{page.title}}
+                                </DocfyLink>
+                              </li>
+                            {{/each}}
+                          </ul>
+                        </li>
+                      {{/each}}
+                    </ul>
+                  </li>
+                {{/each}}
+              </ul>
+            </li>
+          {{/each}}
         </ul>
       </nav>
     </div>

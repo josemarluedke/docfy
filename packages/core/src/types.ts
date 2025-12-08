@@ -174,6 +174,20 @@ export type PluginWithOptionsFunction<T = PluginOptions> = (options?: T) => Plug
 
 export type PluginList = (Plugin | PluginWithOptions<any> | PluginWithOptionsFunction<any>)[];
 
+export interface SectionConfig {
+  /**
+   * Custom label for the section. If not provided, the folder name will be used.
+   */
+  label?: string;
+
+  /**
+   * Order of the section. Sections with lower order values appear first.
+   * Sections without an order value will be sorted alphabetically and appear
+   * after ordered sections.
+   */
+  order?: number;
+}
+
 export interface Options {
   /**
    * A list of Docfy plugins.
@@ -228,8 +242,24 @@ export interface Options {
 
   /**
    * Labels to be used while generating nestedPageMetadata
+   * @deprecated Use `sections` instead for more control over section ordering and labels
    */
   labels?: Record<string, string>;
+
+  /**
+   * Configuration for documentation sections (folders).
+   * Allows you to set custom labels and control the order of sections.
+   *
+   * Example:
+   * ```js
+   * sections: {
+   *   components: { label: 'Components', order: 1 },
+   *   core: { label: '@docfy/core', order: 2 },
+   *   docs: { label: 'Documentation' } // No order, will be alphabetically sorted
+   * }
+   * ```
+   */
+  sections?: Record<string, SectionConfig>;
 
   /**
    * The static asset path to be used in the their url.

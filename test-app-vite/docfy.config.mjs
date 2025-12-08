@@ -29,10 +29,10 @@ export default {
       urlPrefix: 'docs',
     },
   ],
-  labels: {
-    components: 'Components',
-    core: '@docfy/core',
-    ember: 'Ember',
-    docs: 'Documentation',
+  sections: {
+    docs: { label: 'Documentation', order: 1 },
+    components: { label: 'Components', order: 2 },
+    core: { label: '@docfy/core', order: 3 },
+    ember: { label: 'Ember', order: 4 },
   },
 };

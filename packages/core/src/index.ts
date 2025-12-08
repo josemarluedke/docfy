@@ -85,7 +85,9 @@ class Docfy {
             staticAssets: ctx.staticAssets,
             nestedPageMetadata: transformToNestedPageMetadata(
               ctx.pages.map(p => p.meta),
-              ctx.options.labels
+              ctx.options.labels,
+              undefined,
+              ctx.options.sections
             ),
           });
         }

@@ -24,6 +24,10 @@ const docfy = new Docfy({
   repository: {
     url: 'https://github.com/josemarluedke/docfy',
   },
+  sections: {
+    docs: { label: 'Documentation', order: 1 },
+    api: { label: 'API Reference', order: 2 },
+  },
 });
 ```
 
@@ -78,9 +82,42 @@ You can also pass options to rehype plugins the same way as remark plugins.
 
 **`default`** 6
 
-### `labels`
+### `sections`
+
+• **sections**? : _Record‹string, SectionConfig›_ - Configuration for documentation sections (folders).
+
+This allows you to set custom labels and control the order of sections in your documentation navigation.
+
+Example:
+
+```js
+const config = {
+  sections: {
+    'getting-started': { label: 'Getting Started', order: 1 },
+    api: { label: 'API Reference', order: 2 },
+    guides: { label: 'Guides', order: 3 },
+    examples: { label: 'Examples' }, // No order, will be alphabetically sorted
+  },
+};
+```
+
+#### `SectionConfig`
+
+- **label**? : _string_ - Custom label for the section. If not provided, the folder name will be used.
+- **order**? : _number_ - Order of the section. Sections with lower order values appear first. Sections without an order value will be sorted alphabetically and appear after ordered sections.
+
+#### Ordering Behavior
+
+- Sections with an `order` value are sorted numerically (lowest first)
+- Sections without an `order` value are sorted alphabetically by label
+- Ordered sections always appear before unordered sections
+- Works with nested sections - the configuration applies to all levels
+
+### `labels` (deprecated)
 
 • **labels**? : _Record‹string, string›_ - Labels to be used while generating `nestedPageMetadata`.
+
+**Note:** This option is deprecated. Use `sections` instead for more control over section ordering and labels.
 
 ### `repository`
 
