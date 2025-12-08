@@ -1,4 +1,4 @@
-import { PageMetadata, NestedPageMetadata } from '../types';
+import { PageMetadata, NestedPageMetadata, SectionConfig } from '../types';
 
 function findChild(node: NestedPageMetadata, name: string): NestedPageMetadata | undefined {
   return node.children.find(item => {
@@ -14,14 +14,34 @@ function sortByOrder(pages: PageMetadata[]): PageMetadata[] {
   });
 }
 
+function getSectionLabel(
+  name: string,
+  sections: Record<string, SectionConfig> = {},
+  labels: Record<string, string> = {}
+): string {
+  // Prefer sections config, fall back to labels (backward compat), then use name
+  if (sections[name]?.label) {
+    return sections[name].label;
+  }
+  if (labels[name]) {
+    return labels[name];
+  }
+  return name;
+}
+
+function getSectionOrder(name: string, sections: Record<string, SectionConfig> = {}): number | undefined {
+  return sections[name]?.order;
+}
+
 export function transformToNestedPageMetadata(
   pages: PageMetadata[],
   labels: Record<string, string> = {},
-  existingObj?: NestedPageMetadata
+  existingObj?: NestedPageMetadata,
+  sections: Record<string, SectionConfig> = {}
 ): NestedPageMetadata {
   const node: NestedPageMetadata = existingObj || {
     name: '/',
-    label: labels['/'] || '/',
+    label: getSectionLabel('/', sections, labels),
     pages: [],
     children: [],
   };
@@ -46,13 +66,32 @@ export function transformToNestedPageMetadata(
         if (!child) {
           child = {
             name: name,
-            label: labels[name] || name,
+            label: getSectionLabel(name, sections, labels),
             pages: [],
             children: [],
           };
           node.children.push(child);
 
           node.children.sort((a, b) => {
+            const aOrder = getSectionOrder(a.name, sections);
+            const bOrder = getSectionOrder(b.name, sections);
+
+            // If both have order, sort by order
+            if (aOrder !== undefined && bOrder !== undefined) {
+              return aOrder - bOrder;
+            }
+
+            // If only a has order, a comes first
+            if (aOrder !== undefined) {
+              return -1;
+            }
+
+            // If only b has order, b comes first
+            if (bOrder !== undefined) {
+              return 1;
+            }
+
+            // If neither has order, sort alphabetically by label
             const labelA = a.label.toUpperCase();
             const labelB = b.label.toUpperCase();
             if (labelA < labelB) {
@@ -67,7 +106,7 @@ export function transformToNestedPageMetadata(
         }
 
         item.relativeUrl = urlParts.join('/');
-        transformToNestedPageMetadata([item], labels, child);
+        transformToNestedPageMetadata([item], labels, child, sections);
 
         sortByOrder(child.pages);
       }
