@@ -149,15 +149,15 @@ docfyVitePlugin({
 
 ### Options
 
-| Option               | Type      | Default | Description                                                                                                    |
-| -------------------- | --------- | ------- | -------------------------------------------------------------------------------------------------------------- |
-| `enabled`            | `boolean` | `false` | Master switch. The rest of these options are no-ops unless this is `true`.                                     |
-| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page. Only takes effect when `enabled` is `true`.                                      |
-| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`. Only takes effect when `enabled` is `true`.                                                   |
-| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`. Only takes effect when `enabled` is `true`.                                              |
-| `siteUrl`            | `string`  | —       | Absolute http(s) site origin for links. Optional — omit it for root-relative links; set it for absolute links. |
-| `projectName`        | `string`  | —       | Project name emitted as the H1 heading at the top of `llms.txt`, per the llms.txt convention.                  |
-| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`, after the H1 (if any), as a blockquote.                           |
+| Option               | Type      | Default | Description                                                                                                                                                                                             |
+| -------------------- | --------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `enabled`            | `boolean` | `false` | Master switch. The rest of these options are no-ops unless this is `true`.                                                                                                                              |
+| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page. Only takes effect when `enabled` is `true`.                                                                                                                               |
+| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`. Only takes effect when `enabled` is `true`.                                                                                                                                            |
+| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`. Only takes effect when `enabled` is `true`.                                                                                                                                       |
+| `siteUrl`            | `string`  | —       | Absolute http(s) site origin for links. Optional — omit it for root-relative links; set it for absolute links. May include a path (for docs served under a subpath) but not a query string or fragment. |
+| `projectName`        | `string`  | —       | Project name emitted as the H1 heading at the top of `llms.txt`, per the llms.txt convention.                                                                                                           |
+| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`, after the H1 (if any), as a blockquote.                                                                                                                    |
 
 ### Customizing a page's exported Markdown
 

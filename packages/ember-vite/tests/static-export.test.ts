@@ -490,4 +490,32 @@ describe('validateStaticExportOptions', () => {
       /\[@docfy\/ember-vite\]/
     );
   });
+
+  it('returns an error when siteUrl carries a query string', () => {
+    // Would otherwise produce "https://docfy.dev/foo?x=1/docs/about.md".
+    expect(
+      validateStaticExportOptions({ enabled: true, siteUrl: 'https://docfy.dev/foo?x=1' })
+    ).toMatch(/must not include a query string or fragment/);
+  });
+
+  it('returns an error when siteUrl carries a fragment', () => {
+    expect(
+      validateStaticExportOptions({ enabled: true, siteUrl: 'https://docfy.dev#top' })
+    ).toMatch(/must not include a query string or fragment/);
+  });
+
+  it('accepts a siteUrl served under a subpath', () => {
+    // Docs hosted at a subpath concatenate correctly, so a path is allowed.
+    expect(
+      validateStaticExportOptions({ enabled: true, siteUrl: 'https://example.com/docs-site' })
+    ).toBeUndefined();
+  });
+});
+
+describe('pageMarkdownUrl with a subpath siteUrl', () => {
+  it('concatenates cleanly under a subpath', () => {
+    expect(pageMarkdownUrl('https://example.com/docs-site', '/docs/about')).toBe(
+      'https://example.com/docs-site/docs/about.md'
+    );
+  });
 });

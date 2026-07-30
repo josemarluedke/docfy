@@ -127,6 +127,13 @@ export function validateStaticExportOptions(options: StaticExportOptions): strin
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
       return `[@docfy/ember-vite] staticExport.siteUrl "${options.siteUrl}" must use http or https (got "${parsed.protocol}").`;
     }
+
+    // A path is fine — docs served under a subpath concatenate correctly. A
+    // query or fragment does not: the page path would be appended after it,
+    // producing a link like "https://example.com/?x=1/docs/about.md".
+    if (parsed.search || parsed.hash) {
+      return `[@docfy/ember-vite] staticExport.siteUrl "${options.siteUrl}" must not include a query string or fragment.`;
+    }
   }
 
   return undefined;
