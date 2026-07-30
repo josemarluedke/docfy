@@ -1,5 +1,9 @@
 {
-  "version": "0.11.0",
-  "packages": ["packages/*", "test-app-vite", "test-app-classic"],
+  "version": "0.12.0",
+  "packages": [
+    "packages/*",
+    "test-app-vite",
+    "test-app-classic"
+  ],
   "npmClient": "pnpm"
 }
