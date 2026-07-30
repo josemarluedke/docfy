@@ -88,6 +88,18 @@ interface DocfyViteOptions {
    */
   hmr?: boolean;
 
+  /**
+   * Static text export for non-JS clients. See "Static Export" below.
+   */
+  staticExport?: {
+    enabled?: boolean;
+    markdown?: boolean;
+    llmsTxt?: boolean;
+    llmsFullTxt?: boolean;
+    siteUrl?: string;
+    projectDescription?: string;
+  };
+
   // All @docfy/core options are also supported
   sources?: SourceConfig[];
   plugins?: PluginList;
@@ -96,6 +108,65 @@ interface DocfyViteOptions {
   // ... etc
 }
 ```
+
+## Static Export
+
+Emit a statically-servable, text-only mirror of your docs so AI agents, crawlers, and any
+non-JavaScript client can read them. Off by default, and **build-only** — nothing is emitted
+during `vite dev`.
+
+```javascript
+docfyVitePlugin({
+  staticExport: {
+    enabled: true,
+    siteUrl: 'https://docfy.dev',
+    projectDescription: 'Docfy is a modular JavaScript tool to help build documentation sites.',
+  },
+});
+```
+
+This writes into your build output:
+
+- `<page-url>.md` for every page, at the same path as the live route plus a `.md` suffix
+  (`/docs/getting-started` → `dist/docs/getting-started.md`). Index routes become `index.md`.
+- `llms.txt` — a compact, links-only index grouped by section, following the
+  [llms.txt convention](https://llmstxt.org).
+- `llms-full.txt` — every page's content concatenated in the same order.
+
+### Options
+
+| Option               | Type      | Default | Description                                                                          |
+| -------------------- | --------- | ------- | ------------------------------------------------------------------------------------ |
+| `enabled`            | `boolean` | `false` | Master switch.                                                                       |
+| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page.                                                        |
+| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`.                                                                     |
+| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`.                                                                |
+| `siteUrl`            | `string`  | —       | Absolute site origin for links. Required when `llmsTxt` or `llmsFullTxt` is enabled. |
+| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`.                                         |
+
+### Customizing a page's exported Markdown
+
+By default each page exports its raw Markdown source with the frontmatter block stripped. To
+export something different — for example replacing a custom component tag with a real Markdown
+table — set `pluginData.staticMarkdown` from a Docfy plugin:
+
+```js
+export default {
+  runAfter(ctx) {
+    ctx.pages.forEach(page => {
+      page.pluginData.staticMarkdown = page.markdown.replace(
+        /<Signature @component="(\w+)" \/>/g,
+        (_, name) => renderSignatureTable(name)
+      );
+    });
+  },
+};
+```
+
+Use `runAfter` and operate on Markdown text, not the AST. By that point `page.ast` has already
+been converted to hast and is what the live route templates are rendered from — mutating it
+would change the rendered app. `page.markdown` is raw source that nothing else reads, so writing
+a derived value into `pluginData.staticMarkdown` cannot affect the SPA build.
 
 ## Virtual Modules
 
