@@ -1,6 +1,6 @@
 import type { Plugin, ResolvedConfig } from 'vite';
 import type { DocfyConfig } from '@docfy/core/lib/types';
-import { loadDocfyConfig, DocfyViteOptions } from './config.js';
+import { loadDocfyConfig, resolveStaticExportOptions, DocfyViteOptions } from './config.js';
 import { processMarkdown } from './markdown-processor.js';
 import { shouldProcessFile, virtualDocfyOutputTemplate } from './utils.js';
 import { DocfyProcessor } from './docfy-processor.js';
@@ -86,9 +86,12 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
           this.error(staticExportError);
         }
 
+        // Fill in defaults sourced from the app itself (projectName).
+        const resolvedStaticExport = await resolveStaticExportOptions(root, staticExport);
+
         // Initialize core components
         fileManager = new FileManager(config, this);
-        processor = new DocfyProcessor(config, docfyConfig, fileManager, staticExport);
+        processor = new DocfyProcessor(config, docfyConfig, fileManager, resolvedStaticExport);
 
         // Add all Docfy source files to Vite's watch list
         if (config.command === 'serve') {

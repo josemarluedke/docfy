@@ -108,6 +108,38 @@ export async function loadDocfyConfig(
   return mergedConfig;
 }
 
+/**
+ * Fill in `staticExport` defaults that come from the consuming app rather than
+ * from the user.
+ *
+ * `projectName` becomes the H1 at the top of `llms.txt`, which the llms.txt
+ * convention (https://llmstxt.org) treats as its only required element. Rather
+ * than making users restate a name the app already declares, it falls back to
+ * the app's `package.json` `name` — the same source `repository` already
+ * defaults from. An explicit `projectName` always wins.
+ *
+ * `@docfy/core` has no project-name option, so there is nothing to reuse there.
+ */
+export async function resolveStaticExportOptions(
+  root: string,
+  staticExport?: StaticExportOptions
+): Promise<StaticExportOptions | undefined> {
+  if (!staticExport?.enabled || staticExport.projectName) {
+    return staticExport;
+  }
+
+  const pkg = await loadPackageJson(root);
+
+  if (typeof pkg.name !== 'string' || pkg.name === '') {
+    debug('No package.json name to default staticExport.projectName from', { root });
+    return staticExport;
+  }
+
+  debug('Defaulted staticExport.projectName from package.json', { projectName: pkg.name });
+
+  return { ...staticExport, projectName: pkg.name };
+}
+
 async function loadPackageJson(root: string): Promise<any> {
   try {
     const pkgPath = path.join(root, 'package.json');
