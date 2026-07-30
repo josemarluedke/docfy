@@ -26,24 +26,35 @@ export class FileManager {
     this.writeFilesToDisk(files);
   }
 
-  writeJsonToPublic(data: any, fileName: string = 'docfy-urls.json'): void {
-    const content = JSON.stringify(data);
-
+  /**
+   * Write arbitrary text output. In dev this lands in the app's `public/`
+   * folder; during a build it is emitted as a Rollup asset. Because
+   * `fileName` is passed explicitly, Rollup does not hash it — the file lands
+   * verbatim at `dist/<fileName>`.
+   */
+  writeTextToPublic(content: string, fileName: string): void {
     if (this.isDevMode()) {
-      const publicDir = path.join(process.cwd(), 'public');
-      if (!fs.existsSync(publicDir)) {
-        fs.mkdirSync(publicDir, { recursive: true });
+      const fullPath = path.join(process.cwd(), 'public', fileName);
+      const dir = path.dirname(fullPath);
+
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
       }
-      fs.writeFileSync(path.join(publicDir, fileName), content);
-      debug('Wrote JSON to public folder (dev)', { fileName });
+
+      fs.writeFileSync(fullPath, content);
+      debug('Wrote text to public folder (dev)', { fileName });
     } else {
       this.context?.emitFile({
         type: 'asset',
         fileName,
         source: content,
       });
-      debug('Emitted JSON asset (build)', { fileName });
+      debug('Emitted text asset (build)', { fileName });
     }
+  }
+
+  writeJsonToPublic(data: any, fileName: string = 'docfy-urls.json'): void {
+    this.writeTextToPublic(JSON.stringify(data), fileName);
   }
 
   private writeFilesToDisk(files: FileToGenerate[]): void {
