@@ -19,6 +19,7 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
     hmr = true,
     config: inlineConfig,
     configFile,
+    staticExport,
     ...docfyOptions
   } = options;
 
@@ -79,7 +80,7 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
 
         // Initialize core components
         fileManager = new FileManager(config, this);
-        processor = new DocfyProcessor(config, docfyConfig, fileManager);
+        processor = new DocfyProcessor(config, docfyConfig, fileManager, staticExport);
 
         // Add all Docfy source files to Vite's watch list
         if (config.command === 'serve') {

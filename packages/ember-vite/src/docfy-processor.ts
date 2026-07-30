@@ -1,9 +1,10 @@
 import type { ResolvedConfig } from 'vite';
-import type { DocfyConfig } from '@docfy/core/lib/types';
+import type { DocfyConfig, DocfyResult } from '@docfy/core/lib/types';
 import Docfy from '@docfy/core';
 import { generatePage } from './template-generator.js';
 import { FileManager } from './file-manager.js';
 import { getDocfySourceFiles } from './utils.js';
+import { collectStaticExportFiles, StaticExportOptions } from './static-export.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite:processor');
@@ -14,12 +15,19 @@ export class DocfyProcessor {
   private docfyInstance: Docfy;
   private fileManager: FileManager;
   private currentResult: any = null;
+  private staticExport?: StaticExportOptions;
 
-  constructor(config: ResolvedConfig, docfyConfig: DocfyConfig, fileManager: FileManager) {
+  constructor(
+    config: ResolvedConfig,
+    docfyConfig: DocfyConfig,
+    fileManager: FileManager,
+    staticExport?: StaticExportOptions
+  ) {
     this.config = config;
     this.docfyConfig = docfyConfig;
     this.docfyInstance = new Docfy(docfyConfig);
     this.fileManager = fileManager;
+    this.staticExport = staticExport;
   }
 
   async processAll(): Promise<any> {
@@ -36,6 +44,7 @@ export class DocfyProcessor {
 
       this.generateTemplates(result);
       this.handleAssets(result);
+      this.handleStaticExport(result);
 
       return result;
     } catch (error) {
@@ -102,5 +111,27 @@ export class DocfyProcessor {
     if (!this.fileManager.isDevMode()) {
       this.fileManager.emitStaticAssets(result.staticAssets);
     }
+  }
+
+  /**
+   * Emit the static text mirror of the docs: one `.md` per page plus
+   * `llms.txt` / `llms-full.txt`.
+   *
+   * Build-only. In dev this would write hundreds of generated files into a
+   * source directory and rebuild `llms-full.txt` on every markdown save, for
+   * output nothing in the running app consumes.
+   */
+  private handleStaticExport(result: DocfyResult): void {
+    if (!this.staticExport?.enabled || this.fileManager.isDevMode()) {
+      return;
+    }
+
+    const files = collectStaticExportFiles(result, this.staticExport);
+
+    files.forEach(file => {
+      this.fileManager.writeTextToPublic(file.content, file.path);
+    });
+
+    debug('Emitted static export files', { count: files.length });
   }
 }
