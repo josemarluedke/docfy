@@ -120,7 +120,6 @@ during `vite dev`.
 docfyVitePlugin({
   staticExport: {
     enabled: true,
-    siteUrl: 'https://docfy.dev',
     projectDescription: 'Docfy is a modular JavaScript tool to help build documentation sites.',
   },
 });
@@ -134,17 +133,31 @@ This writes into your build output:
   [llms.txt convention](https://llmstxt.org).
 - `llms-full.txt` — every page's content concatenated in the same order.
 
+By default, links in `llms.txt` and `llms-full.txt` are root-relative (e.g. `/docs/about.md`),
+which is valid per the llms.txt spec and works on any origin — deploy previews, forks, staging,
+and local builds — with no configuration. Set `siteUrl` to emit absolute links instead, which is
+useful when the text is consumed detached from its origin:
+
+```javascript
+docfyVitePlugin({
+  staticExport: {
+    enabled: true,
+    siteUrl: 'https://docfy.dev',
+  },
+});
+```
+
 ### Options
 
-| Option               | Type      | Default | Description                                                                                   |
-| -------------------- | --------- | ------- | --------------------------------------------------------------------------------------------- |
-| `enabled`            | `boolean` | `false` | Master switch. The rest of these options are no-ops unless this is `true`.                    |
-| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page. Only takes effect when `enabled` is `true`.                     |
-| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`. Only takes effect when `enabled` is `true`.                                  |
-| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`. Only takes effect when `enabled` is `true`.                             |
-| `siteUrl`            | `string`  | —       | Absolute site origin for links. Required when `llmsTxt` or `llmsFullTxt` is enabled.          |
-| `projectName`        | `string`  | —       | Project name emitted as the H1 heading at the top of `llms.txt`, per the llms.txt convention. |
-| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`, after the H1 (if any), as a blockquote.          |
+| Option               | Type      | Default | Description                                                                                                    |
+| -------------------- | --------- | ------- | -------------------------------------------------------------------------------------------------------------- |
+| `enabled`            | `boolean` | `false` | Master switch. The rest of these options are no-ops unless this is `true`.                                     |
+| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page. Only takes effect when `enabled` is `true`.                                      |
+| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`. Only takes effect when `enabled` is `true`.                                                   |
+| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`. Only takes effect when `enabled` is `true`.                                              |
+| `siteUrl`            | `string`  | —       | Absolute http(s) site origin for links. Optional — omit it for root-relative links; set it for absolute links. |
+| `projectName`        | `string`  | —       | Project name emitted as the H1 heading at the top of `llms.txt`, per the llms.txt convention.                  |
+| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`, after the H1 (if any), as a blockquote.                           |
 
 ### Customizing a page's exported Markdown
 

@@ -191,6 +191,18 @@ describe('pageMarkdownUrl', () => {
   it('uses index.md for index pages so the link matches the emitted file', () => {
     expect(pageMarkdownUrl('https://docfy.dev', '/docs/')).toBe('https://docfy.dev/docs/index.md');
   });
+
+  it('returns a root-relative link when siteUrl is undefined', () => {
+    expect(pageMarkdownUrl(undefined, '/docs/about')).toBe('/docs/about.md');
+  });
+
+  it('returns a root-relative index link for a trailing-slash url', () => {
+    expect(pageMarkdownUrl(undefined, '/docs/')).toBe('/docs/index.md');
+  });
+
+  it('returns the root-relative index link for the site root', () => {
+    expect(pageMarkdownUrl(undefined, '/')).toBe('/index.md');
+  });
 });
 
 describe('buildLlmsTxt', () => {
@@ -219,8 +231,22 @@ describe('buildLlmsTxt', () => {
     expect(output.startsWith('> Docs builder.\n\n')).toBe(true);
   });
 
-  it('throws a clear error when siteUrl is missing', () => {
-    expect(() => buildLlmsTxt(makeNested(), { enabled: true })).toThrow(/siteUrl is required/);
+  it('emits root-relative links when siteUrl is not provided', () => {
+    expect(buildLlmsTxt(makeNested(), { enabled: true })).toBe(
+      [
+        '- [Home](/index.md)',
+        '',
+        '## Documentation',
+        '',
+        '- [Introduction](/docs/index.md)',
+        '- [About](/docs/about.md)',
+        '',
+        '## Ember',
+        '',
+        '- [Setup](/docs/ember/setup.md)',
+        '',
+      ].join('\n')
+    );
   });
 
   it('emits the project name as an H1 when provided', () => {
@@ -301,9 +327,42 @@ describe('buildLlmsFullTxt', () => {
     expect(output).toBe('\n');
   });
 
-  it('throws a clear error when siteUrl is missing', () => {
-    expect(() => buildLlmsFullTxt(makeNested(), pagesByUrl(), { enabled: true })).toThrow(
-      /siteUrl is required/
+  it('emits root-relative Source links when siteUrl is not provided', () => {
+    const output = buildLlmsFullTxt(makeNested(), pagesByUrl(), { enabled: true });
+
+    expect(output).toBe(
+      [
+        '# Home',
+        '',
+        'Source: /index.md',
+        '',
+        '# Home',
+        '',
+        '---',
+        '',
+        '# Introduction',
+        '',
+        'Source: /docs/index.md',
+        '',
+        '# Intro',
+        '',
+        '---',
+        '',
+        '# About',
+        '',
+        'Source: /docs/about.md',
+        '',
+        '# About',
+        '',
+        '---',
+        '',
+        '# Setup',
+        '',
+        'Source: /docs/ember/setup.md',
+        '',
+        '# Setup',
+        '',
+      ].join('\n')
     );
   });
 });
@@ -378,32 +437,57 @@ describe('collectStaticExportFiles', () => {
     expect(files).toHaveLength(4);
   });
 
-  it('throws when an llms file is requested without siteUrl', () => {
-    expect(() => collectStaticExportFiles(makeResult(), { enabled: true })).toThrow(
-      /siteUrl is required/
-    );
+  it('returns all files with relative links when siteUrl is absent and llms files are enabled', () => {
+    const files = collectStaticExportFiles(makeResult(), { enabled: true });
+
+    expect(files.map(f => f.path)).toEqual([
+      'index.md',
+      'docs/index.md',
+      'docs/about.md',
+      'docs/ember/setup.md',
+      'llms.txt',
+      'llms-full.txt',
+    ]);
+
+    const llmsTxt = files.find(f => f.path === 'llms.txt');
+    expect(llmsTxt?.content).toContain('](/docs/about.md)');
+
+    const llmsFullTxt = files.find(f => f.path === 'llms-full.txt');
+    expect(llmsFullTxt?.content).toContain('Source: /docs/about.md');
   });
 });
 
 describe('validateStaticExportOptions', () => {
-  it('returns an error when enabled with no siteUrl and llms files on', () => {
-    expect(validateStaticExportOptions({ enabled: true })).toMatch(/siteUrl is required/);
+  it('returns undefined when not enabled at all', () => {
+    expect(validateStaticExportOptions({})).toBeUndefined();
+    expect(validateStaticExportOptions({ enabled: false })).toBeUndefined();
   });
 
-  it('returns undefined when enabled with a siteUrl', () => {
+  it('returns undefined when enabled with no siteUrl', () => {
+    expect(validateStaticExportOptions({ enabled: true })).toBeUndefined();
+  });
+
+  it('returns undefined for a valid https siteUrl', () => {
     expect(
       validateStaticExportOptions({ enabled: true, siteUrl: 'https://docfy.dev' })
     ).toBeUndefined();
   });
 
-  it('returns undefined when both llms toggles are off and no siteUrl is set', () => {
+  it('returns undefined for a valid http siteUrl with a port', () => {
     expect(
-      validateStaticExportOptions({ enabled: true, llmsTxt: false, llmsFullTxt: false })
+      validateStaticExportOptions({ enabled: true, siteUrl: 'http://localhost:4200' })
     ).toBeUndefined();
   });
 
-  it('returns undefined when not enabled at all', () => {
-    expect(validateStaticExportOptions({})).toBeUndefined();
-    expect(validateStaticExportOptions({ enabled: false })).toBeUndefined();
+  it('returns an error when siteUrl has no scheme', () => {
+    expect(validateStaticExportOptions({ enabled: true, siteUrl: 'docfy.dev' })).toMatch(
+      /\[@docfy\/ember-vite\]/
+    );
+  });
+
+  it('returns an error when siteUrl uses an unsupported protocol', () => {
+    expect(validateStaticExportOptions({ enabled: true, siteUrl: 'ftp://x.com' })).toMatch(
+      /\[@docfy\/ember-vite\]/
+    );
   });
 });

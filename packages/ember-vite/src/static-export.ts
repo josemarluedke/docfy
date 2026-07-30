@@ -28,7 +28,12 @@ export interface StaticExportOptions {
 
   /**
    * Absolute site origin used to build links in llms.txt / llms-full.txt,
-   * e.g. "https://docfy.dev". Required when llmsTxt or llmsFullTxt is enabled.
+   * e.g. "https://docfy.dev". Optional: when omitted, links are emitted
+   * root-relative (e.g. "/docs/about.md"), which is valid per the llms.txt
+   * spec and works on any origin (deploy previews, forks, staging, local
+   * builds) without configuration. Provide it to emit absolute links
+   * instead — useful when the text is consumed detached from its origin.
+   * When provided, must be an absolute http(s) URL.
    */
   siteUrl?: string;
 
@@ -100,33 +105,31 @@ export interface FlatSection {
  * begins. Returns an error message describing the problem, or `undefined`
  * when the configuration is valid (or the feature isn't enabled at all).
  *
- * This mirrors the check `requireSiteUrl` performs deep in the emit path,
- * so callers (the Vite plugin's `buildStart`) can fail loudly up front
- * instead of relying on an exception thrown mid-build to surface the
- * problem. `requireSiteUrl` is kept as a defense-in-depth backstop.
+ * `siteUrl` is optional — omitting it produces root-relative links. But when
+ * it IS provided, it must be an absolute http(s) origin, so a typo like
+ * `siteUrl: 'docfy.dev'` (missing the scheme) fails loudly here instead of
+ * silently producing broken links such as `docfy.dev/docs/about.md`.
  */
 export function validateStaticExportOptions(options: StaticExportOptions): string | undefined {
   if (!options.enabled) {
     return undefined;
   }
 
-  const needsSiteUrl = options.llmsTxt !== false || options.llmsFullTxt !== false;
+  if (options.siteUrl) {
+    let parsed: URL;
 
-  if (needsSiteUrl && !options.siteUrl) {
-    return '[@docfy/ember-vite] staticExport.siteUrl is required when llmsTxt or llmsFullTxt is enabled.';
+    try {
+      parsed = new URL(options.siteUrl);
+    } catch {
+      return `[@docfy/ember-vite] staticExport.siteUrl "${options.siteUrl}" is not a valid absolute URL (expected something like "https://example.com").`;
+    }
+
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return `[@docfy/ember-vite] staticExport.siteUrl "${options.siteUrl}" must use http or https (got "${parsed.protocol}").`;
+    }
   }
 
   return undefined;
-}
-
-function requireSiteUrl(options: StaticExportOptions): string {
-  if (!options.siteUrl) {
-    throw new Error(
-      '[@docfy/ember-vite] staticExport.siteUrl is required when llmsTxt or llmsFullTxt is enabled.'
-    );
-  }
-
-  return options.siteUrl;
 }
 
 /**
@@ -151,20 +154,29 @@ export function flattenSections(nested: NestedPageMetadata, depth = 0): FlatSect
 }
 
 /**
- * Build the absolute URL of a page's Markdown mirror. Derived from
- * `markdownFileName` so the link can never diverge from the emitted file path.
+ * Build the URL of a page's Markdown mirror. Derived from `markdownFileName`
+ * so the link can never diverge from the emitted file path.
+ *
+ * When `siteUrl` is provided, the link is absolute. Otherwise it is
+ * root-relative (leading slash) — correct on any origin and unambiguous
+ * regardless of how deeply nested the referencing document is.
  */
-export function pageMarkdownUrl(siteUrl: string, url: string): string {
+export function pageMarkdownUrl(siteUrl: string | undefined, url: string): string {
+  if (!siteUrl) {
+    return `/${markdownFileName(url)}`;
+  }
+
   return `${siteUrl.replace(/\/+$/, '')}/${markdownFileName(url)}`;
 }
 
 /**
  * Build the `llms.txt` index: an H1 project name (if provided), an optional
- * blockquote summary, then every page as an absolute `.md` link grouped by
- * section, following the llms.txt convention (https://llmstxt.org).
+ * blockquote summary, then every page as a `.md` link (absolute when
+ * `siteUrl` is set, otherwise root-relative) grouped by section, following
+ * the llms.txt convention (https://llmstxt.org).
  */
 export function buildLlmsTxt(nested: NestedPageMetadata, options: StaticExportOptions): string {
-  const siteUrl = requireSiteUrl(options);
+  const siteUrl = options.siteUrl;
   const lines: string[] = [];
 
   if (options.projectName) {
@@ -193,15 +205,16 @@ export function buildLlmsTxt(nested: NestedPageMetadata, options: StaticExportOp
 
 /**
  * Build `llms-full.txt`: every page's exported Markdown concatenated in
- * section order, each preceded by its title and a `Source:` link back to the
- * page's `.md` mirror.
+ * section order, each preceded by its title and a `Source:` link (absolute
+ * when `siteUrl` is set, otherwise root-relative) back to the page's `.md`
+ * mirror.
  */
 export function buildLlmsFullTxt(
   nested: NestedPageMetadata,
   pagesByUrl: Map<string, PageContent>,
   options: StaticExportOptions
 ): string {
-  const siteUrl = requireSiteUrl(options);
+  const siteUrl = options.siteUrl;
   const blocks: string[] = [];
 
   flattenSections(nested).forEach(section => {
