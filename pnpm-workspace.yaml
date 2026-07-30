@@ -1,0 +1,12 @@
+packages:
+  - 'packages/*'
+  - 'test-app-vite'
+  - 'test-app-classic'
+
+# Replaces yarn's `resolutions`. pnpm 11 reads overrides from this file, not
+# from the root package.json. The pin keeps a single @types/unist v2.0.3 in the
+# tree: later 2.0.x releases make `Node` generic and drop the index signature
+# the remark/unist plugin code relies on, which breaks @docfy/ember-cli's
+# compile with "Property 'children' does not exist on type 'Node<Data>'".
+overrides:
+  '@types/unist': 2.0.3

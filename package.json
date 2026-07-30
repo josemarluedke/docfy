@@ -1,11 +1,7 @@
 {
   "name": "root",
   "private": true,
-  "workspaces": [
-    "packages/*",
-    "test-app-vite",
-    "test-app-classic"
-  ],
+  "packageManager": "pnpm@11.1.2",
   "scripts": {
     "lint": "lerna run lint --parallel",
     "lint:fix": "lerna run lint:fix --parallel",
@@ -17,8 +13,5 @@
   },
   "devDependencies": {
     "lerna": "^9.0.3"
-  },
-  "resolutions": {
-    "@types/unist": "2.0.3"
   }
 }
