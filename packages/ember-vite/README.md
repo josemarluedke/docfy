@@ -98,6 +98,7 @@ interface DocfyViteOptions {
     llmsFullTxt?: boolean;
     siteUrl?: string;
     projectDescription?: string;
+    projectName?: string;
   };
 
   // All @docfy/core options are also supported
@@ -135,14 +136,15 @@ This writes into your build output:
 
 ### Options
 
-| Option               | Type      | Default | Description                                                                          |
-| -------------------- | --------- | ------- | ------------------------------------------------------------------------------------ |
-| `enabled`            | `boolean` | `false` | Master switch.                                                                       |
-| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page.                                                        |
-| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`.                                                                     |
-| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`.                                                                |
-| `siteUrl`            | `string`  | —       | Absolute site origin for links. Required when `llmsTxt` or `llmsFullTxt` is enabled. |
-| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`.                                         |
+| Option               | Type      | Default | Description                                                                                   |
+| -------------------- | --------- | ------- | --------------------------------------------------------------------------------------------- |
+| `enabled`            | `boolean` | `false` | Master switch. The rest of these options are no-ops unless this is `true`.                    |
+| `markdown`           | `boolean` | `true`  | Emit one `.md` file per page. Only takes effect when `enabled` is `true`.                     |
+| `llmsTxt`            | `boolean` | `true`  | Emit `llms.txt`. Only takes effect when `enabled` is `true`.                                  |
+| `llmsFullTxt`        | `boolean` | `true`  | Emit `llms-full.txt`. Only takes effect when `enabled` is `true`.                             |
+| `siteUrl`            | `string`  | —       | Absolute site origin for links. Required when `llmsTxt` or `llmsFullTxt` is enabled.          |
+| `projectName`        | `string`  | —       | Project name emitted as the H1 heading at the top of `llms.txt`, per the llms.txt convention. |
+| `projectDescription` | `string`  | —       | Short blurb placed at the top of `llms.txt`, after the H1 (if any), as a blockquote.          |
 
 ### Customizing a page's exported Markdown
 
@@ -167,6 +169,11 @@ Use `runAfter` and operate on Markdown text, not the AST. By that point `page.as
 been converted to hast and is what the live route templates are rendered from — mutating it
 would change the rendered app. `page.markdown` is raw source that nothing else reads, so writing
 a derived value into `pluginData.staticMarkdown` cannot affect the SPA build.
+
+Set `page.pluginData.staticMarkdown`, not `page.meta.pluginData.staticMarkdown` — the latter is
+silently ignored by the static export **and** is serialized into the app's client JS bundle (via
+the virtual Docfy output module), so putting full page Markdown there would inline every page's
+content into the shipped bundle.
 
 ## Virtual Modules
 

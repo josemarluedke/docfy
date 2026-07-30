@@ -14,6 +14,7 @@ import {
   buildLlmsTxt,
   buildLlmsFullTxt,
   collectStaticExportFiles,
+  validateStaticExportOptions,
 } from '../src/static-export.js';
 
 function makePage(overrides: Partial<PageContent> = {}): PageContent {
@@ -221,6 +222,26 @@ describe('buildLlmsTxt', () => {
   it('throws a clear error when siteUrl is missing', () => {
     expect(() => buildLlmsTxt(makeNested(), { enabled: true })).toThrow(/siteUrl is required/);
   });
+
+  it('emits the project name as an H1 when provided', () => {
+    const output = buildLlmsTxt(makeNested(), { ...opts, projectName: 'Docfy' });
+    expect(output.startsWith('# Docfy\n\n')).toBe(true);
+  });
+
+  it('emits project name then description in the correct order', () => {
+    const output = buildLlmsTxt(makeNested(), {
+      ...opts,
+      projectName: 'Docfy',
+      projectDescription: 'Docs builder.',
+    });
+
+    expect(output.startsWith('# Docfy\n\n> Docs builder.\n\n')).toBe(true);
+  });
+
+  it('omits the H1 when no project name is provided', () => {
+    const output = buildLlmsTxt(makeNested(), opts);
+    expect(output.startsWith('#')).toBe(false);
+  });
 });
 
 describe('buildLlmsFullTxt', () => {
@@ -361,5 +382,28 @@ describe('collectStaticExportFiles', () => {
     expect(() => collectStaticExportFiles(makeResult(), { enabled: true })).toThrow(
       /siteUrl is required/
     );
+  });
+});
+
+describe('validateStaticExportOptions', () => {
+  it('returns an error when enabled with no siteUrl and llms files on', () => {
+    expect(validateStaticExportOptions({ enabled: true })).toMatch(/siteUrl is required/);
+  });
+
+  it('returns undefined when enabled with a siteUrl', () => {
+    expect(
+      validateStaticExportOptions({ enabled: true, siteUrl: 'https://docfy.dev' })
+    ).toBeUndefined();
+  });
+
+  it('returns undefined when both llms toggles are off and no siteUrl is set', () => {
+    expect(
+      validateStaticExportOptions({ enabled: true, llmsTxt: false, llmsFullTxt: false })
+    ).toBeUndefined();
+  });
+
+  it('returns undefined when not enabled at all', () => {
+    expect(validateStaticExportOptions({})).toBeUndefined();
+    expect(validateStaticExportOptions({ enabled: false })).toBeUndefined();
   });
 });

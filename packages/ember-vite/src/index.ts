@@ -5,6 +5,7 @@ import { processMarkdown } from './markdown-processor.js';
 import { shouldProcessFile, virtualDocfyOutputTemplate } from './utils.js';
 import { DocfyProcessor } from './docfy-processor.js';
 import { FileManager } from './file-manager.js';
+import { validateStaticExportOptions } from './static-export.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite');
@@ -77,6 +78,13 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
           })),
           root,
         });
+
+        // Validate staticExport eagerly so a misconfiguration fails the
+        // build loudly instead of being swallowed by the try/catch below.
+        const staticExportError = validateStaticExportOptions(staticExport ?? {});
+        if (staticExportError) {
+          this.error(staticExportError);
+        }
 
         // Initialize core components
         fileManager = new FileManager(config, this);

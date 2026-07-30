@@ -15,10 +15,11 @@ export default defineConfig({
         staticExport: {
           enabled: true,
           siteUrl: 'https://docfy.dev',
+          projectName: 'Docfy',
           projectDescription:
             'Docfy is a modular JavaScript tool to help build documentation sites.',
         },
-      },
+      }
     ),
     tailwindcss(),
     classicEmberSupport(),

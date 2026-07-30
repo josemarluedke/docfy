@@ -34,6 +34,13 @@ export interface StaticExportOptions {
 
   /** Optional short project blurb inserted at the top of llms.txt. */
   projectDescription?: string;
+
+  /**
+   * Optional project name emitted as the H1 heading at the top of llms.txt.
+   * Per the llms.txt convention (https://llmstxt.org) the H1 project name is
+   * the only required element. Omitted by default to keep this non-breaking.
+   */
+  projectName?: string;
 }
 
 /**
@@ -88,6 +95,30 @@ export interface FlatSection {
   depth: number;
 }
 
+/**
+ * Validate a `staticExport` configuration eagerly, before any processing
+ * begins. Returns an error message describing the problem, or `undefined`
+ * when the configuration is valid (or the feature isn't enabled at all).
+ *
+ * This mirrors the check `requireSiteUrl` performs deep in the emit path,
+ * so callers (the Vite plugin's `buildStart`) can fail loudly up front
+ * instead of relying on an exception thrown mid-build to surface the
+ * problem. `requireSiteUrl` is kept as a defense-in-depth backstop.
+ */
+export function validateStaticExportOptions(options: StaticExportOptions): string | undefined {
+  if (!options.enabled) {
+    return undefined;
+  }
+
+  const needsSiteUrl = options.llmsTxt !== false || options.llmsFullTxt !== false;
+
+  if (needsSiteUrl && !options.siteUrl) {
+    return '[@docfy/ember-vite] staticExport.siteUrl is required when llmsTxt or llmsFullTxt is enabled.';
+  }
+
+  return undefined;
+}
+
 function requireSiteUrl(options: StaticExportOptions): string {
   if (!options.siteUrl) {
     throw new Error(
@@ -127,9 +158,18 @@ export function pageMarkdownUrl(siteUrl: string, url: string): string {
   return `${siteUrl.replace(/\/+$/, '')}/${markdownFileName(url)}`;
 }
 
+/**
+ * Build the `llms.txt` index: an H1 project name (if provided), an optional
+ * blockquote summary, then every page as an absolute `.md` link grouped by
+ * section, following the llms.txt convention (https://llmstxt.org).
+ */
 export function buildLlmsTxt(nested: NestedPageMetadata, options: StaticExportOptions): string {
   const siteUrl = requireSiteUrl(options);
   const lines: string[] = [];
+
+  if (options.projectName) {
+    lines.push(`# ${options.projectName}`, '');
+  }
 
   if (options.projectDescription) {
     lines.push(`> ${options.projectDescription}`, '');
@@ -151,6 +191,11 @@ export function buildLlmsTxt(nested: NestedPageMetadata, options: StaticExportOp
   return `${lines.join('\n').trimEnd()}\n`;
 }
 
+/**
+ * Build `llms-full.txt`: every page's exported Markdown concatenated in
+ * section order, each preceded by its title and a `Source:` link back to the
+ * page's `.md` mirror.
+ */
 export function buildLlmsFullTxt(
   nested: NestedPageMetadata,
   pagesByUrl: Map<string, PageContent>,
