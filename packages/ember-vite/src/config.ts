@@ -2,6 +2,7 @@ import path from 'path';
 import { pathToFileURL } from 'url';
 import type { DocfyConfig } from '@docfy/core/lib/types';
 import debugFactory from 'debug';
+import type { StaticExportOptions } from './static-export.js';
 
 const debug = debugFactory('@docfy/ember-vite:config');
 
@@ -31,6 +32,13 @@ export interface DocfyViteOptions extends Partial<DocfyConfig> {
    * @default 'docfy.config.js' or 'docfy.config.mjs'
    */
   configFile?: string;
+
+  /**
+   * Static text export of processed docs for non-JS clients (AI agents,
+   * crawlers, etc). Off by default — opt in per consuming app. Build-only:
+   * nothing is emitted during `vite dev`.
+   */
+  staticExport?: StaticExportOptions;
 }
 
 const DEFAULT_CONFIG: DocfyConfig = {
@@ -177,6 +185,8 @@ async function mergeConfig(
     config,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     configFile,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    staticExport,
     ...docfyOptions
   } = options;
 
