@@ -1,4 +1,13 @@
-import type { NestedPageMetadata, PageContent, PageMetadata } from '@docfy/core/lib/types';
+import type {
+  DocfyResult,
+  NestedPageMetadata,
+  PageContent,
+  PageMetadata,
+} from '@docfy/core/lib/types';
+import type { FileToGenerate } from './types.js';
+import debugFactory from 'debug';
+
+const debug = debugFactory('@docfy/ember-vite:static-export');
 
 /**
  * Options controlling the static text export of processed docs.
@@ -174,4 +183,44 @@ export function buildLlmsFullTxt(
   });
 
   return `${blocks.join('\n\n---\n\n')}\n`;
+}
+
+/**
+ * Turn a Docfy result into the complete set of static text files to emit.
+ * Pure: performs no IO, so the caller decides how each file is written.
+ */
+export function collectStaticExportFiles(
+  result: DocfyResult,
+  options: StaticExportOptions
+): FileToGenerate[] {
+  const files: FileToGenerate[] = [];
+
+  if (options.markdown !== false) {
+    result.content.forEach(page => {
+      files.push({
+        path: markdownFileName(page.meta.url),
+        content: `${pageMarkdown(page)}\n`,
+      });
+    });
+  }
+
+  if (options.llmsTxt !== false) {
+    files.push({
+      path: 'llms.txt',
+      content: buildLlmsTxt(result.nestedPageMetadata, options),
+    });
+  }
+
+  if (options.llmsFullTxt !== false) {
+    const pagesByUrl = new Map(result.content.map(page => [page.meta.url, page]));
+
+    files.push({
+      path: 'llms-full.txt',
+      content: buildLlmsFullTxt(result.nestedPageMetadata, pagesByUrl, options),
+    });
+  }
+
+  debug('Collected static export files', { count: files.length });
+
+  return files;
 }

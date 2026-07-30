@@ -1,5 +1,10 @@
 import { describe, it, expect } from 'vitest';
-import type { NestedPageMetadata, PageContent, PageMetadata } from '@docfy/core/lib/types';
+import type {
+  DocfyResult,
+  NestedPageMetadata,
+  PageContent,
+  PageMetadata,
+} from '@docfy/core/lib/types';
 import {
   stripFrontmatter,
   markdownFileName,
@@ -8,6 +13,7 @@ import {
   pageMarkdownUrl,
   buildLlmsTxt,
   buildLlmsFullTxt,
+  collectStaticExportFiles,
 } from '../src/static-export.js';
 
 function makePage(overrides: Partial<PageContent> = {}): PageContent {
@@ -276,6 +282,83 @@ describe('buildLlmsFullTxt', () => {
 
   it('throws a clear error when siteUrl is missing', () => {
     expect(() => buildLlmsFullTxt(makeNested(), pagesByUrl(), { enabled: true })).toThrow(
+      /siteUrl is required/
+    );
+  });
+});
+
+describe('collectStaticExportFiles', () => {
+  const opts = { enabled: true, siteUrl: 'https://docfy.dev' };
+
+  function makeResult(): DocfyResult {
+    const home = makePage({ meta: makeMeta('/', 'Home'), markdown: '# Home\n' });
+    const intro = makePage({ meta: makeMeta('/docs/', 'Introduction'), markdown: '# Intro\n' });
+    const about = makePage({ meta: makeMeta('/docs/about', 'About'), markdown: '# About\n' });
+    const setup = makePage({
+      meta: makeMeta('/docs/ember/setup', 'Setup'),
+      markdown: '# Setup\n',
+    });
+
+    return {
+      content: [home, intro, about, setup],
+      staticAssets: [],
+      nestedPageMetadata: makeNested(),
+    };
+  }
+
+  it('emits one markdown file per page plus both llms files', () => {
+    const files = collectStaticExportFiles(makeResult(), opts);
+
+    expect(files.map(f => f.path)).toEqual([
+      'index.md',
+      'docs/index.md',
+      'docs/about.md',
+      'docs/ember/setup.md',
+      'llms.txt',
+      'llms-full.txt',
+    ]);
+  });
+
+  it('ends every markdown file with a single trailing newline', () => {
+    const files = collectStaticExportFiles(makeResult(), opts);
+    const about = files.find(f => f.path === 'docs/about.md');
+
+    expect(about?.content).toBe('# About\n');
+  });
+
+  it('honours the markdown toggle', () => {
+    const files = collectStaticExportFiles(makeResult(), { ...opts, markdown: false });
+
+    expect(files.map(f => f.path)).toEqual(['llms.txt', 'llms-full.txt']);
+  });
+
+  it('honours the llmsTxt and llmsFullTxt toggles', () => {
+    const files = collectStaticExportFiles(makeResult(), {
+      ...opts,
+      llmsTxt: false,
+      llmsFullTxt: false,
+    });
+
+    expect(files.map(f => f.path)).toEqual([
+      'index.md',
+      'docs/index.md',
+      'docs/about.md',
+      'docs/ember/setup.md',
+    ]);
+  });
+
+  it('does not require siteUrl when only markdown is emitted', () => {
+    const files = collectStaticExportFiles(makeResult(), {
+      enabled: true,
+      llmsTxt: false,
+      llmsFullTxt: false,
+    });
+
+    expect(files).toHaveLength(4);
+  });
+
+  it('throws when an llms file is requested without siteUrl', () => {
+    expect(() => collectStaticExportFiles(makeResult(), { enabled: true })).toThrow(
       /siteUrl is required/
     );
   });
