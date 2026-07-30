@@ -12,6 +12,12 @@ export default defineConfig({
       {
         root: process.cwd(),
         hmr: true,
+        staticExport: {
+          enabled: true,
+          siteUrl: 'https://docfy.dev',
+          projectDescription:
+            'Docfy is a modular JavaScript tool to help build documentation sites.',
+        },
       },
     ),
     tailwindcss(),
