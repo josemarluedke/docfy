@@ -54,6 +54,7 @@
     "@types/debug": "^4.1.0",
     "@types/glob": "^8.1.0",
     "@types/node": "^24.0.14",
+    "@types/unist": "^2.0.0",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^17.18.0",

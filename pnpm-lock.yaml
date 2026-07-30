@@ -152,6 +152,9 @@ importers:
 
   packages/ember:
     dependencies:
+      '@docfy/core':
+        specifier: workspace:^0.11.0
+        version: link:../core
       '@embroider/addon-shim':
         specifier: ^1.8.9
         version: 1.10.3
@@ -500,6 +503,9 @@ importers:
       '@types/node':
         specifier: ^24.0.14
         version: 24.13.3
+      '@types/unist':
+        specifier: 2.0.3
+        version: 2.0.3
       eslint:
         specifier: ^9.32.0
         version: 9.39.5(jiti@2.7.0)

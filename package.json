@@ -3,13 +3,13 @@
   "private": true,
   "packageManager": "pnpm@11.1.2",
   "scripts": {
-    "lint": "lerna run lint --parallel",
-    "lint:fix": "lerna run lint:fix --parallel",
-    "lint:format": "lerna run format:check --parallel",
-    "lint:format:fix": "lerna run format --parallel",
+    "lint": "pnpm -r --parallel run lint",
+    "lint:fix": "pnpm -r --parallel run lint:fix",
+    "lint:format": "pnpm -r --parallel run format:check",
+    "lint:format:fix": "pnpm -r --parallel run format",
     "start": "echo 'TODO'",
-    "compile": "lerna run compile",
-    "test": "lerna run --parallel test"
+    "compile": "pnpm -r run compile",
+    "test": "pnpm -r --parallel run test"
   },
   "devDependencies": {
     "lerna": "^9.0.3"
