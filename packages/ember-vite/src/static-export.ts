@@ -127,10 +127,7 @@ export function pageMarkdownUrl(siteUrl: string, url: string): string {
   return `${siteUrl.replace(/\/+$/, '')}/${markdownFileName(url)}`;
 }
 
-export function buildLlmsTxt(
-  nested: NestedPageMetadata,
-  options: StaticExportOptions
-): string {
+export function buildLlmsTxt(nested: NestedPageMetadata, options: StaticExportOptions): string {
   const siteUrl = requireSiteUrl(options);
   const lines: string[] = [];
 
