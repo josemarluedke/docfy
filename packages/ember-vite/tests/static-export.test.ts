@@ -1,6 +1,14 @@
 import { describe, it, expect } from 'vitest';
-import type { PageContent } from '@docfy/core/lib/types';
-import { stripFrontmatter, markdownFileName, pageMarkdown } from '../src/static-export.js';
+import type { NestedPageMetadata, PageContent, PageMetadata } from '@docfy/core/lib/types';
+import {
+  stripFrontmatter,
+  markdownFileName,
+  pageMarkdown,
+  flattenSections,
+  pageMarkdownUrl,
+  buildLlmsTxt,
+  buildLlmsFullTxt,
+} from '../src/static-export.js';
 
 function makePage(overrides: Partial<PageContent> = {}): PageContent {
   return {
@@ -89,5 +97,186 @@ describe('pageMarkdown', () => {
   it('ignores a non-string override', () => {
     const page = makePage({ markdown: '# Raw\n', pluginData: { staticMarkdown: 42 } });
     expect(pageMarkdown(page)).toBe('# Raw');
+  });
+});
+
+function makeMeta(url: string, title: string): PageMetadata {
+  return {
+    url,
+    relativeUrl: undefined,
+    relativePath: `${title}.md`,
+    editUrl: '',
+    title,
+    headings: [],
+    frontmatter: {},
+    pluginData: {},
+    parentLabel: undefined,
+  };
+}
+
+/**
+ * Mirrors the shape @docfy/core produces: a root node named '/' whose children
+ * are the sections. Section order here is already-resolved order.
+ */
+function makeNested(): NestedPageMetadata {
+  return {
+    name: '/',
+    label: '/',
+    pages: [makeMeta('/', 'Home')],
+    children: [
+      {
+        name: 'docs',
+        label: 'Documentation',
+        pages: [makeMeta('/docs/', 'Introduction'), makeMeta('/docs/about', 'About')],
+        children: [
+          {
+            name: 'ember',
+            label: 'Ember',
+            pages: [makeMeta('/docs/ember/setup', 'Setup')],
+            children: [],
+          },
+        ],
+      },
+    ],
+  };
+}
+
+describe('flattenSections', () => {
+  it('walks the tree depth-first and records depth', () => {
+    expect(flattenSections(makeNested())).toEqual([
+      { label: '/', depth: 0, pages: [makeMeta('/', 'Home')] },
+      {
+        label: 'Documentation',
+        depth: 1,
+        pages: [makeMeta('/docs/', 'Introduction'), makeMeta('/docs/about', 'About')],
+      },
+      { label: 'Ember', depth: 2, pages: [makeMeta('/docs/ember/setup', 'Setup')] },
+    ]);
+  });
+
+  it('skips sections that have no pages of their own', () => {
+    const nested: NestedPageMetadata = {
+      name: '/',
+      label: '/',
+      pages: [],
+      children: [
+        { name: 'docs', label: 'Documentation', pages: [makeMeta('/docs/a', 'A')], children: [] },
+      ],
+    };
+
+    expect(flattenSections(nested).map(s => s.label)).toEqual(['Documentation']);
+  });
+});
+
+describe('pageMarkdownUrl', () => {
+  it('joins the site url with the markdown file name', () => {
+    expect(pageMarkdownUrl('https://docfy.dev', '/docs/about')).toBe(
+      'https://docfy.dev/docs/about.md'
+    );
+  });
+
+  it('tolerates a trailing slash on the site url', () => {
+    expect(pageMarkdownUrl('https://docfy.dev/', '/docs/about')).toBe(
+      'https://docfy.dev/docs/about.md'
+    );
+  });
+
+  it('uses index.md for index pages so the link matches the emitted file', () => {
+    expect(pageMarkdownUrl('https://docfy.dev', '/docs/')).toBe('https://docfy.dev/docs/index.md');
+  });
+});
+
+describe('buildLlmsTxt', () => {
+  const opts = { enabled: true, siteUrl: 'https://docfy.dev' };
+
+  it('lists every page as an absolute .md link grouped by section', () => {
+    expect(buildLlmsTxt(makeNested(), opts)).toBe(
+      [
+        '- [Home](https://docfy.dev/index.md)',
+        '',
+        '## Documentation',
+        '',
+        '- [Introduction](https://docfy.dev/docs/index.md)',
+        '- [About](https://docfy.dev/docs/about.md)',
+        '',
+        '## Ember',
+        '',
+        '- [Setup](https://docfy.dev/docs/ember/setup.md)',
+        '',
+      ].join('\n')
+    );
+  });
+
+  it('includes the project description as a blockquote blurb', () => {
+    const output = buildLlmsTxt(makeNested(), { ...opts, projectDescription: 'Docs builder.' });
+    expect(output.startsWith('> Docs builder.\n\n')).toBe(true);
+  });
+
+  it('throws a clear error when siteUrl is missing', () => {
+    expect(() => buildLlmsTxt(makeNested(), { enabled: true })).toThrow(/siteUrl is required/);
+  });
+});
+
+describe('buildLlmsFullTxt', () => {
+  const opts = { enabled: true, siteUrl: 'https://docfy.dev' };
+
+  function pagesByUrl(): Map<string, PageContent> {
+    return new Map([
+      ['/', makePage({ meta: makeMeta('/', 'Home'), markdown: '# Home\n' })],
+      ['/docs/', makePage({ meta: makeMeta('/docs/', 'Introduction'), markdown: '# Intro\n' })],
+      ['/docs/about', makePage({ meta: makeMeta('/docs/about', 'About'), markdown: '# About\n' })],
+      [
+        '/docs/ember/setup',
+        makePage({ meta: makeMeta('/docs/ember/setup', 'Setup'), markdown: '# Setup\n' }),
+      ],
+    ]);
+  }
+
+  it('concatenates every page in section order with rule separators', () => {
+    expect(buildLlmsFullTxt(makeNested(), pagesByUrl(), opts)).toBe(
+      [
+        '# Home',
+        '',
+        'Source: https://docfy.dev/index.md',
+        '',
+        '# Home',
+        '',
+        '---',
+        '',
+        '# Introduction',
+        '',
+        'Source: https://docfy.dev/docs/index.md',
+        '',
+        '# Intro',
+        '',
+        '---',
+        '',
+        '# About',
+        '',
+        'Source: https://docfy.dev/docs/about.md',
+        '',
+        '# About',
+        '',
+        '---',
+        '',
+        '# Setup',
+        '',
+        'Source: https://docfy.dev/docs/ember/setup.md',
+        '',
+        '# Setup',
+        '',
+      ].join('\n')
+    );
+  });
+
+  it('skips metadata entries with no matching content', () => {
+    const output = buildLlmsFullTxt(makeNested(), new Map(), opts);
+    expect(output).toBe('\n');
+  });
+
+  it('throws a clear error when siteUrl is missing', () => {
+    expect(() => buildLlmsFullTxt(makeNested(), pagesByUrl(), { enabled: true })).toThrow(
+      /siteUrl is required/
+    );
   });
 });
