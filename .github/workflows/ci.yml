@@ -28,5 +28,7 @@ jobs:
         run: yarn compile
       # - name: Lint
       #   run: yarn lint
-      - name: Test
+      - name: Test @docfy/core
         run: cd packages/core && yarn test
+      - name: Test @docfy/ember-vite
+        run: cd packages/ember-vite && yarn test
