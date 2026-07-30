@@ -92,6 +92,11 @@ import { DocfyLink } from '@docfy/ember';
   <span class="hljs-comment">// Enable HMR (optional)</span>
   <span class="hljs-attr">hmr</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// default: true</span>
 
+  <span class="hljs-comment">// Static text export for non-JS clients (optional) - see "Static Export" below</span>
+  <span class="hljs-attr">staticExport</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// default: false</span>
+  },
+
   <span class="hljs-comment">// Inline config (optional) - overrides config file</span>
   <span class="hljs-attr">config</span>: {
     <span class="hljs-attr">sources</span>: [
@@ -125,6 +130,117 @@ import { DocfyLink } from '@docfy/ember';
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { getDocfyOutput } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember/output:virtual'</span>;
 
 <span class="hljs-keyword">const</span> docfyData = getDocfyOutput();</code></pre>
+<h3 id="static-export"><a href="#static-export">Static Export</a></h3>
+<p>A Docfy site is client-rendered, so a plain HTTP request returns the app shell rather than your
+content. Crawlers, <code>curl</code>, and AI coding agents fetching a page get markup with no documentation
+in it.</p>
+<p>Enabling <code>staticExport</code> emits a text-only mirror of your docs alongside the app:</p>
+<pre><code class="hljs language-js">docfyVite({
+  <span class="hljs-attr">staticExport</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+  },
+});</code></pre>
+<p>That writes three kinds of file into your build output:</p>
+<ul>
+<li><strong><code>&#x3C;page-url>.md</code></strong> for every page, at the same path as the live route plus a <code>.md</code> suffix. The
+route <code>/docs/getting-started</code> gets <code>dist/docs/getting-started.md</code>. Index routes become
+<code>index.md</code>.</li>
+<li><strong><code>llms.txt</code></strong> — a compact index of every page, grouped by section, following the
+<a href="https://llmstxt.org">llms.txt convention</a>.</li>
+<li><strong><code>llms-full.txt</code></strong> — every page's content concatenated into one file.</li>
+</ul>
+<p>The export is <strong>build-only</strong>. Nothing is emitted during <code>vite dev</code>, so your source tree stays
+clean while you work.</p>
+<h4 id="options"><a href="#options">Options</a></h4>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>boolean</code></td>
+<td><code>false</code></td>
+<td>Master switch. The rest are no-ops unless this is <code>true</code>.</td>
+</tr>
+<tr>
+<td><code>markdown</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Emit one <code>.md</code> file per page.</td>
+</tr>
+<tr>
+<td><code>llmsTxt</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Emit <code>llms.txt</code>.</td>
+</tr>
+<tr>
+<td><code>llmsFullTxt</code></td>
+<td><code>boolean</code></td>
+<td><code>true</code></td>
+<td>Emit <code>llms-full.txt</code>.</td>
+</tr>
+<tr>
+<td><code>siteUrl</code></td>
+<td><code>string</code></td>
+<td>—</td>
+<td>Absolute origin for links. Omit for root-relative links; set for absolute ones.</td>
+</tr>
+<tr>
+<td><code>projectName</code></td>
+<td><code>string</code></td>
+<td><code>package.json</code> name</td>
+<td>H1 heading at the top of <code>llms.txt</code>.</td>
+</tr>
+<tr>
+<td><code>projectDescription</code></td>
+<td><code>string</code></td>
+<td>—</td>
+<td>Short blurb after the H1, as a blockquote.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="relative-or-absolute-links"><a href="#relative-or-absolute-links">Relative or absolute links</a></h4>
+<p>By default the links inside <code>llms.txt</code> and <code>llms-full.txt</code> are root-relative:</p>
+<pre><code>- [Getting Started](/docs/getting-started.md)
+</code></pre>
+<p>This is valid per the llms.txt spec and stays correct wherever the site is served — production,
+deploy previews, forks, or <code>localhost</code> — with no configuration. Set <code>siteUrl</code> when you want
+absolute links instead, which helps consumers that read the text detached from its origin:</p>
+<pre><code class="hljs language-js">docfyVite({
+  <span class="hljs-attr">staticExport</span>: {
+    <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">siteUrl</span>: <span class="hljs-string">'https://docfy.dev'</span>,
+  },
+});</code></pre>
+<h4 id="customizing-what-a-page-exports"><a href="#customizing-what-a-page-exports">Customizing what a page exports</a></h4>
+<p>Each page exports its raw markdown source with the frontmatter block stripped. When a page relies
+on a custom component that only renders in the browser, the exported text would contain the
+component tag rather than its content. To substitute something meaningful, set
+<code>pluginData.staticMarkdown</code> from a Docfy plugin:</p>
+<pre><code class="hljs language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
+  <span class="hljs-function"><span class="hljs-title">runAfter</span>(<span class="hljs-params">ctx</span>)</span> {
+    ctx.pages.forEach(<span class="hljs-function"><span class="hljs-params">page</span> =></span> {
+      page.pluginData.staticMarkdown = page.markdown.replace(
+        <span class="hljs-regexp">/&#x3C;ApiTable @of="(\w+)" \/>/g</span>,
+        <span class="hljs-function">(<span class="hljs-params">_, name</span>) =></span> renderMarkdownTable(name)
+      );
+    });
+  },
+};</code></pre>
+<p>Use <code>runAfter</code> and work on markdown text rather than the AST. By that point <code>page.ast</code> has been
+converted to hast and is what your live routes render from, so mutating it would change the app
+itself. <code>page.markdown</code> is raw source that nothing else reads, which is why writing a derived
+value into <code>pluginData.staticMarkdown</code> cannot affect the rendered site.</p>
+<p>Set it on <code>page.pluginData</code>, not <code>page.meta.pluginData</code> — the latter is ignored by the export and
+is serialized into the app's JavaScript bundle, so putting page content there would ship every
+page's markdown to the browser.</p>
 <h2 id="advanced-configuration"><a href="#advanced-configuration">Advanced Configuration</a></h2>
 <h3 id="multiple-sources"><a href="#multiple-sources">Multiple Sources</a></h3>
 <p>Configure multiple documentation sources with different URL schemas:</p>

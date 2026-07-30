@@ -17,16 +17,21 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      # Must precede setup-node: `cache: pnpm` resolves the pnpm store path,
+      # which requires pnpm to already be on PATH. Version comes from the root
+      # package.json `packageManager` field.
+      - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 24.x
-      - name: Install yarn
-        run: npm install -g yarn
+          cache: pnpm
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install --frozen-lockfile
       - name: Compile TypeScript
-        run: yarn compile
+        run: pnpm compile
       # - name: Lint
-      #   run: yarn lint
-      - name: Test
-        run: cd packages/core && yarn test
+      #   run: pnpm lint
+      - name: Test @docfy/core
+        run: pnpm --filter @docfy/core test
+      - name: Test @docfy/ember-vite
+        run: pnpm --filter @docfy/ember-vite test

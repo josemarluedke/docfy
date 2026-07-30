@@ -1,10 +1,11 @@
 import type { Plugin, ResolvedConfig } from 'vite';
 import type { DocfyConfig } from '@docfy/core/lib/types';
-import { loadDocfyConfig, DocfyViteOptions } from './config.js';
+import { loadDocfyConfig, resolveStaticExportOptions, DocfyViteOptions } from './config.js';
 import { processMarkdown } from './markdown-processor.js';
 import { shouldProcessFile, virtualDocfyOutputTemplate } from './utils.js';
 import { DocfyProcessor } from './docfy-processor.js';
 import { FileManager } from './file-manager.js';
+import { validateStaticExportOptions } from './static-export.js';
 import debugFactory from 'debug';
 
 const debug = debugFactory('@docfy/ember-vite');
@@ -19,6 +20,7 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
     hmr = true,
     config: inlineConfig,
     configFile,
+    staticExport,
     ...docfyOptions
   } = options;
 
@@ -77,9 +79,19 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
           root,
         });
 
+        // Validate staticExport eagerly so a misconfiguration fails the
+        // build loudly instead of being swallowed by the try/catch below.
+        const staticExportError = validateStaticExportOptions(staticExport ?? {});
+        if (staticExportError) {
+          this.error(staticExportError);
+        }
+
+        // Fill in defaults sourced from the app itself (projectName).
+        const resolvedStaticExport = await resolveStaticExportOptions(root, staticExport);
+
         // Initialize core components
         fileManager = new FileManager(config, this);
-        processor = new DocfyProcessor(config, docfyConfig, fileManager);
+        processor = new DocfyProcessor(config, docfyConfig, fileManager, resolvedStaticExport);
 
         // Add all Docfy source files to Vite's watch list
         if (config.command === 'serve') {

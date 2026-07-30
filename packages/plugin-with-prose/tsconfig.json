@@ -7,7 +7,6 @@
     "paths": {
       "*": ["types/*"]
     },
-    "typeRoots": ["../../node_modules/@types", "types"],
     "types": ["node"]
   },
   "include": ["src/**/*", "types/**/*"],

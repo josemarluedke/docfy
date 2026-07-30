@@ -2,6 +2,7 @@ import path from 'path';
 import { pathToFileURL } from 'url';
 import type { DocfyConfig } from '@docfy/core/lib/types';
 import debugFactory from 'debug';
+import type { StaticExportOptions } from './static-export.js';
 
 const debug = debugFactory('@docfy/ember-vite:config');
 
@@ -31,6 +32,13 @@ export interface DocfyViteOptions extends Partial<DocfyConfig> {
    * @default 'docfy.config.js' or 'docfy.config.mjs'
    */
   configFile?: string;
+
+  /**
+   * Static text export of processed docs for non-JS clients (AI agents,
+   * crawlers, etc). Off by default — opt in per consuming app. Build-only:
+   * nothing is emitted during `vite dev`.
+   */
+  staticExport?: StaticExportOptions;
 }
 
 const DEFAULT_CONFIG: DocfyConfig = {
@@ -98,6 +106,38 @@ export async function loadDocfyConfig(
   debug('Final config', { sources: mergedConfig.sources?.length });
 
   return mergedConfig;
+}
+
+/**
+ * Fill in `staticExport` defaults that come from the consuming app rather than
+ * from the user.
+ *
+ * `projectName` becomes the H1 at the top of `llms.txt`, which the llms.txt
+ * convention (https://llmstxt.org) treats as its only required element. Rather
+ * than making users restate a name the app already declares, it falls back to
+ * the app's `package.json` `name` — the same source `repository` already
+ * defaults from. An explicit `projectName` always wins.
+ *
+ * `@docfy/core` has no project-name option, so there is nothing to reuse there.
+ */
+export async function resolveStaticExportOptions(
+  root: string,
+  staticExport?: StaticExportOptions
+): Promise<StaticExportOptions | undefined> {
+  if (!staticExport?.enabled || staticExport.projectName) {
+    return staticExport;
+  }
+
+  const pkg = await loadPackageJson(root);
+
+  if (typeof pkg.name !== 'string' || pkg.name === '') {
+    debug('No package.json name to default staticExport.projectName from', { root });
+    return staticExport;
+  }
+
+  debug('Defaulted staticExport.projectName from package.json', { projectName: pkg.name });
+
+  return { ...staticExport, projectName: pkg.name };
 }
 
 async function loadPackageJson(root: string): Promise<any> {
@@ -177,6 +217,8 @@ async function mergeConfig(
     config,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     configFile,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    staticExport,
     ...docfyOptions
   } = options;
 

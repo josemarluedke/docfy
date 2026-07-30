@@ -1,30 +1,30 @@
 ## How to install
 
-Make sure you are using yarn (version 1)
+Make sure you are using [pnpm](https://pnpm.io/) (version 11 or later)
 
 In the root folder:
 
 ```
-yarn install
+pnpm install
 ```
 
 Then:
 
 ```
-yarn compile
+pnpm compile
 ```
 
 ## Ember
 
 ```bash
 cd packages/ember
-yarn start
+pnpm start
 ```
 
 ## Core
 
 ```bash
 cd packages/core
-# yarn test --watch for watch mode
-yarn test
+# pnpm test --watch for watch mode
+pnpm test
 ```
