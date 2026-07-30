@@ -10,3 +10,12 @@ packages:
 # compile with "Property 'children' does not exist on type 'Node<Data>'".
 overrides:
   '@types/unist': 2.0.3
+
+# pnpm blocks dependency build scripts unless explicitly allowed here.
+# esbuild's postinstall installs its platform binary, without which vite cannot
+# build; nx is lerna's task engine. core-js 2.x's postinstall only prints a
+# funding banner, so it stays off.
+allowBuilds:
+  core-js: false
+  esbuild: true
+  nx: true
