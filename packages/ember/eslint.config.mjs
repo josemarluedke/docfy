@@ -16,7 +16,7 @@ import babelParser from '@babel/eslint-parser';
 import js from '@eslint/js';
 import prettier from 'eslint-config-prettier';
 import ember from 'eslint-plugin-ember/recommended';
-import importPlugin from 'eslint-plugin-import';
+import importPlugin from 'eslint-plugin-import-x';
 import n from 'eslint-plugin-n';
 import globals from 'globals';
 import ts from 'typescript-eslint';
@@ -28,7 +28,6 @@ const esmParserOptions = {
 
 const tsParserOptions = {
   projectService: true,
-  project: true,
   tsconfigRootDir: import.meta.dirname,
 };
 
@@ -94,11 +93,13 @@ const config = [
   {
     files: ['src/**/*'],
     plugins: {
-      import: importPlugin,
+      // eslint-plugin-import has no ESLint 10 support; import-x is the
+      // maintained fork and carries the same rule under its own prefix.
+      'import-x': importPlugin,
     },
     rules: {
       // require relative imports use full extensions
-      'import/extensions': ['error', 'always', { ignorePackages: true }],
+      'import-x/extensions': ['error', 'always', { ignorePackages: true }],
     },
   },
   /**

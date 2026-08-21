@@ -53,7 +53,8 @@ function loadConfigFile(root: string): Partial<EmberDocfyConfig> {
       throw new Error(
         `[docfy] ${path.basename(configPath)} uses top-level await, which Ember CLI's ` +
           `synchronous build cannot load. Move the await into a Docfy plugin, or use ` +
-          `@docfy/ember-vite, which loads the config asynchronously.`
+          `@docfy/ember-vite, which loads the config asynchronously.`,
+        { cause: e }
       );
     }
 
