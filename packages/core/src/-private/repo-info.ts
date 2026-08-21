@@ -1,6 +1,17 @@
 import path from 'path';
 import getRepoInfo from 'git-repo-info';
-import GitHost, { fromUrl } from 'hosted-git-info';
+// @types/hosted-git-info is three majors behind the runtime (DefinitelyTyped never
+// published typings for v4+) and is actively wrong in places: it declares the
+// `*template` members as strings, but they have been functions since v4, and its
+// `Hosts` union is missing hosts v9 parses. Only `fromUrl`, `type`, `domain`, `user`
+// and `project` are relied on below, which the stale typings still describe correctly.
+import GitHost from 'hosted-git-info';
+
+// A whitelist, not a fallback: `getTreePath` only knows two URL shapes, Bitbucket's
+// and the `/edit/` form GitHub and GitLab accept. Every other host hosted-git-info can
+// parse (gist, sourcehut, anything a future release adds) would otherwise be handed a
+// plausible looking but wrong URL, and no edit link beats a broken one.
+const supportedHostTypes = ['github', 'gitlab', 'bitbucket'];
 
 function getTreePath(repo: GitHost | undefined, branch: string, relative: string): string {
   if (repo && repo.type === 'bitbucket') {
@@ -25,19 +36,17 @@ export function getRepoEditUrl(root: string, repoURL: string, branch = 'master')
 
   try {
     const gitRoot = getRepoInfo(root).root;
-    const repo = fromUrl(repoURL);
+    const repo = GitHost.fromUrl(repoURL);
     const relative = path.relative(gitRoot, root);
     const tree = getTreePath(repo, branch, relative);
 
+    // The host's own `edit`/`browse` helpers percent-encode the path, which would
+    // mangle the `{filepath}` placeholder Docfy substitutes later on, so the URL is
+    // assembled from the parsed host metadata instead.
     result =
-      (repo &&
-        repo.browsetemplate &&
-        repo.browsetemplate
-          .replace('{domain}', repo.domain)
-          .replace('{user}', repo.user)
-          .replace('{project}', repo.project)
-          .replace('{/tree/committish}', tree)) ||
-      null;
+      repo && supportedHostTypes.includes(repo.type)
+        ? `https://${repo.domain}/${repo.user}/${repo.project}${tree}`
+        : null;
   } catch (err) {
     console.error(err);
     result = null;

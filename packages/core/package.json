@@ -25,7 +25,7 @@
     "fast-glob": "^3.3.3",
     "git-repo-info": "^2.1.1",
     "github-slugger": "^2.0.0",
-    "hosted-git-info": "^3.0.8",
+    "hosted-git-info": "^9.0.3",
     "mdast-util-to-string": "^4.0.0",
     "rehype-stringify": "^10.0.1",
     "remark-extract-frontmatter": "^3.2.0",
