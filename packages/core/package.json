@@ -45,7 +45,6 @@
     "@eslint/js": "^9.32.0",
     "@types/debug": "^4.1.12",
     "@types/hast": "^3.0.4",
-    "@types/hosted-git-info": "^3.0.5",
     "@types/mdast": "^4.0.4",
     "@types/node": "^24.0.14",
     "@types/unist": "^3.0.0",

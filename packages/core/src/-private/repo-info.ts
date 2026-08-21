@@ -1,10 +1,5 @@
 import path from 'path';
 import getRepoInfo from 'git-repo-info';
-// @types/hosted-git-info is three majors behind the runtime (DefinitelyTyped never
-// published typings for v4+) and is actively wrong in places: it declares the
-// `*template` members as strings, but they have been functions since v4, and its
-// `Hosts` union is missing hosts v9 parses. Only `fromUrl`, `type`, `domain`, `user`
-// and `project` are relied on below, which the stale typings still describe correctly.
 import GitHost from 'hosted-git-info';
 
 // A whitelist, not a fallback: `getTreePath` only knows two URL shapes, Bitbucket's
