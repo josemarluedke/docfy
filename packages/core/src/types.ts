@@ -3,6 +3,18 @@
 import { Node as MarkdownAST } from 'unist';
 import { Processor, Plugin as UnifiedPlugin, Settings as UnifiedSettings } from 'unified';
 import { VFile } from 'vfile';
+import type { Root as MdastRoot } from 'mdast';
+import type { Root as HastRoot } from 'hast';
+
+/**
+ * The markdown (mdast) processor. Parses markdown and runs mdast transformers.
+ */
+export type RemarkProcessor = Processor<MdastRoot, MdastRoot, MdastRoot, undefined, undefined>;
+
+/**
+ * The HTML (hast) processor. Takes an mdast tree in and produces a hast tree.
+ */
+export type RehypeProcessor = Processor<undefined, MdastRoot, HastRoot, undefined, undefined>;
 
 export interface Heading {
   title: string;
@@ -35,8 +47,10 @@ export interface PageContent {
   pluginData: Record<string, unknown>;
 }
 
-interface ContextOptions
-  extends Omit<Options, 'plugins' | 'remarkPlugins' | 'rehypePlugins' | 'tocMaxDepth'> {
+interface ContextOptions extends Omit<
+  Options,
+  'plugins' | 'remarkPlugins' | 'rehypePlugins' | 'tocMaxDepth'
+> {
   tocMaxDepth: number;
 }
 
@@ -46,8 +60,8 @@ export interface StaticAssetDefinition {
 }
 
 export interface Context {
-  remark: Processor;
-  rehype: Processor;
+  remark: RemarkProcessor;
+  rehype: RehypeProcessor;
   pages: PageContent[];
   staticAssets: StaticAssetDefinition[];
   options: ContextOptions;

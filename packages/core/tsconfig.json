@@ -1,17 +1,14 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "baseUrl": ".",
     "outDir": "./lib",
     "skipLibCheck": true,
     "noResolve": false,
-    "paths": {
-      "*": ["types/*"]
-    },
-    "typeRoots": ["types"],
-    "types": [],
     "skipDefaultLibCheck": true
   },
-  "include": ["src/**/*", "types/**/*"],
+  "include": ["src/**/*"],
   "exclude": ["tests/**/*"]
 }

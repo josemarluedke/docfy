@@ -1,4 +1,4 @@
-import { Plugin, PluginOptions, PluginWithOptions, PluginWithOptionsFunction } from './types';
+import { Plugin, PluginOptions, PluginWithOptions, PluginWithOptionsFunction } from './types.js';
 
 function plugin(handlers: Plugin): Plugin {
   return handlers;
@@ -19,4 +19,3 @@ function pluginWithOptions<T = PluginOptions>(handlers: Plugin<T>): PluginWithOp
 plugin.withOptions = pluginWithOptions;
 
 export default plugin;
-module.exports = plugin;

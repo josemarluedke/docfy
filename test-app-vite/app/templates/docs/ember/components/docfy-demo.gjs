@@ -38,7 +38,7 @@ classes such that you can style the parts of the demo component yourself.</p>
     &#x26;__button {
       <span class="hljs-keyword">@apply</span> p-<span class="hljs-number">2</span> mr-<span class="hljs-number">2</span> border-b-<span class="hljs-number">4</span>;
 
-      &#x26;--active,
+      &#x26;<span class="hljs-attr">--active</span>,
       &#x26;<span class="hljs-selector-pseudo">:hover</span> {
         <span class="hljs-keyword">@apply</span> border-blue-<span class="hljs-number">500</span>;
       }
@@ -53,7 +53,8 @@ classes such that you can style the parts of the demo component yourself.</p>
     <span class="hljs-keyword">@apply</span> text-sm leading-normal;
     <span class="hljs-keyword">@apply</span> font-mono;
     <span class="hljs-keyword">@apply</span> rounded-b;
-    scrollbar-<span class="hljs-attribute">width</span>: none;
+    <span class="hljs-attribute">scrollbar-width</span>: none;
   }
-}</code></pre>
+}
+</code></pre>
 </template>

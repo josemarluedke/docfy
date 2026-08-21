@@ -1,11 +1,9 @@
 import path from 'path';
-import visit from 'unist-util-visit';
+import { visit } from 'unist-util-visit';
 import { Node } from 'unist';
-import toString from 'mdast-util-to-string';
-import Slugger from 'github-slugger';
+import { toString } from 'mdast-util-to-string';
+import { slug } from 'github-slugger';
 import url from 'url';
-
-const slug = Slugger.slug;
 
 function clearURL(parts: string[], suffix: string): string {
   const url = parts

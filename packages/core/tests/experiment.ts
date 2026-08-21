@@ -1,11 +1,11 @@
-import Docfy from '../src';
+import Docfy from '../src/index.js';
 import path from 'path';
 import hbs from 'remark-hbs';
 import autolinkHeadings from 'remark-autolink-headings';
 
 const projectRoot = '../tests/__fixtures__/monorepo/';
 // const projectRoot = '../../../../../frontile/';
-const root = path.resolve(__dirname, projectRoot);
+const root = path.resolve(import.meta.dirname, projectRoot);
 
 void (async function (): Promise<void> {
   const docfy = new Docfy({

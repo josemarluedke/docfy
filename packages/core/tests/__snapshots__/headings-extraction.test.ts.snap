@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Extracts TOC When maxDepth is not set it should have extracted TOC correctly 1`] = `
+exports[`Extracts TOC > When maxDepth is not set > it should have extracted TOC correctly 1`] = `
 [
   [
     "README.md",
@@ -127,7 +127,7 @@ exports[`Extracts TOC When maxDepth is not set it should have extracted TOC corr
 ]
 `;
 
-exports[`Extracts TOC When maxDepth is set it should have extracted TOC correctly 1`] = `
+exports[`Extracts TOC > When maxDepth is set > it should have extracted TOC correctly 1`] = `
 [
   [
     "README.md",

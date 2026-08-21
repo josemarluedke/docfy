@@ -1,4 +1,4 @@
-import { PageMetadata, NestedPageMetadata, SectionConfig } from '../types';
+import { PageMetadata, NestedPageMetadata, SectionConfig } from '../types.js';
 
 function findChild(node: NestedPageMetadata, name: string): NestedPageMetadata | undefined {
   return node.children.find(item => {
@@ -29,7 +29,10 @@ function getSectionLabel(
   return name;
 }
 
-function getSectionOrder(name: string, sections: Record<string, SectionConfig> = {}): number | undefined {
+function getSectionOrder(
+  name: string,
+  sections: Record<string, SectionConfig> = {}
+): number | undefined {
   return sections[name]?.order;
 }
 

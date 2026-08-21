@@ -1,4 +1,4 @@
-import visit from 'unist-util-visit';
+import { visit } from 'unist-util-visit';
 import plugin from '@docfy/core/lib/plugin.js';
 import {
   generateDemoComponentName,

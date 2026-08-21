@@ -1,10 +1,11 @@
 import path from 'path';
-import { pathToFileURL } from 'url';
-import { DocfyConfig } from '@docfy/core/lib/types';
+import fs from 'fs';
+import { DocfyConfig } from '@docfy/core/lib/types.js';
 import remarkHbs from 'remark-hbs';
 import replaceInternalLinksWithDocfyLink from './plugins/replace-internal-links-with-docfy-link';
 import extractDemosToComponents from './plugins/extract-demos-to-components';
 import previewTemplate from './plugins/preview-template';
+import escapeCurliesInCode from './plugins/escape-curlies-in-code';
 import type { RemarkHbsOptions } from 'remark-hbs';
 
 const DEFAULT_CONFIG: DocfyConfig = {
@@ -16,161 +17,117 @@ const DEFAULT_CONFIG: DocfyConfig = {
   ],
 };
 
+const CONFIG_FILE_NAMES = ['.docfy-config.js', '.docfy-config.mjs', '.docfy-config.cjs'];
+
 interface EmberDocfyConfig extends DocfyConfig {
   remarkHbsOptions?: RemarkHbsOptions;
 }
 
-function getDocfyConfigSync(root: string): EmberDocfyConfig {
-  const configPath = path.join(root, '.docfy-config.js');
-  let docfyConfig: Partial<EmberDocfyConfig> = {};
+function findConfigFile(root: string): string | undefined {
+  return CONFIG_FILE_NAMES.map(name => path.join(root, name)).find(file => fs.existsSync(file));
+}
 
+/**
+ * Loads the user config file.
+ *
+ * Node supports `require()` of ES modules (>= 20.19 / >= 22.12), so a single
+ * synchronous `require` handles CommonJS and ESM config files alike. The only
+ * thing it cannot load is an ESM config using top-level `await`, which throws
+ * `ERR_REQUIRE_ASYNC_MODULE`.
+ */
+function loadConfigFile(root: string): Partial<EmberDocfyConfig> {
+  const configPath = findConfigFile(root);
+
+  if (!configPath) {
+    return {};
+  }
+
+  let loaded: unknown;
+
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
+    loaded = require(configPath);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (e: any) {
+    if (e?.code === 'ERR_REQUIRE_ASYNC_MODULE') {
+      throw new Error(
+        `[docfy] ${path.basename(configPath)} uses top-level await, which Ember CLI's ` +
+          `synchronous build cannot load. Move the await into a Docfy plugin, or use ` +
+          `@docfy/ember-vite, which loads the config asynchronously.`
+      );
+    }
+
+    throw e;
+  }
+
+  // require(esm) returns the module namespace, so unwrap the default export.
+  const namespace = loaded as { __esModule?: boolean; default?: unknown } | null;
+  const config = namespace?.__esModule || namespace?.default ? namespace.default : loaded;
+
+  if (typeof config !== 'object' || config === null) {
+    return {};
+  }
+
+  return config as Partial<EmberDocfyConfig>;
+}
+
+function normalizeConfig(root: string, config: Partial<EmberDocfyConfig>): EmberDocfyConfig {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const pkg = require(path.join(root, 'package.json'));
 
-  try {
-    // Attempt to require (CJS)
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    docfyConfig = require(configPath);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    // For ESM or missing config, use default
-    const isESMError =
-      e.code === 'ERR_REQUIRE_ESM' ||
-      e.message?.includes('must use import to load ES Module') ||
-      e.message?.includes('Cannot use import statement outside a module');
-
-    const notFound = e.code === 'ERR_MODULE_NOT_FOUND' || e.message?.includes('Cannot find module');
-
-    if (isESMError) {
-      console.warn(
-        `[docfy] ESM config files are not supported in Ember CLI classic build. Please use CommonJS format (.docfy-config.js) or switch to @docfy/ember-vite. Using default configuration.`
-      );
-      docfyConfig = {};
-    } else if (notFound) {
-      // Config file doesn't exist, use default
-      docfyConfig = {};
-    } else {
-      throw e;
-    }
+  if (!Array.isArray(config.sources)) {
+    config.sources = DEFAULT_CONFIG.sources;
   }
 
-  if (typeof docfyConfig !== 'object' || docfyConfig == null) {
-    docfyConfig = {};
+  if (!Array.isArray(config.plugins)) {
+    config.plugins = [];
   }
 
-  if (!Array.isArray(docfyConfig.sources)) {
-    docfyConfig.sources = DEFAULT_CONFIG.sources;
-  }
-
-  if (!Array.isArray(docfyConfig.plugins)) {
-    docfyConfig.plugins = [];
-  }
-
-  docfyConfig.plugins.unshift(
+  config.plugins.unshift(
     replaceInternalLinksWithDocfyLink,
     previewTemplate,
     extractDemosToComponents
   );
 
-  if (!Array.isArray(docfyConfig.remarkPlugins)) {
-    docfyConfig.remarkPlugins = [];
+  // Escaping happens at the hast stage so that it also covers markup injected
+  // by rehype-based syntax highlighters. See ./plugins/escape-curlies-in-code.
+  config.plugins.push(escapeCurliesInCode);
+
+  // Docfy owns these two: escaping happens at the hast stage instead, so
+  // letting remark-hbs also escape at the mdast stage would double-escape.
+  config.remarkHbsOptions = {
+    ...config.remarkHbsOptions,
+    escapeCurliesCode: false,
+    escapeCurliesInlineCode: false,
+  };
+
+  if (!Array.isArray(config.remarkPlugins)) {
+    config.remarkPlugins = [];
   }
 
-  docfyConfig.remarkPlugins.push([remarkHbs, docfyConfig.remarkHbsOptions || {}]);
+  config.remarkPlugins.push([remarkHbs, config.remarkHbsOptions || {}]);
 
   const repoUrl = pkg.repository?.url || pkg.repository;
 
-  if (!docfyConfig.repository && typeof repoUrl === 'string' && repoUrl !== '') {
-    docfyConfig.repository = {
-      url: repoUrl,
-    };
+  if (!config.repository && typeof repoUrl === 'string' && repoUrl !== '') {
+    config.repository = { url: repoUrl };
   }
 
-  docfyConfig.sources.forEach(source => {
+  config.sources.forEach(source => {
     if (typeof source.root === 'undefined') {
       source.root = path.join(root, 'docs');
     }
   });
 
-  return docfyConfig as EmberDocfyConfig;
+  return config as EmberDocfyConfig;
+}
+
+function getDocfyConfigSync(root: string): EmberDocfyConfig {
+  return normalizeConfig(root, loadConfigFile(root));
 }
 
 export default async function getDocfyConfig(root: string): Promise<EmberDocfyConfig> {
-  const configPath = path.join(root, '.docfy-config.js');
-  let docfyConfig: Partial<EmberDocfyConfig> = {};
-
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const pkg = require(path.join(root, 'package.json'));
-
-  try {
-    // Attempt to require (CJS)
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    docfyConfig = require(configPath);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (e: any) {
-    // Fallback to ESM if the error indicates ESM-only module
-    const isESMError =
-      e.code === 'ERR_REQUIRE_ESM' ||
-      e.message?.includes('must use import to load ES Module') ||
-      e.message?.includes('Cannot use import statement outside a module');
-
-    if (isESMError || e.code === 'ERR_MODULE_NOT_FOUND') {
-      try {
-        const imported = await import(pathToFileURL(configPath).href);
-        docfyConfig = imported?.default ?? imported;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      } catch (esmErr: any) {
-        const notFound =
-          esmErr.code === 'ERR_MODULE_NOT_FOUND' || esmErr.message?.includes('Cannot find module');
-        if (!notFound) {
-          throw esmErr;
-        }
-        docfyConfig = {};
-      }
-    } else {
-      throw e;
-    }
-  }
-
-  if (typeof docfyConfig !== 'object' || docfyConfig == null) {
-    docfyConfig = {};
-  }
-
-  if (!Array.isArray(docfyConfig.sources)) {
-    docfyConfig.sources = DEFAULT_CONFIG.sources;
-  }
-
-  if (!Array.isArray(docfyConfig.plugins)) {
-    docfyConfig.plugins = [];
-  }
-
-  docfyConfig.plugins.unshift(
-    replaceInternalLinksWithDocfyLink,
-    previewTemplate,
-    extractDemosToComponents
-  );
-
-  if (!Array.isArray(docfyConfig.remarkPlugins)) {
-    docfyConfig.remarkPlugins = [];
-  }
-
-  docfyConfig.remarkPlugins.push([remarkHbs, docfyConfig.remarkHbsOptions || {}]);
-
-  const repoUrl = pkg.repository?.url || pkg.repository;
-
-  if (!docfyConfig.repository && typeof repoUrl === 'string' && repoUrl !== '') {
-    docfyConfig.repository = {
-      url: repoUrl,
-    };
-  }
-
-  docfyConfig.sources.forEach(source => {
-    if (typeof source.root === 'undefined') {
-      source.root = path.join(root, 'docs');
-    }
-  });
-
-  return docfyConfig as EmberDocfyConfig;
+  return getDocfyConfigSync(root);
 }
 
 export { getDocfyConfigSync };

@@ -1,9 +1,9 @@
-import plugin from '../plugin';
-import { Heading } from '../types';
-import visit from 'unist-util-visit';
+import plugin from '../plugin.js';
+import { Heading } from '../types.js';
+import { visit } from 'unist-util-visit';
 import { Node, Parent } from 'unist';
-import toString from 'mdast-util-to-string';
-import { deleteNode } from '../-private/utils';
+import { toString } from 'mdast-util-to-string';
+import { deleteNode } from '../-private/utils.js';
 
 interface HeadingNode extends Node {
   depth: number;

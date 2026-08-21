@@ -1,5 +1,5 @@
 import { Node } from 'unist';
-import u from 'unist-builder';
+import { u } from 'unist-builder';
 import { DemoComponent, DemoComponentName } from './types';
 
 /**

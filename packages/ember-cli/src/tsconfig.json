@@ -9,7 +9,9 @@
       "*": ["types/*"]
     },
     "typeRoots": ["../node_modules/@types", "types"],
-    "types": []
+    "types": [],
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   },
   "include": ["**/*", "types/**/*"]
 }

@@ -1,4 +1,4 @@
-import plugin from '@docfy/core/lib/plugin';
+import plugin from '@docfy/core/lib/plugin.js';
 import { PageContent } from '@docfy/core/lib/types';
 import type { Node, Parent } from 'unist';
 
@@ -12,8 +12,8 @@ interface NodeWithMeta extends Node {
 function shouldUnproseNode(node: NodeWithMeta): boolean {
   return Boolean(
     node.type === 'code' &&
-      node.meta &&
-      ['component', 'template', 'preview-template', 'preview'].includes(node.meta)
+    node.meta &&
+    ['component', 'template', 'preview-template', 'preview'].includes(node.meta)
   );
 }
 
@@ -70,4 +70,3 @@ const DocfyPluginWithProse = plugin.withOptions<WithProseOptions | undefined>({
 });
 
 export default DocfyPluginWithProse;
-module.exports = DocfyPluginWithProse;

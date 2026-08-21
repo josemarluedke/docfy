@@ -1,7 +1,7 @@
 import plugin from '@docfy/core/lib/plugin.js';
-import visit from 'unist-util-visit';
-import findNode from 'unist-util-find';
-import toString from 'mdast-util-to-string';
+import { visit } from 'unist-util-visit';
+import { find as findNode } from 'unist-util-find';
+import { toString } from 'mdast-util-to-string';
 import path from 'path';
 import {
   generateDemoComponentName,
@@ -11,7 +11,7 @@ import {
   isDemoComponents,
 } from './utils.js';
 
-import type { Context, PageContent } from '@docfy/core/lib/types';
+import type { Context, PageContent } from '@docfy/core/lib/types.js';
 import type { DemoComponent, DemoComponentChunk, CodeNode, PluginData } from '../types.js';
 import type { Node, Parent } from 'unist';
 

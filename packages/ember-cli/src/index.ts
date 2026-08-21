@@ -8,7 +8,7 @@ import WriteFile from 'broccoli-file-creator';
 import { Node, InputNode } from 'broccoli-node-api';
 import { UnwatchedDir } from 'broccoli-source';
 import Docfy from '@docfy/core';
-import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types';
+import { DocfyConfig, SourceConfig } from '@docfy/core/lib/types.js';
 import { DemoComponentChunk } from './plugins/types';
 import docfyOutputTemplate from './docfy-output-template';
 import { getDocfyConfigSync } from './get-config';

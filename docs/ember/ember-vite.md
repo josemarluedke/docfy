@@ -52,16 +52,17 @@ export default defineConfig({
 
 ### Configuration File
 
-For better organization, use a separate configuration file. Create `docfy.config.js` or `docfy.config.mjs`:
+For better organization, use a separate configuration file. Create `docfy.config.mjs` or `docfy.config.js`:
 
 ```js
-// docfy.config.js
-const path = require('path');
+// docfy.config.mjs
+import path from 'path';
+import highlight from 'rehype-highlight';
 
-module.exports = {
+export default {
   sources: [
     {
-      root: path.join(__dirname, 'docs'),
+      root: path.join(import.meta.dirname, 'docs'),
       pattern: '**/*.md',
       urlPrefix: 'docs',
     },
@@ -69,12 +70,17 @@ module.exports = {
   remarkPlugins: [
     // Add remark plugins
   ],
+  rehypePlugins: [highlight],
   repository: {
     url: 'https://github.com/username/repo',
     editBranch: 'main',
   },
 };
 ```
+
+The config is loaded with a dynamic `import()`, so CommonJS and ESM both work,
+and unlike the classic Ember CLI integration this one accepts top-level
+`await`.
 
 Then use it in your Vite config:
 

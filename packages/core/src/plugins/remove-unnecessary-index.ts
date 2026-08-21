@@ -1,4 +1,4 @@
-import plugin from '../plugin';
+import plugin from '../plugin.js';
 
 /**
  * This plugin removes unnecessary index pages.

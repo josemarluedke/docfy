@@ -1,4 +1,4 @@
-import type { DocfyConfig } from '@docfy/core/lib/types';
+import type { DocfyConfig } from '@docfy/core/lib/types.js';
 import path from 'path';
 import fastGlob from 'fast-glob';
 import debugFactory from 'debug';

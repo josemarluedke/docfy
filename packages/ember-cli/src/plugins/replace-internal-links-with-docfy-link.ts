@@ -1,8 +1,8 @@
-import plugin from '@docfy/core/lib/plugin';
-import visit from 'unist-util-visit';
-import { PageContent } from '@docfy/core/lib/types';
-import { Node } from 'unist';
-import u from 'unist-builder';
+import plugin from '@docfy/core/lib/plugin.js';
+import { visit } from 'unist-util-visit';
+import { PageContent } from '@docfy/core/lib/types.js';
+import { Node, Parent } from 'unist';
+import { u } from 'unist-builder';
 
 interface LinkNode extends Node {
   title: string | null;
@@ -11,7 +11,10 @@ interface LinkNode extends Node {
 }
 
 function visitor(page: PageContent): void {
-  visit(page.ast, 'link', (node: LinkNode, index, parent) => {
+  visit(page.ast, 'link', (visited, index, visitedParent) => {
+    const node = visited as unknown as LinkNode;
+    const parent = visitedParent as unknown as Parent | undefined;
+
     if (node.url[0] === '/') {
       const data = node.data || (node.data = {});
       const props = (data.hProperties || (data.hProperties = {})) as Record<string, unknown>;

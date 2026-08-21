@@ -1,10 +1,10 @@
-import Docfy from '../src';
-import { PageContent } from '../src/types';
+import Docfy from '../src/index.js';
+import { PageContent } from '../src/types.js';
 import path from 'path';
-import visit from 'unist-util-visit';
+import { visit } from 'unist-util-visit';
 import type { Element } from 'hast';
 
-const root = path.resolve(__dirname, './__fixtures__/monorepo');
+const root = path.resolve(import.meta.dirname, './__fixtures__/monorepo');
 function findPage(content: PageContent[], source: string) {
   return content.find(p => {
     return p.source === source;

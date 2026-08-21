@@ -1,6 +1,6 @@
 import path from 'path';
-import plugin from '../plugin';
-import { PageContent, Context } from '../types';
+import plugin from '../plugin.js';
+import { PageContent, Context } from '../types.js';
 
 /*
  * Finds the index of the owner for a given demo file.

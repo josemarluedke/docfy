@@ -1,6 +1,6 @@
 import path from 'path';
 import { pathToFileURL } from 'url';
-import type { DocfyConfig } from '@docfy/core/lib/types';
+import type { DocfyConfig } from '@docfy/core/lib/types.js';
 import debugFactory from 'debug';
 import type { StaticExportOptions } from './static-export.js';
 
@@ -173,15 +173,18 @@ async function mergeConfig(
   }
 
   // Add Docfy core plugins for demo and preview template processing
-  const { demoComponents, previewTemplates, docfyLinkConversion } = await import(
-    './docfy-plugins/index.js'
-  );
+  const { demoComponents, previewTemplates, docfyLinkConversion, escapeCurliesInCode } =
+    await import('./docfy-plugins/index.js');
   // Debug: plugins loaded
   docfyConfig.plugins.unshift(
     previewTemplates, // Process preview templates first
     demoComponents, // Then process demo components
     docfyLinkConversion // Finally replace internal links with DocfyLink
   );
+
+  // Escaping happens at the hast stage so that it also covers markup injected
+  // by rehype-based syntax highlighters.
+  docfyConfig.plugins.push(escapeCurliesInCode);
 
   // Setup remark plugins
   if (!Array.isArray(docfyConfig.remarkPlugins)) {
@@ -190,7 +193,16 @@ async function mergeConfig(
 
   // Add remark-hbs plugin
   const remarkHbs = (await import('remark-hbs')).default;
-  docfyConfig.remarkPlugins.push([remarkHbs, docfyConfig.remarkHbsOptions || {}]);
+  // Docfy owns escapeCurlies*: escaping happens at the hast stage instead, so
+  // letting remark-hbs also escape at the mdast stage would double-escape.
+  docfyConfig.remarkPlugins.push([
+    remarkHbs,
+    {
+      ...docfyConfig.remarkHbsOptions,
+      escapeCurliesCode: false,
+      escapeCurliesInlineCode: false,
+    },
+  ]);
 
   // Setup repository info
   const repoUrl = pkg.repository?.url || pkg.repository;

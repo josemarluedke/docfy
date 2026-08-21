@@ -1,5 +1,5 @@
-import uniquefyUrls from '../src/plugins/uniquefy-urls';
-import { Context } from '../src/types';
+import uniquefyUrls from '../src/plugins/uniquefy-urls.js';
+import { Context } from '../src/types.js';
 
 describe('it changes the url if duplicatd', () => {
   test('when there is only one duplicated url', () => {

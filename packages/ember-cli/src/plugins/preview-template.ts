@@ -1,5 +1,5 @@
-import visit from 'unist-util-visit';
-import plugin from '@docfy/core/lib/plugin';
+import { visit } from 'unist-util-visit';
+import plugin from '@docfy/core/lib/plugin.js';
 import { DemoComponent, CodeNode } from './types';
 import {
   generateDemoComponentName,

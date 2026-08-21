@@ -1,9 +1,9 @@
 import path from 'path';
-import plugin from '../plugin';
+import plugin from '../plugin.js';
 import { Node } from 'unist';
-import visit from 'unist-util-visit';
-import { isValidUrl, isAnchorUrl } from '../-private/utils';
-import { PageContent, Context } from '../types';
+import { visit } from 'unist-util-visit';
+import { isValidUrl, isAnchorUrl } from '../-private/utils.js';
+import { PageContent, Context } from '../types.js';
 
 interface Resource {
   url: string;
@@ -62,7 +62,9 @@ function visitor(ctx: Context, page: PageContent): void {
     definitions[node.identifier] = node;
   });
 
-  visit(page.ast, ['link', 'linkReference'], (node: LinkNode | LinkReferenceNode) => {
+  visit(page.ast, ['link', 'linkReference'], visited => {
+    const node = visited as unknown as LinkNode | LinkReferenceNode;
+
     if (isReferenceLink(node)) {
       if (definitions[node.identifier]) {
         replaceURL(ctx, page, definitions[node.identifier]);

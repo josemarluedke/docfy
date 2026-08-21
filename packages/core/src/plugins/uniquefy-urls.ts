@@ -1,4 +1,4 @@
-import plugin from '../plugin';
+import plugin from '../plugin.js';
 
 function generateUniqueUrl(seenUrls: string[], url: string, count?: number): string {
   let candidate = url;

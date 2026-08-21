@@ -1,8 +1,8 @@
 import Docfy from '@docfy/core';
 import path from 'path';
-import withProse from '../src';
+import withProse from '../src/index.js';
 
-const root = path.resolve(__dirname, './__fixtures__');
+const root = path.resolve(import.meta.dirname, './__fixtures__');
 
 test('it should work', async () => {
   const docfy = new Docfy({

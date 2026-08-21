@@ -13,7 +13,7 @@ plugins, rehype plugins, the git repository URL, and more.
 Below you can see an example of how to pass these options to Docfy.
 
 ```js
-const Docfy = require('@docfy/core');
+import Docfy from '@docfy/core';
 
 const docfy = new Docfy({
   plugins: [],
@@ -42,10 +42,10 @@ const docfy = new Docfy({
 Example:
 
 ```js
-const hbs = require('remark-hbs');
-const autolinkHeadings = require('remark-autolink-headings');
+import hbs from 'remark-hbs';
+import codeImport from 'remark-code-import';
 
-const remarkPlugins = [autolinkHeadings, hbs];
+const remarkPlugins = [codeImport, hbs];
 
 //...
 ```
@@ -56,9 +56,9 @@ In case the plugin has options, you can specify as the example below:
 // ..
 const remarkPlugins = [
   [
-    autolinkHeadings,
+    codeImport,
     {
-      behavior: 'wrap',
+      preserveTrailingNewline: true,
     },
   ],
 ];
@@ -69,6 +69,61 @@ const remarkPlugins = [
 • **rehypePlugins**? : _function | [function, RehypePluginOptions][]_ - Additional rehype plugins
 
 You can also pass options to rehype plugins the same way as remark plugins.
+
+```js
+import autolinkHeadings from 'rehype-autolink-headings';
+import highlight from 'rehype-highlight';
+
+const rehypePlugins = [[autolinkHeadings, { behavior: 'wrap' }], highlight];
+```
+
+Most of the remark/rehype ecosystem is ESM-only. Docfy requires a Node version
+that supports `require()` of ES modules, so you can load those plugins from a
+CommonJS config file as well — just remember that `require()` hands you the
+module namespace:
+
+```js
+// .docfy-config.js (CommonJS)
+const highlight = require('rehype-highlight').default;
+```
+
+#### Syntax highlighting
+
+Highlighting is a rehype concern. Use
+[`rehype-highlight`](https://github.com/rehypejs/rehype-highlight) (highlight.js)
+or [`rehype-prism-plus`](https://github.com/timlrx/rehype-prism-plus) (Prism).
+The older `remark-highlight.js` and `@mapbox/rehype-prism` packages are
+unmaintained and pinned to highlight.js 10 / old refractor builds; they do not
+work with the current unified stack.
+
+For Ember, `rehype-highlight` with
+[`highlightjs-glimmer`](https://github.com/NullVoxPopuli/highlightjs-glimmer)
+gives proper `gjs`/`gts`/`hbs` highlighting:
+
+```js
+import highlight from 'rehype-highlight';
+import { glimmer } from 'highlightjs-glimmer';
+import { common } from 'lowlight';
+
+const rehypePlugins = [
+  [
+    highlight,
+    {
+      languages: { ...common, glimmer, hbs: glimmer, handlebars: glimmer },
+      aliases: { javascript: ['gjs'], typescript: ['gts'] },
+    },
+  ],
+];
+```
+
+> **`languages` replaces the defaults, it does not extend them.**
+> `rehype-highlight` uses `options.languages || common`, so passing your own map
+> silently turns off highlighting for every other language. Spread lowlight's
+> `common` back in (add `lowlight` as a dependency to import it).
+
+
+If your app also depends on `highlight.js` directly, leave that dependency
+alone — `rehype-highlight` brings its own copy through `lowlight`.
 
 ### `staticAssetsPath`
 

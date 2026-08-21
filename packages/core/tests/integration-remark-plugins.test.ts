@@ -1,11 +1,11 @@
-import Docfy from '../src';
-import { DocfyResult } from '../src/types';
+import Docfy from '../src/index.js';
+import { DocfyResult } from '../src/types.js';
 import path from 'path';
-import autolinkHeadings from 'remark-autolink-headings';
+import autolinkHeadings from 'rehype-autolink-headings';
 import math from 'remark-math';
 import katex from 'rehype-katex';
 
-const root = path.resolve(__dirname, './__fixtures__/monorepo');
+const root = path.resolve(import.meta.dirname, './__fixtures__/monorepo');
 
 describe('When proving remark plugins', () => {
   describe('When plugin has no options', () => {
@@ -13,7 +13,7 @@ describe('When proving remark plugins', () => {
 
     beforeAll(async () => {
       const docfy = new Docfy({
-        remarkPlugins: [autolinkHeadings],
+        rehypePlugins: [autolinkHeadings],
       });
       result = await docfy.run([
         {
@@ -40,7 +40,7 @@ describe('When proving remark plugins', () => {
 
     beforeAll(async () => {
       const docfy = new Docfy({
-        remarkPlugins: [[autolinkHeadings, { behavior: 'append' }]],
+        rehypePlugins: [[autolinkHeadings, { behavior: 'append' }]],
       });
       result = await docfy.run([
         {

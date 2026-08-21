@@ -1,8 +1,8 @@
-import Docfy from '../src';
-import { DocfyResult } from '../src/types';
+import Docfy from '../src/index.js';
+import { DocfyResult } from '../src/types.js';
 import path from 'path';
 
-const root = path.resolve(__dirname, './__fixtures__/monorepo');
+const root = path.resolve(import.meta.dirname, './__fixtures__/monorepo');
 
 describe('Section ordering', () => {
   let result: DocfyResult;
@@ -26,37 +26,33 @@ describe('Section ordering', () => {
   });
 
   test('sections should be ordered by order value first, then alphabetically', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const sectionNames = docs?.children.map((child) => child.name);
+    const sectionNames = docs?.children.map(child => child.name);
 
     // category2 (order: 1) should come first
     // category1 (order: 2) should come second
     // test-custom (no order) should come after, alphabetically
-    expect(sectionNames).toEqual([
-      'category2',
-      'category1',
-      'test-custom',
-    ]);
+    expect(sectionNames).toEqual(['category2', 'category1', 'test-custom']);
   });
 
   test('sections should use custom labels from sections config', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const category1 = docs?.children.find((child) => child.name === 'category1');
-    const category2 = docs?.children.find((child) => child.name === 'category2');
+    const category1 = docs?.children.find(child => child.name === 'category1');
+    const category2 = docs?.children.find(child => child.name === 'category2');
 
     expect(category1?.label).toBe('Category 1');
     expect(category2?.label).toBe('Category 2');
   });
 
   test('sections without config should use folder name as label', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const testCustom = docs?.children.find((child) => child.name === 'test-custom');
+    const testCustom = docs?.children.find(child => child.name === 'test-custom');
 
     expect(testCustom?.label).toBe('test-custom');
   });
@@ -83,21 +79,21 @@ describe('Backward compatibility with labels config', () => {
   });
 
   test('labels config should still work for custom labels', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const category1 = docs?.children.find((child) => child.name === 'category1');
-    const category2 = docs?.children.find((child) => child.name === 'category2');
+    const category1 = docs?.children.find(child => child.name === 'category1');
+    const category2 = docs?.children.find(child => child.name === 'category2');
 
     expect(category1?.label).toBe('Category One');
     expect(category2?.label).toBe('Category Two');
   });
 
   test('sections should be alphabetically sorted when using labels config', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const sectionNames = docs?.children.map((child) => child.name);
+    const sectionNames = docs?.children.map(child => child.name);
 
     // All sections should be alphabetically sorted by label
     expect(sectionNames).toEqual([
@@ -131,10 +127,10 @@ describe('Sections config takes precedence over labels config', () => {
   });
 
   test('sections config should override labels config', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const category1 = docs?.children.find((child) => child.name === 'category1');
+    const category1 = docs?.children.find(child => child.name === 'category1');
 
     expect(category1?.label).toBe('New Label');
   });
@@ -161,14 +157,14 @@ describe('Nested section ordering', () => {
   });
 
   test('nested sections should use sections config for labels and ordering', () => {
-    const docs = result.nestedPageMetadata.children.find((child) => child.name === 'docs');
+    const docs = result.nestedPageMetadata.children.find(child => child.name === 'docs');
     expect(docs).toBeDefined();
 
-    const category1 = docs?.children.find((child) => child.name === 'category1');
+    const category1 = docs?.children.find(child => child.name === 'category1');
     expect(category1).toBeDefined();
 
     // Check that the nested 'components' section uses the configured label
-    const components = category1?.children.find((child) => child.name === 'components');
+    const components = category1?.children.find(child => child.name === 'components');
     expect(components?.label).toBe('UI Components');
   });
 });

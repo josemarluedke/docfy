@@ -1,5 +1,5 @@
 import type { ResolvedConfig } from 'vite';
-import type { DocfyConfig, DocfyResult } from '@docfy/core/lib/types';
+import type { DocfyConfig, DocfyResult } from '@docfy/core/lib/types.js';
 import Docfy from '@docfy/core';
 import { generatePage } from './template-generator.js';
 import { FileManager } from './file-manager.js';

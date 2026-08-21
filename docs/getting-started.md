@@ -20,6 +20,13 @@ npm init
 yarn init
 ```
 
+## Requirements
+
+Docfy is published as ES modules and requires Node `^20.19.0 || >=22.12.0`. Those
+are the Node versions that support `require()` of ES modules, which is what lets
+CommonJS tooling (Ember CLI, a CommonJS config file) load Docfy and ESM-only
+remark/rehype plugins.
+
 ## Add `@docfy/core` as a dependency
 
 ```sh
@@ -31,14 +38,14 @@ yarn add @docfy/core
 ## Initialize Docfy
 
 ```js
-// index.js
-const Docfy = require('@docfy/core');
-const path = require('path');
+// index.mjs
+import Docfy from '@docfy/core';
+import path from 'path';
 
 new Docfy()
   .run([
     {
-      root: path.join(__dirname, 'docs'),
+      root: path.join(import.meta.dirname, 'docs'),
       urlPrefix: 'docs',
       pattern: '**/*.md',
     },
@@ -55,10 +62,19 @@ mkdir docs
 echo '# Hello Docfy.' > docs/README.md
 ```
 
+If you would rather stay in CommonJS, that works too — `require()` returns the
+module namespace, so reach for `.default`:
+
+```js
+// index.cjs
+const Docfy = require('@docfy/core').default;
+const path = require('path');
+```
+
 ## Run your script
 
-Now you can run the `index.js` we created earlier.
+Now you can run the `index.mjs` we created earlier.
 
 ```sh
-node index.js
+node index.mjs
 ```
