@@ -47,7 +47,7 @@ configured to support it.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-ember-writing-demos-demo1" as |demo|>
 <demo.Description
-          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/writing-demos-demo/demo1.md">
+          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/writing-demos-demo/demo1.md">
 <p>This is a cool feature of Docfy. It is perfect for documenting design systems and
 component libraries.</p>
 <blockquote>
