@@ -1,4 +1,4 @@
-import type { PageContent } from '@docfy/core/lib/types';
+import type { PageContent } from '@docfy/core/lib/types.js';
 import type { DemoComponent, DemoComponentChunk, FileToGenerate } from './types.js';
 import debugFactory from 'debug';
 

@@ -1,14 +1,13 @@
 {
   "extends": "../../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "noEmit": true,
     "strictNullChecks": false,
-    "baseUrl": ".",
-    "paths": {
-      "*": ["../types/*"]
-    },
-    "typeRoots": ["../node_modules/@types", "../types"],
-    "types": ["jest", "node"]
+    "types": ["vitest/globals", "node"],
+    "isolatedModules": true,
+    "strictPropertyInitialization": false
   },
   "include": ["**/*"]
 }

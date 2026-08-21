@@ -4,8 +4,8 @@ import {
   isAnchorUrl,
   isValidUrl,
   inferTitle,
-} from '../src/-private/utils';
-import { createRemark } from '../src/-private/remark';
+} from '../src/-private/utils.js';
+import { createRemark } from '../src/-private/remark.js';
 
 describe('#generateManualUrl', () => {
   test('base case', () => {

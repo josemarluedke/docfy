@@ -1,7 +1,7 @@
-import visit from 'unist-util-visit';
-import plugin from '../plugin';
-import { PageContent } from '../types';
-import { isValidUrl } from '../-private/utils';
+import { visit } from 'unist-util-visit';
+import plugin from '../plugin.js';
+import { PageContent } from '../types.js';
+import { isValidUrl } from '../-private/utils.js';
 import { Node } from 'unist';
 import path from 'path';
 
@@ -85,7 +85,9 @@ export default plugin({
         definitions[node.identifier] = node;
       });
 
-      visit(page.ast, ['image', 'imageReference'], (node: ImageNode | ImageReferenceNode) => {
+      visit(page.ast, ['image', 'imageReference'], visited => {
+        const node = visited as unknown as ImageNode | ImageReferenceNode;
+
         if (isImageReference(node)) {
           if (definitions[node.identifier]) {
             transform(page, definitions[node.identifier]);

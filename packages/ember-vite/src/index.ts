@@ -1,5 +1,5 @@
 import type { Plugin, ResolvedConfig } from 'vite';
-import type { DocfyConfig } from '@docfy/core/lib/types';
+import type { DocfyConfig } from '@docfy/core/lib/types.js';
 import { loadDocfyConfig, resolveStaticExportOptions, DocfyViteOptions } from './config.js';
 import { processMarkdown } from './markdown-processor.js';
 import { shouldProcessFile, virtualDocfyOutputTemplate } from './utils.js';
@@ -169,5 +169,5 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
 }
 
 // Export types for consumers
-export type { DocfyConfig } from '@docfy/core/lib/types';
+export type { DocfyConfig } from '@docfy/core/lib/types.js';
 export type { DocfyViteOptions } from './config.js';

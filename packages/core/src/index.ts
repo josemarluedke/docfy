@@ -1,7 +1,7 @@
 import glob from 'fast-glob';
 import path from 'path';
-import trough, { Through } from 'trough';
-import toVfile from 'to-vfile';
+import { trough, Pipeline } from 'trough';
+import { readSync } from 'to-vfile';
 import {
   PageContent,
   Context,
@@ -13,9 +13,14 @@ import {
   PluginList,
   PluginWithOptions,
   PluginWithOptionsFunction,
-} from './types';
-import { DEFAULT_IGNORE, generateAutoUrl, generateManualUrl, inferTitle } from './-private/utils';
-import { createRehype, createRemark } from './-private/remark';
+} from './types.js';
+import {
+  DEFAULT_IGNORE,
+  generateAutoUrl,
+  generateManualUrl,
+  inferTitle,
+} from './-private/utils.js';
+import { createRehype, createRemark } from './-private/remark.js';
 import {
   combineDemos,
   renderMarkdown,
@@ -24,14 +29,15 @@ import {
   toc,
   uniquefyUrls,
   removeUnnecessaryIndex,
-} from './plugins';
-import { getRepoEditUrl } from './-private/repo-info';
-import { transformToNestedPageMetadata } from './-private/nested-page-metadata';
+} from './plugins/index.js';
+import { getRepoEditUrl } from './-private/repo-info.js';
+import { transformToNestedPageMetadata } from './-private/nested-page-metadata.js';
 import debugFactory from 'debug';
+import type { Root as MdastRoot } from 'mdast';
 const debug = debugFactory('@docfy/core');
 
 class Docfy {
-  private pipeline: Through<Context>;
+  private pipeline: Pipeline;
   private context: Context;
   private plugins: PluginList;
 
@@ -65,8 +71,8 @@ class Docfy {
     plugins.push(toc, renderMarkdown);
     this.plugins = plugins;
 
-    this.pipeline = trough<Context>()
-      .use<SourceConfig[]>(this.initializePipeline.bind(this))
+    this.pipeline = trough()
+      .use(this.initializePipeline.bind(this))
       .use(this.createPluginPipelineFor('runBefore'))
       .use(this.createPluginPipelineFor('runWithMdast'))
       .use(this.transformerMdastToHast)
@@ -97,12 +103,10 @@ class Docfy {
 
   private transformerMdastToHast(ctx: Context): void {
     ctx.pages.forEach(page => {
-      const hast = ctx.rehype.runSync(page.ast, page.vFile);
-      page.ast = hast;
+      page.ast = ctx.rehype.runSync(page.ast as MdastRoot, page.vFile);
 
       page.demos?.forEach(demo => {
-        const hast = ctx.rehype.runSync(demo.ast, demo.vFile);
-        demo.ast = hast;
+        demo.ast = ctx.rehype.runSync(demo.ast as MdastRoot, demo.vFile);
       });
     });
   }
@@ -185,8 +189,8 @@ class Docfy {
   ): PageContent {
     const relativePath = fullPath.replace(path.join(sourceConfig.root, '/'), '');
 
-    const vFile = toVfile.readSync(fullPath);
-    const markdown = vFile.contents.toString();
+    const vFile = readSync(fullPath);
+    const markdown = vFile.value.toString();
     const parsed = this.context.remark.parse(vFile);
     const ast = this.context.remark.runSync(parsed, vFile);
 
@@ -253,4 +257,3 @@ class Docfy {
 }
 
 export default Docfy;
-module.exports = Docfy;

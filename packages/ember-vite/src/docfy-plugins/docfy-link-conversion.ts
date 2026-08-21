@@ -1,7 +1,7 @@
 import plugin from '@docfy/core/lib/plugin.js';
-import visit from 'unist-util-visit';
-import u from 'unist-builder';
-import type { Context, PageContent } from '@docfy/core/lib/types';
+import { visit } from 'unist-util-visit';
+import { u } from 'unist-builder';
+import type { Context, PageContent } from '@docfy/core/lib/types.js';
 import type { Node, Parent } from 'unist';
 import type { PluginData } from '../types.js';
 import { getComponentImport } from '../import-map.js';

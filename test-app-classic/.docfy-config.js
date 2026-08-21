@@ -1,26 +1,24 @@
+// A CommonJS config file that pulls in ESM-only remark/rehype plugins.
+// This works because Node (>= 20.19 / >= 22.12) supports `require()` of ES
+// modules, so no `.mjs` config or dynamic `import()` is needed here.
 const path = require('path');
-// const autolinkHeadings = require('remark-autolink-headings');
-// const prism = require('@mapbox/rehype-prism');
-// const refractor = require('refractor');
-// const docfyWithProse = require('@docfy/plugin-with-prose');
-//
-// refractor.alias('handlebars', 'hbs');
-// refractor.alias('shell', 'sh');
+const autolinkHeadings = require('rehype-autolink-headings');
+const highlight = require('rehype-highlight');
+const docfyWithProse = require('@docfy/plugin-with-prose');
+const { glimmer } = require('highlightjs-glimmer');
 
 module.exports = {
-  remarkHbsOptions: {
-    escapeCurliesCode: false,
-  },
-  // remarkPlugins: [
-  //   [
-  //     autolinkHeadings,
-  //     {
-  //       behavior: 'wrap'
-  //     }
-  //   ]
-  // ],
-  // plugins: [docfyWithProse],
-  // rehypePlugins: [() => [prism, { alias: { gts: 'ts', gjs: 'js' } }]],
+  plugins: [docfyWithProse.default],
+  rehypePlugins: [
+    [autolinkHeadings.default, { behavior: 'wrap' }],
+    [
+      highlight.default,
+      {
+        languages: { glimmer, hbs: glimmer, handlebars: glimmer },
+        aliases: { javascript: ['gjs'], typescript: ['gts'] },
+      },
+    ],
+  ],
   sources: [
     {
       root: path.join(__dirname, 'docs'),

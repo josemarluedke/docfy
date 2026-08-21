@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`URLs should be correctly generated when urlSchema is set to auto base, no url prefix, no suffix 1`] = `
+exports[`URLs should be correctly generated when urlSchema is set to auto > base, no url prefix, no suffix 1`] = `
 [
   [
     "README.md",
@@ -61,7 +61,7 @@ exports[`URLs should be correctly generated when urlSchema is set to auto base, 
 ]
 `;
 
-exports[`URLs should be correctly generated when urlSchema is set to auto when source defines url prefix and suffix 1`] = `
+exports[`URLs should be correctly generated when urlSchema is set to auto > when source defines url prefix and suffix 1`] = `
 [
   [
     "README.md",

@@ -1,8 +1,9 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
-import autolinkHeadings from 'remark-autolink-headings';
-import highlight from 'remark-highlight.js';
+import autolinkHeadings from 'rehype-autolink-headings';
+import highlight from 'rehype-highlight';
 import codeImport from 'remark-code-import';
+import { glimmer } from 'highlightjs-glimmer';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,15 +13,16 @@ export default {
     editBranch: 'main',
   },
   tocMaxDepth: 3,
-  remarkPlugins: [
+  remarkPlugins: [codeImport],
+  rehypePlugins: [
+    [autolinkHeadings, { behavior: 'wrap' }],
     [
-      autolinkHeadings,
+      highlight,
       {
-        behavior: 'wrap',
+        languages: { glimmer, hbs: glimmer, handlebars: glimmer },
+        aliases: { javascript: ['gjs'], typescript: ['gts'] },
       },
     ],
-    codeImport,
-    highlight,
   ],
   sources: [
     {

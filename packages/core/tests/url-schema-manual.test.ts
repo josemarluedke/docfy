@@ -1,7 +1,7 @@
-import Docfy from '../src';
+import Docfy from '../src/index.js';
 import path from 'path';
 
-const root = path.resolve(__dirname, './__fixtures__/monorepo');
+const root = path.resolve(import.meta.dirname, './__fixtures__/monorepo');
 
 describe('URLs should be correctly generated when urlSchema is set to manual', () => {
   test('base base, no url prefix, no suffix', async () => {

@@ -1,4 +1,4 @@
-import type { PageContent } from '@docfy/core/lib/types';
+import type { PageContent } from '@docfy/core/lib/types.js';
 import type { ImportStatement, FileToGenerate, PluginData } from './types.js';
 import { generateComponentFiles } from './component-generator.js';
 import { getComponentImport } from './import-map.js';

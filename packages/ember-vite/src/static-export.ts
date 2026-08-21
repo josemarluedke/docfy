@@ -3,7 +3,7 @@ import type {
   NestedPageMetadata,
   PageContent,
   PageMetadata,
-} from '@docfy/core/lib/types';
+} from '@docfy/core/lib/types.js';
 import type { FileToGenerate } from './types.js';
 import debugFactory from 'debug';
 

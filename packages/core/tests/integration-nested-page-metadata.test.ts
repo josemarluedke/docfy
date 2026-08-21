@@ -1,8 +1,8 @@
-import Docfy from '../src';
-import { DocfyResult } from '../src/types';
+import Docfy from '../src/index.js';
+import { DocfyResult } from '../src/types.js';
 import path from 'path';
 
-const root = path.resolve(__dirname, './__fixtures__/monorepo');
+const root = path.resolve(import.meta.dirname, './__fixtures__/monorepo');
 
 describe('Generates runtime output', () => {
   let result: DocfyResult;

@@ -1,4 +1,4 @@
-import u from 'unist-builder';
+import { u } from 'unist-builder';
 import { Node } from 'unist';
 import type { DemoComponent, DemoComponentName } from '../types.js';
 

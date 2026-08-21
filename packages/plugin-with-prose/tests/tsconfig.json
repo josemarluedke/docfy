@@ -4,11 +4,9 @@
     "noEmit": true,
     "strictNullChecks": false,
     "baseUrl": ".",
-    "paths": {
-      "*": ["../types/*"]
-    },
-    "typeRoots": ["../node_modules/@types", "../types"],
-    "types": ["jest", "node"]
+    "types": ["vitest/globals", "node"],
+    "module": "nodenext",
+    "moduleResolution": "nodenext"
   },
   "include": ["**/*"]
 }

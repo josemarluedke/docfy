@@ -1,51 +1,50 @@
-import unified from 'unified';
-import parse from 'remark-parse';
-import gfm from 'remark-gfm';
-import frontmatter from 'remark-frontmatter';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkFrontmatter from 'remark-frontmatter';
 import extractFrontmatter from 'remark-extract-frontmatter';
-import slug from 'remark-slug';
-import normalizeHeadings from 'remark-normalize-headings';
-import { Processor } from 'unified';
-import { Options } from '../types';
+import remarkNormalizeHeadings from 'remark-normalize-headings';
+import remarkRehype from 'remark-rehype';
 import YAML from 'yaml';
-import remark2rehype from 'remark-rehype';
+import { mdastSlug } from './mdast-slug.js';
+import { Options, RehypeProcessor, RemarkProcessor } from '../types.js';
 
-export function createRemark(remarkPlugins?: Options['remarkPlugins']): Processor {
+export function createRemark(remarkPlugins?: Options['remarkPlugins']): RemarkProcessor {
   const stack = unified()
-    .use(parse)
-    .use(frontmatter)
+    .use(remarkParse)
+    .use(remarkFrontmatter)
     .use(extractFrontmatter, { name: 'frontmatter', yaml: YAML.parse })
-    .use(normalizeHeadings)
-    .use(slug)
-    .use(gfm);
+    .use(remarkNormalizeHeadings)
+    .use(mdastSlug)
+    .use(remarkGfm);
 
   if (remarkPlugins && remarkPlugins.length > 0) {
     remarkPlugins.forEach(fn => {
       if (Array.isArray(fn)) {
-        stack.use(...fn);
+        stack.use(...(fn as [never, never]));
       } else {
-        stack.use(fn);
+        stack.use(fn as never);
       }
     });
   }
 
-  return stack;
+  return stack as unknown as RemarkProcessor;
 }
 
-export function createRehype(rehypePlugins?: Options['rehypePlugins']): Processor {
-  const stack = unified().use(remark2rehype, {
+export function createRehype(rehypePlugins?: Options['rehypePlugins']): RehypeProcessor {
+  const stack = unified().use(remarkRehype, {
     allowDangerousHtml: true,
   });
 
   if (rehypePlugins && rehypePlugins.length > 0) {
     rehypePlugins.forEach(fn => {
       if (Array.isArray(fn)) {
-        stack.use(...fn);
+        stack.use(...(fn as [never, never]));
       } else {
-        stack.use(fn);
+        stack.use(fn as never);
       }
     });
   }
 
-  return stack;
+  return stack as unknown as RehypeProcessor;
 }

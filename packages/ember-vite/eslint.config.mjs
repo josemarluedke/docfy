@@ -14,7 +14,6 @@
  */
 import js from '@eslint/js';
 import eslintConfigPrettier from 'eslint-config-prettier';
-import jestPlugin from 'eslint-plugin-jest';
 import n from 'eslint-plugin-n';
 import globals from 'globals';
 import ts from 'typescript-eslint';
@@ -77,16 +76,13 @@ export default ts.config(
   },
   {
     files: ['**/*.test.{js,ts}', '**/*.spec.{js,ts}', 'tests/**/*.{js,ts}'],
-    plugins: {
-      jest: jestPlugin,
-    },
     languageOptions: {
       globals: {
+        // Vitest is configured with `globals: true`; its globals match jest's.
         ...globals.jest,
       },
     },
     rules: {
-      ...jestPlugin.configs.recommended.rules,
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
     },
