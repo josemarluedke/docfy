@@ -10,4 +10,6 @@ packages:
 allowBuilds:
   core-js: false
   esbuild: true
+  # eslint-plugin-import-x's resolver ships a native binary.
+  unrs-resolver: true
   nx: true
