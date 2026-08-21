@@ -89,6 +89,7 @@
     "remark-autolink-headings": "^6.0.0",
     "remark-code-import": "^0.2.0",
     "remark-highlight.js": "^6.0.0",
+    "sinon": "^22.1.0",
     "tailwindcss": "^4.1.0",
     "testem": "^3.16.0",
     "tracked-built-ins": "^4.0.0",
