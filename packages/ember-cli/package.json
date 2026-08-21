@@ -107,7 +107,7 @@
     "webpack": "^5.100.2"
   },
   "engines": {
-    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
+    "node": ">=22.22.2"
   },
   "publishConfig": {
     "access": "public"

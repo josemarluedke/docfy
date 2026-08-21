@@ -11,14 +11,16 @@ structures for your convenience.</p>
 yarn init
 </code></pre>
 <h2 id="requirements"><a href="#requirements">Requirements</a></h2>
-<p>Docfy is published as ES modules and requires Node <code>^22.22.2 || ^24.15.0 || >=26.0.0</code>.</p>
-<p>Two separate constraints combine to produce that range. Docfy needs <code>require()</code> of
+<p>Docfy is published as ES modules and requires Node <code>>=22.22.2</code>.</p>
+<p>Two separate constraints combine to produce that floor. Docfy needs <code>require()</code> of
 an ES module to work, which is what lets CommonJS tooling (Ember CLI, a CommonJS
 config file) load Docfy and ESM-only remark/rehype plugins; that support landed in
 Node 20.19 and 22.12. The floor is higher than those versions because
-<code>hosted-git-info</code>, the dependency Docfy uses to build "edit this page" links, ships
-its own narrower engines range, and Docfy matches it rather than depending on a
-package it does not support.</p>
+<code>hosted-git-info</code>, the dependency Docfy uses to build "edit this page" links,
+requires 22.22.2 as its own minimum.</p>
+<p>That dependency expresses its range as a list of LTS lines, which excludes
+odd-numbered releases such as Node 23 and 25. Docfy uses a plain <code>>=</code> instead, so
+developing on a current release does not produce install warnings.</p>
 <h2 id="add-docfycore-as-a-dependency"><a href="#add-docfycore-as-a-dependency">Add <code>@docfy/core</code> as a dependency</a></h2>
 <pre><code class="hljs language-sh">npm install @docfy/core
 <span class="hljs-comment"># or</span>
