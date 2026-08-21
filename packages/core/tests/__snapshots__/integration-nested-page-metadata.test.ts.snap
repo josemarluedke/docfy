@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Generates runtime output it should have generated the nestedPageMetadata 1`] = `
+exports[`Generates runtime output > it should have generated the nestedPageMetadata 1`] = `
 {
   "children": [
     {
