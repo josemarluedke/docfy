@@ -21,32 +21,34 @@ of its usage throughout the documentation.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-link-simple" as |demo|>
 <demo.Description
-          @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-link-demo/simple.md">
+          @title="Simple Example" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-link-demo/simple.md">
 
 </demo.Description>
 <demo.Example>
 <DocfyDemoEmberComponentsDocfyLinkSimple />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">'/docs'</span>></span>
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-string">'/docs'</span>></span>
   Link to Docs
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-link-anchor" as |demo|>
 <demo.Description
-          @title="Example with Anchor" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-link-demo/anchor.md">
+          @title="Example with Anchor" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-link-demo/anchor.md">
 
 </demo.Description>
 <demo.Example>
 <DocfyDemoEmberComponentsDocfyLinkAnchor />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag"> @<span class="hljs-attr">anchor</span>=<span class="hljs-string">'examples'</span>></span>
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">fromCurrentURL</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title"><span class="hljs-literal">true</span></span>}}</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span> <span class="hljs-punctuation">@</span><span class="hljs-params">anchor</span><span class="hljs-operator">=</span><span class="hljs-string">'examples'</span>></span>
     Link to a anchor
-  <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <h2 id="api"><a href="#api">API</a></h2>

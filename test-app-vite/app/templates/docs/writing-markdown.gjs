@@ -55,7 +55,8 @@ information to users. You can use relative URLs to the actual file on disk to
 create a link to that document. This feature is essential to allow markdown files
 to customize its URL and not to manually change all references in your documentation to the new URL.</p>
 <p>Example:</p>
-<pre><code class="hljs language-md">[<span class="hljs-string">Link to another document</span>](<span class="hljs-link">./other-document.md</span>)</code></pre>
+<pre><code class="hljs language-md">[<span class="hljs-string">Link to another document</span>](<span class="hljs-link">./other-document.md</span>)
+</code></pre>
 <p>The markdown will be modified to the URL of that document. By the simplest case,
 it would be something like <code>/docs/other-document</code>. The actual URL depends on the configuration of the source.</p>
 <blockquote>
@@ -69,7 +70,8 @@ the <DocfyLink @to="/docs/configuration" @anchor="staticassetspath" >base config
 <p>These static assets can be placed next to documents; there is no need to put them
 in a particular folder, although you can if you would like so.</p>
 <p>Example:</p>
-<pre><code class="hljs language-md">![<span class="hljs-string">GitHub</span>](<span class="hljs-link">./github-icon.png</span>)</code></pre>
+<pre><code class="hljs language-md">![<span class="hljs-string">GitHub</span>](<span class="hljs-link">./github-icon.png</span>)
+</code></pre>
 <h2 id="demos"><a href="#demos">Demos</a></h2>
 <p>Docfy has a default plugin that combines "demo" markdown files into the data
 structure that represents a page. This feature is useful for consumers to extract
@@ -120,5 +122,6 @@ import Component from '@glimmer/component';
 export default class MyDemo extends Component {
   url = '/docs/ember/';
 }
-```</span></code></pre>
+```</span>
+</code></pre>
 </template>

@@ -33,7 +33,8 @@ import Component from '@glimmer/component';
 export default class MyDemo extends Component {
   url = '/docs';
 }
-```</span></code></pre>
+```</span>
+</code></pre>
 <p>The demo will be inserted into the owner file as a new section called "Examples";
 you can see it below.</p>
 <p>Please note that you must pass a metadata to the code block, it can be seen
@@ -46,7 +47,7 @@ configured to support it.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-ember-writing-demos-demo1" as |demo|>
 <demo.Description
-          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/writing-demos-demo/demo1.md">
+          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/writing-demos-demo/demo1.md">
 <p>This is a cool feature of Docfy. It is perfect for documenting design systems and
 component libraries.</p>
 <blockquote>
@@ -58,14 +59,16 @@ component libraries.</p>
 </demo.Example>
 <demo.Snippets as |Snippet|>
 <Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml">This is my Demo: <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">this.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>My Link<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
+<pre><code class="hljs language-hbs">This is my Demo: <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-class">this</span><span class="hljs-punctuation">.</span><span class="hljs-property">url</span>}}</span>></span>My Link<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+</code></pre>
 </Snippet>
 <Snippet @name="component">
-<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> Component <span class="hljs-keyword">from</span> <span class="hljs-string">'@glimmer/component'</span>;
+<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Component</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@glimmer/component'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MyDemo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Component</span> </span>{
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyDemo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span> {
   url = <span class="hljs-string">'/docs'</span>;
-}</code></pre>
+}
+</code></pre>
 </Snippet>
 </demo.Snippets>
 </DocfyDemo>
@@ -82,14 +85,16 @@ users can see the code.</p>
 <p>Below is an example of how it works:</p>
 <pre><code class="hljs language-md"><span class="hljs-code">```hbs preview-template
 Click in the link to navigate to the home page: &#x3C;DocfyLink @to='/'>Home&#x3C;/DocfyLink>
-```</span></code></pre>
+```</span>
+</code></pre>
 <p>And here you can see how it looks like when rendered:</p>
 <DocfyDemo @id="docfy-demo-preview-writing-demos" as |demo|>
 <demo.Example>
 <DocfyDemoPreviewWritingDemos />
 </demo.Example>
 <demo.Snippet @name="preview-template">
-<pre><code class="hljs language-hbs"><span class="xml">Click in the link to navigate to the home page: <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=<span class="hljs-string">'/'</span>></span>Home<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span></span></code></pre>
+<pre><code class="hljs language-hbs">Click in the link to navigate to the home page: <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-string">'/'</span>></span>Home<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <h2 id="manual-insertion"><a href="#manual-insertion">Manual Insertion</a></h2>
@@ -112,7 +117,8 @@ The demo will be inserted after this line.
 
 [[demo:demo1]]
 
-And the prose of the document will continue exactly how the author wishes.</code></pre>
+And the prose of the document will continue exactly how the author wishes.
+</code></pre>
 <p>Sometimes as an author, you want control over where in the page demos will be
 inserted, but you don't need to control this location demo by demo. As a
 shorthand, you can provide the <code>[[demos-all]]</code> marker to insert all demos.</p>
@@ -128,5 +134,6 @@ Below is the equivalent if you had to mark all demos individually.
 
 [[demo:demo2]]
 
-[[demo:demo3]]</code></pre>
+[[demo:demo3]]
+</code></pre>
 </template>

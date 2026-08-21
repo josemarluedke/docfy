@@ -6,6 +6,7 @@ const autolinkHeadings = require('rehype-autolink-headings');
 const highlight = require('rehype-highlight');
 const docfyWithProse = require('@docfy/plugin-with-prose');
 const { glimmer } = require('highlightjs-glimmer');
+const { common } = require('lowlight');
 
 module.exports = {
   plugins: [docfyWithProse.default],
@@ -14,7 +15,9 @@ module.exports = {
     [
       highlight.default,
       {
-        languages: { glimmer, hbs: glimmer, handlebars: glimmer },
+        // `languages` replaces rehype-highlight's default set, so spread
+        // lowlight's `common` back in or everything else stops highlighting.
+        languages: { ...common, glimmer, hbs: glimmer, handlebars: glimmer },
         aliases: { javascript: ['gjs'], typescript: ['gts'] },
       },
     ],

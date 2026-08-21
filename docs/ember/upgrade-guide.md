@@ -50,19 +50,25 @@ for Prism. Because highlight.js 11 now works, so does
 ```js
 import highlight from 'rehype-highlight';
 import { glimmer } from 'highlightjs-glimmer';
+import { common } from 'lowlight';
 
 export default {
   rehypePlugins: [
     [
       highlight,
       {
-        languages: { glimmer, hbs: glimmer, handlebars: glimmer },
+        languages: { ...common, glimmer, hbs: glimmer, handlebars: glimmer },
         aliases: { javascript: ['gjs'], typescript: ['gts'] },
       },
     ],
   ],
 };
 ```
+
+> **`languages` replaces the defaults, it does not extend them.**
+> `rehype-highlight` uses `options.languages || common`, so passing your own map
+> silently turns off highlighting for every other language. Spread lowlight's
+> `common` back in (add `lowlight` as a dependency to import it).
 
 **If your app depends on `highlight.js` directly, leave that dependency where it
 is.** `rehype-highlight` brings its own copy via `lowlight`. Bumping a direct
@@ -106,6 +112,24 @@ Also worth bumping if you use them: `remark-code-import` to `^1.0.0`,
 `remark-math` to `^6.0.0`, `rehype-katex` to `^7.0.0`. Note that `remark-math` 6
 renders un-`katex`'d math as `<code class="language-math">` rather than
 `<span class="math">`.
+
+#### remark-code-import needs a `rootDir`
+
+`remark-code-import` v1 refuses to read files outside `rootDir`, which defaults
+to the process working directory. In a monorepo — or any setup where the docs
+live outside the app being built — you have to say where the root is:
+
+```js
+import path from 'path';
+import codeImport from 'remark-code-import';
+
+export default {
+  remarkPlugins: [[codeImport, { rootDir: path.join(import.meta.dirname, '..') }]],
+};
+```
+
+Without it you get `Attempted to import code from "…", which is outside from the
+rootDir "…"`.
 
 ### If you use @docfy/core directly
 

@@ -99,13 +99,16 @@ gives real `gjs`/`gts`/`hbs` highlighting instead of the handlebars grammar:
 // .docfy-config.js
 const highlight = require('rehype-highlight').default;
 const { glimmer } = require('highlightjs-glimmer');
+const { common } = require('lowlight');
 
 module.exports = {
   rehypePlugins: [
     [
       highlight,
       {
-        languages: { glimmer, hbs: glimmer, handlebars: glimmer },
+        // `languages` replaces rehype-highlight's defaults rather than
+        // extending them, so spread lowlight's `common` back in.
+        languages: { ...common, glimmer, hbs: glimmer, handlebars: glimmer },
         aliases: { javascript: ['gjs'], typescript: ['gts'] },
       },
     ],

@@ -9,19 +9,20 @@ import { DocfyLink } from '@docfy/ember';
 <li><code>@docfy/ember</code> for runtime components (covered in <DocfyLink @to="/docs/ember/tutorial"  >Tutorial</DocfyLink>)</li>
 </ul>
 <h2 id="installation"><a href="#installation">Installation</a></h2>
-<pre><code class="hljs language-bash">npm install --save-dev @docfy/ember-vite</code></pre>
+<pre><code class="hljs language-bash">npm install --save-dev @docfy/ember-vite
+</code></pre>
 <h2 id="configuration"><a href="#configuration">Configuration</a></h2>
 <h3 id="inline-configuration"><a href="#inline-configuration">Inline Configuration</a></h3>
 <p>Add the Docfy plugin directly to your <code>vite.config.mjs</code>:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
 <span class="hljs-keyword">import</span> docfy <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
   <span class="hljs-attr">plugins</span>: [
-    docfy(
-      <span class="hljs-comment">/** <span class="hljs-doctag">@type <span class="hljs-type">{import('@docfy/ember-vite').DocfyViteOptions}</span> </span>*/</span>
+    <span class="hljs-title function_">docfy</span>(
+      <span class="hljs-comment">/** <span class="hljs-doctag">@type</span> {<span class="hljs-type">import('@docfy/ember-vite').DocfyViteOptions</span>} */</span>
       {
-        <span class="hljs-attr">root</span>: process.cwd(),
+        <span class="hljs-attr">root</span>: process.<span class="hljs-title function_">cwd</span>(),
         <span class="hljs-attr">hmr</span>: <span class="hljs-literal">true</span>,
         <span class="hljs-attr">config</span>: {
           <span class="hljs-attr">sources</span>: [
@@ -36,16 +37,18 @@ import { DocfyLink } from '@docfy/ember';
     ),
     <span class="hljs-comment">// ... other Embroider plugins</span>
   ],
-});</code></pre>
+});
+</code></pre>
 <h3 id="configuration-file"><a href="#configuration-file">Configuration File</a></h3>
-<p>For better organization, use a separate configuration file. Create <code>docfy.config.js</code> or <code>docfy.config.mjs</code>:</p>
-<pre><code class="hljs language-js"><span class="hljs-comment">// docfy.config.js</span>
-<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
+<p>For better organization, use a separate configuration file. Create <code>docfy.config.mjs</code> or <code>docfy.config.js</code>:</p>
+<pre><code class="hljs language-js"><span class="hljs-comment">// docfy.config.mjs</span>
+<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
+<span class="hljs-keyword">import</span> highlight <span class="hljs-keyword">from</span> <span class="hljs-string">'rehype-highlight'</span>;
 
-<span class="hljs-built_in">module</span>.exports = {
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
   <span class="hljs-attr">sources</span>: [
     {
-      <span class="hljs-attr">root</span>: path.join(__dirname, <span class="hljs-string">'docs'</span>),
+      <span class="hljs-attr">root</span>: path.<span class="hljs-title function_">join</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">dirname</span>, <span class="hljs-string">'docs'</span>),
       <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
       <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
     },
@@ -53,41 +56,48 @@ import { DocfyLink } from '@docfy/ember';
   <span class="hljs-attr">remarkPlugins</span>: [
     <span class="hljs-comment">// Add remark plugins</span>
   ],
+  <span class="hljs-attr">rehypePlugins</span>: [highlight],
   <span class="hljs-attr">repository</span>: {
     <span class="hljs-attr">url</span>: <span class="hljs-string">'https://github.com/username/repo'</span>,
     <span class="hljs-attr">editBranch</span>: <span class="hljs-string">'main'</span>,
   },
-};</code></pre>
+};
+</code></pre>
+<p>The config is loaded with a dynamic <code>import()</code>, so CommonJS and ESM both work,
+and unlike the classic Ember CLI integration this one accepts top-level
+<code>await</code>.</p>
 <p>Then use it in your Vite config:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
 <span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
   <span class="hljs-attr">plugins</span>: [
     <span class="hljs-comment">// ... other Embroider plugins</span>
-    docfyVite(), <span class="hljs-comment">// Automatically loads docfy.config.js/mjs</span>
+    <span class="hljs-title function_">docfyVite</span>(), <span class="hljs-comment">// Automatically loads docfy.config.js/mjs</span>
   ],
-});</code></pre>
+});
+</code></pre>
 <h3 id="custom-config-file-path"><a href="#custom-config-file-path">Custom Config File Path</a></h3>
 <p>Specify a custom configuration file location:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
 <span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
   <span class="hljs-attr">plugins</span>: [
-    docfyVite({
+    <span class="hljs-title function_">docfyVite</span>({
       <span class="hljs-attr">configFile</span>: <span class="hljs-string">'config/my-docfy.config.js'</span>,
     }),
   ],
-});</code></pre>
+});
+</code></pre>
 <h3 id="plugin-options"><a href="#plugin-options">Plugin Options</a></h3>
 <p>The plugin accepts these options:</p>
-<pre><code class="hljs language-js">docfyVite({
+<pre><code class="hljs language-js"><span class="hljs-title function_">docfyVite</span>({
   <span class="hljs-comment">// Path to config file (optional)</span>
   <span class="hljs-attr">configFile</span>: <span class="hljs-string">'docfy.config.js'</span>, <span class="hljs-comment">// default: 'docfy.config.js' or 'docfy.config.mjs'</span>
 
   <span class="hljs-comment">// Root directory (optional)</span>
-  <span class="hljs-attr">root</span>: process.cwd(), <span class="hljs-comment">// default: process.cwd()</span>
+  <span class="hljs-attr">root</span>: process.<span class="hljs-title function_">cwd</span>(), <span class="hljs-comment">// default: process.cwd()</span>
 
   <span class="hljs-comment">// Enable HMR (optional)</span>
   <span class="hljs-attr">hmr</span>: <span class="hljs-literal">true</span>, <span class="hljs-comment">// default: true</span>
@@ -113,12 +123,14 @@ import { DocfyLink } from '@docfy/ember';
     <span class="hljs-comment">/* ... */</span>
   ],
   <span class="hljs-comment">// ...</span>
-});</code></pre>
+});
+</code></pre>
 <h2 id="vite-specific-features"><a href="#vite-specific-features">Vite-Specific Features</a></h2>
 <h3 id="hot-module-replacement-hmr"><a href="#hot-module-replacement-hmr">Hot Module Replacement (HMR)</a></h3>
 <p>The killer feature of the Vite integration is instant updates. Edit any markdown file and see changes reflected immediately in the browser without page reloads:</p>
 <pre><code class="hljs language-bash"><span class="hljs-comment"># Edit docs/my-component.md</span>
-<span class="hljs-comment"># Browser updates instantly ⚡</span></code></pre>
+<span class="hljs-comment"># Browser updates instantly ⚡</span>
+</code></pre>
 <h3 id="development-performance"><a href="#development-performance">Development Performance</a></h3>
 <ul>
 <li><strong>On-demand processing</strong> - Only processes markdown files when requested</li>
@@ -129,17 +141,19 @@ import { DocfyLink } from '@docfy/ember';
 <p>Access processed data through Embroider's virtual module system:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { getDocfyOutput } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember/output:virtual'</span>;
 
-<span class="hljs-keyword">const</span> docfyData = getDocfyOutput();</code></pre>
+<span class="hljs-keyword">const</span> docfyData = <span class="hljs-title function_">getDocfyOutput</span>();
+</code></pre>
 <h3 id="static-export"><a href="#static-export">Static Export</a></h3>
 <p>A Docfy site is client-rendered, so a plain HTTP request returns the app shell rather than your
 content. Crawlers, <code>curl</code>, and AI coding agents fetching a page get markup with no documentation
 in it.</p>
 <p>Enabling <code>staticExport</code> emits a text-only mirror of your docs alongside the app:</p>
-<pre><code class="hljs language-js">docfyVite({
+<pre><code class="hljs language-js"><span class="hljs-title function_">docfyVite</span>({
   <span class="hljs-attr">staticExport</span>: {
     <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
   },
-});</code></pre>
+});
+</code></pre>
 <p>That writes three kinds of file into your build output:</p>
 <ul>
 <li><strong><code>&#x3C;page-url>.md</code></strong> for every page, at the same path as the live route plus a <code>.md</code> suffix. The
@@ -213,27 +227,29 @@ clean while you work.</p>
 <p>This is valid per the llms.txt spec and stays correct wherever the site is served — production,
 deploy previews, forks, or <code>localhost</code> — with no configuration. Set <code>siteUrl</code> when you want
 absolute links instead, which helps consumers that read the text detached from its origin:</p>
-<pre><code class="hljs language-js">docfyVite({
+<pre><code class="hljs language-js"><span class="hljs-title function_">docfyVite</span>({
   <span class="hljs-attr">staticExport</span>: {
     <span class="hljs-attr">enabled</span>: <span class="hljs-literal">true</span>,
     <span class="hljs-attr">siteUrl</span>: <span class="hljs-string">'https://docfy.dev'</span>,
   },
-});</code></pre>
+});
+</code></pre>
 <h4 id="customizing-what-a-page-exports"><a href="#customizing-what-a-page-exports">Customizing what a page exports</a></h4>
 <p>Each page exports its raw markdown source with the frontmatter block stripped. When a page relies
 on a custom component that only renders in the browser, the exported text would contain the
 component tag rather than its content. To substitute something meaningful, set
 <code>pluginData.staticMarkdown</code> from a Docfy plugin:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  <span class="hljs-function"><span class="hljs-title">runAfter</span>(<span class="hljs-params">ctx</span>)</span> {
-    ctx.pages.forEach(<span class="hljs-function"><span class="hljs-params">page</span> =></span> {
-      page.pluginData.staticMarkdown = page.markdown.replace(
+  <span class="hljs-title function_">runAfter</span>(<span class="hljs-params">ctx</span>) {
+    ctx.<span class="hljs-property">pages</span>.<span class="hljs-title function_">forEach</span>(<span class="hljs-function"><span class="hljs-params">page</span> =></span> {
+      page.<span class="hljs-property">pluginData</span>.<span class="hljs-property">staticMarkdown</span> = page.<span class="hljs-property">markdown</span>.<span class="hljs-title function_">replace</span>(
         <span class="hljs-regexp">/&#x3C;ApiTable @of="(\w+)" \/>/g</span>,
-        <span class="hljs-function">(<span class="hljs-params">_, name</span>) =></span> renderMarkdownTable(name)
+        <span class="hljs-function">(<span class="hljs-params">_, name</span>) =></span> <span class="hljs-title function_">renderMarkdownTable</span>(name)
       );
     });
   },
-};</code></pre>
+};
+</code></pre>
 <p>Use <code>runAfter</code> and work on markdown text rather than the AST. By that point <code>page.ast</code> has been
 converted to hast and is what your live routes render from, so mutating it would change the app
 itself. <code>page.markdown</code> is raw source that nothing else reads, which is why writing a derived
@@ -245,22 +261,23 @@ page's markdown to the browser.</p>
 <h3 id="multiple-sources"><a href="#multiple-sources">Multiple Sources</a></h3>
 <p>Configure multiple documentation sources with different URL schemas:</p>
 <pre><code class="hljs language-js"><span class="hljs-comment">// docfy.config.js</span>
-<span class="hljs-built_in">module</span>.exports = {
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
   <span class="hljs-attr">sources</span>: [
     {
-      <span class="hljs-attr">root</span>: path.join(__dirname, <span class="hljs-string">'docs'</span>),
+      <span class="hljs-attr">root</span>: path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">'docs'</span>),
       <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
       <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
       <span class="hljs-attr">urlSchema</span>: <span class="hljs-string">'auto'</span>,
     },
     {
-      <span class="hljs-attr">root</span>: path.join(__dirname, <span class="hljs-string">'guides'</span>),
+      <span class="hljs-attr">root</span>: path.<span class="hljs-title function_">join</span>(__dirname, <span class="hljs-string">'guides'</span>),
       <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
       <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'guides'</span>,
       <span class="hljs-attr">urlSchema</span>: <span class="hljs-string">'manual'</span>,
     },
   ],
-};</code></pre>
+};
+</code></pre>
 <h3 id="development-vs-production"><a href="#development-vs-production">Development vs Production</a></h3>
 <p><strong>Development:</strong> Files processed on-demand for maximum speed
 <strong>Production:</strong> All files processed during build for optimization</p>
@@ -268,21 +285,22 @@ page's markdown to the browser.</p>
 npm run start
 
 <span class="hljs-comment"># Production - full processing</span>
-npm run build</code></pre>
+npm run build
+</code></pre>
 <p>All <DocfyLink @to="/docs/configuration"  >core configuration options</DocfyLink> are supported.</p>
 <h2 id="typescript-support"><a href="#typescript-support">TypeScript Support</a></h2>
 <p>Get full type safety in JavaScript using JSDoc annotations:</p>
 <pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
 <span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
   <span class="hljs-attr">plugins</span>: [
-    docfyVite(
-      <span class="hljs-comment">/** <span class="hljs-doctag">@type <span class="hljs-type">{import('@docfy/ember-vite').DocfyViteOptions}</span> </span>*/</span>
+    <span class="hljs-title function_">docfyVite</span>(
+      <span class="hljs-comment">/** <span class="hljs-doctag">@type</span> {<span class="hljs-type">import('@docfy/ember-vite').DocfyViteOptions</span>} */</span>
       ({
         <span class="hljs-attr">sources</span>: [
           {
-            <span class="hljs-attr">root</span>: path.resolve(__dirname, <span class="hljs-string">'docs'</span>),
+            <span class="hljs-attr">root</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">'docs'</span>),
             <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
             <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
           },
@@ -290,19 +308,21 @@ npm run build</code></pre>
       })
     ),
   ],
-});</code></pre>
+});
+</code></pre>
 <p>Or for TypeScript projects:</p>
-<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { DocfyViteOptions } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
+<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">DocfyViteOptions</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 <span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
 <span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
 
-<span class="hljs-keyword">const</span> config: DocfyViteOptions = {
+<span class="hljs-keyword">const</span> <span class="hljs-attr">config</span>: <span class="hljs-title class_">DocfyViteOptions</span> = {
   <span class="hljs-attr">sources</span>: [
     <span class="hljs-comment">// fully typed configuration</span>
   ],
 };
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> defineConfig({
-  <span class="hljs-attr">plugins</span>: [docfyVite(config)],
-});</code></pre>
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
+  <span class="hljs-attr">plugins</span>: [<span class="hljs-title function_">docfyVite</span>(config)],
+});
+</code></pre>
 </template>

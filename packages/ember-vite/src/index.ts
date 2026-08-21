@@ -102,11 +102,32 @@ export default function docfyVitePlugin(options: DocfyViteOptions = {}): Plugin[
           });
         }
 
-        // Process markdown files immediately
+        // Process markdown files immediately.
+        //
+        // A failure here (a broken remark/rehype plugin, an unreadable source
+        // file) leaves the virtual output module empty, which produces an app
+        // with no Docfy routes at all — "There is no route named docs" at
+        // runtime. For a production build that has to be a hard failure rather
+        // than a silently broken site. The dev server stays resilient so the
+        // author can fix the offending file and let HMR recover.
         try {
           await processor.processAll();
         } catch (error) {
           debug('Error processing markdown files', { error });
+
+          if (config.command === 'build') {
+            this.error(
+              `[docfy] Failed to process markdown files: ${
+                error instanceof Error ? error.message : String(error)
+              }`
+            );
+          }
+
+          this.warn(
+            `[docfy] Failed to process markdown files, no Docfy routes will be available: ${
+              error instanceof Error ? error.message : String(error)
+            }`
+          );
         }
 
         debug('Docfy processor initialized');

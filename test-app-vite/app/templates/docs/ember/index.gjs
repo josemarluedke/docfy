@@ -22,7 +22,8 @@ export default class ButtonDemo extends Component {
     &#x3C;/Button>
   &#x3C;/template>
 }
-```</span></code></pre>
+```</span>
+</code></pre>
 <p>This becomes a live, interactive demo in your documentation site.</p>
 <h2 id="choose-your-build-system"><a href="#choose-your-build-system">Choose Your Build System</a></h2>
 <p>Docfy's modular architecture supports different Ember build systems:</p>

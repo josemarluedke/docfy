@@ -22,7 +22,7 @@ the following values:</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-output-sidebar" as |demo|>
 <demo.Description
-          @title="Sidebar Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-output-demo/sidebar.md">
+          @title="Sidebar Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-output-demo/sidebar.md">
 <p>In this example, we are filtering the <code>NestedPageMetadata</code> by the scope name <code>docs</code>.
 Then we use the yielded data to render pages, their children, and their children's
 pages. Depending on how your documentation is structured, you might need to render
@@ -36,40 +36,41 @@ too deep into the tree to display all items.</p>
 <DocfyDemoEmberComponentsDocfyOutputSidebar />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">scope</span>=<span class="hljs-string">'docs'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
-    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
-          </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
-        <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">scope</span><span class="hljs-operator">=</span><span class="hljs-string">'docs'</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">node</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
+    <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">node</span><span class="hljs-punctuation">.</span><span class="hljs-title">pages</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|}}</span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span>></span>
+          <span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">title</span>}}</span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+    <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
 
-    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.children <span class="hljs-keyword">as</span> |child|}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'block ml-4'</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'py-2'</span>></span>
-          </span><span class="hljs-template-variable">\{{<span class="hljs-name">child.label</span>}}</span><span class="xml">
-        <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
+    <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">node</span><span class="hljs-punctuation">.</span><span class="hljs-title">children</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">child</span>|}}</span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'block ml-4'</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'py-2'</span>></span>
+          <span class="hljs-punctuation mustache">\{{<span class="hljs-title">child</span><span class="hljs-punctuation">.</span><span class="hljs-title">label</span>}}</span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-title">div</span>></span>
 
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
-          </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> child.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
-            <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-              <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
-                </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
-              <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-            <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-          </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
-        <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
-      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
-  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+        <span class="hljs-tag">&#x3C;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
+          <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">child</span><span class="hljs-punctuation">.</span><span class="hljs-title">pages</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|}}</span>
+            <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span>></span>
+              <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span>></span>
+                <span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">title</span>}}</span>
+              <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+            <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+          <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-title">ul</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+    <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-title">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-output-on-this-page" as |demo|>
 <demo.Description
-          @title="On this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-output-demo/on-this-page.md">
+          @title="On this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-output-demo/on-this-page.md">
 <p>In this example, we are using the option <code>@fromCurrentURL</code>. It tells the component
 to search for the definition of the page that corresponds to the current URL.
 We are then using the <code>headings</code> property, a data structure that represents a
@@ -82,25 +83,26 @@ option <code>tocMaxDepth</code>.</p>
 <DocfyDemoEmberComponentsDocfyOutputOnThisPage />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'mb-4 font-medium'</span>></span>
-    On this page:
-  <span class="hljs-tag">&#x3C;/<span class="hljs-name">div</span>></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
-    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> page.headings <span class="hljs-keyword">as</span> |heading|}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">'#</span></span></span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.id</span>}}</span><span class="xml"><span class="hljs-tag"><span class="hljs-string">'</span>></span>
-          </span><span class="hljs-template-variable">\{{<span class="hljs-name">heading.title</span>}}</span><span class="xml">
-        <span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
-      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
-  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">fromCurrentURL</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title"><span class="hljs-literal">true</span></span>}}</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'mb-4 font-medium'</span>></span>
+    <span class="hljs-keyword">On</span> this page:
+  <span class="hljs-tag">&#x3C;/<span class="hljs-title">div</span>></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
+    <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">headings</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">heading</span>|}}</span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span><span class="hljs-operator">=</span><span class="hljs-string">'#<span class="hljs-punctuation mustache">\{{<span class="hljs-title">heading</span><span class="hljs-punctuation">.</span><span class="hljs-title">id</span>}}</span>'</span>></span>
+          <span class="hljs-punctuation mustache">\{{<span class="hljs-title">heading</span><span class="hljs-punctuation">.</span><span class="hljs-title">title</span>}}</span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-title">a</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+    <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-title">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-output-edit-page" as |demo|>
 <demo.Description
-          @title="Edit this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-output-demo/edit-page.md">
+          @title="Edit this page" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-output-demo/edit-page.md">
 <p>This is another example using <code>@fromCurrentURL</code>, but here we build a "edit this
 page" link.</p>
 <p>For this feature to work, Docfy must be able to find the repository URL. In
@@ -108,41 +110,44 @@ Ember apps, we extract that from the <code>package.json</code>, but you can conf
 repository URL as well as the branch to edit.</p>
 <p>For this to work, you need to include <code>repository</code> in your docfy-config:</p>
 <pre><code class="hljs language-js"><span class="hljs-comment">// in your docfy-config.js</span>
-<span class="hljs-built_in">module</span>.exports = {
+<span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = {
   <span class="hljs-attr">repository</span>: {
     <span class="hljs-attr">url</span>: <span class="hljs-string">'https://github.com/@username/repo-name'</span>,
     <span class="hljs-attr">editBranch</span>: <span class="hljs-string">'main'</span>,
   },
   ...<span class="hljs-comment">// rest of your config</span>
-}</code></pre>
+}
+</code></pre>
 <h2 id="enterprise-aka-on-premise-git-services"><a href="#enterprise-aka-on-premise-git-services">Enterprise (aka on premise) git services</a></h2>
 <p><code>page.editUrl</code> works for Github, Bitbucket, Gitlab and Sourcehut.</p>
 <p>For on-premise instances git solutions (i.e. on-premise Gitlab, or on-premise Bitbucket), we expose the <code>page.relativePath</code> so that you might construct your own custom editUrl:</p>
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
-  </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> page.relativePath}}</span><span class="xml">
-    <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">(concat</span> "<span class="hljs-attr">http:</span>//<span class="hljs-attr">some-enterpise.com</span>/<span class="hljs-attr">browse</span>/" <span class="hljs-attr">page.relativePath</span>)
-      <span class="hljs-attr">Click</span> <span class="hljs-attr">here</span> <span class="hljs-attr">to</span> <span class="hljs-attr">edit</span> <span class="hljs-attr">this</span> <span class="hljs-attr">page</span>
-    &#x3C;/<span class="hljs-attr">a</span>></span>
-  </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">fromCurrentURL</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title"><span class="hljs-literal">true</span></span>}}</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|></span>
+  <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">if</span></span> <span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">relativePath</span>}}</span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span><span class="hljs-operator">=</span>(<span class="hljs-title">concat</span> <span class="hljs-string">"http://some-enterpise.com/browse/"</span> <span class="hljs-title">page</span><span class="hljs-title">.relativePath</span>)
+      <span class="hljs-title">Click</span> <span class="hljs-title">here</span> <span class="hljs-title">to</span> <span class="hljs-title">edit</span> <span class="hljs-title">this</span> <span class="hljs-title">page</span>
+    &#x3C;/<span class="hljs-title">a</span>></span>
+  <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">if</span></span>}}</span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 <p>Note: the edit url for your on-premise instance might be more complex than the example above. But the <code>page.relativePath</code> will give you the relative path to that file in your repo.</p>
 </demo.Description>
 <demo.Example>
 <DocfyDemoEmberComponentsDocfyOutputEditPage />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">fromCurrentURL</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">true</span>}}</span><span class="xml"><span class="hljs-tag"> <span class="hljs-attr">as</span> |<span class="hljs-attr">page</span>|></span>
-  </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> page.editUrl}}</span><span class="xml">
-    <span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.editUrl</span>}}</span><span class="xml"><span class="hljs-tag">></span>
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">fromCurrentURL</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title"><span class="hljs-literal">true</span></span>}}</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|></span>
+  <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">if</span></span> <span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">editUrl</span>}}</span>
+    <span class="hljs-tag">&#x3C;<span class="hljs-title">a</span> <span class="hljs-attribute">href</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">editUrl</span>}}</span>></span>
       Click here to edit this page
-    <span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span>
-  </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+    <span class="hljs-tag">&#x3C;/<span class="hljs-title">a</span>></span>
+  <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">if</span></span>}}</span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-output-top-nav" as |demo|>
 <demo.Description
-          @title="Top Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-output-demo/top-nav.md">
+          @title="Top Navigation" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-output-demo/top-nav.md">
 <p>Here is another example that builds a top nav that could be used for the entire
 application. It will link to any top-level pages as well as to the first page of
 every child.</p>
@@ -151,34 +156,35 @@ every child.</p>
 <DocfyDemoEmberComponentsDocfyOutputTopNav />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">'nested'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">node</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
-    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
-          </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
-        <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">type</span><span class="hljs-operator">=</span><span class="hljs-string">'nested'</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">node</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-title">ul</span>></span>
+    <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">node</span><span class="hljs-punctuation">.</span><span class="hljs-title">pages</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|}}</span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span>></span>
+          <span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">title</span>}}</span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+    <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
 
-    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> node.children <span class="hljs-keyword">as</span> |child|}}</span><span class="xml">
-      </span><span class="hljs-template-tag">\{{#<span class="hljs-name">let</span> (<span class="hljs-name"><span class="hljs-builtin-name">get</span></span> child.pages <span class="hljs-number">0</span>) <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
-        </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">if</span></span> page}}</span><span class="xml">
-          <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-            <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
-              </span><span class="hljs-template-variable">\{{<span class="hljs-name">child.label</span>}}</span><span class="xml">
-            <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-          <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-        </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">if</span></span>}}</span><span class="xml">
-      </span><span class="hljs-template-tag">\{{/<span class="hljs-name">let</span>}}</span><span class="xml">
-    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
-  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+    <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">node</span><span class="hljs-punctuation">.</span><span class="hljs-title">children</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">child</span>|}}</span>
+      <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">let</span></span> <span class="hljs-punctuation">(</span><span class="hljs-title"><span class="hljs-function">get</span></span> <span class="hljs-title">child</span><span class="hljs-punctuation">.</span><span class="hljs-title">pages</span> <span class="hljs-number">0</span><span class="hljs-punctuation">)</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|}}</span>
+        <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">if</span></span> <span class="hljs-title">page</span>}}</span>
+          <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span>></span>
+            <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span>></span>
+              <span class="hljs-punctuation mustache">\{{<span class="hljs-title">child</span><span class="hljs-punctuation">.</span><span class="hljs-title">label</span>}}</span>
+            <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+          <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+        <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">if</span></span>}}</span>
+      <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">let</span></span>}}</span>
+    <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-title">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-output-flat" as |demo|>
 <demo.Description
-          @title="Flat output" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/components/docfy-output-demo/flat.md">
+          @title="Flat output" @editUrl="https://github.com/josemarluedke/docfy/edit/main/.claude/worktrees/remark-upgrade-research-644867/docs/ember/components/docfy-output-demo/flat.md">
 <p>This option will return an array of <code>PageMetadata</code>. It will contain all the
 pages in a flat array, one could render a list of all the pages without worrying
 about the scope.</p>
@@ -187,17 +193,18 @@ about the scope.</p>
 <DocfyDemoEmberComponentsDocfyOutputFlat />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="xml"><span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyOutput</span> @<span class="hljs-attr">type</span>=<span class="hljs-string">'flat'</span> <span class="hljs-attr">as</span> |<span class="hljs-attr">pages</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
-    </span><span class="hljs-template-tag">\{{#<span class="hljs-name"><span class="hljs-builtin-name">each</span></span> pages <span class="hljs-keyword">as</span> |page|}}</span><span class="xml">
-      <span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span>
-        <span class="hljs-tag">&#x3C;<span class="hljs-name">DocfyLink</span> @<span class="hljs-attr">to</span>=</span></span><span class="hljs-template-variable">\{{<span class="hljs-name">page.url</span>}}</span><span class="xml"><span class="hljs-tag">></span>
-          </span><span class="hljs-template-variable">\{{<span class="hljs-name">page.title</span>}}</span><span class="xml">
-        <span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyLink</span>></span>
-      <span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
-    </span><span class="hljs-template-tag">\{{/<span class="hljs-name"><span class="hljs-builtin-name">each</span></span>}}</span><span class="xml">
-  <span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
-<span class="hljs-tag">&#x3C;/<span class="hljs-name">DocfyOutput</span>></span></span></code></pre>
+<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">type</span><span class="hljs-operator">=</span><span class="hljs-string">'flat'</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">pages</span>|></span>
+  <span class="hljs-tag">&#x3C;<span class="hljs-title">ul</span> <span class="hljs-attribute">class</span><span class="hljs-operator">=</span><span class="hljs-string">'list-disc list-inside space-y-2'</span>></span>
+    <span class="hljs-punctuation mustache">\{{#<span class="hljs-title"><span class="hljs-built_in">each</span></span> <span class="hljs-title">pages</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|}}</span>
+      <span class="hljs-tag">&#x3C;<span class="hljs-title">li</span>></span>
+        <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span>></span>
+          <span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">title</span>}}</span>
+        <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
+      <span class="hljs-tag">&#x3C;/<span class="hljs-title">li</span>></span>
+    <span class="hljs-punctuation mustache">\{{/<span class="hljs-title"><span class="hljs-built_in">each</span></span>}}</span>
+  <span class="hljs-tag">&#x3C;/<span class="hljs-title">ul</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
+</code></pre>
 </demo.Snippet>
 </DocfyDemo>
 <h2 id="api"><a href="#api">API</a></h2>

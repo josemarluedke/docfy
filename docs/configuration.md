@@ -103,17 +103,24 @@ gives proper `gjs`/`gts`/`hbs` highlighting:
 ```js
 import highlight from 'rehype-highlight';
 import { glimmer } from 'highlightjs-glimmer';
+import { common } from 'lowlight';
 
 const rehypePlugins = [
   [
     highlight,
     {
-      languages: { glimmer, hbs: glimmer, handlebars: glimmer },
+      languages: { ...common, glimmer, hbs: glimmer, handlebars: glimmer },
       aliases: { javascript: ['gjs'], typescript: ['gts'] },
     },
   ],
 ];
 ```
+
+> **`languages` replaces the defaults, it does not extend them.**
+> `rehype-highlight` uses `options.languages || common`, so passing your own map
+> silently turns off highlighting for every other language. Spread lowlight's
+> `common` back in (add `lowlight` as a dependency to import it).
+
 
 If your app also depends on `highlight.js` directly, leave that dependency
 alone — `rehype-highlight` brings its own copy through `lowlight`.

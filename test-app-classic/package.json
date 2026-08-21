@@ -78,6 +78,7 @@
     "globals": "^16.3.0",
     "highlightjs-glimmer": "^2.2.2",
     "loader.js": "^4.7.0",
+    "lowlight": "^3.3.0",
     "postcss": "^8.5.6",
     "postcss-import": "^14.0.2",
     "postcss-nested": "^5.0.6",
