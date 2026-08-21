@@ -112,8 +112,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
       remark-hbs:
-        specifier: ^0.4.1
-        version: 0.4.1
+        specifier: ^0.5.0
+        version: 0.5.0(unified@11.0.5)
       remark-math:
         specifier: ^6.0.0
         version: 6.0.0
@@ -283,8 +283,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       remark-hbs:
-        specifier: ^0.4.1
-        version: 0.4.1
+        specifier: ^0.5.0
+        version: 0.5.0(unified@11.0.5)
       unist-util-visit:
         specifier: ^5.1.0
         version: 5.1.0
@@ -464,8 +464,8 @@ importers:
         specifier: ^4.0.0
         version: 4.0.0
       remark-hbs:
-        specifier: ^0.4.1
-        version: 0.4.1
+        specifier: ^0.5.0
+        version: 0.5.0(unified@11.0.5)
       unist-util-visit:
         specifier: ^5.1.0
         version: 5.1.0
@@ -8605,9 +8605,11 @@ packages:
   remark-gfm@4.0.1:
     resolution: {integrity: sha512-1quofZ2RQ9EWdeN34S79+KExV1764+wCUGop5CPL1WGdD0ocPpu91lzPGbwWMECpEpd42kJGQwzRfyov9j4yNg==}
 
-  remark-hbs@0.4.1:
-    resolution: {integrity: sha512-q1qnjA473z409IGqj3iu0Rex9YVN3cfwf6siPP+SQN9Yx66OxyL2cU4VHWK6IxWHSa/cughU2CBUbDPPsWxlfg==}
-    engines: {node: '>= 10.*'}
+  remark-hbs@0.5.0:
+    resolution: {integrity: sha512-07JBlHcxpSL/fCbEnoqmZJXYSJQrw4bHbF1vl0sV6M4fpegh/v8m5iM9him6ZPq+JNMbZEIlVOa8XSLJSkA0yg==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      unified: ^11.0.0
 
   remark-math@6.0.0:
     resolution: {integrity: sha512-MMqgnP74Igy+S3WwnhQ7kqGlEerTETXMvJhrUzDikVZ2/uogJCb+WHUg97hK9/jcfc0dkD73s3LN8zU49cTEtA==}
@@ -9785,9 +9787,6 @@ packages:
   unique-string@2.0.0:
     resolution: {integrity: sha512-uNaeirEPvpZWSgzwsPGtU2zVSTrn/8L5q/IexZmH0eH6SA73CmAA5U4GwORTxQAZs95TAXLNqeLoPPNO5gZfWg==}
     engines: {node: '>=8'}
-
-  unist-builder@2.0.3:
-    resolution: {integrity: sha512-f98yt5pnlMWlzP539tPc4grGMsFaQQlP/vM396b00jngsiINumNmsY8rkXjfoi1c6QaM8nQ3vaGDuoKWbe/1Uw==}
 
   unist-util-find-after@5.0.0:
     resolution: {integrity: sha512-amQa0Ep2m6hE2g72AugUItjbuM8X8cGQnFoHk0pGfrFeT9GZhzN5SW8nRsiGKK7Aif4CrACPENkA6P/Lw6fHGQ==}
@@ -20506,10 +20505,10 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  remark-hbs@0.4.1:
+  remark-hbs@0.5.0(unified@11.0.5):
     dependencies:
-      unist-builder: 2.0.3
-      unist-util-visit: 2.0.3
+      unified: 11.0.5
+      unist-util-visit: 5.1.0
 
   remark-math@6.0.0:
     dependencies:
@@ -22154,8 +22153,6 @@ snapshots:
   unique-string@2.0.0:
     dependencies:
       crypto-random-string: 2.0.0
-
-  unist-builder@2.0.3: {}
 
   unist-util-find-after@5.0.0:
     dependencies:

@@ -48,7 +48,7 @@
     "ember-cli-babel": "^8.2.0",
     "ember-cli-htmlbars": "^6.3.0",
     "mdast-util-to-string": "^4.0.0",
-    "remark-hbs": "^0.4.1",
+    "remark-hbs": "^0.5.0",
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
