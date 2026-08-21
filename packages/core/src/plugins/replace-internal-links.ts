@@ -1,32 +1,15 @@
 import path from 'path';
 import plugin from '../plugin.js';
-import { Node } from 'unist';
 import { visit } from 'unist-util-visit';
 import { isValidUrl, isAnchorUrl } from '../-private/utils.js';
 import { PageContent, Context } from '../types.js';
+import type { Root as MdastRoot, Definition, Link } from 'mdast';
 
-interface Resource {
-  url: string;
-  title?: string;
-}
-interface Association {
-  identifier: string;
-  label?: string;
-}
-
-interface LinkNode extends Node, Resource {
-  type: 'link';
-}
-
-interface LinkReferenceNode extends Node, Association {
-  type: 'linkReference';
-}
-
-interface DefinitionNode extends Node, Resource, Association {
-  type: 'definition';
-}
-
-function replaceURL(ctx: Context, page: PageContent, node: LinkNode | DefinitionNode): void {
+function replaceURL(
+  ctx: Context<MdastRoot>,
+  page: PageContent<MdastRoot>,
+  node: Link | Definition
+): void {
   if (isValidUrl(node.url) || isAnchorUrl(node.url)) {
     return;
   }
@@ -51,25 +34,19 @@ function replaceURL(ctx: Context, page: PageContent, node: LinkNode | Definition
   }
 }
 
-function isReferenceLink(node: LinkNode | LinkReferenceNode): node is LinkReferenceNode {
-  return node.type === 'linkReference';
-}
+function visitor(ctx: Context<MdastRoot>, page: PageContent<MdastRoot>): void {
+  const definitions: Record<string, Definition> = {};
 
-function visitor(ctx: Context, page: PageContent): void {
-  const definitions: Record<string, DefinitionNode> = {};
-
-  visit(page.ast, 'definition', (node: DefinitionNode) => {
+  visit(page.ast, 'definition', node => {
     definitions[node.identifier] = node;
   });
 
-  visit(page.ast, ['link', 'linkReference'], visited => {
-    const node = visited as unknown as LinkNode | LinkReferenceNode;
-
-    if (isReferenceLink(node)) {
+  visit(page.ast, ['link', 'linkReference'], node => {
+    if (node.type === 'linkReference') {
       if (definitions[node.identifier]) {
         replaceURL(ctx, page, definitions[node.identifier]);
       }
-    } else {
+    } else if (node.type === 'link') {
       replaceURL(ctx, page, node);
     }
   });

@@ -9,7 +9,7 @@ import {
 } from './utils.js';
 import path from 'path';
 
-import type { DemoComponent, CodeNode } from '../types.js';
+import type { DemoComponent } from '../types.js';
 
 export default plugin({
   runWithMdast(ctx): void {
@@ -18,7 +18,7 @@ export default plugin({
     ctx.pages.forEach(page => {
       const demoComponents: DemoComponent[] = [];
 
-      visit(page.ast, 'code', (node: CodeNode) => {
+      visit(page.ast, 'code', node => {
         if (['preview-template', 'preview'].includes(node.meta || '')) {
           demoComponents.push({
             name: generateDemoComponentName(

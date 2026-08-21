@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Node as MarkdownAST } from 'unist';
 import { Processor, Plugin as UnifiedPlugin, Settings as UnifiedSettings } from 'unified';
 import { VFile } from 'vfile';
 import type { Root as MdastRoot } from 'mdast';
@@ -15,6 +14,30 @@ export type RemarkProcessor = Processor<MdastRoot, MdastRoot, MdastRoot, undefin
  * The HTML (hast) processor. Takes an mdast tree in and produces a hast tree.
  */
 export type RehypeProcessor = Processor<undefined, MdastRoot, HastRoot, undefined, undefined>;
+
+/**
+ * The tree a page holds. Docfy parses markdown into mdast, then transforms it
+ * to hast half-way through the pipeline, so which one `PageContent.ast` holds
+ * depends on when you look at it. See `Plugin` for the per-hook types.
+ */
+export type PageAST = MdastRoot | HastRoot;
+
+declare module 'mdast' {
+  interface HeadingData {
+    /**
+     * The slug of the heading, added by Docfy's `mdastSlug` transformer and
+     * read by the `toc` plugin.
+     */
+    id?: string | undefined;
+
+    /**
+     * Marks a heading to be removed from the tree by the `toc` plugin once it
+     * has been collected. The Ember integrations use it for demo titles, which
+     * belong in the table of contents but are rendered by `DocfyDemo` instead.
+     */
+    docfyDelete?: boolean | undefined;
+  }
+}
 
 export interface Heading {
   title: string;
@@ -35,15 +58,15 @@ export interface PageMetadata {
   parentLabel: undefined | string;
 }
 
-export interface PageContent {
+export interface PageContent<AST extends PageAST = PageAST> {
   meta: PageMetadata;
   sourceConfig: SourceConfig;
   source: string;
   vFile: VFile;
-  ast: MarkdownAST;
+  ast: AST;
   markdown: string;
   rendered: string;
-  demos?: PageContent[];
+  demos?: PageContent<AST>[];
   pluginData: Record<string, unknown>;
 }
 
@@ -59,10 +82,10 @@ export interface StaticAssetDefinition {
   toPath: string;
 }
 
-export interface Context {
+export interface Context<AST extends PageAST = PageAST> {
   remark: RemarkProcessor;
   rehype: RehypeProcessor;
-  pages: PageContent[];
+  pages: PageContent<AST>[];
   staticAssets: StaticAssetDefinition[];
   options: ContextOptions;
 }
@@ -75,7 +98,7 @@ export interface NestedPageMetadata {
 }
 
 export interface DocfyResult {
-  content: PageContent[];
+  content: PageContent<HastRoot>[];
   staticAssets: StaticAssetDefinition[];
   nestedPageMetadata: NestedPageMetadata;
 }
@@ -168,16 +191,22 @@ export interface PluginOptions {
   [key: string]: unknown;
 }
 
-export type PluginHandler<T = PluginOptions | undefined | null> = (
-  ctx: Context,
+export type PluginHandler<T = PluginOptions | undefined | null, AST extends PageAST = PageAST> = (
+  ctx: Context<AST>,
   options: T
 ) => void;
 
+/**
+ * Each hook is typed with the tree it actually receives: `runBefore` and
+ * `runWithMdast` run before Docfy transforms mdast to hast, `runWithHast` and
+ * `runAfter` run once the tree is hast. This means `page.ast` is a real
+ * `mdast.Root` or `hast.Root` inside a handler — no narrowing needed.
+ */
 export interface Plugin<T = PluginOptions | undefined | null> {
-  runBefore?: PluginHandler<T>;
-  runWithMdast?: PluginHandler<T>;
-  runWithHast?: PluginHandler<T>;
-  runAfter?: PluginHandler<T>;
+  runBefore?: PluginHandler<T, MdastRoot>;
+  runWithMdast?: PluginHandler<T, MdastRoot>;
+  runWithHast?: PluginHandler<T, HastRoot>;
+  runAfter?: PluginHandler<T, HastRoot>;
 }
 
 export interface PluginWithOptions<T = PluginOptions> extends Plugin<T> {

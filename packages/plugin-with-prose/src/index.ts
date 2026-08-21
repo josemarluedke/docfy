@@ -1,15 +1,10 @@
 import plugin from '@docfy/core/lib/plugin.js';
-import { PageContent } from '@docfy/core/lib/types';
-import type { Node, Parent } from 'unist';
-
-interface NodeWithMeta extends Node {
-  meta?: string;
-}
+import type { Html, Root, RootContent } from 'mdast';
 
 // This plugin was inpired by TailwindCSS's code:
 // https://github.com/tailwindlabs/tailwindcss.com/blob/1234b4faded6c7a06b734c49c61257137b4acc9b/remark/withProse.js
 
-function shouldUnproseNode(node: NodeWithMeta): boolean {
+function shouldUnproseNode(node: RootContent): boolean {
   return Boolean(
     node.type === 'code' &&
     node.meta &&
@@ -17,16 +12,16 @@ function shouldUnproseNode(node: NodeWithMeta): boolean {
   );
 }
 
-function withProse(tree: Parent, className = 'prose', notClassName = 'not-prose'): void {
-  const openProse = () => ({
+function withProse(tree: Root, className = 'prose', notClassName = 'not-prose'): void {
+  const openProse = (): Html => ({
     type: 'html',
     value: `<div class="${className}">`,
   });
-  const openNotProse = () => ({
+  const openNotProse = (): Html => ({
     type: 'html',
     value: `<div class="${notClassName}">`,
   });
-  const close = () => ({ type: 'html', value: '</div>' });
+  const close = (): Html => ({ type: 'html', value: '</div>' });
 
   tree.children = [
     openProse(),
@@ -49,17 +44,9 @@ interface WithProseOptions {
   className?: string;
 }
 
-interface Page {
-  ast: Parent;
-  demos?: Page[];
-}
-
 const DocfyPluginWithProse = plugin.withOptions<WithProseOptions | undefined>({
   runWithMdast(ctx, options) {
-    ctx.pages.forEach((pageContent: PageContent) => {
-      // PageContent may not have children, which is required for withProse
-      // TODO: pageContent may need to be a union type
-      const page = pageContent as unknown as Page;
+    ctx.pages.forEach(page => {
       withProse(page.ast, options?.className);
 
       page.demos?.forEach(demo => {

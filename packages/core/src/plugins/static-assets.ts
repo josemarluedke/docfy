@@ -2,33 +2,8 @@ import { visit } from 'unist-util-visit';
 import plugin from '../plugin.js';
 import { PageContent } from '../types.js';
 import { isValidUrl } from '../-private/utils.js';
-import { Node } from 'unist';
 import path from 'path';
-
-interface Resource {
-  url: string;
-  title?: string;
-}
-interface Association {
-  identifier: string;
-  label?: string;
-}
-
-interface ImageReferenceNode extends Node, Association {
-  type: 'imageReference';
-}
-
-interface DefinitionNode extends Node, Resource, Association {
-  type: 'definition';
-}
-
-interface ImageNode extends Node, Resource {
-  type: 'image';
-}
-
-function isImageReference(node: ImageNode | ImageReferenceNode): node is ImageReferenceNode {
-  return node.type === 'imageReference';
-}
+import type { Root as MdastRoot, Definition, Image } from 'mdast';
 
 function generateUniqueFileName(seen: string[], name: string, count?: number): string {
   if (seen.indexOf(name) == -1) {
@@ -56,7 +31,7 @@ export default plugin({
 
     const assets: Record<string, string> = {};
 
-    function transform(page: PageContent, node: DefinitionNode | ImageNode): void {
+    function transform(page: PageContent<MdastRoot>, node: Definition | Image): void {
       if (!isValidUrl(node.url) && !path.isAbsolute(node.url)) {
         const absolutePath = path.resolve(
           path.join(page.sourceConfig.root, path.dirname(page.source)),
@@ -79,20 +54,18 @@ export default plugin({
     }
 
     ctx.pages.forEach(page => {
-      const definitions: Record<string, DefinitionNode> = {};
+      const definitions: Record<string, Definition> = {};
 
-      visit(page.ast, 'definition', (node: DefinitionNode) => {
+      visit(page.ast, 'definition', node => {
         definitions[node.identifier] = node;
       });
 
-      visit(page.ast, ['image', 'imageReference'], visited => {
-        const node = visited as unknown as ImageNode | ImageReferenceNode;
-
-        if (isImageReference(node)) {
+      visit(page.ast, ['image', 'imageReference'], node => {
+        if (node.type === 'imageReference') {
           if (definitions[node.identifier]) {
             transform(page, definitions[node.identifier]);
           }
-        } else {
+        } else if (node.type === 'image') {
           transform(page, node);
         }
       });

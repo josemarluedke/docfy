@@ -1,23 +1,14 @@
 import plugin from '@docfy/core/lib/plugin.js';
 import { visit } from 'unist-util-visit';
 import { PageContent } from '@docfy/core/lib/types.js';
-import { Node, Parent } from 'unist';
-import { u } from 'unist-builder';
+import { html } from './utils';
+import type { Root, RootContent } from 'mdast';
 
-interface LinkNode extends Node {
-  title: string | null;
-  url: string;
-  children: Node[];
-}
-
-function visitor(page: PageContent): void {
-  visit(page.ast, 'link', (visited, index, visitedParent) => {
-    const node = visited as unknown as LinkNode;
-    const parent = visitedParent as unknown as Parent | undefined;
-
+function visitor(page: PageContent<Root>): void {
+  visit(page.ast, 'link', (node, index, parent) => {
     if (node.url[0] === '/') {
       const data = node.data || (node.data = {});
-      const props = (data.hProperties || (data.hProperties = {})) as Record<string, unknown>;
+      const props = data.hProperties || (data.hProperties = {});
 
       const urlParts = node.url.split('#');
       const attributes = Object.keys(props)
@@ -26,18 +17,26 @@ function visitor(page: PageContent): void {
         })
         .join(' ');
 
-      const toInsert: Node[] = [
-        u(
-          'html',
+      const toInsert: RootContent[] = [
+        html(
           `<DocfyLink @to="${urlParts[0]}" ${
             urlParts[1] ? `@anchor="${urlParts[1]}"` : ''
           } ${attributes}>`
         ),
         ...node.children,
-        u('html', `</DocfyLink>`),
+        html(`</DocfyLink>`),
       ];
 
-      parent?.children.splice(index, 1, ...toInsert);
+      if (parent && typeof index === 'number') {
+        // `visit` types `parent` as the union of every mdast parent, whose
+        // `children` arrays hold different node types, so `splice` is not
+        // callable on the union. The raw `html` nodes also sit where mdast only
+        // allows phrasing content; `mdast-util-to-hast` passes them through
+        // untouched, which is what makes the surrounding tags work.
+        const children = (parent as unknown as { children: RootContent[] }).children;
+
+        children.splice(index, 1, ...toInsert);
+      }
     }
   });
 }

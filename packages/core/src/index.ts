@@ -34,6 +34,7 @@ import { getRepoEditUrl } from './-private/repo-info.js';
 import { transformToNestedPageMetadata } from './-private/nested-page-metadata.js';
 import debugFactory from 'debug';
 import type { Root as MdastRoot } from 'mdast';
+import type { Root as HastRoot } from 'hast';
 const debug = debugFactory('@docfy/core');
 
 class Docfy {
@@ -87,7 +88,10 @@ class Docfy {
           reject(err);
         } else {
           resolve({
-            content: ctx.pages,
+            // The pipeline holds `Context<PageAST>` because `page.ast` changes
+            // shape half-way through it. By the time it resolves,
+            // `transformerMdastToHast` has replaced every tree with hast.
+            content: ctx.pages as PageContent<HastRoot>[],
             staticAssets: ctx.staticAssets,
             nestedPageMetadata: transformToNestedPageMetadata(
               ctx.pages.map(p => p.meta),
@@ -101,6 +105,11 @@ class Docfy {
     });
   }
 
+  /*
+   * Turns every page's mdast tree into a hast tree. This is the point where
+   * `PageContent.ast` switches from `mdast.Root` to `hast.Root`, which is why
+   * the pipeline is typed with the union of both and narrows here.
+   */
   private transformerMdastToHast(ctx: Context): void {
     ctx.pages.forEach(page => {
       page.ast = ctx.rehype.runSync(page.ast as MdastRoot, page.vFile);
