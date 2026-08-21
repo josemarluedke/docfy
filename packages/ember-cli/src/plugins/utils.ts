@@ -1,6 +1,36 @@
-import { Node } from 'unist';
-import { u } from 'unist-builder';
+import { visit, EXIT } from 'unist-util-visit';
+import type { Heading, Html, Root, RootContent } from 'mdast';
 import { DemoComponent, DemoComponentName } from './types';
+
+/*
+ * Builds a raw `html` mdast node.
+ *
+ * This replaces `unist-builder`'s `u('html', value)`, which returned an untyped
+ * node. `html` is a real mdast node type, so the literal is all we need.
+ */
+export function html(value: string): Html {
+  return { type: 'html', value };
+}
+
+/*
+ * Finds the first heading in the tree matching a predicate.
+ *
+ * This replaces `unist-util-find`, which is unmaintained and returns a bare
+ * unist `Node` — losing `depth` and `data` and forcing a cast at every call
+ * site.
+ */
+export function findHeading(tree: Root, test: (node: Heading) => boolean): Heading | undefined {
+  let found: Heading | undefined;
+
+  visit(tree, 'heading', node => {
+    if (test(node)) {
+      found = node;
+      return EXIT;
+    }
+  });
+
+  return found;
+}
 
 /**
  * Creates all the Nodes necessary to render a Demo Component.
@@ -22,50 +52,48 @@ import { DemoComponent, DemoComponentName } from './types';
  * </DocfyDemo>
  * ```
  */
-export function createDemoNodes(component: DemoComponent): Node[] {
-  const nodes: Node[] = [u('html', `<DocfyDemo @id="${component.name.dashCase}" as |demo|>`)];
+export function createDemoNodes(component: DemoComponent): RootContent[] {
+  const nodes: RootContent[] = [html(`<DocfyDemo @id="${component.name.dashCase}" as |demo|>`)];
 
   if (component.description) {
     nodes.push(
-      u(
-        'html',
+      html(
         `<demo.Description
           ${component.description.title ? `@title="${component.description.title}" ` : ''}${
             component.description.editUrl ? `@editUrl="${component.description.editUrl}"` : ''
           }>`
       ),
-      component.description.ast,
-      u('html', '</demo.Description>')
+      // The demo's description is a whole `Root`. mdast has no node type for a
+      // nested tree, but `mdast-util-to-hast` has a `root` handler, so it is
+      // rendered inline where it sits.
+      component.description.ast as unknown as RootContent,
+      html('</demo.Description>')
     );
   }
 
   nodes.push(
-    u('html', '<demo.Example>'),
-    u('html', `<${component.name.pascalCase} />`),
-    u('html', '</demo.Example>')
+    html('<demo.Example>'),
+    html(`<${component.name.pascalCase} />`),
+    html('</demo.Example>')
   );
 
   if (component.chunks.length > 1) {
-    nodes.push(u('html', '<demo.Snippets as |Snippet|>'));
+    nodes.push(html('<demo.Snippets as |Snippet|>'));
     component.chunks.forEach(chunk => {
-      nodes.push(
-        u('html', `<Snippet @name="${chunk.type}">`),
-        chunk.snippet,
-        u('html', '</Snippet>')
-      );
+      nodes.push(html(`<Snippet @name="${chunk.type}">`), chunk.snippet, html('</Snippet>'));
     });
-    nodes.push(u('html', '</demo.Snippets>'));
+    nodes.push(html('</demo.Snippets>'));
   } else {
     component.chunks.forEach(chunk => {
       nodes.push(
-        u('html', `<demo.Snippet @name="${chunk.type}">`),
+        html(`<demo.Snippet @name="${chunk.type}">`),
         chunk.snippet,
-        u('html', '</demo.Snippet>')
+        html('</demo.Snippet>')
       );
     });
   }
 
-  nodes.push(u('html', '</DocfyDemo>'));
+  nodes.push(html('</DocfyDemo>'));
 
   return nodes;
 }
@@ -89,30 +117,30 @@ export function getExt(lang: string): string {
 /*
  * Delete a node from a list of nodes
  */
-export function deleteNode(nodes: unknown, nodeToDelete: Node | undefined): void {
+export function deleteNode(nodes: RootContent[], nodeToDelete: RootContent | undefined): void {
   if (!nodeToDelete) {
     return;
   }
 
-  if (Array.isArray(nodes)) {
-    const index = nodes.findIndex(item => item === nodeToDelete);
+  const index = nodes.findIndex(item => item === nodeToDelete);
 
-    if (index !== -1) {
-      nodes.splice(index, 1);
-    }
+  if (index !== -1) {
+    nodes.splice(index, 1);
   }
 }
 
 /*
  * Replace a node from a list of nodes
  */
-export function replaceNode(nodes: unknown, nodeToDelete: Node, ...newNodes: Node[]): void {
-  if (Array.isArray(nodes)) {
-    const index = nodes.findIndex(item => item === nodeToDelete);
+export function replaceNode(
+  nodes: RootContent[],
+  nodeToReplace: RootContent,
+  ...newNodes: RootContent[]
+): void {
+  const index = nodes.findIndex(item => item === nodeToReplace);
 
-    if (index !== -1) {
-      nodes.splice(index, 1, ...newNodes);
-    }
+  if (index !== -1) {
+    nodes.splice(index, 1, ...newNodes);
   }
 }
 

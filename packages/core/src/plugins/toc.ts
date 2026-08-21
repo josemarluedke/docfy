@@ -1,22 +1,17 @@
 import plugin from '../plugin.js';
 import { Heading } from '../types.js';
 import { visit } from 'unist-util-visit';
-import { Node, Parent } from 'unist';
 import { toString } from 'mdast-util-to-string';
 import { deleteNode } from '../-private/utils.js';
-
-interface HeadingNode extends Node {
-  depth: number;
-  data: {
-    id: string;
-    docfyDelete?: boolean;
-  };
-}
+import type { Heading as HeadingNode } from 'mdast';
 
 function getHeading(node: HeadingNode): Heading {
   return {
     title: toString(node),
-    id: node.data.id,
+    // `mdastSlug` runs on every tree before any plugin does, so `data.id` is
+    // always set by the time we get here. It is optional in the type because
+    // it is a Docfy augmentation of mdast's `HeadingData`.
+    id: node.data?.id as string,
     depth: node.depth,
   };
 }
@@ -38,31 +33,25 @@ function findParentOfDepth(headings: Heading[], depth: number): Heading[] {
   }
 }
 
-function isHeading(node: Node): node is HeadingNode {
-  return node.type === 'heading';
-}
-
 export default plugin({
   runWithMdast(ctx): void {
     ctx.pages.forEach((page): void => {
       const headings: Heading[] = [];
 
-      visit(page.ast, (node: Node, _, parentNode: Parent | undefined) => {
-        if (isHeading(node)) {
-          if (node.depth === 1) {
-            return;
-          }
+      visit(page.ast, 'heading', (node, _, parentNode) => {
+        if (node.depth === 1) {
+          return;
+        }
 
-          if (node.depth > ctx.options.tocMaxDepth) {
-            return;
-          }
-          const parent = findParentOfDepth(headings, node.depth);
+        if (node.depth > ctx.options.tocMaxDepth) {
+          return;
+        }
+        const parent = findParentOfDepth(headings, node.depth);
 
-          parent.push(getHeading(node));
+        parent.push(getHeading(node));
 
-          if (node.data.docfyDelete && parentNode) {
-            deleteNode(parentNode.children, node);
-          }
+        if (node.data?.docfyDelete && parentNode) {
+          deleteNode(parentNode.children, node);
         }
       });
 

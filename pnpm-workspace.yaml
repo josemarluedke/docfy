@@ -3,19 +3,6 @@ packages:
   - 'test-app-vite'
   - 'test-app-classic'
 
-# Replaces yarn's `resolutions`. pnpm 11 reads overrides from this file, not
-# from the root package.json.
-#
-# The unist v2 types are still pinned because the Ember integrations' Docfy
-# plugins are written against v2's loose `Node` (which carried an index
-# signature, so `node.value` / `node.depth` type-check on a bare node). They
-# also intentionally build synthetic nodes and reassign `node.type`, which
-# strict mdast `Root`/`RootContent` types cannot express. Runtime is unaffected
-# — this is types-only. Migrating those plugins to real mdast types (and then
-# dropping this pin) is tracked separately.
-overrides:
-  '@types/unist': 2.0.3
-
 # pnpm blocks dependency build scripts unless explicitly allowed here.
 # esbuild's postinstall installs its platform binary, without which vite cannot
 # build; nx is lerna's task engine. core-js 2.x's postinstall only prints a
