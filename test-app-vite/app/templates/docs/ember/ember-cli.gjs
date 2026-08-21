@@ -6,7 +6,7 @@ import { DocfyLink } from '@docfy/ember';
 <h2 id="prerequisites"><a href="#prerequisites">Prerequisites</a></h2>
 <ul>
 <li>Classic Ember CLI application</li>
-<li>Node <code>^20.19.0 || >=22.12.0</code></li>
+<li>Node <code>^22.22.2 || ^24.15.0 || >=26.0.0</code></li>
 <li><code>@docfy/ember</code> for runtime components (covered in <DocfyLink @to="/docs/ember/tutorial"  >Tutorial</DocfyLink>)</li>
 </ul>
 <h2 id="installation"><a href="#installation">Installation</a></h2>
