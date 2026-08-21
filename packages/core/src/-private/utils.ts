@@ -1,6 +1,7 @@
 import path from 'path';
 import { visit } from 'unist-util-visit';
-import { Node } from 'unist';
+import type { Node } from 'unist';
+import type { Root as MdastRoot } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { slug } from 'github-slugger';
 import url from 'url';
@@ -73,11 +74,10 @@ export function generateAutoUrl(source: string, prefix?: string, suffix?: string
   return clearURL(parts, ignoreSuffix ? '' : suffix || '');
 }
 
-export function inferTitle(ast: Node): string | undefined {
+export function inferTitle(ast: MdastRoot): string | undefined {
   let docTitle: string | undefined;
   visit(ast, 'heading', node => {
-    const { depth } = node as never;
-    if (depth !== 1) return;
+    if (node.depth !== 1) return;
     docTitle = toString(node);
   });
   return docTitle;

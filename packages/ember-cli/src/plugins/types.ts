@@ -1,21 +1,13 @@
-import { Node } from 'unist';
+import type { Code, Root } from 'mdast';
 
-interface Literal {
-  value: string;
-}
-
-export interface CodeNode extends Node, Literal {
-  type: 'code';
-  lang?: string;
-  meta?: string;
-}
+export type CodeNode = Code;
 
 export interface DemoComponent {
   name: DemoComponentName;
   chunks: DemoComponentChunk[];
   description?: {
     title?: string;
-    ast: Node;
+    ast: Root;
     editUrl?: string;
   };
 }
@@ -29,5 +21,5 @@ export interface DemoComponentChunk {
   type: string;
   code: string;
   ext: string;
-  snippet: Node;
+  snippet: Code;
 }

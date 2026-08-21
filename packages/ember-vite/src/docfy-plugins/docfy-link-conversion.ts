@@ -1,27 +1,21 @@
 import plugin from '@docfy/core/lib/plugin.js';
 import { visit } from 'unist-util-visit';
-import { u } from 'unist-builder';
-import type { Context, PageContent } from '@docfy/core/lib/types.js';
-import type { Node, Parent } from 'unist';
+import { html } from './utils.js';
+import type { PageContent } from '@docfy/core/lib/types.js';
+import type { Root, RootContent } from 'mdast';
 import type { PluginData } from '../types.js';
 import { getComponentImport } from '../import-map.js';
 
-interface LinkNode extends Node {
-  title: string | null;
-  url: string;
-  children: Node[];
-}
-
-function processPageForInternalLinks(page: PageContent): boolean {
+function processPageForInternalLinks(page: PageContent<Root>): boolean {
   let hasInternalLinks = false;
 
-  visit(page.ast, 'link', (node: LinkNode, index: number, parent: Parent | undefined) => {
+  visit(page.ast, 'link', (node, index, parent) => {
     // Only process internal links that start with '/'
     if (node.url && node.url[0] === '/') {
       hasInternalLinks = true;
 
       const data = node.data || (node.data = {});
-      const props = (data.hProperties || (data.hProperties = {})) as Record<string, unknown>;
+      const props = data.hProperties || (data.hProperties = {});
 
       const urlParts = node.url.split('#');
       const attributes = Object.keys(props)
@@ -30,19 +24,25 @@ function processPageForInternalLinks(page: PageContent): boolean {
         })
         .join(' ');
 
-      const toInsert: Node[] = [
-        u(
-          'html',
+      const toInsert: RootContent[] = [
+        html(
           `<DocfyLink @to="${urlParts[0]}" ${
             urlParts[1] ? `@anchor="${urlParts[1]}"` : ''
           } ${attributes}>`
         ),
         ...node.children,
-        u('html', `</DocfyLink>`),
+        html(`</DocfyLink>`),
       ];
 
-      if (parent && parent.children) {
-        parent.children.splice(index, 1, ...toInsert);
+      if (parent && typeof index === 'number') {
+        // `visit` types `parent` as the union of every mdast parent, whose
+        // `children` arrays hold different node types, so `splice` is not
+        // callable on the union. The raw `html` nodes also sit where mdast only
+        // allows phrasing content; `mdast-util-to-hast` passes them through
+        // untouched, which is what makes the surrounding tags work.
+        const children = (parent as unknown as { children: RootContent[] }).children;
+
+        children.splice(index, 1, ...toInsert);
       }
     }
   });
@@ -60,7 +60,7 @@ function processPageForInternalLinks(page: PageContent): boolean {
  * [API Reference](/docs/api#configuration) -> <DocfyLink @to="/docs/api" @anchor="configuration">API Reference</DocfyLink>
  */
 export default plugin({
-  runWithMdast(ctx: Context): void {
+  runWithMdast(ctx): void {
     ctx.pages.forEach(page => {
       // Process page content and check for internal links in one pass
       const pageHasInternalLinks = processPageForInternalLinks(page);

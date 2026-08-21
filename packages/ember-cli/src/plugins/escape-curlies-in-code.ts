@@ -1,7 +1,6 @@
 import plugin from '@docfy/core/lib/plugin.js';
 import { visit } from 'unist-util-visit';
-import type { Node } from 'unist';
-import type { Element, Text } from 'hast';
+import type { Root } from 'hast';
 import type { PageContent } from '@docfy/core/lib/types.js';
 
 /**
@@ -15,13 +14,13 @@ import type { PageContent } from '@docfy/core/lib/types.js';
  * bare `{{` into the output. Running at the hast stage (`runWithHast`, which
  * Docfy invokes after all rehype plugins) escapes the final text instead.
  */
-function escapeCurliesInCode(ast: Node): void {
-  visit(ast, 'element', (node: Element) => {
+function escapeCurliesInCode(ast: Root): void {
+  visit(ast, 'element', node => {
     if (node.tagName !== 'code') {
       return;
     }
 
-    visit(node, 'text', (textNode: Text) => {
+    visit(node, 'text', textNode => {
       textNode.value = textNode.value.replace(/\{\{/g, '\\{{');
     });
 
@@ -32,7 +31,7 @@ function escapeCurliesInCode(ast: Node): void {
 
 export default plugin({
   runWithHast(ctx): void {
-    const escape = (page: PageContent): void => {
+    const escape = (page: PageContent<Root>): void => {
       escapeCurliesInCode(page.ast);
       page.demos?.forEach(escape);
     };

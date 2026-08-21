@@ -1,6 +1,6 @@
 import { visit } from 'unist-util-visit';
 import plugin from '@docfy/core/lib/plugin.js';
-import { DemoComponent, CodeNode } from './types';
+import { DemoComponent } from './types';
 import {
   generateDemoComponentName,
   getExt,
@@ -17,7 +17,7 @@ export default plugin({
     ctx.pages.forEach(page => {
       const demoComponents: DemoComponent[] = [];
 
-      visit(page.ast, 'code', (node: CodeNode) => {
+      visit(page.ast, 'code', node => {
         if (['preview-template', 'preview'].includes(node.meta || '')) {
           demoComponents.push({
             name: generateDemoComponentName(

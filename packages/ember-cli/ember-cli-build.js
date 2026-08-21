@@ -5,7 +5,6 @@ process.env.EXPERIMENTAL_RENDER_MODE_SERIALIZE = true;
 
 const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 
-
 module.exports = function (defaults) {
   const trees = {};
   // Exclude FastBoot tests if FASTBOOT_DISABLED is set,
