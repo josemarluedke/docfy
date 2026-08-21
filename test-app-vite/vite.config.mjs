@@ -18,7 +18,7 @@ export default defineConfig({
           projectDescription:
             'Docfy is a modular JavaScript tool to help build documentation sites.',
         },
-      }
+      },
     ),
     tailwindcss(),
     classicEmberSupport(),

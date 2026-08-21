@@ -1,0 +1,5 @@
+# compiled output
+/lib/
+
+# misc
+pnpm-lock.yaml

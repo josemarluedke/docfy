@@ -49,7 +49,9 @@ module('Integration | Component | DocfyLink', function (hooks) {
     const router = stubRouter(this.owner);
 
     await render(
-      <template><DocfyLink @to="/docs/configuration">Config</DocfyLink></template>
+      <template>
+        <DocfyLink @to="/docs/configuration">Config</DocfyLink>
+      </template>
     );
 
     assert
@@ -67,7 +69,9 @@ module('Integration | Component | DocfyLink', function (hooks) {
 
     // Docfy gives index pages a trailing slash; urlFor never produced one.
     await render(
-      <template><DocfyLink @to="/docs/getting-started/">Start</DocfyLink></template>
+      <template>
+        <DocfyLink @to="/docs/getting-started/">Start</DocfyLink>
+      </template>
     );
 
     assert
@@ -80,7 +84,10 @@ module('Integration | Component | DocfyLink', function (hooks) {
 
     await render(
       <template>
-        <DocfyLink @to="/docs/configuration" @anchor="urlschema">Schema</DocfyLink>
+        <DocfyLink
+          @to="/docs/configuration"
+          @anchor="urlschema"
+        >Schema</DocfyLink>
       </template>
     );
 
@@ -141,7 +148,9 @@ module('Integration | Component | DocfyLink', function (hooks) {
     const router = stubRouter(this.owner);
 
     await render(
-      <template><DocfyLink @to="/docs/configuration">Config</DocfyLink></template>
+      <template>
+        <DocfyLink @to="/docs/configuration">Config</DocfyLink>
+      </template>
     );
     await click('[data-test-docfy-link]');
 
@@ -157,7 +166,9 @@ module('Integration | Component | DocfyLink', function (hooks) {
     const router = stubRouter(this.owner, { recognizes: false });
 
     await render(
-      <template><DocfyLink @to="/not-a-page">Nope</DocfyLink></template>
+      <template>
+        <DocfyLink @to="/not-a-page">Nope</DocfyLink>
+      </template>
     );
     await click('[data-test-docfy-link]');
 
