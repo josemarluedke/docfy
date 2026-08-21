@@ -25,7 +25,7 @@
     "fast-glob": "^3.3.3",
     "git-repo-info": "^2.1.1",
     "github-slugger": "^2.0.0",
-    "hosted-git-info": "^9.0.3",
+    "hosted-git-info": "^10.1.1",
     "mdast-util-to-string": "^4.0.0",
     "rehype-stringify": "^10.0.1",
     "remark-extract-frontmatter": "^3.2.0",
@@ -64,7 +64,7 @@
     "vitest": "^3.2.4"
   },
   "engines": {
-    "node": "^20.19.0 || >=22.12.0"
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
   },
   "publishConfig": {
     "access": "public"

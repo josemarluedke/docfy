@@ -13,10 +13,17 @@ remark 11, rehype 11). Docfy's own packages are now ES modules.
 
 ### Node version
 
-Docfy now requires Node `^20.19.0 || >=22.12.0`. This is not negotiable: those
-are the versions where `require()` of an ES module works, which is what allows
-the classic Ember CLI build and CommonJS config files to keep working against
-ESM-only packages.
+Docfy now requires Node `^22.22.2 || ^24.15.0 || >=26.0.0`. Read that range carefully
+before upgrading: it drops Node 20 entirely, and it also drops Node 22.12 through
+22.22. If you are on Node 20 or on an early 22.x, you need to upgrade Node first.
+
+Two different constraints combine to produce that range. Docfy needs `require()` of
+an ES module to work, which is what allows the classic Ember CLI build and CommonJS
+config files to keep working against ESM-only packages; that support landed in Node
+20.19 and 22.12, so on its own it would only require those. The floor is higher
+because `hosted-git-info`, the dependency that builds "edit this page" links, ships
+its own narrower engines range, and Docfy matches it rather than depending on a
+package it does not support.
 
 ### Your config file keeps working
 
