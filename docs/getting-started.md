@@ -22,10 +22,18 @@ yarn init
 
 ## Requirements
 
-Docfy is published as ES modules and requires Node `^20.19.0 || >=22.12.0`. Those
-are the Node versions that support `require()` of ES modules, which is what lets
-CommonJS tooling (Ember CLI, a CommonJS config file) load Docfy and ESM-only
-remark/rehype plugins.
+Docfy is published as ES modules and requires Node `>=22.22.2`.
+
+Two separate constraints combine to produce that floor. Docfy needs `require()` of
+an ES module to work, which is what lets CommonJS tooling (Ember CLI, a CommonJS
+config file) load Docfy and ESM-only remark/rehype plugins; that support landed in
+Node 20.19 and 22.12. The floor is higher than those versions because
+`hosted-git-info`, the dependency Docfy uses to build "edit this page" links,
+requires 22.22.2 as its own minimum.
+
+That dependency expresses its range as a list of LTS lines, which excludes
+odd-numbered releases such as Node 23 and 25. Docfy uses a plain `>=` instead, so
+developing on a current release does not produce install warnings.
 
 ## Add `@docfy/core` as a dependency
 

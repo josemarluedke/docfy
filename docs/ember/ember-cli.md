@@ -9,7 +9,7 @@ order: 3
 ## Prerequisites
 
 - Classic Ember CLI application
-- Node `^20.19.0 || >=22.12.0`
+- Node `>=22.22.2`
 - `@docfy/ember` for runtime components (covered in [Tutorial](./tutorial.md))
 
 ## Installation

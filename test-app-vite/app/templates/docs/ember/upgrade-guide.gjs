@@ -5,10 +5,15 @@
 <p>Version 0.13.0 moves Docfy onto the current unified/remark stack (unified 11,
 remark 11, rehype 11). Docfy's own packages are now ES modules.</p>
 <h3 id="node-version"><a href="#node-version">Node version</a></h3>
-<p>Docfy now requires Node <code>^20.19.0 || >=22.12.0</code>. This is not negotiable: those
-are the versions where <code>require()</code> of an ES module works, which is what allows
-the classic Ember CLI build and CommonJS config files to keep working against
-ESM-only packages.</p>
+<p>Docfy now requires Node <code>>=22.22.2</code>. Note what that drops: Node 20 entirely, and
+also Node 22.12 through 22.22. If you are on Node 20 or on an early 22.x, you need
+to upgrade Node first.</p>
+<p>Two different constraints combine to produce that floor. Docfy needs <code>require()</code> of
+an ES module to work, which is what allows the classic Ember CLI build and CommonJS
+config files to keep working against ESM-only packages; that support landed in Node
+20.19 and 22.12, so on its own it would only require those. The floor is higher
+because <code>hosted-git-info</code>, the dependency that builds "edit this page" links,
+requires 22.22.2 as its own minimum.</p>
 <h3 id="your-config-file-keeps-working"><a href="#your-config-file-keeps-working">Your config file keeps working</a></h3>
 <p>There is no forced migration to <code>.mjs</code>. A CommonJS <code>.docfy-config.js</code> is still
 fully supported, including <code>require()</code>-ing ESM-only remark/rehype plugins.

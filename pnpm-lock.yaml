@@ -27,8 +27,8 @@ importers:
         specifier: ^2.0.0
         version: 2.0.0
       hosted-git-info:
-        specifier: ^3.0.8
-        version: 3.0.8
+        specifier: ^10.1.1
+        version: 10.1.1
       mdast-util-to-string:
         specifier: ^4.0.0
         version: 4.0.0
@@ -80,9 +80,6 @@ importers:
         version: 4.1.13
       '@types/hast':
         specifier: ^3.0.4
-        version: 3.0.5
-      '@types/hosted-git-info':
-        specifier: ^3.0.5
         version: 3.0.5
       '@types/mdast':
         specifier: ^4.0.4
@@ -2940,9 +2937,6 @@ packages:
 
   '@types/hast@3.0.5':
     resolution: {integrity: sha512-rp/ezSWaD1m44dPKICGhiskI13nVr7qTloFwDa/IYkhhf5nzwP+zIQcIJh3WIFSBOy/H1PzB40jPjMDksN4F+g==}
-
-  '@types/hosted-git-info@3.0.5':
-    resolution: {integrity: sha512-Dmngh7U003cOHPhKGyA7LWqrnvcTyILNgNPmNCxlx7j8MIi54iBliiT8XqVLIQ3GchoOjVAyBzNJVyuaJjqokg==}
 
   '@types/http-errors@2.0.5':
     resolution: {integrity: sha512-r8Tayk8HJnX0FztbZN7oVqGccWgw98T/0neJphO91KkmOzug1KkofZURD4UaD5uH8AqcFLfdPErnBod0u71/qg==}
@@ -6104,12 +6098,12 @@ packages:
     resolution: {integrity: sha512-eSmmWE5bZTK2Nou4g0AI3zZ9rswp7GRKoKXS1BLUkvPviOqs4YTN1djQIqrXy9k5gEtdLPy86JjRwsNM9tnDcA==}
     engines: {node: '>=0.10.0'}
 
+  hosted-git-info@10.1.1:
+    resolution: {integrity: sha512-DeOnSPAvOndYKfw075gt8yZzQ7S2hNztw34zBTfhIzLhmBTswIBg5/y+pqu/VD5cYWm5goAFTusDmUEmKZ0PEQ==}
+    engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
+
   hosted-git-info@2.8.9:
     resolution: {integrity: sha512-mxIDAb9Lsm6DoOJ7xH+5+X4y1LU/4Hi50L9C5sIswK3JzULS4bwk1FvjdBgvYR4bzT4tuUQiC15FE2f5HbLvYw==}
-
-  hosted-git-info@3.0.8:
-    resolution: {integrity: sha512-aXpmwoOhRBrw6X3j0h5RloK4x1OzsxMPyxqIHyNfSe2pypkVTZFpEiRoSipPEPlMrh0HW/XsjkJ5WgnCirpNUw==}
-    engines: {node: '>=10'}
 
   hosted-git-info@4.1.0:
     resolution: {integrity: sha512-kyCuEOWjJqZuDbRHzL8V93NzQhwIB71oFWSyzVo+KPZI+pnQPPxucdkrOZvkLRnrf5URsQM+IJ09Dw29cRALIA==}
@@ -12598,8 +12592,6 @@ snapshots:
     dependencies:
       '@types/unist': 2.0.3
 
-  '@types/hosted-git-info@3.0.5': {}
-
   '@types/http-errors@2.0.5': {}
 
   '@types/json-schema@7.0.15': {}
@@ -17448,11 +17440,11 @@ snapshots:
     dependencies:
       parse-passwd: 1.0.0
 
-  hosted-git-info@2.8.9: {}
-
-  hosted-git-info@3.0.8:
+  hosted-git-info@10.1.1:
     dependencies:
-      lru-cache: 6.0.0
+      lru-cache: 11.5.2
+
+  hosted-git-info@2.8.9: {}
 
   hosted-git-info@4.1.0:
     dependencies:
