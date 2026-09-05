@@ -6,6 +6,8 @@ import codeBlocks from '../src/docfy-plugins/code-blocks.js';
 
 const root = path.resolve(import.meta.dirname, './__fixtures__/code-tabs');
 const escapingRoot = path.resolve(import.meta.dirname, './__fixtures__/code-tabs-escaping');
+const preambleRoot = path.resolve(import.meta.dirname, './__fixtures__/code-tabs-preamble');
+const emptyRoot = path.resolve(import.meta.dirname, './__fixtures__/code-tabs-empty');
 
 async function renderFixture(fixtureRoot: string = root) {
   const docfy = new Docfy({
@@ -56,11 +58,39 @@ describe(':::code-tabs directive', () => {
     // mdast html node, invisible to the hast-stage `escapeCurliesInCode` pass,
     // so it must be escaped the same way `openingTag()` escapes `@title`.
     expect(page.rendered).toContain('<tabs.Tab @label="say &quot;hi&quot;">');
+    expect(page.rendered).not.toContain('<tabs.Tab @label="say "hi"">');
   });
 
   test('a title containing curlies is escaped so it does not reach the template as a mustache', async () => {
     const page = await renderFixture(escapingRoot);
 
     expect(page.rendered).toContain('<tabs.Tab @label="not a \\{{mustache}}">');
+    expect(page.rendered).not.toMatch(
+      /<tabs\.Tab @label="not a (?<!\\)\{\{mustache\}\}">/
+    );
+  });
+
+  test('non-fence content between fences is hoisted out as preamble before the wrapper, not left stranded inside it', async () => {
+    const page = await renderFixture(preambleRoot);
+
+    expect(page.rendered).toContain('Some in-between paragraph content.');
+
+    const wrapperStart = page.rendered.indexOf('<DocfyCodeTabs as |tabs|>');
+    const wrapperEnd = page.rendered.indexOf('</DocfyCodeTabs>');
+    const preambleIndex = page.rendered.indexOf('Some in-between paragraph content.');
+
+    // The paragraph belongs to no tab, so it must render exactly once, before
+    // the wrapper opens — never inside it, where it would render regardless
+    // of which tab is active.
+    expect(preambleIndex).toBeGreaterThan(-1);
+    expect(preambleIndex).toBeLessThan(wrapperStart);
+    expect(preambleIndex).not.toBeGreaterThan(wrapperEnd);
+  });
+
+  test('a code-tabs directive with no fences emits no wrapper at all', async () => {
+    const page = await renderFixture(emptyRoot);
+
+    expect(page.rendered).not.toContain('DocfyCodeTabs');
+    expect(page.rendered).toContain('Just a paragraph, no fences at all.');
   });
 });

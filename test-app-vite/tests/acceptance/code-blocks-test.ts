@@ -60,7 +60,7 @@ module('Acceptance | code blocks', function (hooks) {
 
     assert.dom('[data-test-id="code-tabs"]').exists();
 
-    const buttons = document.querySelectorAll('[data-test-id="docfy-tabs-button"]');
+    const buttons = document.querySelectorAll('[data-test-id="code-tabs-button"]');
     assert.dom('[data-test-id="code-tabs-panel"]').exists();
     assert.ok(buttons.length > 1, 'more than one tab');
 

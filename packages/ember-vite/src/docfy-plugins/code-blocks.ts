@@ -164,13 +164,28 @@ function expandTabDirectives(ast: MdastRoot): boolean {
       return;
     }
 
-    const replacement: MdastContent[] = [html('<DocfyCodeTabs as |tabs|>')];
+    const hasFence = node.children.some(child => child.type === 'code');
+
+    if (!hasFence) {
+      // No fences means no tabs, which means DocfyCodeTabs would have zero
+      // tabs and zero panels to render. Leave the directive's content in
+      // place unchanged rather than emitting a stray, empty wrapper.
+      parent.children.splice(at, 1, ...(node.children as MdastContent[]));
+      return;
+    }
+
+    const preamble: MdastContent[] = [];
+    const tabs: MdastContent[] = [];
 
     node.children.forEach(child => {
       if (child.type !== 'code') {
-        // Non-fence content inside the group has no tab to belong to; keep it
-        // rather than silently dropping the author's text.
-        replacement.push(child as MdastContent);
+        // Non-fence content inside a tab group belongs to no single tab (it
+        // sits between two fences, not inside one), so it is treated as
+        // preamble: hoisted out of the group entirely and emitted once,
+        // before the tab UI, rather than placed inside DocfyCodeTabs but
+        // outside every tabs.Tab — which would render unconditionally no
+        // matter which tab is active.
+        preamble.push(child as MdastContent);
         return;
       }
 
@@ -180,14 +195,19 @@ function expandTabDirectives(ast: MdastRoot): boolean {
       // escaped here the same way `openingTag()` escapes `@title`/`@language`.
       const label = attrValue(parseFenceMeta(child.meta).title ?? child.lang ?? 'code');
 
-      replacement.push(
+      tabs.push(
         html(`<tabs.Tab @label="${label}">`),
         child as MdastContent,
         html('</tabs.Tab>')
       );
     });
 
-    replacement.push(html('</DocfyCodeTabs>'));
+    const replacement: MdastContent[] = [
+      ...preamble,
+      html('<DocfyCodeTabs as |tabs|>'),
+      ...tabs,
+      html('</DocfyCodeTabs>'),
+    ];
 
     parent.children.splice(at, 1, ...replacement);
   });

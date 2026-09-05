@@ -1,5 +1,6 @@
 import Component from '@glimmer/component';
-import { hash } from '@ember/helper';
+import { fn, hash } from '@ember/helper';
+import { on } from '@ember/modifier';
 import Tabs from '../-private/tabs.gts';
 import type { TOC } from '@ember/component/template-only';
 import type { ComponentLike } from '@glint/template';
@@ -42,7 +43,30 @@ export default class DocfyCodeTabs extends Component<DocfyCodeTabsSignature> {
   <template>
     <div class="docfy-code-tabs" data-test-id="code-tabs" ...attributes>
       <Tabs as |tabs|>
-        <tabs.List />
+        <div
+          class="docfy-code-tabs__list"
+          data-test-id="code-tabs-list"
+          role="tablist"
+        >
+          {{#each tabs.items as |tab|}}
+            <button
+              type="button"
+              role="tab"
+              class="docfy-code-tabs__list__button
+                {{if
+                  (tabs.isActive tab.id)
+                  'docfy-code-tabs__list__button--active'
+                }}"
+              data-test-id="code-tabs-button"
+              data-test-tab-label="{{tab.label}}"
+              aria-selected="{{if (tabs.isActive tab.id) 'true' 'false'}}"
+              {{on "click" (fn tabs.select tab.id)}}
+            >
+              {{tab.label}}
+            </button>
+          {{/each}}
+        </div>
+
         {{yield (hash Tab=(component DocfyCodeTab tab=tabs.Tab))}}
       </Tabs>
     </div>
