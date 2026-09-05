@@ -1,0 +1,56 @@
+{
+  "name": "@docfy/plugin-shiki",
+  "version": "0.13.1",
+  "private": false,
+  "description": "An opt-in Shiki syntax highlighting preset for Docfy",
+  "repository": "https://github.com/josemarluedke/docfy",
+  "license": "MIT",
+  "author": "Josemar Luedke <josemarluedke@gmail.com>",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "compile": "tsc",
+    "prepare": "tsc",
+    "test": "vitest run",
+    "lint": "eslint . --cache",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --cache --write",
+    "format:check": "prettier . --cache --check"
+  },
+  "dependencies": {
+    "@shikijs/rehype": "^3.0.0",
+    "@shikijs/transformers": "^3.0.0",
+    "shiki": "^3.0.0"
+  },
+  "devDependencies": {
+    "@docfy/core": "workspace:^0.13.1",
+    "@eslint/js": "^10.0.1",
+    "@types/mdast": "^4.0.4",
+    "@types/node": "^22.10.5",
+    "eslint": "^10.9.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-n": "^18.3.0",
+    "globals": "^17.11.0",
+    "prettier": "^3.9.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.67.0",
+    "vitest": "^4.1.11"
+  },
+  "engines": {
+    "node": ">=22.22.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    }
+  }
+}
