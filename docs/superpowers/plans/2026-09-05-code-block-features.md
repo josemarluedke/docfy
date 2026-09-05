@@ -1638,6 +1638,38 @@ git commit -m "feat: add :::code-tabs directive and DocfyCodeTabs component"
 
 ### Task 6: `@docfy/plugin-shiki` preset package
 
+> **SUPERSEDING CONSTRAINTS, discovered during implementation.** These override
+> the code shown later in this task wherever they conflict:
+>
+> 1. **`@shikijs/rehype`'s default export is async-only** and unusable here:
+>    `@docfy/core` drives rehype through `runSync`, which throws
+>    `runSync finished async`. Build a synchronous highlighter with
+>    `createHighlighterCoreSync` and use `rehypeShikiFromHighlighter`.
+> 2. **No top-level `await`, ever.** `@docfy/ember-cli`'s `get-config.ts` loads
+>    the consumer's config with a synchronous `require()`. A top-level await
+>    makes this package's entry an async ES module, so `require()` throws
+>    `ERR_REQUIRE_ASYNC_MODULE` and classic consumers cannot import the package
+>    at all. Bring grammars and themes in with STATIC imports.
+> 3. **A sync highlighter cannot lazily fetch a grammar.** Preload a curated set
+>    rather than Shiki's full ~200-grammar bundle (~11.6MB parsed at import):
+>    `glimmer-ts`, `glimmer-js`, `handlebars`, `javascript`, `typescript`, `jsx`,
+>    `tsx`, `json`, `css`, `scss`, `html`, `markdown`, `shellscript`, `diff`,
+>    `yaml`. Any other language falls back to plain text rather than throwing,
+>    and the README documents both the set and the fallback.
+> 4. **Run the regex engine with `forgiving: true`** — the pure-JS engine cannot
+>    translate every Oniguruma pattern, and without it an untranslatable pattern
+>    throws mid-build.
+> 5. **No `langAlias` option.** The sync highlighter resolves aliases at
+>    construction, so a user alias could only relabel output, never register a
+>    language. Expose `themes` and `transformers` only.
+> 6. **Do not assert on the `language` attribute** — the preset writes it from
+>    its own alias map, so it proves nothing about grammar resolution. Assert on
+>    Shiki's own output: `<template>` in a `gts` fence must split into separately
+>    coloured `<span>`s, and `{{` must be its own token.
+> 7. **Add a `@docfy/plugin-shiki` test step to `.github/workflows/ci.yml`**,
+>    which lists test steps per package — otherwise these assertions never run.
+
+
 **Files:**
 - Create: `packages/plugin-shiki/package.json`
 - Create: `packages/plugin-shiki/tsconfig.json`
