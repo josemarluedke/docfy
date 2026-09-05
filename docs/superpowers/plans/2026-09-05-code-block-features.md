@@ -1118,6 +1118,24 @@ function raw(value: string): HastContent {
   return { type: 'raw', value } as unknown as HastContent;
 }
 
+/**
+ * Escapes a value for interpolation into a double-quoted attribute inside a raw
+ * node.
+ *
+ * Two hazards, both real: `parseFenceMeta` accepts `title='...'`, whose value
+ * may contain a double quote and would otherwise close the attribute early; and
+ * a title containing `{{` reaches the template as a mustache, because raw nodes
+ * are invisible to the `escapeCurliesInCode` pass, which only descends into
+ * `code` elements.
+ */
+function attrValue(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/"/g, '&quot;')
+    .replace(/\{\{/g, '\\{{');
+}
+
 function openingTag(block: RecordedBlock): string {
   const args: string[] = [];
 
@@ -1125,8 +1143,7 @@ function openingTag(block: RecordedBlock): string {
     args.push(`@language="${block.language}"`);
   }
   if (block.title) {
-    // Titles come from `title="..."`, so a double quote cannot appear here.
-    args.push(`@title="${block.title}"`);
+    args.push(`@title="${attrValue(block.title)}"`);
   }
   if (block.collapsible) {
     args.push('@collapsible={{true}}');
