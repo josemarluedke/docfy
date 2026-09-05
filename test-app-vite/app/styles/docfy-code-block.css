@@ -28,32 +28,20 @@
  * so a tabs-list rule that tried to read a block-scoped variable would just
  * silently fall back to its default in every case that matters.
  */
+/*
+ * This site renders code blocks dark in BOTH themes — `./markdown/light.css`
+ * has styled fences `bg-gray-900` since long before this feature. So the chrome
+ * is dark in both modes too, and Shiki always resolves to its dark theme.
+ * Applying the light theme in light mode would put github-light's dark token
+ * colours on that dark surface, which is unreadable.
+ */
 :root {
-  --docfy-code-surface: #fff;
-}
-
-.dark {
   --docfy-code-surface: #24292e;
 }
 
 .shiki,
 .shiki span {
-  color: var(--shiki-light);
-}
-
-.shiki {
-  background-color: var(--shiki-light-bg);
-}
-
-.dark {
-  .shiki,
-  .shiki span {
-    color: var(--shiki-dark);
-  }
-
-  .shiki {
-    background-color: var(--shiki-dark-bg);
-  }
+  color: var(--shiki-dark);
 }
 
 .docfy-code-block {
@@ -63,15 +51,65 @@
      all sit on the same surface as the code itself instead of a mismatched
      panel colour. */
   --docfy-code-block-fade: var(--docfy-code-surface);
-  --docfy-code-block-highlight-background: rgb(16 133 92 / 12%);
-  --docfy-code-block-line-number-color: rgb(31 41 55 / 40%);
+  --docfy-code-block-highlight-background: rgb(56 189 130 / 15%);
+  --docfy-code-block-line-number-color: rgb(203 213 225 / 40%);
 
-  @apply mb-6 overflow-hidden rounded-lg border border-gray-200 text-sm;
+  @apply mb-6 overflow-hidden rounded-lg border border-gray-700 text-sm;
   background: var(--docfy-code-surface);
 }
 
+/*
+ * Restore the padding and horizontal scrolling the markdown stylesheet used to
+ * provide.
+ *
+ * `./markdown/structure.css` styles fenced code with child combinators —
+ * `.prose > pre` and `> pre code` — which supplied `p-4`, `overflow-x-auto`
+ * and a `-mx-4` full-bleed. Wrapping every fence in `DocfyCodeBlock` moves the
+ * `<pre>` one level deeper, so those rules stopped matching: code rendered
+ * flush against the card with no padding and no scroll, while the stale bleed
+ * still pulled some blocks outside their own border.
+ *
+ * Horizontal padding lives on `.line` rather than on the `<pre>` so that a
+ * highlighted line's background reaches the card edges instead of stopping
+ * short of them. This is Shiki's own recommended recipe for exactly that
+ * reason; `code-block.css` already gives `.line[data-highlighted]` the
+ * matching `display: inline-block; width: 100%`.
+ */
+/* Selectors carry two classes deliberately: the markdown stylesheet reaches
+   fences inside lists via `.prose > ul li pre`, whose (0,1,2) specificity would
+   otherwise beat a single-class rule and keep the stale bleed and zero padding
+   on exactly those blocks. */
+.docfy-code-block .docfy-code-block__content pre {
+  @apply m-0 overflow-x-auto py-3;
+}
+
+/* Three classes, to outrank `.dark .prose > ul li pre` (0,2,2) which otherwise
+   gives fences inside lists a different background from their own card. */
+.docfy-code-block .docfy-code-block__content pre.shiki {
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-block .docfy-code-block__content pre code {
+  @apply block p-0;
+}
+
+.docfy-code-block .docfy-code-block__content .line {
+  @apply inline-block w-full px-4;
+}
+
 .docfy-code-block__header {
-  @apply border-b border-gray-200 px-4 py-2 pe-11 font-mono text-xs text-gray-500;
+  @apply flex items-center border-b border-gray-700 px-4 py-2 pe-11 font-mono text-xs text-gray-400;
+  min-height: 2.25rem;
+}
+
+/*
+ * With a header present the copy button has to sit on the header's centre
+ * line, not the card's top-right corner — at the default 0.5rem it lands about
+ * 4px low and reads as misaligned against the filename. Headerless blocks keep
+ * the corner placement, where the button floats over the first line of code.
+ */
+.docfy-code-block:has(.docfy-code-block__header) .docfy-code-block__copy {
+  top: 0.3125rem;
 }
 
 .docfy-code-block__header__title {
@@ -87,7 +125,7 @@
 }
 
 .docfy-code-block__copy:hover {
-  @apply border-gray-200 bg-gray-50 text-gray-700;
+  @apply border-gray-700 bg-gray-1000 text-gray-200;
 }
 
 .docfy-code-block__copy:focus-visible {
@@ -97,12 +135,12 @@
 }
 
 .docfy-code-block__toggle {
-  @apply block w-full border-t border-gray-200 py-2 text-center font-mono text-xs font-medium text-green-700;
+  @apply block w-full border-t border-gray-700 py-2 text-center font-mono text-xs font-medium text-gray-300;
   background: var(--docfy-code-surface);
 }
 
 .docfy-code-block__toggle:hover {
-  @apply bg-gray-50 text-green-800;
+  @apply bg-gray-1000 text-gray-100;
 }
 
 .docfy-code-block__toggle:focus-visible {
@@ -115,12 +153,12 @@
 }
 
 .docfy-code-tabs__list {
-  @apply flex gap-1 rounded-t-lg border border-b-0 border-gray-200 px-2 pt-2;
+  @apply flex gap-1 rounded-t-lg border border-b-0 border-gray-700 px-2 pt-2;
   background: var(--docfy-code-surface);
 }
 
 .docfy-code-tabs__list__button {
-  @apply -mb-px rounded-t-md border border-b-0 border-transparent px-3 py-1.5 font-mono text-xs text-gray-500;
+  @apply -mb-px rounded-t-md border border-b-0 border-transparent px-3 py-1.5 font-mono text-xs text-gray-400;
   transition:
     color 0.15s ease,
     border-color 0.15s ease,
@@ -128,11 +166,11 @@
 }
 
 .docfy-code-tabs__list__button:hover {
-  @apply text-gray-800;
+  @apply text-gray-200;
 }
 
 .docfy-code-tabs__list__button--active {
-  @apply border-gray-200 text-gray-900;
+  @apply border-gray-700 text-gray-100;
   background: var(--docfy-code-surface);
 }
 
@@ -146,49 +184,4 @@
    gap. */
 .docfy-code-tabs__panel .docfy-code-block {
   @apply mb-0 rounded-t-none border-t-0;
-}
-
-.dark {
-  .docfy-code-block {
-    --docfy-code-block-highlight-background: rgb(56 189 130 / 15%);
-    --docfy-code-block-line-number-color: rgb(203 213 225 / 40%);
-
-    @apply border-gray-700;
-  }
-
-  .docfy-code-block__header {
-    @apply border-gray-700 text-gray-400;
-  }
-
-  .docfy-code-block__copy {
-    @apply text-gray-500;
-  }
-
-  .docfy-code-block__copy:hover {
-    @apply border-gray-700 bg-gray-1000 text-gray-200;
-  }
-
-  .docfy-code-block__toggle {
-    @apply border-gray-700 text-green-500;
-  }
-
-  .docfy-code-block__toggle:hover {
-    @apply bg-gray-1000 text-green-400;
-  }
-
-  .docfy-code-tabs__list {
-    @apply border-gray-700;
-  }
-
-  .docfy-code-tabs__list__button {
-    @apply text-gray-500;
-  }
-
-  .docfy-code-tabs__list__button:hover {
-    @apply text-gray-200;
-  }
-
-  .docfy-code-tabs__list__button--active {
-    @apply border-gray-700 text-gray-100;
-  }
 }
