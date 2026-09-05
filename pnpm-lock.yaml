@@ -530,7 +530,13 @@ importers:
 
   packages/plugin-shiki:
     dependencies:
+      '@shikijs/langs':
+        specifier: ^3.0.0
+        version: 3.23.0
       '@shikijs/rehype':
+        specifier: ^3.0.0
+        version: 3.23.0
+      '@shikijs/themes':
         specifier: ^3.0.0
         version: 3.23.0
       '@shikijs/transformers':

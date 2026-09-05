@@ -41,15 +41,47 @@ const docfy = new Docfy({
 });
 ```
 
-## Default themes and aliases
+## Why this preset builds its own highlighter
 
-By default, this preset highlights with the `github-light` / `github-dark`
-theme pair, emitted as CSS variables (`--shiki-light` / `--shiki-dark`) so a
-page can switch themes without re-highlighting and without any runtime
-JavaScript.
+`@docfy/core` drives its rehype pipeline with `unified().runSync(...)` (see
+`packages/core/src/-private/remark.ts`), never the async `.run()`/`.process()`.
+Shiki's own `@shikijs/rehype` default export is async-only — it lazily boots a
+singleton highlighter the first time the tree transformer runs — so wiring it
+in directly makes `runSync` throw.
+
+`@docfy/ember-cli` (the classic, non-Vite build) also loads a consumer's
+`docfy.config.*` with a **synchronous** `require()`. A module that contains a
+top-level `await` anywhere in its graph is an async ES module, and Node
+throws `ERR_REQUIRE_ASYNC_MODULE` the moment such a config merely `import`s
+it — so this package cannot use a top-level `await` either, even to build its
+highlighter once at startup.
+
+To stay synchronous end-to-end, this preset:
+
+- Loads its grammars and themes via plain, **static** `import` statements
+  (see "Supported languages" and "Supported themes" below) — never a dynamic
+  `import()` or a top-level `await`.
+- Builds one Shiki `HighlighterCore` at module load time via
+  `createHighlighterCoreSync`, using the pure-JS regex engine (no WASM to
+  load).
+- Uses `@shikijs/rehype/core`'s `rehypeShikiFromHighlighter`, which — given an
+  already-built highlighter and no lazy-loaded languages — returns a genuinely
+  synchronous unified transformer.
+
+## Supported languages
+
+Preloading **every** language Shiki bundles (~200 grammars, ~11.6MB of JSON)
+would cost real parse time at `import`, whether or not a given site uses most
+of them. Instead, this preset preloads a curated set covering the glimmer
+grammars that are the point of the package, plus the languages Docfy's own
+docs (and typical Ember app docs) actually fence:
+
+`glimmer-ts`, `glimmer-js`, `handlebars`, `javascript`, `typescript`, `jsx`,
+`tsx`, `json`, `css`, `scss`, `html`, `markdown`, `shellscript`, `diff`,
+`yaml`.
 
 It also registers these language aliases so fences written the way Ember
-docs are actually written resolve to real grammars:
+docs are actually written resolve to the grammars above:
 
 | Fence language | Resolves to  |
 | -------------- | ------------ |
@@ -57,9 +89,29 @@ docs are actually written resolve to real grammars:
 | `gjs`          | `glimmer-js` |
 | `hbs`          | `handlebars` |
 
-Every other language Shiki bundles (`js`, `ts`, `css`, `html`, `bash`, `md`,
-`json`, `diff`, and hundreds more) works out of the box with no
-configuration.
+This alias table is fixed and is not configurable — see "Language aliases"
+below for why.
+
+### Unsupported languages
+
+A fence whose language is not in the list above (for example ` ```rust `)
+is **not** an error. `@shikijs/rehype` leaves any `<pre>` whose language isn't
+loaded completely untouched: no `.shiki` wrapper, no theme classes, no
+Shiki-applied highlighting — it renders as plain, unhighlighted fenced code,
+exactly as if no highlighter were configured for it. A docs build never fails
+because someone wrote a fence in a language this preset doesn't preload.
+
+If you need another language, either send a PR adding it to the curated list
+in `src/index.ts`, or configure your own Shiki highlighter (this preset's
+source is a reasonably short template to copy).
+
+## Supported themes
+
+This preset statically preloads three themes: `github-light`, `github-dark`
+(the defaults), and `nord`. As with languages, only preloaded themes can be
+used — passing an unloaded theme name throws, because the underlying
+highlighter is built once, synchronously, at import time and cannot fetch a
+theme afterwards.
 
 ## Overriding themes
 
@@ -69,26 +121,21 @@ docfyShiki({
 });
 ```
 
-Any theme bundled with Shiki can be used — see the
-[Shiki theme list](https://shiki.style/themes).
+## Language aliases
 
-## Extra language aliases
+Earlier versions of this README documented a `langAlias` option. It has been
+removed. Because this preset's highlighter is built once, synchronously, at
+import time, an alias supplied at `docfyShiki({ langAlias: {...} })` call
+time could only ever change the `data-language` attribute this preset writes
+on the rendered `<pre>` — it could never register a new alias with Shiki's
+grammar resolver, which is fixed by the time any call to `docfyShiki()`
+happens. A caller adding, say, `{ svelte: 'html' }` would see their fence
+mislabelled rather than actually highlighted as HTML. An option that appears
+to work and silently does not is worse than no option, so it was removed
+rather than kept as a trap.
 
-```ts
-docfyShiki({
-  langAlias: { svelte: 'html' },
-});
-```
-
-`langAlias` is merged over this preset's defaults and is reflected in the
-`language="..."` attribute this preset writes on the rendered `<pre>` for
-each fence. Note that because `@docfy/core` drives its rehype pipeline
-synchronously (`unified().runSync(...)`), this preset builds one Shiki
-highlighter up front with every bundled language and theme already loaded,
-rather than loading grammars on demand per request. An alias only resolves
-to real tokenisation if it points at a language Shiki already bundles (which
-covers the vast majority of cases); it cannot pull in a grammar from outside
-Shiki's bundle at request time.
+The package's own three aliases (`gjs`, `gts`, `hbs`) are baked into the
+highlighter directly and are unaffected by this.
 
 ## Extra transformers
 
@@ -102,8 +149,8 @@ docfyShiki({
 
 `transformers` is appended after this preset's own defaults
 (`transformerMetaHighlight`, `transformerMetaWordHighlight`, and two small
-internal transformers that add the `language="..."` and `data-highlighted`
-attributes described above).
+internal transformers that add the `data-language="..."` and
+`data-highlighted` attributes described above).
 
 ## Line highlighting
 

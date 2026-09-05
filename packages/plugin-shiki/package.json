@@ -21,7 +21,9 @@
     "format:check": "prettier . --cache --check"
   },
   "dependencies": {
+    "@shikijs/langs": "^3.0.0",
     "@shikijs/rehype": "^3.0.0",
+    "@shikijs/themes": "^3.0.0",
     "@shikijs/transformers": "^3.0.0",
     "shiki": "^3.0.0"
   },

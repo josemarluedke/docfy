@@ -20,3 +20,7 @@ const c = <template>{{this.value}}</template>;
 ```js
 const d = 1;
 ```
+
+```rust
+fn main() {}
+```
