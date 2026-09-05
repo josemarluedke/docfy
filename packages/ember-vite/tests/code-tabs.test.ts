@@ -39,7 +39,34 @@ describe(':::code-tabs directive', () => {
   test('still wraps each fence inside the group in a DocfyCodeBlock', async () => {
     const page = await renderFixture();
 
-    expect(page.rendered.match(/<DocfyCodeBlock/g)).toHaveLength(3);
+    // 3 fences inside the tab group, plus the standalone fence outside it.
+    expect(page.rendered.match(/<DocfyCodeBlock/g)).toHaveLength(4);
+  });
+
+  test('a fence inside a tab group emits its label on the tab but no @title on the block', async () => {
+    const page = await renderFixture();
+
+    expect(page.rendered).toContain('<tabs.Tab @label="pnpm">');
+
+    // The block for the "pnpm" tab must not also carry `@title="pnpm"` — the
+    // tab label already shows it, and repeating it would draw a second,
+    // redundant title bar under the tab.
+    const pnpmTabIndex = page.rendered.indexOf('<tabs.Tab @label="pnpm">');
+    const pnpmTabEnd = page.rendered.indexOf('</tabs.Tab>', pnpmTabIndex);
+    const pnpmBlockSlice = page.rendered.slice(pnpmTabIndex, pnpmTabEnd);
+
+    expect(pnpmBlockSlice).toContain('<DocfyCodeBlock');
+    expect(pnpmBlockSlice).not.toContain('@title=');
+  });
+
+  test('a fence outside a tab group still gets its @title', async () => {
+    const page = await renderFixture();
+
+    const wrapperStart = page.rendered.indexOf('<DocfyCodeTabs as |tabs|>');
+    const standaloneSlice = page.rendered.slice(0, wrapperStart);
+
+    expect(standaloneSlice).toContain('<DocfyCodeBlock');
+    expect(standaloneSlice).toContain('@title="standalone"');
   });
 
   test('registers both component imports', async () => {
@@ -85,6 +112,35 @@ describe(':::code-tabs directive', () => {
     expect(preambleIndex).toBeGreaterThan(-1);
     expect(preambleIndex).toBeLessThan(wrapperStart);
     expect(preambleIndex).not.toBeGreaterThan(wrapperEnd);
+  });
+
+  test('non-fence content before the first fence and after the last fence is also hoisted out as preamble', async () => {
+    const page = await renderFixture(preambleRoot);
+
+    const wrapperStart = page.rendered.indexOf('<DocfyCodeTabs as |tabs|>');
+    const wrapperEnd = page.rendered.indexOf('</DocfyCodeTabs>');
+
+    const leadingIndex = page.rendered.indexOf(
+      'Some leading paragraph content, before any fence.'
+    );
+    const trailingIndex = page.rendered.indexOf(
+      'Some trailing paragraph content, after the last fence.'
+    );
+
+    // Both the paragraph that precedes the first fence and the one that
+    // follows the last fence belong to no single tab, exactly like content
+    // sandwiched between two fences — the partition treats "before the
+    // first fence" and "after the last fence" as just more non-fence
+    // children, not special cases, so both must be hoisted out before the
+    // wrapper opens rather than rendered inside any tab or after
+    // </DocfyCodeTabs>.
+    expect(leadingIndex).toBeGreaterThan(-1);
+    expect(leadingIndex).toBeLessThan(wrapperStart);
+    expect(leadingIndex).not.toBeGreaterThan(wrapperEnd);
+
+    expect(trailingIndex).toBeGreaterThan(-1);
+    expect(trailingIndex).toBeLessThan(wrapperStart);
+    expect(trailingIndex).not.toBeGreaterThan(wrapperEnd);
   });
 
   test('a code-tabs directive with no fences emits no wrapper at all', async () => {

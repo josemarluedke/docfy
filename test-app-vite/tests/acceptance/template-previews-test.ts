@@ -34,9 +34,12 @@ module('Acceptance | template previews', function (hooks) {
   test('it renders extracted template content', async function (assert) {
     await visit('/docs/ember/components/docfy-previous-and-next-page');
 
-    // Look for template code blocks that might be extracted
+    // Look for template code blocks that might be extracted. Shiki (used via
+    // @docfy/plugin-shiki) marks the resolved grammar with `data-language` on
+    // the `<pre class="shiki">` itself, not with a `language-*` class on the
+    // `<code>` — `hbs` fences resolve to the `handlebars` grammar.
     const templateBlocks = document.querySelectorAll(
-      'pre code.language-hbs, pre code.language-handlebars'
+      'pre.shiki[data-language="hbs"] code, pre.shiki[data-language="handlebars"] code'
     );
 
     if (templateBlocks.length > 0) {
@@ -65,9 +68,11 @@ module('Acceptance | template previews', function (hooks) {
   test('it renders component code snippets', async function (assert) {
     await visit('/docs/ember/components/docfy-previous-and-next-page');
 
-    // Look for component code blocks
+    // Look for component code blocks. Same Shiki markup shape as above:
+    // `data-language` lives on the `<pre class="shiki">`, not a `language-*`
+    // class on `<code>`.
     const componentBlocks = document.querySelectorAll(
-      'pre code.language-js, pre code.language-typescript, pre code.language-ts'
+      'pre.shiki[data-language="js"] code, pre.shiki[data-language="javascript"] code, pre.shiki[data-language="typescript"] code, pre.shiki[data-language="ts"] code'
     );
 
     if (componentBlocks.length > 0) {
@@ -100,9 +105,12 @@ module('Acceptance | template previews', function (hooks) {
   test('it renders style code snippets', async function (assert) {
     await visit('/docs/ember/components/docfy-previous-and-next-page');
 
-    // Look for style code blocks
+    // Look for style code blocks. `sass` is not one of this preset's curated
+    // languages (only `css`/`scss` are; see `docs/ember/code-blocks.md`), so
+    // there is no Shiki `data-language="sass"` equivalent — dropped rather
+    // than kept as dead weight that could never match.
     const styleBlocks = document.querySelectorAll(
-      'pre code.language-css, pre code.language-scss, pre code.language-sass'
+      'pre.shiki[data-language="css"] code, pre.shiki[data-language="scss"] code'
     );
 
     if (styleBlocks.length > 0) {
@@ -131,15 +139,18 @@ module('Acceptance | template previews', function (hooks) {
   test('it renders code blocks with proper syntax highlighting', async function (assert) {
     await visit('/docs/ember/components/docfy-previous-and-next-page');
 
-    // Look for code blocks with language classes
+    // Look for code blocks Shiki has tagged with a resolved grammar. Under
+    // @docfy/plugin-shiki this is `data-language` on `<pre class="shiki">`,
+    // never a `language-*` class on `<code>` — that class only ever existed
+    // under the old rehype-highlight/highlight.js setup.
     const highlightedBlocks = document.querySelectorAll(
-      'pre code[class*="language-"]'
+      'pre.shiki[data-language]'
     );
 
     if (highlightedBlocks.length > 0) {
-      assert.dom('pre code[class*="language-"]').exists();
+      assert.dom('pre.shiki[data-language]').exists();
 
-      // Check for common language classes
+      // Check for common resolved languages
       const commonLanguages = [
         'hbs',
         'handlebars',
@@ -153,11 +164,8 @@ module('Acceptance | template previews', function (hooks) {
       let foundCommonLanguage = false;
 
       highlightedBlocks.forEach((block) => {
-        const className = block.getAttribute('class') || '';
-        const hasCommonLanguage = commonLanguages.some((lang) =>
-          className.includes(`language-${lang}`)
-        );
-        if (hasCommonLanguage) {
+        const language = block.getAttribute('data-language') || '';
+        if (commonLanguages.includes(language)) {
           foundCommonLanguage = true;
         }
       });
@@ -167,6 +175,18 @@ module('Acceptance | template previews', function (hooks) {
       } else {
         assert.ok(true, 'Found syntax-highlighted code blocks');
       }
+
+      // A `data-language` attribute alone doesn't prove real tokenization —
+      // a regression could add the attribute without wiring in the
+      // highlighter. Every real Shiki token is a `<span style="...">`
+      // carrying the `--shiki-light`/`--shiki-dark` custom properties, so
+      // require at least one inside each matched block.
+      highlightedBlocks.forEach((block) => {
+        assert.ok(
+          block.querySelector('code span[style]'),
+          'Highlighted block has real Shiki token spans, not just the data-language marker'
+        );
+      });
     } else {
       assert.ok(true, 'No syntax-highlighted code blocks found on this page');
     }

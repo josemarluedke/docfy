@@ -4,6 +4,10 @@ title: Code Tabs
 
 # Code Tabs
 
+```sh title="standalone"
+echo not in a tab group
+```
+
 :::code-tabs
 
 ```sh title="pnpm"

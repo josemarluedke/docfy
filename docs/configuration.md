@@ -96,9 +96,26 @@ The older `remark-highlight.js` and `@mapbox/rehype-prism` packages are
 unmaintained and pinned to highlight.js 10 / old refractor builds; they do not
 work with the current unified stack.
 
-For Ember, `rehype-highlight` with
+For Ember apps built with `@docfy/ember-vite`, use `@docfy/plugin-shiki`
+instead: it ships real TextMate grammars for `.gjs`/`.gts`/`.hbs` (Shiki's
+`glimmer-js`, `glimmer-ts`, and `handlebars` grammars), so those fences
+tokenize correctly instead of falling back to plain JavaScript highlighting:
+
+```js
+import autolinkHeadings from 'rehype-autolink-headings';
+import shiki from '@docfy/plugin-shiki';
+
+const rehypePlugins = [[autolinkHeadings, { behavior: 'wrap' }], ...shiki()];
+```
+
+`@docfy/plugin-shiki` also powers `@docfy/ember`'s `DocfyCodeBlock` line
+numbers and highlighted line ranges. See
+[Code Blocks](./ember/code-blocks.md) for the full setup and every fence
+feature it unlocks.
+
+If you're not on `@docfy/ember-vite`, `rehype-highlight` with
 [`highlightjs-glimmer`](https://github.com/NullVoxPopuli/highlightjs-glimmer)
-gives proper `gjs`/`gts`/`hbs` highlighting:
+still gives proper `gjs`/`gts`/`hbs` highlighting:
 
 ```js
 import highlight from 'rehype-highlight';

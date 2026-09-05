@@ -78,12 +78,23 @@ function openingTag(block: RecordedBlock): string {
   return `<DocfyCodeBlock ${args.join(' ')}>`;
 }
 
-function collect(ast: MdastRoot): RecordedBlock[] {
+function collect(ast: MdastRoot, tabFences: WeakSet<object>): RecordedBlock[] {
   const blocks: RecordedBlock[] = [];
 
   visit(ast, 'code', node => {
+    const options = parseFenceMeta(node.meta);
+
+    // A fence inside a `:::code-tabs` group already has its `title=` used as
+    // the tab's label (see `expandTabDirectives` below); emitting it again as
+    // `@title` here would draw a second header bar underneath the tab
+    // repeating the same text. The tab label is the only title such a fence
+    // gets.
+    if (tabFences.has(node)) {
+      options.title = undefined;
+    }
+
     blocks.push({
-      ...parseFenceMeta(node.meta),
+      ...options,
       language: node.lang ?? undefined,
       code: node.value,
     });
@@ -144,7 +155,7 @@ const TABS_DIRECTIVE = 'code-tabs';
  * per fence. The fences themselves are left in place: the hast pass wraps them
  * in DocfyCodeBlock afterwards, so a tabbed block keeps every other feature.
  */
-function expandTabDirectives(ast: MdastRoot): boolean {
+function expandTabDirectives(ast: MdastRoot, tabFences: WeakSet<object>): boolean {
   const found: { parent: { children: MdastContent[] }; node: ContainerDirective }[] = [];
 
   visit(ast, 'containerDirective', (node, _index, parent) => {
@@ -195,6 +206,11 @@ function expandTabDirectives(ast: MdastRoot): boolean {
       // escaped here the same way `openingTag()` escapes `@title`/`@language`.
       const label = attrValue(parseFenceMeta(child.meta).title ?? child.lang ?? 'code');
 
+      // Marked so `collect()` (run right after this, on the same ast) knows
+      // not to also emit this fence's `title=` as `@title` — the tab label
+      // above already carries it.
+      tabFences.add(child);
+
       tabs.push(
         html(`<tabs.Tab @label="${label}">`),
         child as MdastContent,
@@ -221,8 +237,9 @@ const USED_TABS = new WeakMap<object, boolean>();
 export default plugin({
   runWithMdast(ctx): void {
     const record = (page: PageContent<MdastRoot>): void => {
-      USED_TABS.set(page, expandTabDirectives(page.ast));
-      RECORDED.set(page, collect(page.ast));
+      const tabFences = new WeakSet<object>();
+      USED_TABS.set(page, expandTabDirectives(page.ast, tabFences));
+      RECORDED.set(page, collect(page.ast, tabFences));
       page.demos?.forEach(record);
     };
 

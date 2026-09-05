@@ -42,7 +42,8 @@ import { DocfyCodeBlock } from '@docfy/ember';
 <p>For better organization, use a separate configuration file. Create <code>docfy.config.mjs</code> or <code>docfy.config.js</code>:</p>
 <DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">// docfy.config.mjs</span></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> path </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'path'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
-<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> highlight </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'rehype-highlight'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> autolinkHeadings </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'rehype-autolink-headings'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> shiki </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/plugin-shiki'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  sources: [</span></span>
@@ -55,12 +56,18 @@ import { DocfyCodeBlock } from '@docfy/ember';
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  remarkPlugins: [</span></span>
 <span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">    // Add remark plugins</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  ],</span></span>
-<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  rehypePlugins: [highlight],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  rehypePlugins: [[autolinkHeadings, { behavior: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'wrap'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> }], </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">...</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">shiki</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">()],</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  repository: {</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    url: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'https://github.com/username/repo'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">,</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    editBranch: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'main'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">,</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  },</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">};</span></span></code></pre></DocfyCodeBlock>
+<p><code>@docfy/plugin-shiki</code> is the recommended highlighter for <code>@docfy/ember-vite</code>
+apps: it's what powers <code>@docfy/ember</code>'s <code>DocfyCodeBlock</code> line numbers and
+highlighted line ranges, and it ships real <code>.gjs</code>/<code>.gts</code>/<code>.hbs</code> grammars
+instead of falling back to plain JavaScript highlighting for them. See
+<DocfyLink @to="/docs/ember/code-blocks"  >Code Blocks</DocfyLink> for the full setup, the fence-meta features
+it unlocks, and its curated language list.</p>
 <p>The config is loaded with a dynamic <code>import()</code>, so CommonJS and ESM both work,
 and unlike the classic Ember CLI integration this one accepts top-level
 <code>await</code>.</p>

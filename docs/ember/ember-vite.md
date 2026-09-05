@@ -57,7 +57,8 @@ For better organization, use a separate configuration file. Create `docfy.config
 ```js
 // docfy.config.mjs
 import path from 'path';
-import highlight from 'rehype-highlight';
+import autolinkHeadings from 'rehype-autolink-headings';
+import shiki from '@docfy/plugin-shiki';
 
 export default {
   sources: [
@@ -70,13 +71,20 @@ export default {
   remarkPlugins: [
     // Add remark plugins
   ],
-  rehypePlugins: [highlight],
+  rehypePlugins: [[autolinkHeadings, { behavior: 'wrap' }], ...shiki()],
   repository: {
     url: 'https://github.com/username/repo',
     editBranch: 'main',
   },
 };
 ```
+
+`@docfy/plugin-shiki` is the recommended highlighter for `@docfy/ember-vite`
+apps: it's what powers `@docfy/ember`'s `DocfyCodeBlock` line numbers and
+highlighted line ranges, and it ships real `.gjs`/`.gts`/`.hbs` grammars
+instead of falling back to plain JavaScript highlighting for them. See
+[Code Blocks](./code-blocks.md) for the full setup, the fence-meta features
+it unlocks, and its curated language list.
 
 The config is loaded with a dynamic `import()`, so CommonJS and ESM both work,
 and unlike the classic Ember CLI integration this one accepts top-level

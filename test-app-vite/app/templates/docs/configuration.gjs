@@ -1,3 +1,4 @@
+import { DocfyLink } from '@docfy/ember';
 import { DocfyCodeBlock } from '@docfy/ember';
 
 <template>
@@ -64,9 +65,21 @@ or <a href="https://github.com/timlrx/rehype-prism-plus"><code>rehype-prism-plus
 The older <code>remark-highlight.js</code> and <code>@mapbox/rehype-prism</code> packages are
 unmaintained and pinned to highlight.js 10 / old refractor builds; they do not
 work with the current unified stack.</p>
-<p>For Ember, <code>rehype-highlight</code> with
+<p>For Ember apps built with <code>@docfy/ember-vite</code>, use <code>@docfy/plugin-shiki</code>
+instead: it ships real TextMate grammars for <code>.gjs</code>/<code>.gts</code>/<code>.hbs</code> (Shiki's
+<code>glimmer-js</code>, <code>glimmer-ts</code>, and <code>handlebars</code> grammars), so those fences
+tokenize correctly instead of falling back to plain JavaScript highlighting:</p>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> autolinkHeadings </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'rehype-autolink-headings'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> shiki </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/plugin-shiki'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF"> rehypePlugins</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> [[autolinkHeadings, { behavior: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'wrap'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> }], </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">...</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">shiki</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">()];</span></span></code></pre></DocfyCodeBlock>
+<p><code>@docfy/plugin-shiki</code> also powers <code>@docfy/ember</code>'s <code>DocfyCodeBlock</code> line
+numbers and highlighted line ranges. See
+<DocfyLink @to="/docs/ember/code-blocks"  >Code Blocks</DocfyLink> for the full setup and every fence
+feature it unlocks.</p>
+<p>If you're not on <code>@docfy/ember-vite</code>, <code>rehype-highlight</code> with
 <a href="https://github.com/NullVoxPopuli/highlightjs-glimmer"><code>highlightjs-glimmer</code></a>
-gives proper <code>gjs</code>/<code>gts</code>/<code>hbs</code> highlighting:</p>
+still gives proper <code>gjs</code>/<code>gts</code>/<code>hbs</code> highlighting:</p>
 <DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> highlight </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'rehype-highlight'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { glimmer } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'highlightjs-glimmer'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { common } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'lowlight'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>

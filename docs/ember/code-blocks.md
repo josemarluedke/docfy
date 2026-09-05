@@ -135,15 +135,13 @@ changed. Both come from Shiki, and both are declared entirely in the fence's
 meta — no extra markup, no separate diff format.
 
 ```ts title="app/services/session.ts" {4,9-12} showLineNumbers
-import Service from '@ember/service';
+import Service, { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { inject as service } from '@ember/service';
-
 export default class SessionService extends Service {
+  @service router;
+
   @tracked currentUser = null;
 
-  @action
   async login(email: string, password: string): Promise<void> {
     const response = await fetch('/api/login', {
       method: 'POST',
@@ -151,18 +149,19 @@ export default class SessionService extends Service {
     });
 
     this.currentUser = await response.json();
+    this.router.transitionTo('dashboard');
   }
 
-  @action
   logout(): void {
     this.currentUser = null;
+    this.router.transitionTo('login');
   }
 }
 ```
 
-Line 4 highlights the `session` service injection that this snippet doesn't
-actually use yet (a deliberate example of "here's what to add next"); lines
-9-12 highlight the `fetch` call inside `login`.
+Line 4 highlights the `router` service injection this snippet uses to
+redirect after authenticating; lines 9-12 highlight the `fetch` call itself,
+start to finish.
 
 ### Collapsible
 
@@ -296,8 +295,11 @@ npm install @docfy/plugin-shiki
 :::
 ````
 
-Every other fence feature still applies inside a tab — a tab's fence can
-have its own `title`, be `collapsible`, highlight a line range, and so on.
+Every other fence feature still applies inside a tab, with one exception:
+inside a `:::code-tabs` group, a fence's `title="..."` sets the **tab's
+label** rather than a separate title bar on the block — that's what names
+each of the "pnpm" / "npm" tabs above. A tabbed fence can still be
+`collapsible`, highlight a line range, and so on.
 
 ## The glimmer grammars
 
@@ -368,7 +370,7 @@ export default class Greeting extends Component {
 And a plain `.hbs` template, no `<template>` tag involved, just mustaches and
 block syntax:
 
-```hbs title="app/templates/components/greeting.hbs"
+```hbs title="app/components/greeting.hbs"
 <div ...attributes>
   <p>Hello, {{@name}}! You clicked {{this.count}} times.</p>
   {{#if @showButton}}
@@ -379,13 +381,17 @@ block syntax:
 </div>
 ```
 
-A fence in a language this preset doesn't preload (anything outside the
-curated set of `glimmer-ts`, `glimmer-js`, `handlebars`, `javascript`,
-`typescript`, `jsx`, `tsx`, `json`, `css`, `scss`, `html`, `markdown`,
-`shellscript`, `diff`, and `yaml`) degrades to plain, unhighlighted text
-rather than throwing — a docs build never fails because of a stray
-` ```rust ` fence. See the `@docfy/plugin-shiki` README for the full list and
-for adding your own languages.
+This 15-language set is fixed: `DocfyShikiOptions` only exposes `themes` and
+`transformers`, and the highlighter is built once, synchronously, at import
+time — there is no option to register additional languages. A fence in a
+language this preset doesn't preload (anything outside the curated set of
+`glimmer-ts`, `glimmer-js`, `handlebars`, `javascript`, `typescript`, `jsx`,
+`tsx`, `json`, `css`, `scss`, `html`, `markdown`, `shellscript`, `diff`, and
+`yaml`) degrades to plain, unhighlighted text rather than throwing — a docs
+build never fails because of a stray ` ```rust ` fence. If you need a
+language outside this set, configure your own Shiki highlighter instead of
+using this preset (its README notes that its source is a reasonably short
+template to copy).
 
 ## Theming
 
