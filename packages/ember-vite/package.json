@@ -60,6 +60,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^18.3.0",
     "globals": "^17.11.0",
+    "mdast-util-to-hast": "^13.2.1",
     "prettier": "^3.9.6",
     "rollup": "^4.0.0",
     "typescript": "^5.8.3",

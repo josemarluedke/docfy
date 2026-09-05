@@ -1,3 +1,4 @@
+/// <reference types="mdast-util-to-hast" />
 import plugin from '@docfy/core/lib/plugin.js';
 import { visit } from 'unist-util-visit';
 import { PageContent } from '@docfy/core/lib/types.js';
