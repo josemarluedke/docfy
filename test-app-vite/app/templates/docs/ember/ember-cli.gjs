@@ -197,5 +197,5 @@ manages that option itself.</p>
   <span class="hljs-keyword">return</span> app;
 };
 </code></pre>
-<p>All configuration options from <a href="../../configuration.md">@docfy/core</a> are supported.</p>
+<p>All configuration options from <DocfyLink @to="/docs/configuration"  >@docfy/core</DocfyLink> are supported.</p>
 </template>

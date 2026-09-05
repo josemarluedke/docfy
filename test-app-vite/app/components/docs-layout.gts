@@ -2,14 +2,12 @@ import Component from '@glimmer/component';
 import { pageTitle } from 'ember-page-title';
 import { service } from '@ember/service';
 import { action } from '@ember/object';
-import { cached } from '@glimmer/tracking';
 import SidebarNav from './sidebar-nav';
 import PageHeadings from './page-headings';
 import { DocfyPreviousAndNextPage, DocfyLink } from '@docfy/ember';
 import intersectHeadings from '../modifiers/intersect-headings';
 import { type DocfyService } from '@docfy/ember';
 import type CurrentHeadingService from '../services/current-heading';
-import type RouterService from '@ember/routing/router-service';
 
 interface DocsLayoutSignature {
   Args: {
@@ -23,13 +21,10 @@ interface DocsLayoutSignature {
 
 export default class DocsLayout extends Component<DocsLayoutSignature> {
   @service declare docfy: DocfyService;
-  @service declare router: RouterService;
   @service('current-heading') declare currentHeading: CurrentHeadingService;
 
-  @cached
   get currentPage() {
-    const currentURL = this.router.currentURL;
-    return currentURL ? this.docfy.findByUrl(currentURL) : undefined;
+    return this.docfy.currentPage;
   }
 
   @action setCurrentHeadingId(id: string): void {
