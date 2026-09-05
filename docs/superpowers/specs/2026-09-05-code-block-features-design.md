@@ -42,6 +42,9 @@ and shared across every Docfy consumer.
   own pnpm/yarn/bun variants). The tabs directive covers the case explicitly;
   auto-derivation is guesswork beyond `install`/`dlx` and is deferred.
 - Comment-based line markers (`// [!code highlight]`) and diff notation.
+- `@docfy/ember-cli` (classic/broccoli) support. Classic apps keep rendering
+  bare `<pre>`. This is a documented feature gap, not an oversight.
+- Runtime highlighting via `ember-shiki`. See "Why not ember-shiki" below.
 
 ## Decisions
 
@@ -52,11 +55,15 @@ and shared across every Docfy consumer.
 | Authoring syntax | Fence meta string | The Shiki/rehype-pretty-code/Nextra/Astro convention. Familiar, copy-pasteable, and degrades to valid markdown on GitHub. |
 | Tab groups | `:::code-tabs` container directive | General purpose (package managers, template-vs-component-vs-styles), not just one hardcoded case. |
 | Shiki wiring | Opt-in preset package | Consumers stay in control of their pipeline, but nobody re-derives the gjs/gts and transformer setup. Follows the `@docfy/plugin-with-prose` precedent. |
-| Build paths | Both, transform shared in `@docfy/core` | Keeps ember-cli and ember-vite at parity and avoids a third copy of the same hast walker (`escape-curlies-in-code` is already duplicated across both). |
+| Build paths | `@docfy/ember-vite` only | The classic/broccoli path is explicitly out of scope. With one consumer, a `@docfy/core` seam would be speculative, and the rewrite emits Ember component invocations so it is not framework-agnostic regardless. |
 
 ## Architecture
 
-### Pipeline: a new `code-blocks` plugin in `@docfy/core`
+### Pipeline: a new `code-blocks` plugin in `@docfy/ember-vite`
+
+Lives in `packages/ember-vite/src/docfy-plugins/`, alongside its siblings
+`escape-curlies-in-code` and `docfy-link-conversion`, both of which are likewise
+Ember-specific hast/mdast transforms.
 
 Two passes, because the information needed lives at two different stages.
 
@@ -107,11 +114,36 @@ This is acceptable and must be stated in the docs.
 
 ### Build path wiring
 
-- `@docfy/ember-vite` registers the core plugin, adds `DocfyCodeBlock` and
-  `DocfyCodeTabs` to `IMPORT_MAP`, and pushes them into `pluginData.imports`
-  when used — the same mechanism `docfy-link-conversion` already uses.
-- `@docfy/ember-cli` registers the same core plugin and needs no imports; the
-  classic resolver picks the components up globally.
+`@docfy/ember-vite` registers the plugin, adds `DocfyCodeBlock` and
+`DocfyCodeTabs` to `IMPORT_MAP`, and pushes them into `pluginData.imports` when
+used — the same mechanism `docfy-link-conversion` already uses.
+
+`remark-directive` becomes a dependency of `@docfy/ember-vite` rather than
+`@docfy/core`, so the `:::` parsing change is scoped to the vite integration.
+
+## Why not ember-shiki
+
+[`ember-shiki`](https://github.com/IgnaceMaes/ember-shiki) already ships
+`CodeBlock`, `CodeGroup`/`CodeTab`, `CopyButton`, line numbers, line
+highlighting, block naming, CSS-variable theming, lazy loading and FastBoot
+support — most of this feature list. It is not adopted because:
+
+1. **It highlights at runtime.** Docfy's pipeline produces HTML; ember-shiki
+   consumes a source string. Adopting it means embedding raw source into every
+   generated template, reintroducing the escaping and payload problems that
+   reading `textContent` from the DOM avoids.
+2. **It inverts the agnosticism.** Here `@docfy/ember` depends on no highlighter
+   at all, and shiki is quarantined in an opt-in preset. Depending on
+   ember-shiki pushes shiki into the component layer, the one place a consumer
+   cannot opt out of it.
+3. **It has no collapse/expand**, one of the four requested features.
+
+The cost is re-implementing a copy button and a tab strip. Both are small, and
+the tab strip is needed regardless because `docfy-demo` already has one that
+should be shared.
+
+Consumers who want runtime highlighting can still use ember-shiki directly; the
+two are not mutually exclusive. This belongs in the docs.
 
 ## Authoring surface
 
@@ -145,7 +177,7 @@ GitHub.
     :::
 
 Tab label is the fence's `title=` if present, otherwise its language. This adds
-`remark-directive` to `@docfy/core`. Neither this repo's `docs/` nor frontile's
+`remark-directive` to `@docfy/ember-vite`. Neither this repo's `docs/` nor frontile's
 markdown currently uses `:::` at the start of a line, so the change is
 non-breaking.
 
@@ -246,7 +278,7 @@ transformers.
 
 ## Testing
 
-**`@docfy/core` (vitest)**
+**`@docfy/ember-vite` (vitest)**
 - Unit tests for the fence meta parser, including unknown-token tolerance.
 - Integration test: a fence becomes a `DocfyCodeBlock` invocation.
 - Integration test: `:::code-tabs` groups consecutive fences with correct labels.
@@ -254,7 +286,7 @@ transformers.
 - Regression test: a text-content mismatch leaves the block unwrapped instead of
   mislabeling it.
 
-**`test-app-vite` and `test-app-classic` (acceptance)**
+**`test-app-vite` (acceptance)**
 - Copy writes the expected source to a stubbed clipboard.
 - Expand/Collapse toggles state and the control's label.
 - Tabs switch the visible panel.
@@ -279,9 +311,9 @@ publishes.
    text content and leaving unmatched blocks unwrapped.
 2. **Clipboard API requires a secure context.** Tests stub it; the button hides
    itself when the API is unavailable.
-3. **`@docfy/ember-cli` needs its own verification pass**, since it resolves
-   components globally rather than through generated imports, and is exercised
-   by a different test app.
-4. **`remark-directive` changes `:::` parsing** for all consumers. Verified
-   unused in this repo and in frontile, but it is a behaviour change for
-   downstream users and belongs in the release notes.
+3. **Classic apps diverge from vite apps.** `@docfy/ember-cli` consumers keep
+   bare `<pre>` while vite consumers get the full component. This is an accepted
+   gap and must be stated in the release notes, not discovered.
+4. **`remark-directive` changes `:::` parsing** for `@docfy/ember-vite`
+   consumers. Verified unused in this repo and in frontile, but it is a
+   behaviour change for downstream users and belongs in the release notes.
