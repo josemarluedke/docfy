@@ -1940,6 +1940,15 @@ git commit -m "feat(plugin-shiki): add opt-in Shiki highlighting preset"
 
 ### Task 7: Documentation page and acceptance coverage
 
+> **THIS IS THE PRIMARY PROOF POINT.** The Docfy docs site is where this work has
+> to demonstrate itself first; frontile (Task 8) is secondary. The page is not a
+> minimal fixture that satisfies the acceptance tests — it must actually show
+> every feature working: copy, collapse/expand, titles, line numbers, highlighted
+> line ranges, `:::code-tabs`, `noCopy`, and real `gts`/`gjs`/`hbs` fences proving
+> the glimmer grammars. Wire `@docfy/plugin-shiki` into `test-app-vite` and import
+> the shipped `@docfy/ember/code-block.css` so the site renders the real thing.
+
+
 **Files:**
 - Create: `docs/ember/code-blocks.md`
 - Create: `test-app-vite/tests/acceptance/code-blocks-test.ts`
@@ -2116,6 +2125,27 @@ git commit -m "docs: document code block features and cover them with acceptance
 ---
 
 ### Task 8: Frontile rollout
+
+> **SCOPE EXPANDED at the user's request. This ships as a DRAFT PR.**
+>
+> - Work in a dedicated **git worktree** created from the frontile repo, not in
+>   the main checkout.
+> - **Link the local Docfy packages** (workspace link / `file:` override) so the
+>   unpublished `@docfy/*` builds are what the site actually exercises.
+> - **Full setup, not a swap:** styles and theme included. Take visual direction
+>   from shadcn-ember's code blocks — rounded card, bordered mono title bar with
+>   a file-type icon slot, copy affordance top-right, gradient-faded collapse —
+>   implemented with frontile's own tokens and BEM classes, NOT by copying their
+>   Tailwind utility strings.
+> - **Migrate every existing consumer of the old highlighter.** `rehype-highlight`
+>   / `highlight.js` / `highlightjs-glimmer` and `site/app/styles/highlight.css`
+>   are not the only touch points — audit the site for anything else styling or
+>   depending on `hljs-*` classes and move it over. Search before assuming.
+> - Theme parity matters in BOTH light and dark; the preset emits dual themes as
+>   CSS variables, so nothing should need a theme-service re-render.
+> - Open the PR as a **draft**, with a body explaining the migration and what
+>   reviewers should look at.
+
 
 Runs in `/Users/jluedke/code/oss/frontile`, a **separate repository**. Commit there on its own branch; do not mix with docfy commits.
 
