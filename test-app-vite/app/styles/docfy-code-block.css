@@ -1,0 +1,194 @@
+/*
+ * Cosmetic chrome for `DocfyCodeBlock`/`DocfyCodeTabs`.
+ *
+ * `@docfy/ember/code-block.css` (imported in `tw.css` just above this file)
+ * is deliberately structural only — layout, the collapsed fade mask, the
+ * line-number gutter, and `.line[data-highlighted]` — with every colour
+ * routed through custom properties so a consuming app supplies its own
+ * theme. This file is that theme for Docfy's own docs site, following the
+ * same light-selector / `.dark { }`-block convention as
+ * `./markdown/light.css` + `./markdown/dark.css` and `./docfy-demo.css`.
+ *
+ * `docfy.config.mjs` highlights every fence with `@docfy/plugin-shiki`'s
+ * default themes (`github-light` / `github-dark`), built with
+ * `defaultColor: false`. That means Shiki emits `--shiki-light`/
+ * `--shiki-dark` (and `-bg` variants) as inline custom properties on every
+ * `.shiki` tree, but leaves choosing *which* one applies, and when, entirely
+ * to the app — nothing upstream does that yet. The two rules below are the
+ * standard Shiki "dual theme" recipe and are what actually makes code
+ * colourised at all, in either mode; everything else here is the chrome
+ * around it.
+ */
+
+/*
+ * `--docfy-code-surface` is declared on `:root`/`.dark` (rather than scoped
+ * to `.docfy-code-block`) specifically so `.docfy-code-tabs__list` — a
+ * sibling of the code block, not an ancestor or descendant of it — can share
+ * the exact same background. Custom properties only flow down the DOM tree,
+ * so a tabs-list rule that tried to read a block-scoped variable would just
+ * silently fall back to its default in every case that matters.
+ */
+:root {
+  --docfy-code-surface: #fff;
+}
+
+.dark {
+  --docfy-code-surface: #24292e;
+}
+
+.shiki,
+.shiki span {
+  color: var(--shiki-light);
+}
+
+.shiki {
+  background-color: var(--shiki-light-bg);
+}
+
+.dark {
+  .shiki,
+  .shiki span {
+    color: var(--shiki-dark);
+  }
+
+  .shiki {
+    background-color: var(--shiki-dark-bg);
+  }
+}
+
+.docfy-code-block {
+  /* `--docfy-code-surface` matches `github-light`'s/`github-dark`'s Shiki
+     background exactly (the theme pair `docfy.config.mjs` uses everywhere on
+     this site), so the card border, header, copy button and collapse fade
+     all sit on the same surface as the code itself instead of a mismatched
+     panel colour. */
+  --docfy-code-block-fade: var(--docfy-code-surface);
+  --docfy-code-block-highlight-background: rgb(16 133 92 / 12%);
+  --docfy-code-block-line-number-color: rgb(31 41 55 / 40%);
+
+  @apply mb-6 overflow-hidden rounded-lg border border-gray-200 text-sm;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-block__header {
+  @apply border-b border-gray-200 px-4 py-2 pe-11 font-mono text-xs text-gray-500;
+}
+
+.docfy-code-block__header__title {
+  @apply truncate;
+}
+
+.docfy-code-block__copy {
+  @apply rounded-md border border-transparent px-2 py-1 font-mono text-xs text-gray-400;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.docfy-code-block__copy:hover {
+  @apply border-gray-200 bg-gray-50 text-gray-700;
+}
+
+.docfy-code-block__copy:focus-visible {
+  @apply text-gray-700;
+  outline: 2px solid var(--color-green-700, #15803d);
+  outline-offset: 2px;
+}
+
+.docfy-code-block__toggle {
+  @apply block w-full border-t border-gray-200 py-2 text-center font-mono text-xs font-medium text-green-700;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-block__toggle:hover {
+  @apply bg-gray-50 text-green-800;
+}
+
+.docfy-code-block__toggle:focus-visible {
+  outline: 2px solid var(--color-green-700, #15803d);
+  outline-offset: -2px;
+}
+
+.docfy-code-tabs {
+  @apply mb-6;
+}
+
+.docfy-code-tabs__list {
+  @apply flex gap-1 rounded-t-lg border border-b-0 border-gray-200 px-2 pt-2;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-tabs__list__button {
+  @apply -mb-px rounded-t-md border border-b-0 border-transparent px-3 py-1.5 font-mono text-xs text-gray-500;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.docfy-code-tabs__list__button:hover {
+  @apply text-gray-800;
+}
+
+.docfy-code-tabs__list__button--active {
+  @apply border-gray-200 text-gray-900;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-tabs__list__button:focus-visible {
+  outline: 2px solid var(--color-green-700, #15803d);
+  outline-offset: 2px;
+}
+
+/* The tab strip sits flush above its panel's code block, so the two read as
+   one attached card rather than two separately-rounded boxes stacked with a
+   gap. */
+.docfy-code-tabs__panel .docfy-code-block {
+  @apply mb-0 rounded-t-none border-t-0;
+}
+
+.dark {
+  .docfy-code-block {
+    --docfy-code-block-highlight-background: rgb(56 189 130 / 15%);
+    --docfy-code-block-line-number-color: rgb(203 213 225 / 40%);
+
+    @apply border-gray-700;
+  }
+
+  .docfy-code-block__header {
+    @apply border-gray-700 text-gray-400;
+  }
+
+  .docfy-code-block__copy {
+    @apply text-gray-500;
+  }
+
+  .docfy-code-block__copy:hover {
+    @apply border-gray-700 bg-gray-1000 text-gray-200;
+  }
+
+  .docfy-code-block__toggle {
+    @apply border-gray-700 text-green-500;
+  }
+
+  .docfy-code-block__toggle:hover {
+    @apply bg-gray-1000 text-green-400;
+  }
+
+  .docfy-code-tabs__list {
+    @apply border-gray-700;
+  }
+
+  .docfy-code-tabs__list__button {
+    @apply text-gray-500;
+  }
+
+  .docfy-code-tabs__list__button:hover {
+    @apply text-gray-200;
+  }
+
+  .docfy-code-tabs__list__button--active {
+    @apply border-gray-700 text-gray-100;
+  }
+}

@@ -440,7 +440,7 @@ is baked into the generated HTML as CSS variables, so switching light/dark
 themes needs no JavaScript and no re-highlighting. If you instead want
 highlighting to happen live in the browser — for example, to highlight code
 that's generated or edited at runtime, which build-time highlighting can't
-reach — use [`ember-shiki`](https://github.com/toranb/ember-shiki) directly
+reach — use [`ember-shiki`](https://github.com/IgnaceMaes/ember-shiki) directly
 in your own components. It's unrelated to `@docfy/plugin-shiki` and to the
 `DocfyCodeBlock` component described here; the two solve different problems
 and aren't meant to be combined on the same block.
