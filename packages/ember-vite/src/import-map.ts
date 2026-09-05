@@ -33,6 +33,11 @@ export const IMPORT_MAP = {
     path: '@docfy/ember',
     isDefault: false,
   },
+  DocfyCodeTabs: {
+    name: 'DocfyCodeTabs',
+    path: '@docfy/ember',
+    isDefault: false,
+  },
   DocfyOutput: {
     name: 'DocfyOutput',
     path: '@docfy/ember',

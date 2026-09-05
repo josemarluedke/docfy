@@ -2,10 +2,12 @@ import plugin from '@docfy/core/lib/plugin.js';
 import { visit } from 'unist-util-visit';
 import { parseFenceMeta, type CodeBlockOptions } from './fence-meta.js';
 import { getComponentImport } from '../import-map.js';
-import type { Root as MdastRoot } from 'mdast';
+import { html } from './utils.js';
+import type { Root as MdastRoot, RootContent as MdastContent } from 'mdast';
 import type { Element, Root as HastRoot, RootContent as HastContent } from 'hast';
 import type { PageContent } from '@docfy/core/lib/types.js';
 import type { PluginData } from '../types.js';
+import type { ContainerDirective } from 'mdast-util-directive';
 
 interface RecordedBlock extends CodeBlockOptions {
   language?: string;
@@ -135,11 +137,71 @@ function rewrite(ast: HastRoot, blocks: RecordedBlock[]): boolean {
   return wrapped;
 }
 
+const TABS_DIRECTIVE = 'code-tabs';
+
+/**
+ * Rewrites `:::code-tabs` containers into a DocfyCodeTabs invocation, one tab
+ * per fence. The fences themselves are left in place: the hast pass wraps them
+ * in DocfyCodeBlock afterwards, so a tabbed block keeps every other feature.
+ */
+function expandTabDirectives(ast: MdastRoot): boolean {
+  const found: { parent: { children: MdastContent[] }; node: ContainerDirective }[] = [];
+
+  visit(ast, 'containerDirective', (node, _index, parent) => {
+    if (node.name !== TABS_DIRECTIVE || !parent) {
+      return;
+    }
+    found.push({
+      parent: parent as unknown as { children: MdastContent[] },
+      node: node as ContainerDirective,
+    });
+  });
+
+  found.forEach(({ parent, node }) => {
+    const at = parent.children.indexOf(node as unknown as MdastContent);
+
+    if (at === -1) {
+      return;
+    }
+
+    const replacement: MdastContent[] = [html('<DocfyCodeTabs as |tabs|>')];
+
+    node.children.forEach(child => {
+      if (child.type !== 'code') {
+        // Non-fence content inside the group has no tab to belong to; keep it
+        // rather than silently dropping the author's text.
+        replacement.push(child as MdastContent);
+        return;
+      }
+
+      // The label comes from author-controlled fence meta (`title=`) or the
+      // fence's language, and is interpolated into a raw node's attribute —
+      // invisible to the hast-stage `escapeCurliesInCode` pass — so it must be
+      // escaped here the same way `openingTag()` escapes `@title`/`@language`.
+      const label = attrValue(parseFenceMeta(child.meta).title ?? child.lang ?? 'code');
+
+      replacement.push(
+        html(`<tabs.Tab @label="${label}">`),
+        child as MdastContent,
+        html('</tabs.Tab>')
+      );
+    });
+
+    replacement.push(html('</DocfyCodeTabs>'));
+
+    parent.children.splice(at, 1, ...replacement);
+  });
+
+  return found.length > 0;
+}
+
 const RECORDED = new WeakMap<object, RecordedBlock[]>();
+const USED_TABS = new WeakMap<object, boolean>();
 
 export default plugin({
   runWithMdast(ctx): void {
     const record = (page: PageContent<MdastRoot>): void => {
+      USED_TABS.set(page, expandTabDirectives(page.ast));
       RECORDED.set(page, collect(page.ast));
       page.demos?.forEach(record);
     };
@@ -172,6 +234,13 @@ export default plugin({
 
       if (!pluginData.imports.some(i => i.name === 'DocfyCodeBlock')) {
         pluginData.imports.push(getComponentImport('DocfyCodeBlock'));
+      }
+
+      if (
+        USED_TABS.get(page) &&
+        !pluginData.imports.some(i => i.name === 'DocfyCodeTabs')
+      ) {
+        pluginData.imports.push(getComponentImport('DocfyCodeTabs'));
       }
     });
   },

@@ -3,6 +3,7 @@
 // See https://typed-ember.gitbook.io/glint/environments/ember/authoring-addons
 
 import type DocfyCodeBlock from './components/docfy-code-block.gts';
+import type DocfyCodeTabs from './components/docfy-code-tabs.gts';
 import type DocfyDemo from './components/docfy-demo/index.gts';
 import type DocfyLink from './components/docfy-link.gts';
 import type DocfyOutput from './components/docfy-output.gts';
@@ -10,6 +11,7 @@ import type DocfyPreviousAndNextPage from './components/docfy-previous-and-next-
 
 export default interface Registry {
   DocfyCodeBlock: typeof DocfyCodeBlock;
+  DocfyCodeTabs: typeof DocfyCodeTabs;
   DocfyDemo: typeof DocfyDemo;
   DocfyLink: typeof DocfyLink;
   DocfyOutput: typeof DocfyOutput;

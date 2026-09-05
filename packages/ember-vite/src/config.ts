@@ -195,6 +195,12 @@ async function mergeConfig(
     docfyConfig.remarkPlugins = [];
   }
 
+  // `:::code-tabs` groups fences into a tabbed component. Neither this repo's
+  // docs nor frontile use `:::` for anything else, so enabling directives is
+  // non-breaking here.
+  const remarkDirective = (await import('remark-directive')).default;
+  docfyConfig.remarkPlugins.push(remarkDirective);
+
   // Add remark-hbs plugin
   const remarkHbs = (await import('remark-hbs')).default;
   // Docfy owns escapeCurlies*: escaping happens at the hast stage instead, so

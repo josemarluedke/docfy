@@ -1,4 +1,5 @@
 export { default as DocfyCodeBlock } from './components/docfy-code-block.gts';
+export { default as DocfyCodeTabs } from './components/docfy-code-tabs.gts';
 export { default as DocfyDemo } from './components/docfy-demo/index.gts';
 export { default as DocfyLink } from './components/docfy-link.gts';
 export { default as DocfyOutput } from './components/docfy-output.gts';

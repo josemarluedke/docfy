@@ -45,6 +45,7 @@
     "debug": "^4.4.1",
     "fast-glob": "^3.2.0",
     "mdast-util-to-string": "^4.0.0",
+    "remark-directive": "^4.0.0",
     "remark-hbs": "^0.5.0",
     "unist-util-visit": "^5.1.0"
   },
@@ -60,6 +61,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-n": "^18.3.0",
     "globals": "^17.11.0",
+    "mdast-util-directive": "^3.1.0",
     "mdast-util-to-hast": "^13.2.1",
     "prettier": "^3.9.6",
     "rollup": "^4.0.0",
