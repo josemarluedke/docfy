@@ -29,6 +29,13 @@
   white-space: nowrap;
 }
 
+.docfy-code-block__content {
+  /* Containing block for the collapsed fade overlay below. Without this the
+     overlay resolves against the outer card and can cover the toggle button
+     instead of the truncated code's last visible line. */
+  position: relative;
+}
+
 .docfy-code-block--collapsed .docfy-code-block__content {
   max-height: var(--docfy-code-block-collapsed-height);
   overflow: hidden;
