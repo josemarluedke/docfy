@@ -1344,6 +1344,35 @@ Create `packages/ember/src/components/docfy-code-tabs.gts`:
 import Component from '@glimmer/component';
 import { hash } from '@ember/helper';
 import Tabs from '../-private/tabs.gts';
+import type { TOC } from '@ember/component/template-only';
+import type { ComponentLike } from '@glint/template';
+
+// The internal `Tab` renders no element of its own — it is purely a visibility
+// gate — so each public tab component owns its panel markup. That is what keeps
+// `docfy-demo`'s snippet DOM byte-identical to its pre-refactor markup.
+interface DocfyCodeTabSignature {
+  Args: {
+    label: string;
+    tab?: ComponentLike<{ Args: { label: string }; Blocks: { default: [] } }>;
+  };
+  Element: HTMLDivElement;
+  Blocks: { default: [] };
+}
+
+const DocfyCodeTab: TOC<DocfyCodeTabSignature> = <template>
+  {{#let @tab as |Tab|}}
+    <Tab @label={{@label}}>
+      <div
+        class="docfy-code-tabs__panel"
+        data-test-id="code-tabs-panel"
+        data-test-tab-label="{{@label}}"
+        ...attributes
+      >
+        {{yield}}
+      </div>
+    </Tab>
+  {{/let}}
+</template>;
 
 interface DocfyCodeTabsSignature {
   Element: HTMLDivElement;
@@ -1357,7 +1386,7 @@ export default class DocfyCodeTabs extends Component<DocfyCodeTabsSignature> {
     <div class="docfy-code-tabs" data-test-id="code-tabs" ...attributes>
       <Tabs as |tabs|>
         <tabs.List />
-        {{yield (hash Tab=tabs.Tab)}}
+        {{yield (hash Tab=(component DocfyCodeTab tab=tabs.Tab))}}
       </Tabs>
     </div>
   </template>
@@ -1986,6 +2015,7 @@ module('Acceptance | code blocks', function (hooks) {
     assert.dom('[data-test-id="code-tabs"]').exists();
 
     const buttons = document.querySelectorAll('[data-test-id="docfy-tabs-button"]');
+    assert.dom('[data-test-id="code-tabs-panel"]').exists();
     assert.ok(buttons.length > 1, 'more than one tab');
 
     await click(buttons[1] as HTMLElement);
