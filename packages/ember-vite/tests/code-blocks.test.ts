@@ -3,6 +3,7 @@ import path from 'path';
 import Docfy from '@docfy/core';
 import codeBlocks from '../src/docfy-plugins/code-blocks.js';
 import escapeCurliesInCode from '../src/docfy-plugins/escape-curlies-in-code.js';
+import { loadDocfyConfig } from '../src/config.js';
 
 const root = path.resolve(import.meta.dirname, './__fixtures__/code-blocks');
 
@@ -18,8 +19,8 @@ describe('code-blocks plugin', () => {
     const opens = page.rendered.match(/<DocfyCodeBlock/g) ?? [];
     const closes = page.rendered.match(/<\/DocfyCodeBlock>/g) ?? [];
 
-    expect(opens).toHaveLength(4);
-    expect(closes).toHaveLength(4);
+    expect(opens).toHaveLength(6);
+    expect(closes).toHaveLength(6);
   });
 
   test('passes the parsed fence options as arguments', async () => {
@@ -68,5 +69,48 @@ describe('code-blocks plugin', () => {
     // the escape pass intact — escaping applies inside `code`, not to the
     // wrapper this plugin emits around it.
     expect(page.rendered).toContain('@collapsible={{true}}');
+  });
+
+  test('a single-quoted title containing a double quote does not break out of the attribute', async () => {
+    const page = await renderFixture();
+
+    // `parseFenceMeta` accepts `title='...'`, whose value may itself contain a
+    // `"`. If the title were interpolated raw, that quote would close the
+    // `@title="..."` attribute early and corrupt the invocation.
+    expect(page.rendered).toContain('@title="say &quot;hi&quot;"');
+    expect(page.rendered).not.toContain('@title="say "hi""');
+  });
+
+  test('a title containing curlies is escaped so it does not reach the template as a mustache', async () => {
+    const page = await renderFixture();
+
+    // The wrapper is emitted as a raw hast node, so `escapeCurliesInCode`
+    // (which only descends into `code` elements) can never see this title —
+    // it must be escaped here instead.
+    expect(page.rendered).toContain('@title="\\{{not a mustache}}"');
+    expect(page.rendered).not.toMatch(/@title="(?<!\\)\{\{not a mustache\}\}"/);
+  });
+
+  test('registers codeBlocks before escapeCurliesInCode in the real configured pipeline', async () => {
+    // This pins the plugin order `config.ts` wires up. Reversed, bare `{{`
+    // would survive into templates, AND the plugin's text-content pairing
+    // guard in `rewrite()` would silently fail on every fence containing
+    // `{{` (its escaped form no longer matches the recorded `block.code`),
+    // leaving those blocks unwrapped. The rest of this suite exercises
+    // `codeBlocks` directly with a hand-built plugin list, so it would stay
+    // green even if `config.ts` registered the two in the wrong order — only
+    // asserting on the actual configured pipeline catches that regression.
+    const config = await loadDocfyConfig(process.cwd(), {
+      root: process.cwd(),
+      config: { sources: [{ pattern: '**/*.md', urlPrefix: 'docs' }] },
+    });
+
+    const plugins = config.plugins ?? [];
+    const codeBlocksIndex = plugins.indexOf(codeBlocks);
+    const escapeCurliesIndex = plugins.indexOf(escapeCurliesInCode);
+
+    expect(codeBlocksIndex).toBeGreaterThanOrEqual(0);
+    expect(escapeCurliesIndex).toBeGreaterThanOrEqual(0);
+    expect(codeBlocksIndex).toBeLessThan(escapeCurliesIndex);
   });
 });

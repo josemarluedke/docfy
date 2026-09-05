@@ -28,3 +28,15 @@ try to parse as a mustache:
 ```hbs
 {{#if this.value}}<span>{{this.value}}</span>{{/if}}
 ```
+
+A fence with a single-quoted title containing a double quote:
+
+```js title='say "hi"'
+const c = 3;
+```
+
+A fence with a title containing curlies:
+
+```js title="{{not a mustache}}"
+const d = 4;
+```
