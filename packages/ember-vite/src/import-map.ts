@@ -28,6 +28,11 @@ export const IMPORT_MAP = {
     path: '@docfy/ember',
     isDefault: false,
   },
+  DocfyCodeBlock: {
+    name: 'DocfyCodeBlock',
+    path: '@docfy/ember',
+    isDefault: false,
+  },
   DocfyOutput: {
     name: 'DocfyOutput',
     path: '@docfy/ember',

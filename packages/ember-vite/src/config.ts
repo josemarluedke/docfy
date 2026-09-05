@@ -173,7 +173,7 @@ async function mergeConfig(
   }
 
   // Add Docfy core plugins for demo and preview template processing
-  const { demoComponents, previewTemplates, docfyLinkConversion, escapeCurliesInCode } =
+  const { demoComponents, previewTemplates, docfyLinkConversion, codeBlocks, escapeCurliesInCode } =
     await import('./docfy-plugins/index.js');
   // Debug: plugins loaded
   docfyConfig.plugins.unshift(
@@ -181,6 +181,10 @@ async function mergeConfig(
     demoComponents, // Then process demo components
     docfyLinkConversion // Finally replace internal links with DocfyLink
   );
+
+  // Wrap every code block before escaping runs: the wrapper is emitted as raw
+  // hast, and escaping must be the last thing that touches code text.
+  docfyConfig.plugins.push(codeBlocks);
 
   // Escaping happens at the hast stage so that it also covers markup injected
   // by rehype-based syntax highlighters.
