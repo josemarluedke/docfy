@@ -76,6 +76,7 @@
     "type": "addon",
     "main": "addon-main.cjs",
     "app-js": {
+      "./components/docfy-code-block.js": "./dist/_app_/components/docfy-code-block.js",
       "./components/docfy-demo/description.js": "./dist/_app_/components/docfy-demo/description.js",
       "./components/docfy-demo/example.js": "./dist/_app_/components/docfy-demo/example.js",
       "./components/docfy-demo/index.js": "./dist/_app_/components/docfy-demo/index.js",

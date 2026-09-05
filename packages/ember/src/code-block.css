@@ -1,0 +1,66 @@
+.docfy-code-block {
+  --docfy-code-block-collapsed-height: 16rem;
+  --docfy-code-block-fade: var(--docfy-code-block-background, #fff);
+  --docfy-code-block-highlight-background: rgb(101 117 133 / 20%);
+  --docfy-code-block-line-number-color: rgb(115 138 148 / 60%);
+
+  position: relative;
+}
+
+.docfy-code-block__header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.docfy-code-block__copy {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}
+
+/* Visually hidden, still announced. */
+.docfy-code-block__status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.docfy-code-block--collapsed .docfy-code-block__content {
+  max-height: var(--docfy-code-block-collapsed-height);
+  overflow: hidden;
+}
+
+.docfy-code-block--collapsed .docfy-code-block__content::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: 0;
+  height: 6rem;
+  pointer-events: none;
+  background: linear-gradient(to top, var(--docfy-code-block-fade), transparent);
+}
+
+/* Emitted by Shiki's transformerMetaHighlight for `{1,3-5}` fence meta. */
+.docfy-code-block .line[data-highlighted] {
+  display: inline-block;
+  width: 100%;
+  background-color: var(--docfy-code-block-highlight-background);
+}
+
+.docfy-code-block--line-numbers code {
+  counter-reset: docfy-line;
+}
+
+.docfy-code-block--line-numbers .line::before {
+  counter-increment: docfy-line;
+  content: counter(docfy-line);
+  display: inline-block;
+  width: 2rem;
+  margin-right: 1rem;
+  text-align: right;
+  color: var(--docfy-code-block-line-number-color);
+}
