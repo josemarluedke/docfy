@@ -9,7 +9,6 @@ interface DocfyDemoSnippetSignature {
     // invoked contextual component arg like `<@Tab>` fails to compile.
     tab?: ComponentLike<{
       Args: { label: string };
-      Element: HTMLDivElement;
       Blocks: { default: [] };
     }>;
   };
@@ -27,14 +26,15 @@ export default class DocfyDemoSnippet extends Component<DocfyDemoSnippetSignatur
 
   <template>
     {{#if @tab}}
-      <@tab
-        @label={{this.label}}
-        class="docfy-demo__snippet"
-        data-test-id="demo-snippet"
-        data-test-snippet-name="{{@name}}"
-        ...attributes
-      >
-        {{yield}}
+      <@tab @label={{this.label}}>
+        <div
+          class="docfy-demo__snippet"
+          data-test-id="demo-snippet"
+          data-test-snippet-name="{{@name}}"
+          ...attributes
+        >
+          {{yield}}
+        </div>
       </@tab>
     {{else}}
       <div

@@ -22,7 +22,6 @@ interface TabArgs {
 
 interface TabSignature {
   Args: TabArgs;
-  Element: HTMLDivElement;
   Blocks: { default: [] };
 }
 
@@ -48,14 +47,7 @@ export class Tab extends Component<TabSignature> {
 
   <template>
     {{#if this.isActive}}
-      <div
-        class="docfy-tabs__panel"
-        data-test-id="docfy-tabs-panel"
-        data-test-tab-label="{{@label}}"
-        ...attributes
-      >
-        {{yield}}
-      </div>
+      {{yield}}
     {{/if}}
   </template>
 }
@@ -102,7 +94,6 @@ interface TabsSignature {
       {
         Tab: ComponentLike<{
           Args: { label: string };
-          Element: HTMLDivElement;
           Blocks: { default: [] };
         }>;
         List: ComponentLike<{ Element: HTMLDivElement }>;
