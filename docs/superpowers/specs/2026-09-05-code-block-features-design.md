@@ -189,7 +189,15 @@ non-breaking.
 and its snippet tab strip is precisely the behaviour `:::code-tabs` needs. Split
 it into a `components/docfy-demo/` folder — one component per file
 (`description`, `example`, `snippet`, `snippets`, `index`) — and extract the tab
-registration and selection logic into a shared `DocfyTabs` primitive.
+registration and selection logic into an internal primitive at
+`src/-private/tabs.gts`.
+
+That primitive is deliberately **not** public API and not in the template
+registry. It also lives outside `components/`, so rollup's `appReexports` does
+not leak it into the consuming app's namespace. `DocfyCodeTabs` is the single
+public tab component; a generic `DocfyTabs` export would differ from it only by
+a CSS class, and nothing in Docfy needs non-code tabs today. It can be promoted
+later if that changes.
 
 This is in scope because it is the code being extended, not unrelated cleanup.
 
@@ -215,15 +223,14 @@ The collapsed height is set in CSS via a `--docfy-code-block-collapsed-height`
 custom property defaulting to `16rem`, not as a component argument — consuming
 design systems override it per theme rather than per invocation.
 
-`DocfyTabs` is exported from `@docfy/ember` as public API, since consumers
-writing their own markdown components will want the same tab strip.
 
-**`DocfyCodeTabs`** — a thin wrapper over `DocfyTabs`, yielding a `Tab` per
-fence inside the directive.
+**`DocfyCodeTabs`** — the public tab component, yielding a `Tab` per fence
+inside the directive.
 
-**`DocfyDemo::Snippets`** is rebuilt on `DocfyTabs`. Demo snippets gain copy and
-collapse for free, because the pipeline rewrites every `<pre>` including those
-inside demo ASTs.
+**`DocfyDemo::Snippets`** is rebuilt on the same internal primitive, rendering
+its own tab strip so its existing `data-test-id`s survive. Demo snippets gain
+copy and collapse for free, because the pipeline rewrites every `<pre>`
+including those inside demo ASTs.
 
 ### Styles
 
@@ -293,7 +300,8 @@ transformers.
 - Highlighted-line markup is present when the Shiki preset is configured.
 
 **`test-app-vite` (integration)**
-- `DocfyCodeBlock` and `DocfyTabs` in isolation, including keyboard interaction.
+- `DocfyCodeBlock` and `DocfyCodeTabs` in isolation, including keyboard
+  interaction.
 
 ## Documentation
 

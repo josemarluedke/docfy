@@ -4,7 +4,7 @@
 
 **Goal:** Give Docfy code blocks a copy button, per-instance collapse/expand, a title bar, line numbers, line highlighting and tabbed groups, and swap frontile from highlight.js to build-time Shiki.
 
-**Architecture:** A new `code-blocks` Docfy plugin in `@docfy/ember-vite` parses fence meta at the mdast stage and, after all rehype plugins have run, wraps each `<pre>` in a `<DocfyCodeBlock>` invocation. `@docfy/ember` gains `DocfyCodeBlock`, `DocfyCodeTabs` and a shared `DocfyTabs` primitive extracted from the existing demo snippet tab strip. Shiki is never a dependency of the component layer — it ships as an opt-in `@docfy/plugin-shiki` preset.
+**Architecture:** A new `code-blocks` Docfy plugin in `@docfy/ember-vite` parses fence meta at the mdast stage and, after all rehype plugins have run, wraps each `<pre>` in a `<DocfyCodeBlock>` invocation. `@docfy/ember` gains two public components, `DocfyCodeBlock` and `DocfyCodeTabs`, both built on an internal tabs primitive extracted from the existing demo snippet tab strip. Shiki is never a dependency of the component layer — it ships as an opt-in `@docfy/plugin-shiki` preset.
 
 **Tech Stack:** TypeScript, unified/remark/rehype (mdast + hast), Glimmer `.gts` components, Vitest (packages), QUnit + `ember-qunit` (test apps), pnpm workspaces.
 
@@ -23,12 +23,14 @@
 
 ---
 
-### Task 1: Extract `DocfyTabs` and split `docfy-demo.gts`
+### Task 1: Extract the internal tabs primitive and split `docfy-demo.gts`
 
 Pure refactor. `docfy-demo.gts` is a 250-line file holding five components, and its snippet tab strip is the exact behaviour `:::code-tabs` needs. Extract it before building on it.
 
+The primitive is **internal**: not exported from `index.ts`, not in the template registry, and deliberately outside `components/` so rollup's `appReexports(['components/**/*.js'])` does not leak it into consuming apps. `DocfyCodeTabs` (Task 5) is the only public tab component.
+
 **Files:**
-- Create: `packages/ember/src/components/docfy-tabs.gts`
+- Create: `packages/ember/src/-private/tabs.gts`
 - Create: `packages/ember/src/components/docfy-demo/index.gts`
 - Create: `packages/ember/src/components/docfy-demo/description.gts`
 - Create: `packages/ember/src/components/docfy-demo/example.gts`
@@ -42,8 +44,8 @@ Pure refactor. `docfy-demo.gts` is a 250-line file holding five components, and 
 **Interfaces:**
 - Consumes: nothing.
 - Produces:
-  - `DocfyTabs` — default export of `docfy-tabs.gts`. Yields `{ Tab: TabComponent, List: ListComponent }` where a tab is registered by rendering `<tabs.Tab @label="pnpm">…</tabs.Tab>`.
-  - `TabRegistration` — `{ id: string; label: string }`.
+  - `Tabs` — default export of `src/-private/tabs.gts`, **internal**. Yields `{ Tab, List, items, select, isActive }`; a tab is registered by rendering `<tabs.Tab @label="pnpm">…</tabs.Tab>`.
+  - `TabRegistration` — `{ id: string; label: string }`, exported from the same module.
   - `DocfyDemo` — default export of `docfy-demo/index.gts`, same public signature as today.
 
 - [ ] **Step 1: Run the existing demo tests to capture the green baseline**
@@ -54,14 +56,17 @@ pnpm --filter test-app-vite test 2>&1 | tail -30
 
 Expected: PASS. Record the passing count — the refactor must not change it.
 
-- [ ] **Step 2: Create the `DocfyTabs` primitive**
+- [ ] **Step 2: Create the internal tabs primitive**
 
-Create `packages/ember/src/components/docfy-tabs.gts`.
+Create `packages/ember/src/-private/tabs.gts`.
 
-`DocfyTabs` owns only registration and selection state. It yields both a default
+`Tabs` owns only registration and selection state. It yields both a default
 `List` and the raw state, so `docfy-demo` can keep rendering its own tab strip
 markup with its existing `data-test-id`s while sharing the logic. This is what
 makes Task 1 a behaviour-preserving refactor.
+
+Nothing here is exported from the package — `DocfyCodeTabs` in Task 5 is the
+public surface.
 
 The `schedule('render', …)` call is lifted verbatim from `DocfyDemoSnippets` —
 children register during their own render pass, and removing the deferral causes
@@ -84,22 +89,22 @@ export interface TabRegistration {
   label: string;
 }
 
-interface DocfyTabArgs {
+interface TabArgs {
   label: string;
   active?: string;
   registerTab?: (tab: TabRegistration) => void;
 }
 
-interface DocfyTabSignature {
-  Args: DocfyTabArgs;
+interface TabSignature {
+  Args: TabArgs;
   Element: HTMLDivElement;
   Blocks: { default: [] };
 }
 
-export class DocfyTab extends Component<DocfyTabSignature> {
+export class Tab extends Component<TabSignature> {
   id = guidFor(this);
 
-  constructor(owner: Owner, args: DocfyTabArgs) {
+  constructor(owner: Owner, args: TabArgs) {
     super(owner, args);
 
     if (typeof this.args.registerTab === 'function') {
@@ -107,7 +112,7 @@ export class DocfyTab extends Component<DocfyTabSignature> {
     }
   }
 
-  // Rendered outside a DocfyTabs (the single-snippet demo case) there is no
+  // Rendered outside a Tabs (the single-snippet demo case) there is no
   // registration, and the panel is always visible.
   get isActive(): boolean {
     if (typeof this.args.registerTab !== 'function') {
@@ -130,18 +135,18 @@ export class DocfyTab extends Component<DocfyTabSignature> {
   </template>
 }
 
-interface DocfyTabsListArgs {
+interface TabsListArgs {
   items: TabRegistration[];
   select: (id: string) => void;
   isActive: (id: string) => boolean;
 }
 
-interface DocfyTabsListSignature {
-  Args: DocfyTabsListArgs;
+interface TabsListSignature {
+  Args: TabsListArgs;
   Element: HTMLDivElement;
 }
 
-const DocfyTabsList: TOC<DocfyTabsListSignature> = <template>
+const TabsList: TOC<TabsListSignature> = <template>
   <div
     class="docfy-tabs__list"
     role="tablist"
@@ -165,12 +170,12 @@ const DocfyTabsList: TOC<DocfyTabsListSignature> = <template>
   </div>
 </template>;
 
-interface DocfyTabsSignature {
+interface TabsSignature {
   Element: HTMLDivElement;
   Blocks: {
     default: [
       {
-        Tab: typeof DocfyTab;
+        Tab: typeof Tab;
         List: ComponentLike<{ Element: HTMLDivElement }>;
         items: TabRegistration[];
         select: (id: string) => void;
@@ -180,7 +185,7 @@ interface DocfyTabsSignature {
   };
 }
 
-export default class DocfyTabs extends Component<DocfyTabsSignature> {
+export default class Tabs extends Component<TabsSignature> {
   @tracked items: TabRegistration[] = [];
   @tracked active?: string;
 
@@ -203,9 +208,9 @@ export default class DocfyTabs extends Component<DocfyTabsSignature> {
     <div class="docfy-tabs" data-test-id="docfy-tabs" ...attributes>
       {{yield
         (hash
-          Tab=(component DocfyTab registerTab=this.registerTab active=this.active)
+          Tab=(component Tab registerTab=this.registerTab active=this.active)
           List=(component
-            DocfyTabsList items=this.items select=this.select isActive=this.isActive
+            TabsList items=this.items select=this.select isActive=this.isActive
           )
           items=this.items
           select=this.select
@@ -280,14 +285,14 @@ export default class DocfyDemoSnippet extends Component<DocfyDemoSnippetSignatur
 }
 ```
 
-`snippets.gts` renders its own tab strip from `DocfyTabs`' yielded state, so the
+`snippets.gts` renders its own tab strip from the primitive's yielded state, so the
 legacy `data-test-id`s survive:
 
 ```gts
 import Component from '@glimmer/component';
 import { on } from '@ember/modifier';
 import { fn, hash } from '@ember/helper';
-import DocfyTabs from '../docfy-tabs.gts';
+import Tabs from '../../-private/tabs.gts';
 import DocfyDemoSnippet from './snippet.gts';
 
 interface DocfyDemoSnippetsSignature {
@@ -299,7 +304,7 @@ interface DocfyDemoSnippetsSignature {
 export default class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignature> {
   <template>
     <div class="docfy-demo__snippets" data-test-id="demo-snippets">
-      <DocfyTabs as |tabs|>
+      <Tabs as |tabs|>
         <div class="docfy-demo__snippets__tabs" data-test-id="demo-tabs" role="tablist">
           {{#each tabs.items as |tab|}}
             <button
@@ -319,7 +324,7 @@ export default class DocfyDemoSnippets extends Component<DocfyDemoSnippetsSignat
         </div>
 
         {{yield (component DocfyDemoSnippet Tab=tabs.Tab)}}
-      </DocfyTabs>
+      </Tabs>
     </div>
   </template>
 }
@@ -376,11 +381,10 @@ export default class DocfyDemo extends Component<DocfyDemoSignature> {
 
 - [ ] **Step 4: Update the package exports**
 
-`packages/ember/src/index.ts` — change the `DocfyDemo` path and add the new export:
+`packages/ember/src/index.ts` — change the `DocfyDemo` path. The tabs primitive is intentionally **not** exported:
 
 ```ts
 export { default as DocfyDemo } from './components/docfy-demo/index.gts';
-export { default as DocfyTabs } from './components/docfy-tabs.gts';
 export { default as DocfyLink } from './components/docfy-link.gts';
 export { default as DocfyOutput } from './components/docfy-output.gts';
 export { default as DocfyPreviousAndNextPage } from './components/docfy-previous-and-next-page.gts';
@@ -388,18 +392,16 @@ export { default as DocfyService } from './services/docfy.ts';
 export { addDocfyRoutes } from './routing.ts';
 ```
 
-`packages/ember/src/template-registry.ts` — same two changes:
+`packages/ember/src/template-registry.ts` — the same path change, and nothing added:
 
 ```ts
 import type DocfyDemo from './components/docfy-demo/index.gts';
-import type DocfyTabs from './components/docfy-tabs.gts';
 import type DocfyLink from './components/docfy-link.gts';
 import type DocfyOutput from './components/docfy-output.gts';
 import type DocfyPreviousAndNextPage from './components/docfy-previous-and-next-page.gts';
 
 export default interface Registry {
   DocfyDemo: typeof DocfyDemo;
-  DocfyTabs: typeof DocfyTabs;
   DocfyLink: typeof DocfyLink;
   DocfyOutput: typeof DocfyOutput;
   DocfyPreviousAndNextPage: typeof DocfyPreviousAndNextPage;
@@ -427,7 +429,7 @@ Expected: PASS, same count as Step 1. If `docfy-demo-test.gts` fails, the refact
 
 ```bash
 git add packages/ember/src/components packages/ember/src/index.ts packages/ember/src/template-registry.ts
-git commit -m "refactor(ember): extract DocfyTabs and split docfy-demo into a folder"
+git commit -m "refactor(ember): extract internal tabs primitive, split docfy-demo"
 ```
 
 ---
@@ -1296,7 +1298,7 @@ git commit -m "feat(ember-vite): wrap code fences in DocfyCodeBlock"
 - Create: `packages/ember-vite/tests/code-tabs.test.ts`
 
 **Interfaces:**
-- Consumes: `DocfyTabs` from Task 1; `parseFenceMeta` from Task 3; the `code-blocks` plugin from Task 4.
+- Consumes: the internal `Tabs` primitive from Task 1; `parseFenceMeta` from Task 3; the `code-blocks` plugin from Task 4.
 - Produces: `DocfyCodeTabs`, default export, yielding `{ Tab }` where `Tab` takes `@label`.
 
 - [ ] **Step 1: Add the dependency**
@@ -1315,7 +1317,7 @@ Create `packages/ember/src/components/docfy-code-tabs.gts`:
 ```gts
 import Component from '@glimmer/component';
 import { hash } from '@ember/helper';
-import DocfyTabs from './docfy-tabs.gts';
+import Tabs from '../-private/tabs.gts';
 
 interface DocfyCodeTabsSignature {
   Element: HTMLDivElement;
@@ -1327,10 +1329,10 @@ interface DocfyCodeTabsSignature {
 export default class DocfyCodeTabs extends Component<DocfyCodeTabsSignature> {
   <template>
     <div class="docfy-code-tabs" data-test-id="code-tabs" ...attributes>
-      <DocfyTabs as |tabs|>
+      <Tabs as |tabs|>
         <tabs.List />
         {{yield (hash Tab=tabs.Tab)}}
-      </DocfyTabs>
+      </Tabs>
     </div>
   </template>
 }
