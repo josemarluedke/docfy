@@ -20,6 +20,15 @@
 - **Components use `data-test-id` attributes**, matching `docfy-demo`'s existing convention, so acceptance tests have stable selectors.
 - Node `>=22.22.2`. Package versions in this monorepo are `0.13.1`; new packages use `workspace:^0.13.1` for internal deps.
 - Commit after every task. Never `git add -A` — stage only the files the task names.
+- **`test-app-vite` has a known-failing baseline. "PASS" means NO NEW FAILURES, not zero failures.** As of commit `816dc54` the suite runs 87 tests with **6 pre-existing failures**, none of which this plan causes or is responsible for fixing:
+  1. `Acceptance | demo rendering: it renders demos on documentation pages` — missing `[data-test-demo-id="docfy-demo-components-docfy-previous-and-next-page-simple"]`
+  2. `Acceptance | DocfyLink conversion: it converts internal links to DocfyLink components in markdown content` — promise rejected on `/docs/ember/configuration`
+  3. `Acceptance | DocfyLink conversion: it converts internal links in demo pages`
+  4. `Acceptance | DocfyLink conversion: it adds proper imports for DocfyLink in generated templates` — promise rejected on `/docs/ember/configuration`
+  5. `Integration | Component | DocfyLink: active state is derived from the current URL`
+  6. `Integration | Component | DocfyLink: an unrecognised @to is left to the browser` — flaky; navigates the browser away and sometimes trips a 10s timeout, which also suppresses the whole run's last entry
+  Compare your run's failure list against these six by NAME. Any failure not on this list is yours to fix. Do not "fix" the six.
+- **Run the suite outside any command sandbox.** Chrome cannot launch inside one (`Operation not permitted`, crashpad/socket errors), which produces a misleading failure that looks like a code problem.
 
 ---
 
