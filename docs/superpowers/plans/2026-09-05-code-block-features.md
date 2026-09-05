@@ -971,6 +971,13 @@ A fence with copying disabled:
 ```sh noCopy
 echo hi
 ```
+
+A fence containing curlies, which Ember's template compiler would otherwise
+try to parse as a mustache:
+
+```hbs
+{{#if this.value}}<span>{{this.value}}</span>{{/if}}
+```
 ````
 
 - [ ] **Step 2: Write the failing test**
@@ -998,8 +1005,8 @@ describe('code-blocks plugin', () => {
     const opens = page.rendered.match(/<DocfyCodeBlock/g) ?? [];
     const closes = page.rendered.match(/<\/DocfyCodeBlock>/g) ?? [];
 
-    expect(opens).toHaveLength(3);
-    expect(closes).toHaveLength(3);
+    expect(opens).toHaveLength(4);
+    expect(closes).toHaveLength(4);
   });
 
   test('passes the parsed fence options as arguments', async () => {
@@ -1034,10 +1041,20 @@ describe('code-blocks plugin', () => {
   test('curly escaping still applies after the rewrite', async () => {
     const page = await renderFixture([codeBlocks, escapeCurliesInCode]);
 
-    // The fixture has no curlies; assert the plugin did not consume the escape
-    // pass by checking both transforms coexist without throwing and the
-    // component invocation survived.
-    expect(page.rendered).toContain('<DocfyCodeBlock');
+    // The hbs fence must come out escaped. If the rewrite ran after escaping,
+    // or replaced the nodes escaping walks, bare `{{` would survive here and
+    // Ember's template compiler would try to parse it as a mustache.
+    expect(page.rendered).toContain('\\{{#if this.value}}');
+    expect(page.rendered).not.toMatch(/(?<!\\)\{\{#if this\.value\}\}/);
+  });
+
+  test('the wrapper argument mustaches are NOT escaped', async () => {
+    const page = await renderFixture([codeBlocks, escapeCurliesInCode]);
+
+    // The invocation's own `{{true}}` is real template syntax and must survive
+    // the escape pass intact — escaping applies inside `code`, not to the
+    // wrapper this plugin emits around it.
+    expect(page.rendered).toContain('@collapsible={{true}}');
   });
 });
 ```
