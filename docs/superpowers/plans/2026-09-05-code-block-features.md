@@ -1400,8 +1400,29 @@ interface DocfyCodeTabsSignature {
 export default class DocfyCodeTabs extends Component<DocfyCodeTabsSignature> {
   <template>
     <div class="docfy-code-tabs" data-test-id="code-tabs" ...attributes>
+      {{! Hand-render the strip with this component's OWN namespaced classes
+          and test ids, the way docfy-demo/snippets.gts does. Using the
+          primitive's `tabs.List` would emit its internal `docfy-tabs__*`
+          classes and `docfy-tabs-*` test ids, breaking BEM consistency with
+          the panel markup below and giving two groups on one page identical
+          test ids. }}
       <Tabs as |tabs|>
-        <tabs.List />
+        <div class="docfy-code-tabs__list" role="tablist" data-test-id="code-tabs-list">
+          {{#each tabs.items as |tab|}}
+            <button
+              type="button"
+              role="tab"
+              class="docfy-code-tabs__list__button
+                {{if (tabs.isActive tab.id) 'docfy-code-tabs__list__button--active'}}"
+              data-test-id="code-tabs-button"
+              data-test-tab-label="{{tab.label}}"
+              aria-selected="{{if (tabs.isActive tab.id) 'true' 'false'}}"
+              {{on "click" (fn tabs.select tab.id)}}
+            >
+              {{tab.label}}
+            </button>
+          {{/each}}
+        </div>
         {{yield (hash Tab=(component DocfyCodeTab tab=tabs.Tab))}}
       </Tabs>
     </div>
