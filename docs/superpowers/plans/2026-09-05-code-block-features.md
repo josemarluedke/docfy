@@ -946,11 +946,10 @@ git commit -m "feat(ember-vite): add fence meta string parser"
 - Modify: `packages/ember-vite/src/docfy-plugins/index.ts`
 - Modify: `packages/ember-vite/src/config.ts:175-188`
 - Modify: `packages/ember-vite/src/import-map.ts`
-- Modify: `packages/ember-vite/src/types.ts`
 
 **Interfaces:**
 - Consumes: `parseFenceMeta` and `CodeBlockOptions` from Task 3; `DocfyCodeBlock` from Task 2.
-- Produces: default-exported Docfy plugin `codeBlocks`. Records `PluginData.codeBlocks?: CodeBlockOptions[]`.
+- Produces: default-exported Docfy plugin `codeBlocks`. Fence options are held in a module-level `WeakMap` keyed by page, not on `pluginData` — nothing outside the plugin reads them.
 
 - [ ] **Step 1: Write the fixture**
 
