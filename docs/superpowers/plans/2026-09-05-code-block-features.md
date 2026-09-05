@@ -1785,9 +1785,15 @@ describe('docfyShiki', () => {
   test('tokenises glimmer template tags inside a gts fence', async () => {
     const html = await render();
 
-    // `<template>` is the thing highlight.js could not handle without the
-    // hand-written glimmerTypescript wrapper this preset replaces.
-    expect(html).toContain('&#x3C;template>');
+    // `<template>` must come out TOKENISED, not as one flat run: the bracket
+    // and the tag name get different colours. Asserting on the contiguous
+    // string `&#x3C;template>` would only pass if tokenisation FAILED.
+    expect(html).toMatch(/<span style="[^"]*">template<\/span>/);
+
+    // The mustache inside the template tag is tokenised too — this is what
+    // highlight.js could not do without the hand-written glimmerTypescript
+    // wrapper that this preset replaces.
+    expect(html).toMatch(/<span style="[^"]*">\{\{<\/span>/);
   });
 
   test('emits both themes as CSS variables', async () => {
