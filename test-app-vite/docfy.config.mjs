@@ -1,10 +1,8 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import autolinkHeadings from 'rehype-autolink-headings';
-import highlight from 'rehype-highlight';
 import codeImport from 'remark-code-import';
-import { glimmer } from 'highlightjs-glimmer';
-import { common } from 'lowlight';
+import shiki from '@docfy/plugin-shiki';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,18 +17,7 @@ export default {
     // to read files outside `rootDir` (default: cwd), so point it at the repo.
     [codeImport, { rootDir: path.join(__dirname, '..') }],
   ],
-  rehypePlugins: [
-    [autolinkHeadings, { behavior: 'wrap' }],
-    [
-      highlight,
-      {
-        // `languages` replaces rehype-highlight's default set, so spread
-        // lowlight's `common` back in or everything else stops highlighting.
-        languages: { ...common, glimmer, hbs: glimmer, handlebars: glimmer },
-        aliases: { javascript: ['gjs'], typescript: ['gts'] },
-      },
-    ],
-  ],
+  rehypePlugins: [[autolinkHeadings, { behavior: 'wrap' }], ...shiki()],
   sources: [
     {
       root: path.join(__dirname, '../docs'),

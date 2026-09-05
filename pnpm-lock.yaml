@@ -837,6 +837,10 @@ importers:
         version: 5.109.2(postcss@8.5.25)
 
   test-app-vite:
+    dependencies:
+      '@docfy/plugin-shiki':
+        specifier: workspace:^
+        version: link:../packages/plugin-shiki
     devDependencies:
       '@babel/core':
         specifier: ^7.27.1
@@ -994,9 +998,6 @@ importers:
       globals:
         specifier: ^17.11.0
         version: 17.11.0
-      highlightjs-glimmer:
-        specifier: ^2.2.2
-        version: 2.2.2(highlight.js@11.11.2)
       loader.js:
         specifier: ^4.7.0
         version: 4.7.0
@@ -1021,9 +1022,6 @@ importers:
       rehype-autolink-headings:
         specifier: ^7.1.0
         version: 7.1.0
-      rehype-highlight:
-        specifier: ^7.0.2
-        version: 7.0.2
       remark-code-import:
         specifier: ^1.2.0
         version: 1.2.0

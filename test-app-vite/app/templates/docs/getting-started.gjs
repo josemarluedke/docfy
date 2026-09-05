@@ -1,15 +1,15 @@
+import { DocfyCodeBlock } from '@docfy/ember';
+
 <template>
   <h1 id="getting-started"><a href="#getting-started">Getting Started</a></h1>
 <p>Here you can find a simple getting started with the Docfy Core. The core will
 output an object with the processed content, metadata, and some additional data
 structures for your convenience.</p>
 <h2 id="create-the-project"><a href="#create-the-project">Create the project</a></h2>
-<pre><code class="hljs language-sh"><span class="hljs-built_in">mkdir</span> docfy-core-getting-started &#x26;&#x26; <span class="hljs-built_in">cd</span> docfy-core-getting-started
-</code></pre>
-<pre><code class="hljs language-sh">npm init
-<span class="hljs-comment"># or</span>
-yarn init
-</code></pre>
+<DocfyCodeBlock @language="sh"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="sh"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">mkdir</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> docfy-core-getting-started</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> &#x26;&#x26; </span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">cd</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> docfy-core-getting-started</span></span></code></pre></DocfyCodeBlock>
+<DocfyCodeBlock @language="sh"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="sh"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> init</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D"># or</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">yarn</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> init</span></span></code></pre></DocfyCodeBlock>
 <h2 id="requirements"><a href="#requirements">Requirements</a></h2>
 <p>Docfy is published as ES modules and requires Node <code>>=22.22.2</code>.</p>
 <p>Two separate constraints combine to produce that floor. Docfy needs <code>require()</code> of
@@ -22,39 +22,34 @@ requires 22.22.2 as its own minimum.</p>
 odd-numbered releases such as Node 23 and 25. Docfy uses a plain <code>>=</code> instead, so
 developing on a current release does not produce install warnings.</p>
 <h2 id="add-docfycore-as-a-dependency"><a href="#add-docfycore-as-a-dependency">Add <code>@docfy/core</code> as a dependency</a></h2>
-<pre><code class="hljs language-sh">npm install @docfy/core
-<span class="hljs-comment"># or</span>
-yarn add @docfy/core
-</code></pre>
+<DocfyCodeBlock @language="sh"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="sh"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> @docfy/core</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D"># or</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">yarn</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> add</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> @docfy/core</span></span></code></pre></DocfyCodeBlock>
 <h2 id="initialize-docfy"><a href="#initialize-docfy">Initialize Docfy</a></h2>
-<pre><code class="hljs language-js"><span class="hljs-comment">// index.mjs</span>
-<span class="hljs-keyword">import</span> <span class="hljs-title class_">Docfy</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/core'</span>;
-<span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
-
-<span class="hljs-keyword">new</span> <span class="hljs-title class_">Docfy</span>()
-  .<span class="hljs-title function_">run</span>([
-    {
-      <span class="hljs-attr">root</span>: path.<span class="hljs-title function_">join</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">dirname</span>, <span class="hljs-string">'docs'</span>),
-      <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
-      <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
-    },
-  ])
-  .<span class="hljs-title function_">then</span>(<span class="hljs-function"><span class="hljs-params">result</span> =></span> {
-    <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(result);
-  });
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">// index.mjs</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Docfy </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/core'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> path </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'path'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">new</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> Docfy</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">()</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">run</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">([</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      root: path.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">join</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">.</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">meta</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">.dirname, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">),</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      urlPrefix: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      pattern: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'**/*.md'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    },</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  ])</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  .</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">then</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">result</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =></span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    console.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">log</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(result);</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  });</span></span></code></pre></DocfyCodeBlock>
 <h2 id="create-a-markdown-file"><a href="#create-a-markdown-file">Create a markdown file</a></h2>
-<pre><code class="hljs language-sh"><span class="hljs-built_in">mkdir</span> docs
-<span class="hljs-built_in">echo</span> <span class="hljs-string">'# Hello Docfy.'</span> > docs/README.md
-</code></pre>
+<DocfyCodeBlock @language="sh"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="sh"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">mkdir</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> docs</span></span>
+<span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">echo</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '# Hello Docfy.'</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> ></span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> docs/README.md</span></span></code></pre></DocfyCodeBlock>
 <p>If you would rather stay in CommonJS, that works too — <code>require()</code> returns the
 module namespace, so reach for <code>.default</code>:</p>
-<pre><code class="hljs language-js"><span class="hljs-comment">// index.cjs</span>
-<span class="hljs-keyword">const</span> <span class="hljs-title class_">Docfy</span> = <span class="hljs-built_in">require</span>(<span class="hljs-string">'@docfy/core'</span>).<span class="hljs-property">default</span>;
-<span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">'path'</span>);
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">// index.cjs</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF"> Docfy</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> require</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'@docfy/core'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">).default;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">const</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF"> path</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> require</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'path'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">);</span></span></code></pre></DocfyCodeBlock>
 <h2 id="run-your-script"><a href="#run-your-script">Run your script</a></h2>
 <p>Now you can run the <code>index.mjs</code> we created earlier.</p>
-<pre><code class="hljs language-sh">node index.mjs
-</code></pre>
+<DocfyCodeBlock @language="sh"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="sh"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">node</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> index.mjs</span></span></code></pre></DocfyCodeBlock>
 </template>

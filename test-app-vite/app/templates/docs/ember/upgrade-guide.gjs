@@ -1,3 +1,5 @@
+import { DocfyCodeBlock } from '@docfy/ember';
+
 <template>
   <h1 id="upgrade-guide"><a href="#upgrade-guide">Upgrade Guide</a></h1>
 <p>This guide helps you upgrade between different versions of Docfy's Ember integration packages.</p>
@@ -25,32 +27,30 @@ CLI's build is synchronous. Docfy raises an explicit error if it finds one.
 <p>This is the change most projects will actually have to make. <code>remark-highlight.js</code>
 and <code>@mapbox/rehype-prism</code> are unmaintained and pinned to highlight.js 10 / old
 refractor builds, and they do not work with unified 11.</p>
-<pre><code class="hljs language-diff"><span class="hljs-deletion">-import highlight from 'remark-highlight.js';</span>
-<span class="hljs-addition">+import highlight from 'rehype-highlight';</span>
-
-<span class="hljs-deletion">-  remarkPlugins: [highlight],</span>
-<span class="hljs-addition">+  rehypePlugins: [highlight],</span>
-</code></pre>
+<DocfyCodeBlock @language="diff"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="diff"><code><span class="line"><span style="--shiki-light:#B31D28;--shiki-dark:#FDAEB7">-import highlight from 'remark-highlight.js';</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">+import highlight from 'rehype-highlight';</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#B31D28;--shiki-dark:#FDAEB7">-  remarkPlugins: [highlight],</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">+  rehypePlugins: [highlight],</span></span></code></pre></DocfyCodeBlock>
 <p>Use <a href="https://github.com/rehypejs/rehype-highlight"><code>rehype-highlight</code></a> for
 highlight.js or <a href="https://github.com/timlrx/rehype-prism-plus"><code>rehype-prism-plus</code></a>
 for Prism. Because highlight.js 11 now works, so does
 <a href="https://github.com/NullVoxPopuli/highlightjs-glimmer"><code>highlightjs-glimmer</code></a>:</p>
-<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> highlight <span class="hljs-keyword">from</span> <span class="hljs-string">'rehype-highlight'</span>;
-<span class="hljs-keyword">import</span> { glimmer } <span class="hljs-keyword">from</span> <span class="hljs-string">'highlightjs-glimmer'</span>;
-<span class="hljs-keyword">import</span> { common } <span class="hljs-keyword">from</span> <span class="hljs-string">'lowlight'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  <span class="hljs-attr">rehypePlugins</span>: [
-    [
-      highlight,
-      {
-        <span class="hljs-attr">languages</span>: { ...common, glimmer, <span class="hljs-attr">hbs</span>: glimmer, <span class="hljs-attr">handlebars</span>: glimmer },
-        <span class="hljs-attr">aliases</span>: { <span class="hljs-attr">javascript</span>: [<span class="hljs-string">'gjs'</span>], <span class="hljs-attr">typescript</span>: [<span class="hljs-string">'gts'</span>] },
-      },
-    ],
-  ],
-};
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> highlight </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'rehype-highlight'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { glimmer } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'highlightjs-glimmer'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { common } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'lowlight'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  rehypePlugins: [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      highlight,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        languages: { </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">...</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">common, glimmer, hbs: glimmer, handlebars: glimmer },</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        aliases: { javascript: [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'gjs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">], typescript: [</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'gts'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">] },</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      },</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    ],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  ],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">};</span></span></code></pre></DocfyCodeBlock>
 <blockquote>
 <p><strong><code>languages</code> replaces the defaults, it does not extend them.</strong>
 <code>rehype-highlight</code> uses <code>options.languages || common</code>, so passing your own map
@@ -71,17 +71,16 @@ have run.</p>
 <code>escapeCurliesInlineCode</code> itself. <strong>Remove those options from your config</strong> if you
 set them; setting <code>escapeCurliesCode: false</code> alongside a highlighter is what
 produces errors like:</p>
-<pre><code>Parse error on line 23:
+<DocfyCodeBlock ><pre><code>Parse error on line 23:
 ...tuation mustache">\{{&#x3C;span class="hljs-cl
 -----------------------^
-</code></pre>
+</code></pre></DocfyCodeBlock>
 <h3 id="other-deprecated-plugins"><a href="#other-deprecated-plugins">Other deprecated plugins</a></h3>
-<pre><code class="hljs language-diff"><span class="hljs-deletion">-import autolinkHeadings from 'remark-autolink-headings';</span>
-<span class="hljs-addition">+import autolinkHeadings from 'rehype-autolink-headings';</span>
-
-<span class="hljs-deletion">-  remarkPlugins: [autolinkHeadings],</span>
-<span class="hljs-addition">+  rehypePlugins: [[autolinkHeadings, { behavior: 'wrap' }]],</span>
-</code></pre>
+<DocfyCodeBlock @language="diff"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="diff"><code><span class="line"><span style="--shiki-light:#B31D28;--shiki-dark:#FDAEB7">-import autolinkHeadings from 'remark-autolink-headings';</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">+import autolinkHeadings from 'rehype-autolink-headings';</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#B31D28;--shiki-dark:#FDAEB7">-  remarkPlugins: [autolinkHeadings],</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">+  rehypePlugins: [[autolinkHeadings, { behavior: 'wrap' }]],</span></span></code></pre></DocfyCodeBlock>
 <p><code>remark-slug</code> and <code>remark-autolink-headings</code> are both deprecated. Docfy no longer
 depends on <code>remark-slug</code> at all — heading ids are generated internally and are
 unchanged, so your anchor links keep working.</p>
@@ -93,46 +92,42 @@ renders un-<code>katex</code>'d math as <code>&#x3C;code class="language-math"><
 <p><code>remark-code-import</code> v1 refuses to read files outside <code>rootDir</code>, which defaults
 to the process working directory. In a monorepo — or any setup where the docs
 live outside the app being built — you have to say where the root is:</p>
-<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> path <span class="hljs-keyword">from</span> <span class="hljs-string">'path'</span>;
-<span class="hljs-keyword">import</span> codeImport <span class="hljs-keyword">from</span> <span class="hljs-string">'remark-code-import'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> {
-  <span class="hljs-attr">remarkPlugins</span>: [[codeImport, { <span class="hljs-attr">rootDir</span>: path.<span class="hljs-title function_">join</span>(<span class="hljs-keyword">import</span>.<span class="hljs-property">meta</span>.<span class="hljs-property">dirname</span>, <span class="hljs-string">'..'</span>) }]],
-};
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> path </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'path'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> codeImport </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'remark-code-import'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  remarkPlugins: [[codeImport, { rootDir: path.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">join</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">.</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">meta</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">.dirname, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'..'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">) }]],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">};</span></span></code></pre></DocfyCodeBlock>
 <p>Without it you get <code>Attempted to import code from "…", which is outside from the rootDir "…"</code>.</p>
 <h3 id="if-you-use-docfycore-directly"><a href="#if-you-use-docfycore-directly">If you use @docfy/core directly</a></h3>
 <p>Plain <code>require('@docfy/core')</code> now returns a module namespace rather than the
 class:</p>
-<pre><code class="hljs language-diff"><span class="hljs-deletion">-const Docfy = require('@docfy/core');</span>
-<span class="hljs-addition">+const Docfy = require('@docfy/core').default;</span>
-</code></pre>
+<DocfyCodeBlock @language="diff"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="diff"><code><span class="line"><span style="--shiki-light:#B31D28;--shiki-dark:#FDAEB7">-const Docfy = require('@docfy/core');</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">+const Docfy = require('@docfy/core').default;</span></span></code></pre></DocfyCodeBlock>
 <p>TypeScript consumers using <code>import Docfy from '@docfy/core'</code> with
 <code>esModuleInterop</code>, and anything already using ESM <code>import</code>, need no change.</p>
 <p>Deep imports from ESM need a file extension:</p>
-<pre><code class="hljs language-diff"><span class="hljs-deletion">-import plugin from '@docfy/core/lib/plugin';</span>
-<span class="hljs-addition">+import plugin from '@docfy/core/lib/plugin.js';</span>
-</code></pre>
+<DocfyCodeBlock @language="diff"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="diff"><code><span class="line"><span style="--shiki-light:#B31D28;--shiki-dark:#FDAEB7">-import plugin from '@docfy/core/lib/plugin';</span></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">+import plugin from '@docfy/core/lib/plugin.js';</span></span></code></pre></DocfyCodeBlock>
 <p>Type-only imports such as <code>@docfy/core/lib/types</code> are erased at compile time and
 work either way.</p>
 <h2 id="upgrading-to-v010x"><a href="#upgrading-to-v010x">Upgrading to v0.10.x</a></h2>
 <p>Version 0.10.0 introduced a major architectural change with the new package structure. This section helps you migrate from previous versions to the new modular architecture.</p>
 <h3 id="package-structure-changes"><a href="#package-structure-changes">Package Structure Changes</a></h3>
 <h4 id="previous-architecture"><a href="#previous-architecture">Previous Architecture</a></h4>
-<pre><code>@docfy/ember - Single package with build integration + components
-</code></pre>
+<DocfyCodeBlock ><pre><code>@docfy/ember - Single package with build integration + components
+</code></pre></DocfyCodeBlock>
 <h4 id="new-architecture"><a href="#new-architecture">New Architecture</a></h4>
-<pre><code>@docfy/ember - Runtime components only (v2 addon)
+<DocfyCodeBlock ><pre><code>@docfy/ember - Runtime components only (v2 addon)
 @docfy/ember-cli - Classic build integration + components
 @docfy/ember-vite - Modern Vite integration + components
-</code></pre>
+</code></pre></DocfyCodeBlock>
 <h3 id="migration-paths"><a href="#migration-paths">Migration Paths</a></h3>
 <h4 id="from-docfyember-classic"><a href="#from-docfyember-classic">From @docfy/ember (Classic)</a></h4>
 <p>If you were using <code>@docfy/ember</code> with classic Ember CLI builds:</p>
 <h5 id="1-update-package-dependencies"><a href="#1-update-package-dependencies">1. Update Package Dependencies</a></h5>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># Install new packages</span>
-npm install --save-dev @docfy/ember-cli
-</code></pre>
+<DocfyCodeBlock @language="bash"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="bash"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D"># Install new packages</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF"> --save-dev</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> @docfy/ember-cli</span></span></code></pre></DocfyCodeBlock>
 <p><strong>Important:</strong> You now need both packages:</p>
 <ul>
 <li><code>@docfy/ember-cli</code> for build-time markdown processing</li>
@@ -145,42 +140,38 @@ npm install --save-dev @docfy/ember-cli
 <h5 id="1-vite-app"><a href="#1-vite-app">1. Vite App</a></h5>
 <p>Make sure your Ember app is set up with <code>@embroider/vite</code>.</p>
 <h5 id="2-install-dependencies"><a href="#2-install-dependencies">2. Install Dependencies</a></h5>
-<pre><code class="hljs language-bash"><span class="hljs-comment"># Install Docfy packages</span>
-npm install --save-dev @docfy/ember-vite
-</code></pre>
+<DocfyCodeBlock @language="bash"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="bash"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D"># Install Docfy packages</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">npm</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> install</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF"> --save-dev</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> @docfy/ember-vite</span></span></code></pre></DocfyCodeBlock>
 <h5 id="3-configure-vite"><a href="#3-configure-vite">3. Configure Vite</a></h5>
 <p>Create or update <code>vite.config.mjs</code>:</p>
-<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> { defineConfig } <span class="hljs-keyword">from</span> <span class="hljs-string">'vite'</span>;
-<span class="hljs-keyword">import</span> { babel } <span class="hljs-keyword">from</span> <span class="hljs-string">'@rollup/plugin-babel'</span>;
-<span class="hljs-keyword">import</span> { docfyVite } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-title function_">defineConfig</span>({
-  <span class="hljs-attr">plugins</span>: [
-    <span class="hljs-title function_">docfyVite</span>({
-      <span class="hljs-attr">sources</span>: [
-        {
-          <span class="hljs-attr">root</span>: path.<span class="hljs-title function_">resolve</span>(__dirname, <span class="hljs-string">'docs'</span>),
-          <span class="hljs-attr">pattern</span>: <span class="hljs-string">'**/*.md'</span>,
-          <span class="hljs-attr">urlPrefix</span>: <span class="hljs-string">'docs'</span>,
-        },
-      ],
-    }),
-    <span class="hljs-comment">// ... Embroider Vite plugins</span>
-  ],
-});
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { defineConfig } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'vite'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { babel } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@rollup/plugin-babel'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { docfyVite } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/ember-vite'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> defineConfig</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  plugins: [</span></span>
+<span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">    docfyVite</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">({</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      sources: [</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">          root: path.</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">resolve</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">(__dirname, </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">),</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">          pattern: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'**/*.md'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">          urlPrefix: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">,</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">        },</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      ],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    }),</span></span>
+<span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">    // ... Embroider Vite plugins</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  ],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">});</span></span></code></pre></DocfyCodeBlock>
 <h3 id="breaking-changes-in-v010x"><a href="#breaking-changes-in-v010x">Breaking Changes in v0.10.x</a></h3>
 <h4 id="component-location"><a href="#component-location">Component Location</a></h4>
 <p>Components are now provided by the <code>@docfy/ember</code> runtime package as a v2 addon:</p>
-<pre><code class="hljs language-js"><span class="hljs-comment">// All packages now use the same runtime components</span>
-<span class="hljs-keyword">import</span> { <span class="hljs-title class_">DocfyOutput</span>, <span class="hljs-title class_">DocfyLink</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember'</span>;
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#6A737D;--shiki-dark:#6A737D">// All packages now use the same runtime components</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { DocfyOutput, DocfyLink } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/ember'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span></code></pre></DocfyCodeBlock>
 <h3 id="new-features-in-v010x"><a href="#new-features-in-v010x">New Features in v0.10.x</a></h3>
 <h4 id="better-typescript-support"><a href="#better-typescript-support">Better TypeScript Support</a></h4>
 <p>All packages now include comprehensive TypeScript definitions:</p>
-<pre><code class="hljs language-ts"><span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">DocfyViteOptions</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/ember-vite'</span>;
-<span class="hljs-keyword">import</span> <span class="hljs-keyword">type</span> { <span class="hljs-title class_">PageMetadata</span>, <span class="hljs-title class_">NestedPageMetadata</span> } <span class="hljs-keyword">from</span> <span class="hljs-string">'@docfy/core'</span>;
-</code></pre>
+<DocfyCodeBlock @language="ts"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="ts"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { DocfyViteOptions } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/ember-vite'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> type</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> { PageMetadata, NestedPageMetadata } </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/core'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span></code></pre></DocfyCodeBlock>
 <h3 id="troubleshooting-v010x-upgrade"><a href="#troubleshooting-v010x-upgrade">Troubleshooting v0.10.x Upgrade</a></h3>
 <h4 id="build-errors"><a href="#build-errors">Build Errors</a></h4>
 <p>If you encounter build errors after migration:</p>

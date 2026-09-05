@@ -1,4 +1,5 @@
 import { DocfyLink } from '@docfy/ember';
+import { DocfyCodeBlock } from '@docfy/ember';
 
 <template>
   <h1 id="writing-markdown"><a href="#writing-markdown">Writing Markdown</a></h1>
@@ -16,12 +17,12 @@ or <a href="https://github.com/remarkjs/remark-toc">adding a table of contents (
 <h2 id="front-matter"><a href="#front-matter">Front Matter</a></h2>
 <p>Front Matter allows you to customize the result of Docfy by the built-in properties
 and exposes any additional values to its consumer. Docfy uses YAML format with <code>---</code> as the marker.</p>
-<pre><code>---
+<DocfyCodeBlock ><pre><code>---
 order: 1
 title: Front Matter is awesome
 category: core
 ---
-</code></pre>
+</code></pre></DocfyCodeBlock>
 <h3 id="built-in-properties"><a href="#built-in-properties">Built-in Properties</a></h3>
 <ul>
 <li><strong>order</strong>? : <em>number</em> - The order of the page to other pages. This option is
@@ -44,19 +45,18 @@ These properties can are useful for extending or modifying behavior in the
 final result.</p>
 <p>One example could be a plugin that takes the value of a property called <code>hideTitle</code>
 and then modifies the markdown AST to remove the first heading of the document.</p>
-<pre><code>---
+<DocfyCodeBlock ><pre><code>---
 order: 2
 hideTitle: true
 ---
-</code></pre>
+</code></pre></DocfyCodeBlock>
 <h2 id="linking-to-other-documents"><a href="#linking-to-other-documents">Linking to other Documents</a></h2>
 <p>Writing documentation usually require links to other documents to give more
 information to users. You can use relative URLs to the actual file on disk to
 create a link to that document. This feature is essential to allow markdown files
 to customize its URL and not to manually change all references in your documentation to the new URL.</p>
 <p>Example:</p>
-<pre><code class="hljs language-md">[<span class="hljs-string">Link to another document</span>](<span class="hljs-link">./other-document.md</span>)
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">[</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">Link to another document</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">](</span><span style="--shiki-light:#24292E;--shiki-light-text-decoration:underline;--shiki-dark:#E1E4E8;--shiki-dark-text-decoration:underline">./other-document.md</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span></code></pre></DocfyCodeBlock>
 <p>The markdown will be modified to the URL of that document. By the simplest case,
 it would be something like <code>/docs/other-document</code>. The actual URL depends on the configuration of the source.</p>
 <blockquote>
@@ -70,8 +70,7 @@ the <DocfyLink @to="/docs/configuration" @anchor="staticassetspath" >base config
 <p>These static assets can be placed next to documents; there is no need to put them
 in a particular folder, although you can if you would like so.</p>
 <p>Example:</p>
-<pre><code class="hljs language-md">![<span class="hljs-string">GitHub</span>](<span class="hljs-link">./github-icon.png</span>)
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">![</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">GitHub</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">](</span><span style="--shiki-light:#24292E;--shiki-light-text-decoration:underline;--shiki-dark:#E1E4E8;--shiki-dark-text-decoration:underline">./github-icon.png</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">)</span></span></code></pre></DocfyCodeBlock>
 <h2 id="demos"><a href="#demos">Demos</a></h2>
 <p>Docfy has a default plugin that combines "demo" markdown files into the data
 structure that represents a page. This feature is useful for consumers to extract
@@ -81,7 +80,7 @@ with them. An excellent example of what is possible can be found in the Ember
 implementation of demo components. Below you can find the rules that Docfy uses
 to decide who the owner of the given demo is.</p>
 <p>Let's say we have the following file structure in our documentation folder:</p>
-<pre><code>├── components
+<DocfyCodeBlock ><pre><code>├── components
 │   ├── button-demo
 │   │   └── demo1.md
 │   ├── button.md
@@ -90,7 +89,7 @@ to decide who the owner of the given demo is.</p>
 │       │   ├── demo1.md
 │       │   └── demo2.md
 │       └── index.md
-</code></pre>
+</code></pre></DocfyCodeBlock>
 <p>You can see we have two components that we are documenting, first button and then form.</p>
 <ol>
 <li>We can see the first rule in the button component. Docfy looks at folders named
@@ -106,22 +105,21 @@ the demos is <code>forms/index.md</code>.</li>
 </blockquote>
 <p>An example of a demo file can be seen below. This demo is actually how the
 Ember demo integration looks like.</p>
-<pre><code class="hljs language-md"><span class="hljs-section"># Demo of DocfyLink component</span>
-
-This is a cool feature
-
-<span class="hljs-code">```hbs template
-This is my Demo:
-
-&#x3C;DocfyLink @to=\{{this.url}}>My Link&#x3C;/DocfyLink>
-```</span>
-
-<span class="hljs-code">```js component
-import Component from '@glimmer/component';
-
-export default class MyDemo extends Component {
-  url = '/docs/ember/';
-}
-```</span>
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Demo of DocfyLink component</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">This is a cool feature</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```hbs template</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">This is my Demo:</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">\{{</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">this.url</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}}</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">>My Link&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```js component</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Component </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@glimmer/component'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> MyDemo</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> extends</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> Component</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">  url</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '/docs/ember/'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```</span></span></code></pre></DocfyCodeBlock>
 </template>
