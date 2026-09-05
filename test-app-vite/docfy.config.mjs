@@ -35,6 +35,10 @@ export default {
     {
       root: path.join(__dirname, '../docs'),
       pattern: '**/*.md',
+      // `docs/superpowers/` holds working documents for in-flight work (plans
+      // and design specs), not published documentation. Ignored as a directory
+      // so anything added there later stays unpublished too.
+      ignore: ['superpowers/**'],
       urlPrefix: 'docs',
     },
   ],
