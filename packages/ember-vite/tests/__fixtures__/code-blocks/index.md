@@ -40,3 +40,9 @@ A fence with a title containing curlies:
 ```js title="{{not a mustache}}"
 const d = 4;
 ```
+
+A fence with a hostile language that attempts to break out of the attribute:
+
+```js"onmouseover=alert(1)
+const e = 5;
+```

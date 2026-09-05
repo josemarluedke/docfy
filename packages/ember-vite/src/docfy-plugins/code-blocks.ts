@@ -58,7 +58,7 @@ function openingTag(block: RecordedBlock): string {
   const args: string[] = [];
 
   if (block.language) {
-    args.push(`@language="${block.language}"`);
+    args.push(`@language="${attrValue(block.language)}"`);
   }
   if (block.title) {
     args.push(`@title="${attrValue(block.title)}"`);

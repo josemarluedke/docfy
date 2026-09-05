@@ -19,8 +19,8 @@ describe('code-blocks plugin', () => {
     const opens = page.rendered.match(/<DocfyCodeBlock/g) ?? [];
     const closes = page.rendered.match(/<\/DocfyCodeBlock>/g) ?? [];
 
-    expect(opens).toHaveLength(6);
-    expect(closes).toHaveLength(6);
+    expect(opens).toHaveLength(7);
+    expect(closes).toHaveLength(7);
   });
 
   test('passes the parsed fence options as arguments', async () => {
@@ -89,6 +89,17 @@ describe('code-blocks plugin', () => {
     // it must be escaped here instead.
     expect(page.rendered).toContain('@title="\\{{not a mustache}}"');
     expect(page.rendered).not.toMatch(/@title="(?<!\\)\{\{not a mustache\}\}"/);
+  });
+
+  test('a hostile fence language does not break out of the attribute', async () => {
+    const page = await renderFixture();
+
+    // A fence's info string has no whitespace or quote restriction in
+    // micromark, so `node.lang` can itself contain a `"`. If it were
+    // interpolated raw, that quote would close the `@language="..."`
+    // attribute early and let arbitrary markup/attributes follow.
+    expect(page.rendered).toContain('@language="js&quot;onmouseover=alert(1)"');
+    expect(page.rendered).not.toContain('@language="js"onmouseover=alert(1)"');
   });
 
   test('registers codeBlocks before escapeCurliesInCode in the real configured pipeline', async () => {
