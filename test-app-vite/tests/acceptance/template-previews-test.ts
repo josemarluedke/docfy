@@ -66,74 +66,79 @@ module('Acceptance | template previews', function (hooks) {
   });
 
   test('it renders component code snippets', async function (assert) {
-    await visit('/docs/ember/components/docfy-previous-and-next-page');
+    // `docfy-previous-and-next-page` only has `hbs` fences, so it can never
+    // exercise JS/TS highlighting — `docs/ember/code-blocks.md` is the
+    // fixture that actually fences `js` (`docfy.config.mjs`) and `ts`
+    // (`app/utils/format-currency.ts`, `app/services/session.ts`) blocks.
+    await visit('/docs/ember/code-blocks');
 
-    // Look for component code blocks. Same Shiki markup shape as above:
-    // `data-language` lives on the `<pre class="shiki">`, not a `language-*`
-    // class on `<code>`.
+    // Same Shiki markup shape as the template-block test above:
+    // `data-language` lives on the `<pre class="shiki">`, not a
+    // `language-*` class on `<code>`. Neither `js` nor `ts` is remapped by
+    // this preset's alias table (see `packages/plugin-shiki/src/index.ts`'s
+    // `DEFAULT_LANG_ALIAS`), so the resolved grammar's `data-language` stays
+    // exactly `js`/`ts` — `javascript`/`typescript` are included too in case
+    // that ever changes.
     const componentBlocks = document.querySelectorAll(
       'pre.shiki[data-language="js"] code, pre.shiki[data-language="javascript"] code, pre.shiki[data-language="typescript"] code, pre.shiki[data-language="ts"] code'
     );
 
-    if (componentBlocks.length > 0) {
-      // Component blocks should contain actual code
-      componentBlocks.forEach((block) => {
-        const codeContent = block.textContent || '';
-        assert.ok(
-          codeContent.trim().length > 0,
-          'Component block should have content'
-        );
+    assert.ok(
+      componentBlocks.length > 0,
+      'at least one JS/TS code block is rendered'
+    );
 
-        // Component code should contain JavaScript/TypeScript syntax
-        const hasJSContent =
-          codeContent.includes('import') ||
-          codeContent.includes('export') ||
-          codeContent.includes('class') ||
-          codeContent.includes('function');
-        if (hasJSContent) {
-          assert.ok(
-            true,
-            'Component block contains expected JavaScript/TypeScript syntax'
-          );
-        }
-      });
-    } else {
-      assert.ok(true, 'No component code blocks found on this page');
-    }
+    componentBlocks.forEach((block) => {
+      const codeContent = block.textContent || '';
+      assert.ok(
+        codeContent.trim().length > 0,
+        'Component block should have content'
+      );
+
+      // A `data-language` attribute alone doesn't prove real tokenization —
+      // require at least one real Shiki token span per block, the same bar
+      // set by "it renders code blocks with proper syntax highlighting"
+      // below.
+      assert.ok(
+        block.querySelector('span[style]'),
+        'Component block has real Shiki token spans, not just the data-language marker'
+      );
+    });
   });
 
   test('it renders style code snippets', async function (assert) {
-    await visit('/docs/ember/components/docfy-previous-and-next-page');
+    // Same reasoning as the component-code-snippets test above: the
+    // previous/next-page fixture has no CSS fences at all, so it can never
+    // exercise this. `docs/ember/code-blocks.md` fences one `css` block (in
+    // "Setting it up").
+    await visit('/docs/ember/code-blocks');
 
-    // Look for style code blocks. `sass` is not one of this preset's curated
-    // languages (only `css`/`scss` are; see `docs/ember/code-blocks.md`), so
-    // there is no Shiki `data-language="sass"` equivalent — dropped rather
-    // than kept as dead weight that could never match.
+    // `sass` is not one of this preset's curated languages (only `css`/
+    // `scss` are; see `docs/ember/code-blocks.md`), so there is no Shiki
+    // `data-language="sass"` equivalent — `scss` is kept even though the
+    // fixture doesn't currently fence one, since it's a real, reachable
+    // grammar in this preset.
     const styleBlocks = document.querySelectorAll(
       'pre.shiki[data-language="css"] code, pre.shiki[data-language="scss"] code'
     );
 
-    if (styleBlocks.length > 0) {
-      // Style blocks should contain actual CSS
-      styleBlocks.forEach((block) => {
-        const codeContent = block.textContent || '';
-        assert.ok(
-          codeContent.trim().length > 0,
-          'Style block should have content'
-        );
+    assert.ok(
+      styleBlocks.length > 0,
+      'at least one CSS/SCSS code block is rendered'
+    );
 
-        // Style code should contain CSS syntax
-        const hasCSSContent =
-          codeContent.includes('{') ||
-          codeContent.includes(':') ||
-          codeContent.includes(';');
-        if (hasCSSContent) {
-          assert.ok(true, 'Style block contains expected CSS syntax');
-        }
-      });
-    } else {
-      assert.ok(true, 'No style code blocks found on this page');
-    }
+    styleBlocks.forEach((block) => {
+      const codeContent = block.textContent || '';
+      assert.ok(
+        codeContent.trim().length > 0,
+        'Style block should have content'
+      );
+
+      assert.ok(
+        block.querySelector('span[style]'),
+        'Style block has real Shiki token spans, not just the data-language marker'
+      );
+    });
   });
 
   test('it renders code blocks with proper syntax highlighting', async function (assert) {
