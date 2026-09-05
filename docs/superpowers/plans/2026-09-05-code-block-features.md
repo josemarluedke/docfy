@@ -1642,6 +1642,11 @@ pnpm --filter @docfy/plugin-shiki add -D vitest typescript @docfy/core
 
 Create `packages/plugin-shiki/tests/__fixtures__/index.md`:
 
+Fence-language inventory across both repos, which is what the alias list has to
+cover: `gts` (393 uses), `hbs` (63), `gjs` (1), `handlebars` (1). Everything else
+in use — `js`, `ts`, `typescript`, `javascript`, `css`, `html`, `bash`, `sh`,
+`md`, `diff`, `json` — is natively bundled by Shiki and needs no alias.
+
 ````markdown
 ---
 title: Shiki
@@ -1650,8 +1655,20 @@ title: Shiki
 # Shiki
 
 ```gts {2}
-const a = 1;
-const b = 2;
+const a: number = 1;
+const b = <template>{{this.value}}</template>;
+```
+
+```gjs
+const c = <template>{{this.value}}</template>;
+```
+
+```hbs
+{{#if this.value}}<span>hi</span>{{/if}}
+```
+
+```js
+const d = 1;
 ```
 ````
 
@@ -1672,13 +1689,34 @@ async function render(options?: Parameters<typeof docfyShiki>[0]) {
 }
 
 describe('docfyShiki', () => {
-  test('highlights gts through the glimmer-ts grammar', async () => {
+  test('highlights every language the docs actually use', async () => {
     const html = await render();
 
     expect(html).toContain('class="shiki');
     // A real grammar tokenises `const` as a keyword; the plain-text fallback
     // would emit a single undifferentiated span.
     expect(html).toMatch(/<span style="[^"]*">const<\/span>/);
+  });
+
+  test('resolves the glimmer aliases rather than falling back to plain text', async () => {
+    const html = await render();
+
+    // Shiki records the resolved language on the <pre>. If an alias failed to
+    // resolve it would say "text" (or throw), which is exactly the silent
+    // degradation this preset exists to prevent.
+    expect(html).toContain('language="glimmer-ts"');
+    expect(html).toContain('language="glimmer-js"');
+    expect(html).toContain('language="handlebars"');
+    expect(html).toContain('language="js"');
+    expect(html).not.toContain('language="text"');
+  });
+
+  test('tokenises glimmer template tags inside a gts fence', async () => {
+    const html = await render();
+
+    // `<template>` is the thing highlight.js could not handle without the
+    // hand-written glimmerTypescript wrapper this preset replaces.
+    expect(html).toContain('&#x3C;template>');
   });
 
   test('emits both themes as CSS variables', async () => {
