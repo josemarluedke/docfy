@@ -87,13 +87,23 @@ module('Integration | Component | @docfy/docs-layout', function (hooks) {
   });
 
   test('it renders edit URL when provided', async function (assert) {
+    // The edit link comes from the current page, not from `@model`.
+    const docfyService = this.owner.lookup('service:docfy') as DocfyService;
+    const stub = sinon.stub(docfyService, 'currentPage').get(() => ({
+      url: '/test',
+      title: 'Test Page',
+      headings: [],
+      editUrl: 'https://github.com/example/repo/edit/main/docs/test.md',
+      toc: [],
+      demos: [],
+    }));
+
     const model = {
       navigation: {
         name: 'docs',
         children: [],
         pages: [],
       },
-      editUrl: 'https://github.com/example/repo/edit/main/docs/test.md',
     };
 
     await render(<template><DocsLayout @model={{model}} /></template>);
@@ -114,6 +124,8 @@ module('Integration | Component | @docfy/docs-layout', function (hooks) {
 
     // Should render edit icon
     assert.dom('svg').exists();
+
+    stub.restore();
   });
 
   test('it does not render edit URL when not provided', async function (assert) {

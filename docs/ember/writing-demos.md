@@ -6,7 +6,7 @@ order: 5
 
 Docfy has a concept of "demo" markdown files. It allows you to write code in
 markdown and have them be extracted as executable code in the host app. You can
-learn more about the file location rules in [Writing Markdown - Demos](../../../docs/writing-markdown.md#demos).
+learn more about the file location rules in [Writing Markdown - Demos](../writing-markdown.md#demos).
 
 In the context of Ember, all demos are extracted as components. These components
 can have a template, component, and style code block. Components can also be

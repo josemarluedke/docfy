@@ -14,12 +14,12 @@ module('Acceptance | demo rendering', function (hooks) {
     // Should have the specific demos for this page
     assert
       .dom(
-        '[data-test-demo-id="docfy-demo-components-docfy-previous-and-next-page-simple"]'
+        '[data-test-demo-id="docfy-demo-ember-components-docfy-previous-and-next-page-simple"]'
       )
       .exists();
     assert
       .dom(
-        '[data-test-demo-id="docfy-demo-components-docfy-previous-and-next-page-scope"]'
+        '[data-test-demo-id="docfy-demo-ember-components-docfy-previous-and-next-page-scope"]'
       )
       .exists();
 

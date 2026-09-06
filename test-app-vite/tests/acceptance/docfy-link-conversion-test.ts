@@ -6,34 +6,35 @@ module('Acceptance | DocfyLink conversion', function (hooks) {
   setupApplicationTest(hooks);
 
   test('it converts internal links to DocfyLink components in markdown content', async function (assert) {
-    await visit('/docs/ember/configuration');
+    await visit('/docs/ember/ember-vite');
 
-    assert.strictEqual(currentURL(), '/docs/ember/configuration');
+    assert.strictEqual(currentURL(), '/docs/ember/ember-vite');
 
     // Should have converted the internal link to DocfyLink component
-    // Original markdown: [here](../../../docs/configuration.md)
-    // Should become: <DocfyLink @to="/docs/configuration">here</DocfyLink>
+    // Original markdown: [core configuration options](../configuration.md)
+    // Should become:
+    //   <DocfyLink @to="/docs/configuration">core configuration options</DocfyLink>
 
     // Check that at least one DocfyLink exists within markdown content
     assert
       .dom('[data-test-id="markdown-content"] [data-test-docfy-link]')
       .exists('DocfyLink component should be present in markdown content');
 
-    // Check that there's a DocfyLink with the "here" text within markdown content
+    // Check that the link crossing up out of `ember/` was converted
     const markdownContent = document.querySelector(
       '[data-test-id="markdown-content"]'
     );
-    const docfyLinkWithHere = Array.from(
+    const configLink = Array.from(
       markdownContent!.querySelectorAll('[data-test-docfy-link]')
-    ).find((el) => el.textContent?.trim() === 'here');
+    ).find((el) => el.textContent?.trim() === 'core configuration options');
     assert.ok(
-      docfyLinkWithHere,
-      'Should find DocfyLink with "here" text in markdown content'
+      configLink,
+      'Should find DocfyLink with "core configuration options" text in markdown content'
     );
 
-    if (docfyLinkWithHere) {
+    if (configLink) {
       assert
-        .dom(docfyLinkWithHere)
+        .dom(configLink)
         .hasAttribute('data-test-to', '/docs/configuration');
     }
   });
@@ -141,9 +142,9 @@ module('Acceptance | DocfyLink conversion', function (hooks) {
   });
 
   test('it adds proper imports for DocfyLink in generated templates', async function (assert) {
-    await visit('/docs/ember/configuration');
+    await visit('/docs/ember/ember-cli');
 
-    assert.strictEqual(currentURL(), '/docs/ember/configuration');
+    assert.strictEqual(currentURL(), '/docs/ember/ember-cli');
 
     // The page should have DocfyLink components functioning properly within markdown content
     const docfyLinkElement = document.querySelector(

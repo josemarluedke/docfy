@@ -58,5 +58,16 @@ jobs:
       # docs or the pipeline change — regenerate and commit them in that case.
       - name: Assert generated templates are up to date
         run: git diff --exit-code -- test-app-vite/app/templates
+
+      # Runs after the build assertions above: `pnpm test` does its own
+      # development build into the same dist/, so asserting on the production
+      # bundle first keeps those checks meaningful.
+      #
+      # Chrome comes preinstalled on the ubuntu-latest runner image, so no
+      # browser setup step is needed. testem.cjs adds --no-sandbox when CI is
+      # set (as it is for this job), which Chrome requires on the runner.
+      - name: Test test-app-vite
+        run: pnpm --filter test-app-vite test
+
       - name: Build test-app-classic
         run: pnpm --filter test-app-classic run build

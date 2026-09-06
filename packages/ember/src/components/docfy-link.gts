@@ -107,7 +107,7 @@ export default class DocfyLink extends Component<DocfyLinkSignature> {
       data-test-docfy-link
       data-test-to={{@to}}
       data-test-anchor={{@anchor}}
-      data-test-is-active={{this.isActive}}
+      data-test-is-active="{{if this.isActive 'true' 'false'}}"
       {{on "click" this.navigate}}
     >
       {{yield}}

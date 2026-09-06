@@ -188,5 +188,5 @@ manages that option itself.</p>
 <span class="line"></span>
 <span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">  return</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> app;</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">};</span></span></code></pre></DocfyCodeBlock>
-<p>All configuration options from <a href="../../configuration.md">@docfy/core</a> are supported.</p>
+<p>All configuration options from <DocfyLink @to="/docs/configuration"  >@docfy/core</DocfyLink> are supported.</p>
 </template>

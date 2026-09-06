@@ -170,8 +170,24 @@ module('Integration | Component | DocfyLink', function (hooks) {
         <DocfyLink @to="/not-a-page">Nope</DocfyLink>
       </template>
     );
+
+    // Leaving the click to the browser means the test window would really
+    // navigate to /not-a-page and take the whole run down with it. Listen on
+    // the document, so this runs after the component's own handler: record
+    // what the component decided, then stop the navigation.
+    let defaultPrevented: boolean | undefined;
+    document.addEventListener(
+      'click',
+      (event) => {
+        defaultPrevented = event.defaultPrevented;
+        event.preventDefault();
+      },
+      { once: true }
+    );
+
     await click('[data-test-docfy-link]');
 
+    assert.false(defaultPrevented, 'the browser default is left in place');
     assert.deepEqual(router.transitions, [], 'no transition is attempted');
   });
 });

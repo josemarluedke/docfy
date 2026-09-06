@@ -245,4 +245,4 @@ module.exports = function (defaults) {
 };
 ```
 
-All configuration options from [@docfy/core](../../configuration.md) are supported.
+All configuration options from [@docfy/core](../configuration.md) are supported.

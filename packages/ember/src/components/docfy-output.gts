@@ -29,6 +29,12 @@ export default class DocfyOutput extends Component<DocfyOutputSignature> {
     }
 
     if (this.args.fromCurrentURL) {
+      // Unscoped, this is exactly the service's cached current page. Go
+      // through it rather than repeating the lookup, so both agree.
+      if (!this.args.scope) {
+        return this.docfy.currentPage;
+      }
+
       const currentURL = this.router.currentURL;
       if (!currentURL) return undefined;
       return this.docfy.findByUrl(currentURL, this.args.scope);
