@@ -135,7 +135,7 @@ importers:
   packages/ember:
     dependencies:
       '@docfy/core':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../core
       '@embroider/addon-shim':
         specifier: ^1.8.9
@@ -238,10 +238,10 @@ importers:
   packages/ember-cli:
     dependencies:
       '@docfy/core':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../core
       '@docfy/ember':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../ember
       broccoli-bridge:
         specifier: ^1.0.0
@@ -293,7 +293,7 @@ importers:
         specifier: ^7.18.6
         version: 7.18.6
       '@docfy/plugin-with-prose':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../plugin-with-prose
       '@ember/optional-features':
         specifier: ^2.2.0
@@ -449,7 +449,7 @@ importers:
   packages/ember-vite:
     dependencies:
       '@docfy/core':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../core
       '@embroider/vite':
         specifier: ^1.0.0
@@ -553,7 +553,7 @@ importers:
         version: 3.23.0
     devDependencies:
       '@docfy/core':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../core
       '@eslint/js':
         specifier: ^10.0.1
@@ -595,7 +595,7 @@ importers:
   packages/plugin-with-prose:
     dependencies:
       '@docfy/core':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../core
     devDependencies:
       '@eslint/js':
@@ -647,13 +647,13 @@ importers:
         specifier: ^7.27.1
         version: 7.29.7(@babel/core@7.29.7)
       '@docfy/ember':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../packages/ember
       '@docfy/ember-cli':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../packages/ember-cli
       '@docfy/plugin-with-prose':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../packages/plugin-with-prose
       '@ember/optional-features':
         specifier: ^2.2.0
@@ -858,10 +858,10 @@ importers:
         specifier: ^7.28.2
         version: 7.29.7
       '@docfy/ember':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../packages/ember
       '@docfy/ember-vite':
-        specifier: workspace:^0.13.1
+        specifier: workspace:^0.14.0
         version: link:../packages/ember-vite
       '@ember/app-tsconfig':
         specifier: ^1.0.3
