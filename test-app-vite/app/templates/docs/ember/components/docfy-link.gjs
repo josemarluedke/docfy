@@ -1,6 +1,7 @@
 import DocfyDemoEmberComponentsDocfyLinkSimple from './docfy-link_gen/docfy-demo-ember-components-docfy-link-simple.js';
 import DocfyDemoEmberComponentsDocfyLinkAnchor from './docfy-link_gen/docfy-demo-ember-components-docfy-link-anchor.js';
 import { DocfyDemo } from '@docfy/ember';
+import { DocfyCodeBlock } from '@docfy/ember';
 
 <template>
   <h1 id="docfylink"><a href="#docfylink">{{"<DocfyLink>"}}</a></h1>
@@ -28,10 +29,9 @@ of its usage throughout the documentation.</p>
 <DocfyDemoEmberComponentsDocfyLinkSimple />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-string">'/docs'</span>></span>
-  Link to Docs
-<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
-</code></pre>
+<DocfyCodeBlock @language="hbs"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="handlebars"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'/docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  Link to Docs</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre></DocfyCodeBlock>
 </demo.Snippet>
 </DocfyDemo>
 <DocfyDemo @id="docfy-demo-ember-components-docfy-link-anchor" as |demo|>
@@ -43,12 +43,11 @@ of its usage throughout the documentation.</p>
 <DocfyDemoEmberComponentsDocfyLinkAnchor />
 </demo.Example>
 <demo.Snippet @name="template">
-<pre><code class="hljs language-hbs"><span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyOutput</span> <span class="hljs-punctuation">@</span><span class="hljs-params">fromCurrentURL</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title"><span class="hljs-literal">true</span></span>}}</span> <span class="hljs-keyword">as</span> |<span class="hljs-template-variable">page</span>|></span>
-  <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-title">page</span><span class="hljs-punctuation">.</span><span class="hljs-title">url</span>}}</span> <span class="hljs-punctuation">@</span><span class="hljs-params">anchor</span><span class="hljs-operator">=</span><span class="hljs-string">'examples'</span>></span>
-    Link to a anchor
-  <span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
-<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyOutput</span>></span>
-</code></pre>
+<DocfyCodeBlock @language="hbs"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="handlebars"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">&#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyOutput</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">fromCurrentURL=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">\{{</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">true</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}}</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> as |page|></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  &#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">\{{</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">page.url</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}}</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">anchor=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'examples'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    Link to a anchor</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  &#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyOutput</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre></DocfyCodeBlock>
 </demo.Snippet>
 </DocfyDemo>
 <h2 id="api"><a href="#api">API</a></h2>

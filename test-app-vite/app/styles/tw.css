@@ -37,7 +37,8 @@
 @import './markdown/structure.css';
 @import './markdown/light.css';
 @import './markdown/dark.css';
-@import './highlight.css';
+@import '@docfy/ember/code-block.css';
+@import './docfy-code-block.css';
 @import './docfy-demo.css';
 /* purgecss end ignore */
 

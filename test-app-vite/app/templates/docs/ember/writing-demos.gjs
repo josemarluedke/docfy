@@ -1,6 +1,7 @@
 import DocfyDemoPreviewWritingDemos from './writing-demos_gen/docfy-demo-preview-writing-demos.js';
 import DocfyDemoEmberWritingDemosDemo1 from './writing-demos_gen/docfy-demo-ember-writing-demos-demo1.js';
 import { DocfyDemo } from '@docfy/ember';
+import { DocfyCodeBlock } from '@docfy/ember';
 
 <template>
   <h1 id="writing-demos"><a href="#writing-demos">Writing Demos</a></h1>
@@ -16,25 +17,24 @@ it would only work if your host app is using <a href="https://github.com/salsify
 or something similar.</p>
 </blockquote>
 <p>Below you can see how a demo markdown file looks like.</p>
-<pre><code class="hljs language-md"><span class="hljs-section"># Demo of Docfy Demos :D</span>
-
-This is a cool feature of Docfy. It is perfect for documenting design systems and
-component libraries.
-
-<span class="hljs-quote">> Note that this text was extracted from the markdown demo file.</span>
-
-<span class="hljs-code">```hbs template
-This is my Demo: &#x3C;DocfyLink @to=\{{this.url}}>My Link&#x3C;/DocfyLink>
-```</span>
-
-<span class="hljs-code">```js component
-import Component from '@glimmer/component';
-
-export default class MyDemo extends Component {
-  url = '/docs';
-}
-```</span>
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Demo of Docfy Demos :D</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">This is a cool feature of Docfy. It is perfect for documenting design systems and</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">component libraries.</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">> Note that this text was extracted from the markdown demo file.</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```hbs template</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">This is my Demo: &#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">\{{</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">this.url</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}}</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">>My Link&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```js component</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Component </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@glimmer/component'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> MyDemo</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> extends</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> Component</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">  url</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '/docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```</span></span></code></pre></DocfyCodeBlock>
 <p>The demo will be inserted into the owner file as a new section called "Examples";
 you can see it below.</p>
 <p>Please note that you must pass a metadata to the code block, it can be seen
@@ -47,7 +47,7 @@ configured to support it.</p>
 <h2 id="examples"><a href="#examples">Examples</a></h2>
 <DocfyDemo @id="docfy-demo-ember-writing-demos-demo1" as |demo|>
 <demo.Description
-          @title="Demo of Docfy Demos :D" @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/writing-demos-demo/demo1.md">
+          @title="Demo of Docfy Demos " @editUrl="https://github.com/josemarluedke/docfy/edit/main/docs/ember/writing-demos-demo/demo1.md">
 <p>This is a cool feature of Docfy. It is perfect for documenting design systems and
 component libraries.</p>
 <blockquote>
@@ -59,16 +59,14 @@ component libraries.</p>
 </demo.Example>
 <demo.Snippets as |Snippet|>
 <Snippet @name="template">
-<pre><code class="hljs language-hbs">This is my Demo: <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-punctuation mustache">\{{<span class="hljs-class">this</span><span class="hljs-punctuation">.</span><span class="hljs-property">url</span>}}</span>></span>My Link<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
-</code></pre>
+<DocfyCodeBlock @language="hbs"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="handlebars"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">This is my Demo: &#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">\{{</span><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">this.url</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}}</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">>My Link&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre></DocfyCodeBlock>
 </Snippet>
 <Snippet @name="component">
-<pre><code class="hljs language-js"><span class="hljs-keyword">import</span> <span class="hljs-title class_">Component</span> <span class="hljs-keyword">from</span> <span class="hljs-string">'@glimmer/component'</span>;
-
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">default</span> <span class="hljs-keyword">class</span> <span class="hljs-title class_">MyDemo</span> <span class="hljs-keyword">extends</span> <span class="hljs-title class_ inherited__">Component</span> {
-  url = <span class="hljs-string">'/docs'</span>;
-}
-</code></pre>
+<DocfyCodeBlock @language="js"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="js"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> Component </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@glimmer/component'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> class</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> MyDemo</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> extends</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0"> Component</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#E36209;--shiki-dark:#FFAB70">  url</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> =</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '/docs'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">}</span></span></code></pre></DocfyCodeBlock>
 </Snippet>
 </demo.Snippets>
 </DocfyDemo>
@@ -83,18 +81,16 @@ component class to provide a <code>this</code> context so helpers such as <code>
 can be used within the demonstration. It will also add the code snippet so
 users can see the code.</p>
 <p>Below is an example of how it works:</p>
-<pre><code class="hljs language-md"><span class="hljs-code">```hbs preview-template
-Click in the link to navigate to the home page: &#x3C;DocfyLink @to='/'>Home&#x3C;/DocfyLink>
-```</span>
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```hbs preview-template</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">Click in the link to navigate to the home page: &#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'/'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">>Home&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```</span></span></code></pre></DocfyCodeBlock>
 <p>And here you can see how it looks like when rendered:</p>
 <DocfyDemo @id="docfy-demo-preview-writing-demos" as |demo|>
 <demo.Example>
 <DocfyDemoPreviewWritingDemos />
 </demo.Example>
 <demo.Snippet @name="preview-template">
-<pre><code class="hljs language-hbs">Click in the link to navigate to the home page: <span class="hljs-tag">&#x3C;<span class="hljs-title">DocfyLink</span> <span class="hljs-punctuation">@</span><span class="hljs-params">to</span><span class="hljs-operator">=</span><span class="hljs-string">'/'</span>></span>Home<span class="hljs-tag">&#x3C;/<span class="hljs-title">DocfyLink</span>></span>
-</code></pre>
+<DocfyCodeBlock @language="hbs"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="handlebars"><code><span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">Click in the link to navigate to the home page: &#x3C;</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> @</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">to=</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'/'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">>Home&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">DocfyLink</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre></DocfyCodeBlock>
 </demo.Snippet>
 </DocfyDemo>
 <h2 id="manual-insertion"><a href="#manual-insertion">Manual Insertion</a></h2>
@@ -103,37 +99,35 @@ be automatically inserted into the owner file under a new section called
 "Examples" before the second heading of the page.</p>
 <p>If you want more control over how demos are inserted into the page, you can
 declare <code>manualDemoInsertion</code> in a markdown page's frontmatter.</p>
-<pre><code>---
+<DocfyCodeBlock ><pre><code>---
 title: Document with many examples
 manualDemoInsertion: true
 ---
-</code></pre>
+</code></pre></DocfyCodeBlock>
 <p>When a page is using <code>manualDemoInsertion</code>, by default no demos are inserted
 into the page. Instead, you must provide markers in your markdown that will be
 replaced. They follow the form <code>[[demo:name-of-demo]]</code>.</p>
-<pre><code class="hljs language-md"><span class="hljs-section"># Title here</span>
-
-The demo will be inserted after this line.
-
-[[demo:demo1]]
-
-And the prose of the document will continue exactly how the author wishes.
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Title here</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">The demo will be inserted after this line.</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">[[</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">demo:demo1</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">]]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">And the prose of the document will continue exactly how the author wishes.</span></span></code></pre></DocfyCodeBlock>
 <p>Sometimes as an author, you want control over where in the page demos will be
 inserted, but you don't need to control this location demo by demo. As a
 shorthand, you can provide the <code>[[demos-all]]</code> marker to insert all demos.</p>
-<pre><code class="hljs language-md"><span class="hljs-section"># Title here</span>
-
-All demos go here.
-
-[[demos-all]]
-
-Below is the equivalent if you had to mark all demos individually.
-
-[[demo:demo1]]
-
-[[demo:demo2]]
-
-[[demo:demo3]]
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Title here</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">All demos go here.</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">[[</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">demos-all</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">]]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">Below is the equivalent if you had to mark all demos individually.</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">[[</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">demo:demo1</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">]]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">[[</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">demo:demo2</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">]]</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">[[</span><span style="--shiki-light:#032F62;--shiki-light-text-decoration:underline;--shiki-dark:#DBEDFF;--shiki-dark-text-decoration:underline">demo:demo3</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">]]</span></span></code></pre></DocfyCodeBlock>
 </template>

@@ -1,0 +1,187 @@
+/*
+ * Cosmetic chrome for `DocfyCodeBlock`/`DocfyCodeTabs`.
+ *
+ * `@docfy/ember/code-block.css` (imported in `tw.css` just above this file)
+ * is deliberately structural only — layout, the collapsed fade mask, the
+ * line-number gutter, and `.line[data-highlighted]` — with every colour
+ * routed through custom properties so a consuming app supplies its own
+ * theme. This file is that theme for Docfy's own docs site, following the
+ * same light-selector / `.dark { }`-block convention as
+ * `./markdown/light.css` + `./markdown/dark.css` and `./docfy-demo.css`.
+ *
+ * `docfy.config.mjs` highlights every fence with `@docfy/plugin-shiki`'s
+ * default themes (`github-light` / `github-dark`), built with
+ * `defaultColor: false`. That means Shiki emits `--shiki-light`/
+ * `--shiki-dark` (and `-bg` variants) as inline custom properties on every
+ * `.shiki` tree, but leaves choosing *which* one applies, and when, entirely
+ * to the app — nothing upstream does that yet. The two rules below are the
+ * standard Shiki "dual theme" recipe and are what actually makes code
+ * colourised at all, in either mode; everything else here is the chrome
+ * around it.
+ */
+
+/*
+ * `--docfy-code-surface` is declared on `:root`/`.dark` (rather than scoped
+ * to `.docfy-code-block`) specifically so `.docfy-code-tabs__list` — a
+ * sibling of the code block, not an ancestor or descendant of it — can share
+ * the exact same background. Custom properties only flow down the DOM tree,
+ * so a tabs-list rule that tried to read a block-scoped variable would just
+ * silently fall back to its default in every case that matters.
+ */
+/*
+ * This site renders code blocks dark in BOTH themes — `./markdown/light.css`
+ * has styled fences `bg-gray-900` since long before this feature. So the chrome
+ * is dark in both modes too, and Shiki always resolves to its dark theme.
+ * Applying the light theme in light mode would put github-light's dark token
+ * colours on that dark surface, which is unreadable.
+ */
+:root {
+  --docfy-code-surface: #24292e;
+}
+
+.shiki,
+.shiki span {
+  color: var(--shiki-dark);
+}
+
+.docfy-code-block {
+  /* `--docfy-code-surface` matches `github-light`'s/`github-dark`'s Shiki
+     background exactly (the theme pair `docfy.config.mjs` uses everywhere on
+     this site), so the card border, header, copy button and collapse fade
+     all sit on the same surface as the code itself instead of a mismatched
+     panel colour. */
+  --docfy-code-block-fade: var(--docfy-code-surface);
+  --docfy-code-block-highlight-background: rgb(56 189 130 / 15%);
+  --docfy-code-block-line-number-color: rgb(203 213 225 / 40%);
+
+  @apply mb-6 overflow-hidden rounded-lg border border-gray-700 text-sm;
+  background: var(--docfy-code-surface);
+}
+
+/*
+ * Restore the padding and horizontal scrolling the markdown stylesheet used to
+ * provide.
+ *
+ * `./markdown/structure.css` styles fenced code with child combinators —
+ * `.prose > pre` and `> pre code` — which supplied `p-4`, `overflow-x-auto`
+ * and a `-mx-4` full-bleed. Wrapping every fence in `DocfyCodeBlock` moves the
+ * `<pre>` one level deeper, so those rules stopped matching: code rendered
+ * flush against the card with no padding and no scroll, while the stale bleed
+ * still pulled some blocks outside their own border.
+ *
+ * Horizontal padding lives on `.line` rather than on the `<pre>` so that a
+ * highlighted line's background reaches the card edges instead of stopping
+ * short of them. This is Shiki's own recommended recipe for exactly that
+ * reason; `code-block.css` already gives `.line[data-highlighted]` the
+ * matching `display: inline-block; width: 100%`.
+ */
+/* Selectors carry two classes deliberately: the markdown stylesheet reaches
+   fences inside lists via `.prose > ul li pre`, whose (0,1,2) specificity would
+   otherwise beat a single-class rule and keep the stale bleed and zero padding
+   on exactly those blocks. */
+.docfy-code-block .docfy-code-block__content pre {
+  @apply m-0 overflow-x-auto py-3;
+}
+
+/* Three classes, to outrank `.dark .prose > ul li pre` (0,2,2) which otherwise
+   gives fences inside lists a different background from their own card. */
+.docfy-code-block .docfy-code-block__content pre.shiki {
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-block .docfy-code-block__content pre code {
+  @apply block p-0;
+}
+
+.docfy-code-block .docfy-code-block__content .line {
+  @apply inline-block w-full px-4;
+}
+
+.docfy-code-block__header {
+  @apply flex items-center border-b border-gray-700 px-4 py-2 pe-11 font-mono text-xs text-gray-400;
+  min-height: 2.25rem;
+}
+
+/*
+ * With a header present the copy button has to sit on the header's centre
+ * line, not the card's top-right corner — at the default 0.5rem it lands about
+ * 4px low and reads as misaligned against the filename. Headerless blocks keep
+ * the corner placement, where the button floats over the first line of code.
+ */
+.docfy-code-block:has(.docfy-code-block__header) .docfy-code-block__copy {
+  top: 0.3125rem;
+}
+
+.docfy-code-block__header__title {
+  @apply truncate;
+}
+
+.docfy-code-block__copy {
+  @apply rounded-md border border-transparent px-2 py-1 font-mono text-xs text-gray-400;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.docfy-code-block__copy:hover {
+  @apply border-gray-700 bg-gray-1000 text-gray-200;
+}
+
+.docfy-code-block__copy:focus-visible {
+  @apply text-gray-700;
+  outline: 2px solid var(--color-green-700, #15803d);
+  outline-offset: 2px;
+}
+
+.docfy-code-block__toggle {
+  @apply block w-full border-t border-gray-700 py-2 text-center font-mono text-xs font-medium text-gray-300;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-block__toggle:hover {
+  @apply bg-gray-1000 text-gray-100;
+}
+
+.docfy-code-block__toggle:focus-visible {
+  outline: 2px solid var(--color-green-700, #15803d);
+  outline-offset: -2px;
+}
+
+.docfy-code-tabs {
+  @apply mb-6;
+}
+
+.docfy-code-tabs__list {
+  @apply flex gap-1 rounded-t-lg border border-b-0 border-gray-700 px-2 pt-2;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-tabs__list__button {
+  @apply -mb-px rounded-t-md border border-b-0 border-transparent px-3 py-1.5 font-mono text-xs text-gray-400;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.docfy-code-tabs__list__button:hover {
+  @apply text-gray-200;
+}
+
+.docfy-code-tabs__list__button--active {
+  @apply border-gray-700 text-gray-100;
+  background: var(--docfy-code-surface);
+}
+
+.docfy-code-tabs__list__button:focus-visible {
+  outline: 2px solid var(--color-green-700, #15803d);
+  outline-offset: 2px;
+}
+
+/* The tab strip sits flush above its panel's code block, so the two read as
+   one attached card rather than two separately-rounded boxes stacked with a
+   gap. */
+.docfy-code-tabs__panel .docfy-code-block {
+  @apply mb-0 rounded-t-none border-t-0;
+}
