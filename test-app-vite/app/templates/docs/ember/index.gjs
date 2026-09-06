@@ -1,29 +1,29 @@
 import { DocfyLink } from '@docfy/ember';
+import { DocfyCodeBlock } from '@docfy/ember';
 
 <template>
   <h1 id="getting-started"><a href="#getting-started">Getting Started</a></h1>
 <p>Docfy brings powerful documentation capabilities to Ember.js applications with a modern, modular architecture. Whether you're building a component library, design system, or comprehensive documentation site, Docfy provides the tools you need.</p>
 <h2 id="how-it-works"><a href="#how-it-works">How It Works</a></h2>
 <p>Docfy transforms your markdown files into live, interactive documentation with executable component demos. You write markdown, and Docfy generates Ember routes, components, and data structures automatically.</p>
-<pre><code class="hljs language-md"><span class="hljs-section"># Button Component</span>
-
-Our primary button component supports multiple variants.
-
-<span class="hljs-code">```gjs preview
-import Component from '@glimmer/component';
-import { Button } from '@frontile/buttons';
-
-export default class ButtonDemo extends Component {
-  // Component logic here
-
-  &#x3C;template>
-    &#x3C;Button @variant="primary" @size="large">
-      Click me!
-    &#x3C;/Button>
-  &#x3C;/template>
-}
-```</span>
-</code></pre>
+<DocfyCodeBlock @language="md"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="md"><code><span class="line"><span style="--shiki-light:#005CC5;--shiki-light-font-weight:bold;--shiki-dark:#79B8FF;--shiki-dark-font-weight:bold"># Button Component</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">Our primary button component supports multiple variants.</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```gjs preview</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">import Component from '@glimmer/component';</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">import { Button } from '@frontile/buttons';</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">export default class ButtonDemo extends Component {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  // Component logic here</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  &#x3C;template></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    &#x3C;Button @variant="primary" @size="large"></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">      Click me!</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    &#x3C;/Button></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  &#x3C;/template></span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">}</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">```</span></span></code></pre></DocfyCodeBlock>
 <p>This becomes a live, interactive demo in your documentation site.</p>
 <h2 id="choose-your-build-system"><a href="#choose-your-build-system">Choose Your Build System</a></h2>
 <p>Docfy's modular architecture supports different Ember build systems:</p>

@@ -28,6 +28,9 @@
     "start": "vite",
     "test": "vite build --mode development && testem ci"
   },
+  "dependencies": {
+    "@docfy/plugin-shiki": "workspace:^"
+  },
   "devDependencies": {
     "@babel/core": "^7.27.1",
     "@babel/eslint-parser": "^8.0.1",
@@ -81,16 +84,13 @@
     "eslint-plugin-n": "^18.3.0",
     "eslint-plugin-qunit": "^8.1.2",
     "globals": "^17.11.0",
-    "highlightjs-glimmer": "^2.2.2",
     "loader.js": "^4.7.0",
-    "lowlight": "^3.3.0",
     "postcss": "^8.4.0",
     "prettier": "^3.9.6",
     "prettier-plugin-ember-template-tag": "^2.1.0",
     "qunit": "^2.24.1",
     "qunit-dom": "^3.4.0",
     "rehype-autolink-headings": "^7.1.0",
-    "rehype-highlight": "^7.0.2",
     "remark-code-import": "^1.2.0",
     "sinon": "^22.1.0",
     "tailwindcss": "^4.1.0",

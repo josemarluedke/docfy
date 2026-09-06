@@ -91,12 +91,22 @@ module('Acceptance | markdown rendering', function (hooks) {
     if (codeBlocks.length > 0) {
       assert.dom('div.markdown pre code').exists();
 
-      // Check for syntax highlighting classes
+      // Check for syntax highlighting. Under @docfy/plugin-shiki the
+      // resolved grammar is `data-language` on `<pre class="shiki">`, not a
+      // `language-*` class on `<code>` (that was the rehype-highlight /
+      // highlight.js shape this project no longer uses).
       const highlightedCode = document.querySelector(
-        'div.markdown pre code[class*="language-"]'
+        'div.markdown pre.shiki[data-language]'
       );
       if (highlightedCode) {
-        assert.dom('div.markdown pre code[class*="language-"]').exists();
+        assert.dom('div.markdown pre.shiki[data-language]').exists();
+
+        // A `data-language` attribute alone doesn't prove real
+        // tokenization — require at least one real Shiki token span too.
+        assert.ok(
+          highlightedCode.querySelector('code span[style]'),
+          'Highlighted code has real Shiki token spans, not just the data-language marker'
+        );
       }
     }
   });

@@ -1,0 +1,48 @@
+---
+title: Code Blocks
+---
+
+# Code Blocks
+
+A plain fence:
+
+```js
+const a = 1;
+```
+
+A fence with options:
+
+```gts title="app/components/thing.gts" collapsible showLineNumbers
+const b = 2;
+```
+
+A fence with copying disabled:
+
+```sh noCopy
+echo hi
+```
+
+A fence containing curlies, which Ember's template compiler would otherwise
+try to parse as a mustache:
+
+```hbs
+{{#if this.value}}<span>{{this.value}}</span>{{/if}}
+```
+
+A fence with a single-quoted title containing a double quote:
+
+```js title='say "hi"'
+const c = 3;
+```
+
+A fence with a title containing curlies:
+
+```js title="{{not a mustache}}"
+const d = 4;
+```
+
+A fence with a hostile language that attempts to break out of the attribute:
+
+```js"onmouseover=alert(1)
+const e = 5;
+```
