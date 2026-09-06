@@ -1001,9 +1001,6 @@ importers:
       loader.js:
         specifier: ^4.7.0
         version: 4.7.0
-      lowlight:
-        specifier: ^3.3.0
-        version: 3.3.0
       postcss:
         specifier: ^8.4.0
         version: 8.5.25

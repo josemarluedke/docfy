@@ -249,6 +249,7 @@ export default plugin({
   runWithHast(ctx): void {
     ctx.pages.forEach(page => {
       let wrapped = false;
+      let usedTabs = false;
 
       const apply = (target: PageContent<HastRoot>): void => {
         const blocks = RECORDED.get(target) ?? [];
@@ -257,24 +258,36 @@ export default plugin({
           wrapped = true;
         }
 
+        if (USED_TABS.get(target)) {
+          usedTabs = true;
+        }
+
         target.demos?.forEach(apply);
       };
 
       apply(page as unknown as PageContent<HastRoot>);
 
-      if (!wrapped) {
+      // These two registrations are independent: `expandTabDirectives` emits
+      // `<DocfyCodeTabs>` unconditionally during the mdast pass (including
+      // inside demos), before `rewrite()` ever runs, so a page can need the
+      // tabs import even when every `<pre>` failed the text-content desync
+      // guard and `wrapped` stayed false. Neither branch may gate the other.
+      if (!wrapped && !usedTabs) {
         return;
       }
 
       const pluginData = page.pluginData as PluginData;
       pluginData.imports ??= [];
 
-      if (!pluginData.imports.some(i => i.name === 'DocfyCodeBlock')) {
+      if (
+        wrapped &&
+        !pluginData.imports.some(i => i.name === 'DocfyCodeBlock')
+      ) {
         pluginData.imports.push(getComponentImport('DocfyCodeBlock'));
       }
 
       if (
-        USED_TABS.get(page) &&
+        usedTabs &&
         !pluginData.imports.some(i => i.name === 'DocfyCodeTabs')
       ) {
         pluginData.imports.push(getComponentImport('DocfyCodeTabs'));
