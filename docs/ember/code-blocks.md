@@ -381,17 +381,42 @@ block syntax:
 </div>
 ```
 
-This 15-language set is fixed: `DocfyShikiOptions` only exposes `themes` and
-`transformers`, and the highlighter is built once, synchronously, at import
-time — there is no option to register additional languages. A fence in a
-language this preset doesn't preload (anything outside the curated set of
-`glimmer-ts`, `glimmer-js`, `handlebars`, `javascript`, `typescript`, `jsx`,
-`tsx`, `json`, `css`, `scss`, `html`, `markdown`, `shellscript`, `diff`, and
-`yaml`) degrades to plain, unhighlighted text rather than throwing — a docs
-build never fails because of a stray ` ```rust ` fence. If you need a
-language outside this set, configure your own Shiki highlighter instead of
-using this preset (its README notes that its source is a reasonably short
-template to copy).
+This 15-language set is the *default*: a fence in a language this preset
+doesn't preload (anything outside `glimmer-ts`, `glimmer-js`, `handlebars`,
+`javascript`, `typescript`, `jsx`, `tsx`, `json`, `css`, `scss`, `html`,
+`markdown`, `shellscript`, `diff`, and `yaml`) degrades to plain,
+unhighlighted text rather than throwing — a docs build never fails because
+of a stray ` ```rust ` fence.
+
+If you actually want that language highlighted, `DocfyShikiOptions` exposes
+a `langs` option for registering extra grammars, alongside `themes` and
+`transformers`. Each entry is a statically-imported grammar module — a
+dynamic `import()` isn't an option here, since `@docfy/plugin-shiki` has to
+stay synchronous end-to-end (see its README for why):
+
+```ts
+import autolinkHeadings from 'rehype-autolink-headings';
+import rust from '@shikijs/langs/rust';
+import shiki from '@docfy/plugin-shiki';
+
+export default {
+  rehypePlugins: [autolinkHeadings, ...shiki({ langs: [rust] })],
+};
+```
+
+A ` ```rust ` fence now tokenizes for real, on top of the default 15
+languages — `langs` adds to that set rather than replacing it. If your docs
+fence the language under a different name (say ` ```rs ` instead of
+` ```rust `), pair `langs` with `langAlias`, which merges over this preset's
+own `gjs`/`gts`/`hbs` table:
+
+```ts
+shiki({ langs: [rust], langAlias: { rs: 'rust' } });
+```
+
+See the `@docfy/plugin-shiki` README for the full details on both options,
+including why `langAlias` alone (without a matching `langs` entry) can't
+highlight anything new.
 
 ## Theming
 

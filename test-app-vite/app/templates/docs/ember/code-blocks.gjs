@@ -348,17 +348,33 @@ block syntax:</p>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">    &#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">button</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span>
 <span class="line"><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">  \{{</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">/if</span><span style="--shiki-light:#005CC5;--shiki-dark:#79B8FF">}}</span></span>
 <span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">&#x3C;/</span><span style="--shiki-light:#22863A;--shiki-dark:#85E89D">div</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">></span></span></code></pre></DocfyCodeBlock>
-<p>This 15-language set is fixed: <code>DocfyShikiOptions</code> only exposes <code>themes</code> and
-<code>transformers</code>, and the highlighter is built once, synchronously, at import
-time — there is no option to register additional languages. A fence in a
-language this preset doesn't preload (anything outside the curated set of
-<code>glimmer-ts</code>, <code>glimmer-js</code>, <code>handlebars</code>, <code>javascript</code>, <code>typescript</code>, <code>jsx</code>,
-<code>tsx</code>, <code>json</code>, <code>css</code>, <code>scss</code>, <code>html</code>, <code>markdown</code>, <code>shellscript</code>, <code>diff</code>, and
-<code>yaml</code>) degrades to plain, unhighlighted text rather than throwing — a docs
-build never fails because of a stray <code>```rust</code> fence. If you need a
-language outside this set, configure your own Shiki highlighter instead of
-using this preset (its README notes that its source is a reasonably short
-template to copy).</p>
+<p>This 15-language set is the <em>default</em>: a fence in a language this preset
+doesn't preload (anything outside <code>glimmer-ts</code>, <code>glimmer-js</code>, <code>handlebars</code>,
+<code>javascript</code>, <code>typescript</code>, <code>jsx</code>, <code>tsx</code>, <code>json</code>, <code>css</code>, <code>scss</code>, <code>html</code>,
+<code>markdown</code>, <code>shellscript</code>, <code>diff</code>, and <code>yaml</code>) degrades to plain,
+unhighlighted text rather than throwing — a docs build never fails because
+of a stray <code>```rust</code> fence.</p>
+<p>If you actually want that language highlighted, <code>DocfyShikiOptions</code> exposes
+a <code>langs</code> option for registering extra grammars, alongside <code>themes</code> and
+<code>transformers</code>. Each entry is a statically-imported grammar module — a
+dynamic <code>import()</code> isn't an option here, since <code>@docfy/plugin-shiki</code> has to
+stay synchronous end-to-end (see its README for why):</p>
+<DocfyCodeBlock @language="ts"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="ts"><code><span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> autolinkHeadings </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> 'rehype-autolink-headings'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> rust </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@shikijs/langs/rust'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">import</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> shiki </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">from</span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF"> '@docfy/plugin-shiki'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">export</span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583"> default</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> {</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">  rehypePlugins: [autolinkHeadings, </span><span style="--shiki-light:#D73A49;--shiki-dark:#F97583">...</span><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">shiki</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">({ langs: [rust] })],</span></span>
+<span class="line"><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">};</span></span></code></pre></DocfyCodeBlock>
+<p>A <code>```rust</code> fence now tokenizes for real, on top of the default 15
+languages — <code>langs</code> adds to that set rather than replacing it. If your docs
+fence the language under a different name (say <code>```rs</code> instead of
+<code>```rust</code>), pair <code>langs</code> with <code>langAlias</code>, which merges over this preset's
+own <code>gjs</code>/<code>gts</code>/<code>hbs</code> table:</p>
+<DocfyCodeBlock @language="ts"><pre class="shiki shiki-themes github-light github-dark" style="--shiki-light:#24292e;--shiki-dark:#e1e4e8;--shiki-light-bg:#fff;--shiki-dark-bg:#24292e" tabindex="0" data-language="ts"><code><span class="line"><span style="--shiki-light:#6F42C1;--shiki-dark:#B392F0">shiki</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8">({ langs: [rust], langAlias: { rs: </span><span style="--shiki-light:#032F62;--shiki-dark:#9ECBFF">'rust'</span><span style="--shiki-light:#24292E;--shiki-dark:#E1E4E8"> } });</span></span></code></pre></DocfyCodeBlock>
+<p>See the <code>@docfy/plugin-shiki</code> README for the full details on both options,
+including why <code>langAlias</code> alone (without a matching <code>langs</code> entry) can't
+highlight anything new.</p>
 <h2 id="theming"><a href="#theming">Theming</a></h2>
 <p><code>@docfy/ember/code-block.css</code> exposes four custom properties, scoped to
 <code>.docfy-code-block</code>, so you can retheme the component without overriding its

@@ -1,4 +1,10 @@
-import { createHighlighterCoreSync, type ShikiTransformer } from 'shiki/core';
+import {
+  createHighlighterCoreSync,
+  type HighlighterCore,
+  type LanguageRegistration,
+  type MaybeArray,
+  type ShikiTransformer,
+} from 'shiki/core';
 import { createJavaScriptRegexEngine } from 'shiki/engine/javascript';
 
 // Static imports only. `@docfy/ember-cli` loads a consumer's `docfy.config.*`
@@ -50,16 +56,57 @@ export interface DocfyShikiOptions {
    * Extra Shiki transformers, appended after the defaults.
    */
   transformers?: unknown[];
+
+  /**
+   * Extra TextMate grammars to register alongside the curated set this
+   * preset preloads (see "Supported languages" below), so a fence in a
+   * language this preset doesn't ship by default can still be highlighted.
+   *
+   * Each entry is a statically-imported grammar module, e.g.:
+   *
+   * ```ts
+   * import rust from '@shikijs/langs/rust';
+   * import shiki from '@docfy/plugin-shiki';
+   *
+   * shiki({ langs: [rust] });
+   * ```
+   *
+   * Import must stay static (never `import()`) — see the module-level
+   * comment above about why a top-level `await` anywhere in this graph
+   * breaks `@docfy/ember-cli`'s synchronous `require()` of a consumer's
+   * `docfy.config.*`.
+   */
+  langs?: LanguageRegistration[];
+
+  /**
+   * Extra fence-language aliases, merged OVER this preset's built-in
+   * `gjs`/`gts`/`hbs` map (so an entry here can override one of those three,
+   * but cannot remove the other two). Unlike the removed-and-reinstated
+   * option this replaces, this one is genuinely functional: passing
+   * `langs` and `langAlias` together builds a highlighter that knows about
+   * the new grammar from construction, so an alias can resolve to it.
+   *
+   * ```ts
+   * import svelte from '@shikijs/langs/svelte';
+   * import shiki from '@docfy/plugin-shiki';
+   *
+   * shiki({ langs: [svelte], langAlias: { html_svelte: 'svelte' } });
+   * ```
+   */
+  langAlias?: Record<string, string>;
 }
 
 /**
  * Shiki bundles first-class `glimmer-js` and `glimmer-ts` TextMate grammars
  * (scope `source.gts`), so `.gjs`/`.gts` fences get real tokenisation rather
- * than falling back to plain JavaScript. This alias table is fixed: it is
- * baked into the highlighter at construction time below and is not
- * configurable, because the sync highlighter architecture this package
- * relies on resolves aliases once, up front (see the README's "Language
- * aliases" section for why a per-call `langAlias` option was removed).
+ * than falling back to plain JavaScript. This is the preset's built-in alias
+ * table; a caller can add to it (or override individual entries) via the
+ * `langAlias` option on `docfyShiki(...)` — see `DocfyShikiOptions.langAlias`
+ * and the README's "Language aliases" section. It is merged with any
+ * caller-supplied aliases and re-baked into a fresh highlighter at
+ * `docfyShiki()` call time (see `getHighlighter` below), which is what makes
+ * a caller-supplied alias able to actually resolve to a caller-supplied
+ * `langs` grammar rather than only relabelling output.
  */
 const DEFAULT_LANG_ALIAS: Record<string, string> = {
   gjs: 'glimmer-js',
@@ -70,51 +117,92 @@ const DEFAULT_LANG_ALIAS: Record<string, string> = {
 const DEFAULT_THEMES = { light: 'github-light', dark: 'github-dark' };
 
 /**
- * The curated set of languages this preset preloads. This is deliberately
- * NOT "every language Shiki bundles" (~200 grammars, ~11.6MB of JSON) —
- * preloading everything would cost real parse time at import for every
+ * The curated set of languages this preset preloads by default. This is
+ * deliberately NOT "every language Shiki bundles" (~200 grammars, ~11.6MB of
+ * JSON) — preloading everything would cost real parse time for every
  * consumer, whether or not they use most of those languages. This list
  * covers the glimmer grammars that are the point of this package, plus the
  * languages Docfy's own docs (and typical Ember app docs) actually fence:
  * TypeScript/JavaScript and their JSX variants, Handlebars, JSON, CSS/SCSS,
  * HTML, Markdown, shell, diff, and YAML.
  *
- * A fence in a language outside this set is NOT an error: `rehypeShiki` (see
+ * A fence in a language outside this set (and not covered by a `langs`
+ * option passed to `docfyShiki(...)`) is NOT an error: `rehypeShiki` (see
  * below) leaves any `<pre>` whose language isn't loaded untouched — no
  * `.shiki` wrapper, no theme, no crash — so a docs build never dies because
  * someone wrote a ```rust fence. See the "Unsupported languages" section of
- * the README.
+ * the README, and `DocfyShikiOptions.langs` for how to add it instead.
  */
-const highlighter = createHighlighterCoreSync({
-  langs: [
-    glimmerTs,
-    glimmerJs,
-    handlebars,
-    javascript,
-    typescript,
-    jsx,
-    tsx,
-    json,
-    css,
-    scss,
-    html,
-    markdown,
-    shellscript,
-    diff,
-    yaml,
-  ],
-  themes: [githubLight, githubDark, nord],
-  // Shiki mutates the `langAlias` object it's given (accumulating its own
-  // built-in aliases into it), so pass a copy rather than the shared default.
-  langAlias: { ...DEFAULT_LANG_ALIAS },
-  // The pure-JS regex engine avoids loading a WASM binary. It cannot
-  // translate every Oniguruma pattern the way the WASM-backed `oniguruma`
-  // engine can, so `forgiving: true` is required — without it, an
-  // untranslatable pattern in any preloaded grammar throws at construction
-  // time (i.e. at `import`), crashing every consumer's build rather than
-  // degrading the one language affected.
-  engine: createJavaScriptRegexEngine({ forgiving: true }),
-});
+const DEFAULT_LANGS: MaybeArray<LanguageRegistration>[] = [
+  glimmerTs,
+  glimmerJs,
+  handlebars,
+  javascript,
+  typescript,
+  jsx,
+  tsx,
+  json,
+  css,
+  scss,
+  html,
+  markdown,
+  shellscript,
+  diff,
+  yaml,
+];
+
+/**
+ * Builds a `HighlighterCore`. `langAlias` is construction-time-only in Shiki
+ * (it cannot be changed on an already-built highlighter), which is exactly
+ * why `docfyShiki()` builds a fresh highlighter per call rather than reusing
+ * a single module-level instance whenever a caller passes `langs` and/or
+ * `langAlias` — see `getHighlighter` below.
+ */
+function buildHighlighter(
+  extraLangs: LanguageRegistration[],
+  langAlias: Record<string, string>
+): HighlighterCore {
+  return createHighlighterCoreSync({
+    langs: [...DEFAULT_LANGS, ...extraLangs],
+    themes: [githubLight, githubDark, nord],
+    // Shiki mutates the `langAlias` object it's given (accumulating its own
+    // built-in aliases into it), so pass a copy rather than the caller's map.
+    langAlias: { ...langAlias },
+    // The pure-JS regex engine avoids loading a WASM binary. It cannot
+    // translate every Oniguruma pattern the way the WASM-backed `oniguruma`
+    // engine can, so `forgiving: true` is required — without it, an
+    // untranslatable pattern in any preloaded grammar throws at construction
+    // time, crashing every consumer's build rather than degrading the one
+    // language affected.
+    engine: createJavaScriptRegexEngine({ forgiving: true }),
+  });
+}
+
+// Memoized highlighter for the common case: a call to `docfyShiki()` with no
+// `langs`/`langAlias`. Building the highlighter is moved from module load
+// time into `docfyShiki()` (rather than the previous module-level
+// `const highlighter = ...`) so that a consumer who imports this package but
+// never calls `docfyShiki()` doesn't pay the parse cost of ~15 grammars for
+// nothing; this cache keeps the *common* path — calling it once, with no
+// extra options — down to a single construction, same as before.
+let defaultHighlighter: HighlighterCore | undefined;
+
+function getHighlighter(options: DocfyShikiOptions): {
+  highlighter: HighlighterCore;
+  langAlias: Record<string, string>;
+} {
+  const extraLangs = options.langs ?? [];
+  const langAlias = { ...DEFAULT_LANG_ALIAS, ...options.langAlias };
+
+  if (extraLangs.length === 0 && !options.langAlias) {
+    if (!defaultHighlighter) {
+      defaultHighlighter = buildHighlighter([], langAlias);
+    }
+    return { highlighter: defaultHighlighter, langAlias };
+  }
+
+  return { highlighter: buildHighlighter(extraLangs, langAlias), langAlias };
+}
 
 /**
  * Records the language actually requested for a fence (after applying this
@@ -126,12 +214,12 @@ const highlighter = createHighlighterCoreSync({
  * actually tokenised is Shiki's own per-token `<span style="...">` output,
  * which this attribute cannot fake.
  */
-function languageAttributeTransformer(): ShikiTransformer {
+function languageAttributeTransformer(langAlias: Record<string, string>): ShikiTransformer {
   return {
     name: 'docfy-shiki:language-attribute',
     pre(node) {
       const lang = this.options.lang;
-      node.properties['data-language'] = DEFAULT_LANG_ALIAS[lang] ?? lang;
+      node.properties['data-language'] = langAlias[lang] ?? lang;
       return node;
     },
   };
@@ -166,11 +254,13 @@ function dataHighlightedAttributeTransformer(): ShikiTransformer {
 }
 
 export default function docfyShiki(options: DocfyShikiOptions = {}): unknown[] {
+  const { highlighter, langAlias } = getHighlighter(options);
+
   function shikiRehypePlugin(): (tree: unknown) => unknown {
     const transformers: ShikiTransformer[] = [
       transformerMetaHighlight(),
       transformerMetaWordHighlight(),
-      languageAttributeTransformer(),
+      languageAttributeTransformer(langAlias),
       dataHighlightedAttributeTransformer(),
       ...((options.transformers ?? []) as ShikiTransformer[]),
     ];

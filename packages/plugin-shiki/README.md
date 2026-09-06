@@ -60,10 +60,16 @@ To stay synchronous end-to-end, this preset:
 
 - Loads its grammars and themes via plain, **static** `import` statements
   (see "Supported languages" and "Supported themes" below) — never a dynamic
-  `import()` or a top-level `await`.
-- Builds one Shiki `HighlighterCore` at module load time via
-  `createHighlighterCoreSync`, using the pure-JS regex engine (no WASM to
-  load).
+  `import()` or a top-level `await`. This applies just as much to any extra
+  grammar you pass via `langs` (see "Adding a language" below).
+- Builds a Shiki `HighlighterCore` via `createHighlighterCoreSync`, using the
+  pure-JS regex engine (no WASM to load). Calling `docfyShiki()` with no
+  `langs`/`langAlias` reuses one memoized highlighter across calls, built the
+  first time it's needed rather than at `import` time — a consumer that
+  imports this package but never calls `docfyShiki()` doesn't pay for it at
+  all. Passing `langs` and/or `langAlias` builds a dedicated highlighter for
+  that call instead, since `langAlias` can only be set at construction time
+  (see "Language aliases" below).
 - Uses `@shikijs/rehype/core`'s `rehypeShikiFromHighlighter`, which — given an
   already-built highlighter and no lazy-loaded languages — returns a genuinely
   synchronous unified transformer.
@@ -89,29 +95,57 @@ docs are actually written resolve to the grammars above:
 | `gjs`          | `glimmer-js` |
 | `hbs`          | `handlebars` |
 
-This alias table is fixed and is not configurable — see "Language aliases"
-below for why.
+You can add to (or override) this table with the `langAlias` option — see
+"Adding a language" below.
 
-### Unsupported languages
+### Adding a language
 
-A fence whose language is not in the list above (for example ` ```rust `)
-is **not** an error. `@shikijs/rehype` leaves any `<pre>` whose language isn't
-loaded completely untouched: no `.shiki` wrapper, no theme classes, no
-Shiki-applied highlighting — it renders as plain, unhighlighted fenced code,
-exactly as if no highlighter were configured for it. A docs build never fails
-because someone wrote a fence in a language this preset doesn't preload.
+A fence whose language is not in the curated list above (for example
+` ```rust `) is, by default, **not** an error: `@shikijs/rehype` leaves any
+`<pre>` whose language isn't loaded completely untouched — no `.shiki`
+wrapper, no theme classes, no Shiki-applied highlighting — it renders as
+plain, unhighlighted fenced code, exactly as if no highlighter were
+configured for it. A docs build never fails because someone wrote a fence in
+a language this preset doesn't preload.
 
-If you need another language, either send a PR adding it to the curated list
-in `src/index.ts`, or configure your own Shiki highlighter (this preset's
-source is a reasonably short template to copy).
+If you actually want that language highlighted, pass its grammar via the
+`langs` option. Each entry is a statically-imported module from
+`@shikijs/langs` (or any other Shiki-compatible grammar you import
+yourself) — never a dynamic `import()`, since this package has to stay
+synchronous end-to-end (see "Why this preset builds its own highlighter"
+above):
+
+```ts
+import rust from '@shikijs/langs/rust';
+import shiki from '@docfy/plugin-shiki';
+
+export default {
+  rehypePlugins: [autolinkHeadings, ...shiki({ langs: [rust] })],
+};
+```
+
+A ` ```rust ` fence now tokenizes for real. `langs` is additive — it doesn't
+replace the curated set this preset already preloads.
+
+If the language you need is only reachable under a different fence name (for
+example your docs use ` ```rs ` rather than ` ```rust `), pair `langs` with
+`langAlias`, which is merged over this preset's own `gjs`/`gts`/`hbs` table:
+
+```ts
+shiki({ langs: [rust], langAlias: { rs: 'rust' } });
+```
+
+`langAlias` on its own (without a matching `langs` entry) cannot make a new
+language highlight — see "Language aliases" below for why, and why the two
+options work together the way they do.
 
 ## Supported themes
 
 This preset statically preloads three themes: `github-light`, `github-dark`
-(the defaults), and `nord`. As with languages, only preloaded themes can be
-used — passing an unloaded theme name throws, because the underlying
-highlighter is built once, synchronously, at import time and cannot fetch a
-theme afterwards.
+(the defaults), and `nord`, and — unlike languages — there is currently no
+option to add more; passing an unloaded theme name throws, because the
+underlying highlighter is built synchronously and cannot fetch a theme
+afterwards.
 
 ## Overriding themes
 
@@ -123,19 +157,31 @@ docfyShiki({
 
 ## Language aliases
 
-Earlier versions of this README documented a `langAlias` option. It has been
-removed. Because this preset's highlighter is built once, synchronously, at
-import time, an alias supplied at `docfyShiki({ langAlias: {...} })` call
-time could only ever change the `data-language` attribute this preset writes
-on the rendered `<pre>` — it could never register a new alias with Shiki's
-grammar resolver, which is fixed by the time any call to `docfyShiki()`
-happens. A caller adding, say, `{ svelte: 'html' }` would see their fence
-mislabelled rather than actually highlighted as HTML. An option that appears
-to work and silently does not is worse than no option, so it was removed
-rather than kept as a trap.
+An earlier version of this package removed a `langAlias` option, because at
+the time the highlighter was built once, synchronously, at *module import*
+time — before `docfyShiki(options)` was ever called. An alias supplied at
+call time could only ever change the `data-language` attribute this preset
+writes on the rendered `<pre>`; it could never register a new alias with
+Shiki's grammar resolver, which was already fixed by then. A caller adding,
+say, `{ svelte: 'html' }` would see their fence mislabelled rather than
+actually highlighted as HTML — an option that appears to work and silently
+does not, which is worse than no option.
 
-The package's own three aliases (`gjs`, `gts`, `hbs`) are baked into the
-highlighter directly and are unaffected by this.
+`langAlias` is back because that constraint no longer holds: the highlighter
+is now built inside `docfyShiki()` itself (see "Adding a language" above), so
+an alias supplied there is baked into the same construction call as any
+`langs` you pass alongside it, and genuinely participates in grammar
+resolution. `langAlias` merges *over* the package's own `gjs`/`gts`/`hbs`
+table — it can override one of those three, but not remove the other two.
+
+Passing `langAlias` without a matching `langs` entry (or one of the
+languages this preset already preloads) still can't highlight anything new —
+an alias can only point at a grammar that's actually loaded. But it no
+longer looks like it worked when it didn't: a fence whose alias points at an
+unloaded grammar is left completely untouched (see "Adding a language"
+above) — no `data-language` attribute either, exactly like any other
+unsupported language — rather than being mislabelled with a `data-language`
+that implies it highlighted.
 
 ## Extra transformers
 

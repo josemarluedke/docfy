@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest';
 import path from 'path';
 import Docfy from '@docfy/core';
+import rust from '@shikijs/langs/rust';
 import docfyShiki from '../src/index.js';
 
 const root = path.resolve(import.meta.dirname, './__fixtures__');
@@ -72,6 +73,29 @@ describe('docfyShiki', () => {
 
     expect(html).toContain('fn main() {}');
     expect(html).not.toContain('data-language="rust"');
+  });
+
+  test('highlights a language outside the default set when passed via `langs`', async () => {
+    const html = await render({ langs: [rust] });
+
+    // Same reasoning as the tokenisation assertions above: `data-language`
+    // only proves the fence reached the transformer, not that the grammar
+    // actually tokenised it. `fn` is a real Rust keyword; a real grammar
+    // gives it its own coloured span, whereas the plain-text fallback (the
+    // behaviour proven by the previous test, without `langs`) would not.
+    expect(html).toMatch(/<span style="[^"]*">fn<\/span>/);
+    expect(html).toContain('data-language="rust"');
+  });
+
+  test('resolves a custom `langAlias` entry to a loaded language and highlights it', async () => {
+    // The fixture's ` ```rs ` fence uses a language name that is not itself
+    // a real Shiki grammar id — it only resolves at all because of the
+    // `langAlias` passed here, mapping it onto the `rust` grammar supplied
+    // via `langs`.
+    const html = await render({ langs: [rust], langAlias: { rs: 'rust' } });
+
+    expect(html).toMatch(/<span style="[^"]*">fn<\/span>/);
+    expect(html).toContain('data-language="rust"');
   });
 
   test('emits both themes as CSS variables', async () => {
