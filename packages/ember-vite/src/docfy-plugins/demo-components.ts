@@ -10,6 +10,7 @@ import {
   findHeading,
   isDemoComponents,
 } from './utils.js';
+import { findFenceMarker } from './fence-meta.js';
 
 import type { Context, PageContent } from '@docfy/core/lib/types.js';
 import type { DemoComponent, DemoComponentChunk, PluginData } from '../types.js';
@@ -39,6 +40,8 @@ function markerText(node: Paragraph): string {
   const child = node.children[0];
   return node.children.length === 1 && child.type === 'text' ? child.value : '';
 }
+
+const CHUNK_MARKERS = ['component', 'template', 'styles'] as const;
 
 const demoMarkerRegex = /^\[\[demo:(.+?)\]\]$/;
 const demoMarker = (node: Paragraph): boolean => demoMarkerRegex.test(markerText(node));
@@ -124,12 +127,16 @@ export default plugin({
           const chunks: DemoComponentChunk[] = [];
 
           visit(demo.ast, 'code', node => {
-            if (['component', 'template', 'styles'].includes(node.meta || '')) {
+            // Matched per token, not against the whole meta string: the marker
+            // shares it with the code block options (`collapsible`, ...).
+            const marker = findFenceMarker(node.meta, CHUNK_MARKERS);
+
+            if (marker) {
               chunks.push({
                 snippet: node,
                 code: node.value.replace(/\\{{/g, '{{'), // un-escape hbs
-                ext: getExt(node.lang || (node.meta === 'template' ? 'hbs' : 'js')),
-                type: node.meta as string,
+                ext: getExt(node.lang || (marker === 'template' ? 'hbs' : 'js')),
+                type: marker,
               });
             }
           });

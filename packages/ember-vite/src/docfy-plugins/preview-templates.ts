@@ -7,9 +7,12 @@ import {
   isDemoComponents,
   replaceNode,
 } from './utils.js';
+import { findFenceMarker } from './fence-meta.js';
 import path from 'path';
 
 import type { DemoComponent } from '../types.js';
+
+const PREVIEW_MARKERS = ['preview-template', 'preview'] as const;
 
 export default plugin({
   runWithMdast(ctx): void {
@@ -19,7 +22,12 @@ export default plugin({
       const demoComponents: DemoComponent[] = [];
 
       visit(page.ast, 'code', node => {
-        if (['preview-template', 'preview'].includes(node.meta || '')) {
+        // The marker shares the meta string with the code block options
+        // (`collapsible`, `title=`, ...), so it is matched per token rather
+        // than against the whole string.
+        const marker = findFenceMarker(node.meta, PREVIEW_MARKERS);
+
+        if (marker) {
           demoComponents.push({
             name: generateDemoComponentName(
               `docfy-demo-preview-${path.basename(page.meta.url)}`,
@@ -30,7 +38,7 @@ export default plugin({
                 snippet: node,
                 code: node.value.replace(/\\{{/g, '{{'), // un-escape hbs
                 ext: getExt(node.lang || 'hbs'),
-                type: node.meta as string,
+                type: marker,
               },
             ],
           });

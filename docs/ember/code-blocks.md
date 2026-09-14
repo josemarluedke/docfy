@@ -109,7 +109,10 @@ line, space-separated, in any order:
 | `noCopy`        | `` ```ts noCopy ``                | Hides the copy button for this block.                                     |
 
 Tokens combine freely on the same fence, as several of the examples below
-demonstrate.
+demonstrate. They also combine with the demo markers — `preview`,
+`preview-template`, and a demo file's `component` / `template` / `styles` — so
+`` ```gjs preview collapsible `` renders a live preview *and* collapses the
+source underneath it.
 
 ## Live examples
 
