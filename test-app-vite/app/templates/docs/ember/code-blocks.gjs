@@ -118,7 +118,10 @@ line, space-separated, in any order:</p>
 </tbody>
 </table>
 <p>Tokens combine freely on the same fence, as several of the examples below
-demonstrate.</p>
+demonstrate. They also combine with the demo markers — <code>preview</code>,
+<code>preview-template</code>, and a demo file's <code>component</code> / <code>template</code> / <code>styles</code> — so
+<code>```gjs preview collapsible</code> renders a live preview <em>and</em> collapses the
+source underneath it.</p>
 <h2 id="live-examples"><a href="#live-examples">Live examples</a></h2>
 <h3 id="a-title"><a href="#a-title">A title</a></h3>
 <p>A <code>title</code> is the most common thing to reach for — it turns an anonymous

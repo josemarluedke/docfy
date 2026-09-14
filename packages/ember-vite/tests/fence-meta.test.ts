@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { parseFenceMeta } from '../src/docfy-plugins/fence-meta.js';
+import { findFenceMarker, parseFenceMeta } from '../src/docfy-plugins/fence-meta.js';
 
 describe('parseFenceMeta', () => {
   test('returns defaults for empty meta', () => {
@@ -14,9 +14,7 @@ describe('parseFenceMeta', () => {
   });
 
   test('parses a double-quoted title', () => {
-    expect(parseFenceMeta('title="components/ui/tabs.gts"').title).toBe(
-      'components/ui/tabs.gts',
-    );
+    expect(parseFenceMeta('title="components/ui/tabs.gts"').title).toBe('components/ui/tabs.gts');
   });
 
   test('parses a single-quoted title', () => {
@@ -43,5 +41,35 @@ describe('parseFenceMeta', () => {
   test('ignores unknown tokens rather than throwing', () => {
     expect(() => parseFenceMeta('twoslash somethingElse=1')).not.toThrow();
     expect(parseFenceMeta('twoslash').copyable).toBe(true);
+  });
+});
+
+describe('findFenceMarker', () => {
+  const markers = ['preview-template', 'preview'] as const;
+
+  test('finds a marker that is the whole meta string', () => {
+    expect(findFenceMarker('preview', markers)).toBe('preview');
+    expect(findFenceMarker('preview-template', markers)).toBe('preview-template');
+  });
+
+  test('finds a marker sharing the meta string with other options', () => {
+    expect(findFenceMarker('preview collapsible showLineNumbers', markers)).toBe('preview');
+    expect(findFenceMarker('collapsible preview-template', markers)).toBe('preview-template');
+    expect(findFenceMarker('preview title="a b.gts"', markers)).toBe('preview');
+  });
+
+  test('returns undefined when no marker is present', () => {
+    expect(findFenceMarker('collapsible', markers)).toBeUndefined();
+    expect(findFenceMarker('', markers)).toBeUndefined();
+    expect(findFenceMarker(undefined, markers)).toBeUndefined();
+    expect(findFenceMarker(null, markers)).toBeUndefined();
+  });
+
+  test('does not match a marker appearing inside a title', () => {
+    expect(findFenceMarker('title="a preview of things"', markers)).toBeUndefined();
+  });
+
+  test('does not match a marker that is only part of another token', () => {
+    expect(findFenceMarker('previewish', markers)).toBeUndefined();
   });
 });
