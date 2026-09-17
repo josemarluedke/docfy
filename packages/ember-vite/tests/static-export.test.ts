@@ -13,6 +13,7 @@ import {
   pageMarkdownUrl,
   buildLlmsTxt,
   buildLlmsFullTxt,
+  buildLlmsSplitTxt,
   collectStaticExportFiles,
   validateStaticExportOptions,
 } from '../src/static-export.js';
@@ -268,6 +269,191 @@ describe('buildLlmsTxt', () => {
     const output = buildLlmsTxt(makeNested(), opts);
     expect(output.startsWith('#')).toBe(false);
   });
+
+  it('appends the frontmatter description to a page entry', () => {
+    const nested: NestedPageMetadata = {
+      name: '/',
+      label: '/',
+      pages: [
+        {
+          ...makeMeta('/', 'Home'),
+          frontmatter: { description: 'A clickable button.' },
+        },
+      ],
+      children: [],
+    };
+
+    expect(buildLlmsTxt(nested, opts)).toBe(
+      '- [Home](https://docfy.dev/index.md): A clickable button.\n'
+    );
+  });
+
+  it('emits the bare link when the description is absent, blank, or not a string', () => {
+    const cases = [undefined, '', '   ', 42];
+
+    cases.forEach(description => {
+      const nested: NestedPageMetadata = {
+        name: '/',
+        label: '/',
+        pages: [{ ...makeMeta('/', 'Home'), frontmatter: { description } }],
+        children: [],
+      };
+
+      expect(buildLlmsTxt(nested, opts)).toBe('- [Home](https://docfy.dev/index.md)\n');
+    });
+  });
+
+  it('renders projectPreamble after the description and before the first section', () => {
+    // Use a nested tree with no pages at the root, so the preamble's position
+    // relative to the first `## section` heading is unambiguous.
+    const nested: NestedPageMetadata = {
+      name: '/',
+      label: '/',
+      pages: [],
+      children: [
+        {
+          name: 'docs',
+          label: 'Documentation',
+          pages: [makeMeta('/docs/about', 'About')],
+          children: [],
+        },
+      ],
+    };
+
+    const output = buildLlmsTxt(nested, {
+      ...opts,
+      projectDescription: 'Docs builder.',
+      projectPreamble: 'This index lists every page in the docs site.',
+    });
+
+    expect(
+      output.startsWith(
+        '> Docs builder.\n\nThis index lists every page in the docs site.\n\n## Documentation'
+      )
+    ).toBe(true);
+  });
+
+  it('omits projectPreamble entirely when absent or whitespace-only', () => {
+    const nested: NestedPageMetadata = {
+      name: '/',
+      label: '/',
+      pages: [],
+      children: [
+        {
+          name: 'docs',
+          label: 'Documentation',
+          pages: [makeMeta('/docs/about', 'About')],
+          children: [],
+        },
+      ],
+    };
+
+    const withDescriptionOnly = buildLlmsTxt(nested, {
+      ...opts,
+      projectDescription: 'Docs builder.',
+    });
+    expect(withDescriptionOnly.startsWith('> Docs builder.\n\n## Documentation')).toBe(true);
+
+    const withBlankPreamble = buildLlmsTxt(nested, {
+      ...opts,
+      projectDescription: 'Docs builder.',
+      projectPreamble: '   ',
+    });
+    expect(withBlankPreamble.startsWith('> Docs builder.\n\n## Documentation')).toBe(true);
+  });
+
+  it('emits a sectionNotes entry as an italic line under its heading', () => {
+    const output = buildLlmsTxt(makeNested(), {
+      ...opts,
+      sectionNotes: { Documentation: 'Deprecated. Use the current docs instead.' },
+    });
+
+    expect(output).toContain(
+      '## Documentation\n\n_Deprecated. Use the current docs instead._\n\n- [Introduction]'
+    );
+  });
+
+  it('leaves sections with no matching note unchanged', () => {
+    const output = buildLlmsTxt(makeNested(), {
+      ...opts,
+      sectionNotes: { Documentation: 'A note.' },
+    });
+
+    expect(output).toContain('## Ember\n\n- [Setup]');
+  });
+
+  it('never applies a note to the unlabeled root section (depth 0)', () => {
+    const output = buildLlmsTxt(makeNested(), {
+      ...opts,
+      sectionNotes: { '/': 'Should never appear.' },
+    });
+
+    expect(output).not.toContain('Should never appear.');
+  });
+
+  it('trims the description and collapses internal newlines to single spaces', () => {
+    const nested: NestedPageMetadata = {
+      name: '/',
+      label: '/',
+      pages: [
+        {
+          ...makeMeta('/', 'Home'),
+          frontmatter: { description: '  Line one\nLine two  \n  Line three  ' },
+        },
+      ],
+      children: [],
+    };
+
+    expect(buildLlmsTxt(nested, opts)).toBe(
+      '- [Home](https://docfy.dev/index.md): Line one Line two Line three\n'
+    );
+  });
+
+  it('appends a Bulk documentation section listing llmsSplits and llms-full.txt', () => {
+    const output = buildLlmsTxt(makeNested(), {
+      ...opts,
+      llmsSplits: [{ name: 'components', sections: ['Documentation'] }],
+    });
+
+    expect(
+      output.endsWith(
+        [
+          '## Bulk documentation',
+          '',
+          '- [llms-full.txt](https://docfy.dev/llms-full.txt): Every page, concatenated.',
+          '- [llms-components.txt](https://docfy.dev/llms-components.txt)',
+          '',
+        ].join('\n')
+      )
+    ).toBe(true);
+  });
+
+  it('omits llms-full.txt from Bulk documentation when llmsFullTxt is false', () => {
+    const output = buildLlmsTxt(makeNested(), {
+      ...opts,
+      llmsFullTxt: false,
+      llmsSplits: [{ name: 'components', sections: ['Documentation'] }],
+    });
+
+    expect(
+      output.endsWith(
+        [
+          '## Bulk documentation',
+          '',
+          '- [llms-components.txt](https://docfy.dev/llms-components.txt)',
+          '',
+        ].join('\n')
+      )
+    ).toBe(true);
+    expect(output).not.toContain('llms-full.txt');
+  });
+
+  it('omits the Bulk documentation section entirely when llmsSplits is empty or absent', () => {
+    expect(buildLlmsTxt(makeNested(), opts)).not.toContain('Bulk documentation');
+    expect(buildLlmsTxt(makeNested(), { ...opts, llmsSplits: [] })).not.toContain(
+      'Bulk documentation'
+    );
+  });
 });
 
 describe('buildLlmsFullTxt', () => {
@@ -367,6 +553,66 @@ describe('buildLlmsFullTxt', () => {
   });
 });
 
+describe('buildLlmsSplitTxt', () => {
+  const opts = { enabled: true, siteUrl: 'https://docfy.dev' };
+
+  function pagesByUrl(): Map<string, PageContent> {
+    return new Map([
+      ['/', makePage({ meta: makeMeta('/', 'Home'), markdown: '# Home\n' })],
+      ['/docs/', makePage({ meta: makeMeta('/docs/', 'Introduction'), markdown: '# Intro\n' })],
+      ['/docs/about', makePage({ meta: makeMeta('/docs/about', 'About'), markdown: '# About\n' })],
+      [
+        '/docs/ember/setup',
+        makePage({ meta: makeMeta('/docs/ember/setup', 'Setup'), markdown: '# Setup\n' }),
+      ],
+    ]);
+  }
+
+  it('includes only pages whose section label matches the filter', () => {
+    const output = buildLlmsSplitTxt(makeNested(), pagesByUrl(), opts, ['Ember']);
+
+    expect(output).toBe(
+      ['# Setup', '', 'Source: https://docfy.dev/docs/ember/setup.md', '', '# Setup', ''].join('\n')
+    );
+  });
+
+  it('matches the same per-page format buildLlmsFullTxt produces, for multiple sections', () => {
+    const output = buildLlmsSplitTxt(makeNested(), pagesByUrl(), opts, ['Documentation', 'Ember']);
+
+    expect(output).toBe(
+      [
+        '# Introduction',
+        '',
+        'Source: https://docfy.dev/docs/index.md',
+        '',
+        '# Intro',
+        '',
+        '---',
+        '',
+        '# About',
+        '',
+        'Source: https://docfy.dev/docs/about.md',
+        '',
+        '# About',
+        '',
+        '---',
+        '',
+        '# Setup',
+        '',
+        'Source: https://docfy.dev/docs/ember/setup.md',
+        '',
+        '# Setup',
+        '',
+      ].join('\n')
+    );
+  });
+
+  it('produces an empty-but-valid file when the section label does not exist', () => {
+    const output = buildLlmsSplitTxt(makeNested(), pagesByUrl(), opts, ['Nonexistent']);
+    expect(output).toBe('\n');
+  });
+});
+
 describe('collectStaticExportFiles', () => {
   const opts = { enabled: true, siteUrl: 'https://docfy.dev' };
 
@@ -454,6 +700,87 @@ describe('collectStaticExportFiles', () => {
 
     const llmsFullTxt = files.find(f => f.path === 'llms-full.txt');
     expect(llmsFullTxt?.content).toContain('Source: /docs/about.md');
+  });
+
+  it('emits an llms-<name>.txt file per llmsSplits entry, filtered to its sections', () => {
+    const files = collectStaticExportFiles(makeResult(), {
+      ...opts,
+      llmsSplits: [
+        { name: 'components', sections: ['Documentation'] },
+        { name: 'ember', sections: ['Ember'] },
+      ],
+    });
+
+    expect(files.map(f => f.path)).toEqual([
+      'index.md',
+      'docs/index.md',
+      'docs/about.md',
+      'docs/ember/setup.md',
+      'llms.txt',
+      'llms-full.txt',
+      'llms-components.txt',
+      'llms-ember.txt',
+    ]);
+
+    const components = files.find(f => f.path === 'llms-components.txt');
+    expect(components?.content).toContain('# Introduction');
+    expect(components?.content).toContain('# About');
+    expect(components?.content).not.toContain('# Setup');
+
+    const ember = files.find(f => f.path === 'llms-ember.txt');
+    expect(ember?.content).toBe(
+      ['# Setup', '', 'Source: https://docfy.dev/docs/ember/setup.md', '', '# Setup', ''].join('\n')
+    );
+  });
+
+  it('still emits llms-<name>.txt files when llmsFullTxt is disabled', () => {
+    const files = collectStaticExportFiles(makeResult(), {
+      ...opts,
+      llmsFullTxt: false,
+      llmsSplits: [{ name: 'ember', sections: ['Ember'] }],
+    });
+
+    expect(files.map(f => f.path)).toEqual([
+      'index.md',
+      'docs/index.md',
+      'docs/about.md',
+      'docs/ember/setup.md',
+      'llms.txt',
+      'llms-ember.txt',
+    ]);
+  });
+
+  it('emits an empty-but-valid file for a split naming a nonexistent section', () => {
+    const files = collectStaticExportFiles(makeResult(), {
+      ...opts,
+      llmsSplits: [{ name: 'ghost', sections: ['Nonexistent'] }],
+    });
+
+    const ghost = files.find(f => f.path === 'llms-ghost.txt');
+    expect(ghost?.content).toBe('\n');
+  });
+
+  it('produces byte-identical output to today when no new options are used (regression)', () => {
+    const files = collectStaticExportFiles(makeResult(), opts);
+
+    expect(files).toEqual([
+      { path: 'index.md', content: '# Home\n' },
+      { path: 'docs/index.md', content: '# Intro\n' },
+      { path: 'docs/about.md', content: '# About\n' },
+      { path: 'docs/ember/setup.md', content: '# Setup\n' },
+      {
+        path: 'llms.txt',
+        content: buildLlmsTxt(makeResult().nestedPageMetadata, opts),
+      },
+      {
+        path: 'llms-full.txt',
+        content: buildLlmsFullTxt(
+          makeResult().nestedPageMetadata,
+          new Map(makeResult().content.map(page => [page.meta.url, page])),
+          opts
+        ),
+      },
+    ]);
   });
 });
 
