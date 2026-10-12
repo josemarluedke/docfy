@@ -162,21 +162,28 @@ async function mergeConfig(
     docfyConfig = {};
   }
 
+  // The plugin lists below get the built-in plugins added. Work on copies:
+  // `buildStart` runs once per build, and the same config object comes back
+  // each time (an inline config, or a config file that Node has cached). A
+  // second build (`vite build --watch`, an SSR build after the client build)
+  // would otherwise register every built-in plugin again.
+  const plugins = Array.isArray(docfyConfig.plugins) ? docfyConfig.plugins.slice() : [];
+  const remarkPlugins = Array.isArray(docfyConfig.remarkPlugins)
+    ? docfyConfig.remarkPlugins.slice()
+    : [];
+
+  docfyConfig = { ...docfyConfig, plugins, remarkPlugins };
+
   // Merge sources
   if (!Array.isArray(docfyConfig.sources)) {
     docfyConfig.sources = DEFAULT_CONFIG.sources;
-  }
-
-  // Merge plugins
-  if (!Array.isArray(docfyConfig.plugins)) {
-    docfyConfig.plugins = [];
   }
 
   // Add Docfy core plugins for demo and preview template processing
   const { demoComponents, previewTemplates, docfyLinkConversion, codeBlocks, escapeCurliesInCode } =
     await import('./docfy-plugins/index.js');
   // Debug: plugins loaded
-  docfyConfig.plugins.unshift(
+  plugins.unshift(
     previewTemplates, // Process preview templates first
     demoComponents, // Then process demo components
     docfyLinkConversion // Finally replace internal links with DocfyLink
@@ -184,28 +191,23 @@ async function mergeConfig(
 
   // Wrap every code block before escaping runs: the wrapper is emitted as raw
   // hast, and escaping must be the last thing that touches code text.
-  docfyConfig.plugins.push(codeBlocks);
+  plugins.push(codeBlocks);
 
   // Escaping happens at the hast stage so that it also covers markup injected
   // by rehype-based syntax highlighters.
-  docfyConfig.plugins.push(escapeCurliesInCode);
-
-  // Setup remark plugins
-  if (!Array.isArray(docfyConfig.remarkPlugins)) {
-    docfyConfig.remarkPlugins = [];
-  }
+  plugins.push(escapeCurliesInCode);
 
   // `:::code-tabs` groups fences into a tabbed component. Neither this repo's
   // docs nor frontile use `:::` for anything else, so enabling directives is
   // non-breaking here.
   const remarkDirective = (await import('remark-directive')).default;
-  docfyConfig.remarkPlugins.push(remarkDirective);
+  remarkPlugins.push(remarkDirective);
 
   // Add remark-hbs plugin
   const remarkHbs = (await import('remark-hbs')).default;
   // Docfy owns escapeCurlies*: escaping happens at the hast stage instead, so
   // letting remark-hbs also escape at the mdast stage would double-escape.
-  docfyConfig.remarkPlugins.push([
+  remarkPlugins.push([
     remarkHbs,
     {
       ...docfyConfig.remarkHbsOptions,

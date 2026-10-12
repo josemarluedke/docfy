@@ -20,6 +20,38 @@ describe('loadDocfyConfig', () => {
 
     expect(config.sources?.[0]?.urlPrefix).toBe('guides');
   });
+
+  it('adds the built-in plugins once per load, for a config that is loaded twice', async () => {
+    const inline = {
+      sources: [{ pattern: '**/*.md', urlPrefix: 'docs' }],
+      plugins: [],
+      remarkPlugins: [],
+    };
+    const options = { root: process.cwd(), config: inline };
+
+    const first = await loadDocfyConfig(process.cwd(), options);
+    const pluginCount = first.plugins?.length;
+    const remarkPluginCount = first.remarkPlugins?.length;
+
+    const second = await loadDocfyConfig(process.cwd(), options);
+
+    expect(pluginCount).toBeGreaterThan(0);
+    expect(second.plugins?.length).toBe(pluginCount);
+    expect(second.remarkPlugins?.length).toBe(remarkPluginCount);
+  });
+
+  it('does not change the config object that the caller passed', async () => {
+    const inline = {
+      sources: [{ pattern: '**/*.md', urlPrefix: 'docs' }],
+      plugins: [],
+      remarkPlugins: [],
+    };
+
+    await loadDocfyConfig(process.cwd(), { root: process.cwd(), config: inline });
+
+    expect(inline.plugins).toEqual([]);
+    expect(inline.remarkPlugins).toEqual([]);
+  });
 });
 
 describe('resolveStaticExportOptions', () => {
