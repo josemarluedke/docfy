@@ -1,6 +1,6 @@
 {
   "name": "@docfy/plugin-with-prose",
-  "version": "0.14.2",
+  "version": "0.14.3",
   "private": false,
   "description": "A Docfy plugin to wrap Markdown content in a prose class",
   "repository": "https://github.com/josemarluedke/docfy",
@@ -21,7 +21,7 @@
     "format:check": "prettier . --cache --check"
   },
   "dependencies": {
-    "@docfy/core": "workspace:^0.14.2"
+    "@docfy/core": "workspace:^0.14.3"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
